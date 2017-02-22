@@ -23,6 +23,11 @@ namespace Web
                url: "{controller}/{action}/{id}/{ed}/{ad}/{ud}",
                defaults: new { controller = "Login", action = "Login", id = UrlParameter.Optional, ed = UrlParameter.Optional, ad = UrlParameter.Optional, ud = UrlParameter.Optional }
                );
+            routes.MapRoute(
+               name: "Default2",
+               url: "{controller}/{action}/{id}/{ed}/{ad}/{ud}/{uId}",
+               defaults: new { controller = "Login", action = "Login", id = UrlParameter.Optional, ed = UrlParameter.Optional, ad = UrlParameter.Optional, ud = UrlParameter.Optional, uId = UrlParameter.Optional }
+               );
         }
     }
 }

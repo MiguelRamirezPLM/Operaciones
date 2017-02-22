@@ -1,0 +1,227 @@
+﻿@model IEnumerable<Web.Models.plm_vwProductsByEdition>
+@using Web.Models;
+@{
+    ViewBag.Title = "Producción";
+    SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
+    Medinet db = new Medinet();
+    ViewData["Pagination"] = "True";
+}
+<script>
+    function _submit(item) {
+        var tr = $(item).parents("tr:first");
+        var _productId = tr.find("#_productId").val();
+        var _pharmaFormId = tr.find("#_pharmaFormId").val();
+        var _categoryId = tr.find("#_categoryId").val();
+        var _divisionId = tr.find("#_divisionId").val();
+        var _editionId = $("#_editionId").val();
+        var _page = tr.find("#_page").val();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/savePage")",
+            traditional: true,
+        data: {
+            ProductId: _productId,
+            Categoryid: _categoryId,
+            DivisionId: _divisionId,
+            EditionId: _editionId,
+            Page: _page,
+            PharmaFormId: _pharmaFormId
+        },
+        success: function (data) {
+            swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 700, });
+        }
+    });
+    }
+</script>
+<br />
+<div class="row col-md-12">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Producción</strong> | Paginación</div>
+        </div>
+    </div>
+    <br />
+    <nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default">
+        <div style="margin-left: 15px;" class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                @{
+
+                    CountriesUsers _CountriesUsers = (CountriesUsers)Session["CountriesUsers"];
+                    if (_CountriesUsers.country.LongCount() >= 1)
+                    {
+                        <a href="@Url.Content("~/Production/IndexPage")" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Content("~/Production/FilterPage/" + _Session.id)" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+                        </a>
+                    }
+                }
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span style="margin-left: 5px; color: black; " class="caret"></span></a>
+                        <ul style="border-radius:10px;" class="dropdown-menu vertical" role="menu">
+                            <li style="margin-top:-5px;">
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="char" type="text" class="form-control" placeholder="Buscar" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li><p></p></li>
+                            @{
+                                var _getEditions = (from _e in db.Editions
+                                                    join _et in db.EditionTypes
+                                                    on _e.EditionTypeId equals _et.EditionTypeId
+                                                    where _e.BookId == _Session.ed
+                                                    && _e.CountryId == _Session.id
+                                                    && _et.TypeName != "ELECTRÓNICO"
+                                                    orderby _e.NumberEdition descending
+                                                    select new { _e, _et }).ToList();
+                                ViewData["TypeName"] = _getEditions.FirstOrDefault()._et.TypeName;
+                                foreach (var _row in _getEditions)
+                                {
+                                    <li class="searchlab"><a class="zindex" href="@Url.Content("~/Production/Pagination/" + @_row._e.CountryId + "/" + @_Session.ed + "/" + _row._e.EditionId)">@_row._e.NumberEdition</a></li>
+                                }
+                            }
+                        </ul>
+
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exportar productos<span style="margin-left: 5px; color: black" class="caret"></span></a>
+                        <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
+                            <li><a class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i style="color:#324887" class="glyphicon glyphicon-arrow-left"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i style="color:#324887;" class="glyphicon glyphicon-arrow-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+        <div class="message-item" id="m16">
+            <div class="message-inner">
+                <div class="avatar pull-left"></div>
+                <div class="user-detail">
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">País: <span style="color: #de5145">@ViewData["CountryName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Obra: <span style="color: #de5145">@ViewData["BookName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Edición: <span style="color: #de5145">@ViewData["EditionNumber"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Versión: <span style="color: #de5145">@ViewData["TypeName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Total de productos: <span style="color: #de5145">@ViewData["AllProducts"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div style="width:0;" class="col-md-1"></div>
+<div class="row col-md-12" align="center">
+    <span class="Titles">Productos</span>
+</div>
+<script src="~/Scripts/DataTables/jqueryDataTablesProducts.js"></script>
+<script src="~/Scripts/DataTables/dataTables.scroller.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#example').dataTable({
+                "columnDefs": [{ "searchable": false, "targets": [1, 2, 3, 4] }],
+                "language": {
+                    "lengthMenu": "<div class='col-md-3 title_filter'>" +
+                        "<div class='title-word' style='font-weight:normal; text-transform:none; font-size:17px;'> Mostrar <select class='form-control input-sm'> </div>" +
+                      '<option value="10">10</option>' +
+                      '<option value="50">50</option>' +
+                      '<option value="100">100</option>' +
+                      '<option value="500">500</option>' +
+                      '<option value="1000">1000</option>' +
+                      '<option value="-1">Todo</option>' +
+                      '</select> productos' + '</div>'
+                }
+            });
+        });
+    });
+</script>
+<div class="row col-md-12 table-responsive">
+    <input type="hidden" id="_editionId" value="@_Session.ad"/>
+    <table style="font-size:13px;" id="example" class="display table table-bordered table-hover" cellspacing="0">
+        <thead>
+            <tr style=" box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);">
+                <td align="center" style="vertical-align:middle" class="tdback">Producto</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Forma farmaceútica</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Laboratorio</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Tipo de producto</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Página</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var _row in Model)
+                {
+                    <tr>
+                        <td>@_row.Brand <input type="hidden" id="_productId" value="@_row.ProductId"/></td>
+                        <td>@_row.PharmaForm <input type="hidden" id="_pharmaFormId" value="@_row.PharmaFormId"/></td>
+                        <td>@_row.DivisionName <input type="hidden" id="_divisionId" value="@_row.DivisionId"/></td>
+                        <td>@_row.ProductType <input type="hidden" id="_categoryId" value="@_row.CategoryId"/></td>
+                        <td><input id="_page" onchange="_submit($(this))" value="@_row.Page" class="form-control" /><span hidden>@_row.Page</span></td>
+                    </tr> 
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<br />

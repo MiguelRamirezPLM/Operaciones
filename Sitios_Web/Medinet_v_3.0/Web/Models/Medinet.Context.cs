@@ -31,7 +31,6 @@ namespace Web.Models
         public virtual DbSet<Divisions> Divisions { get; set; }
         public virtual DbSet<Editions> Editions { get; set; }
         public virtual DbSet<ParticipantProducts> ParticipantProducts { get; set; }
-        public virtual DbSet<plm_vwProductsByEdition> plm_vwProductsByEdition { get; set; }
         public virtual DbSet<ProductCategories> ProductCategories { get; set; }
         public virtual DbSet<EditionTypes> EditionTypes { get; set; }
         public virtual DbSet<ContentTypes> ContentTypes { get; set; }
@@ -51,18 +50,18 @@ namespace Web.Models
         public virtual DbSet<DivisionCategories> DivisionCategories { get; set; }
         public virtual DbSet<DivisionInformation> DivisionInformation { get; set; }
         public virtual DbSet<PharmaceuticalForms> PharmaceuticalForms { get; set; }
-        public virtual DbSet<EditionDivisionProducts> EditionDivisionProducts { get; set; }
-        public virtual DbSet<Therapeutics> Therapeutics { get; set; }
-        public virtual DbSet<ProductTherapeutics> ProductTherapeutics { get; set; }
-        public virtual DbSet<ICD> ICD { get; set; }
-        public virtual DbSet<ProductICD> ProductICD { get; set; }
-        public virtual DbSet<TherapeuticOMS> TherapeuticOMS { get; set; }
-        public virtual DbSet<ProductTherapeuticOMS> ProductTherapeuticOMS { get; set; }
-        public virtual DbSet<PharmacologicalGroups> PharmacologicalGroups { get; set; }
-        public virtual DbSet<OtherElements> OtherElements { get; set; }
-        public virtual DbSet<ProductSubstanceInteractions> ProductSubstanceInteractions { get; set; }
-        public virtual DbSet<ActiveSubstances> ActiveSubstances { get; set; }
-        public virtual DbSet<IPPAProductInteractions> IPPAProductInteractions { get; set; }
-        public virtual DbSet<ProductIndications> ProductIndications { get; set; }
+        public virtual DbSet<ProductPharmaForms> ProductPharmaForms { get; set; }
+        public virtual DbSet<Laboratories> Laboratories { get; set; }
+        public virtual DbSet<OffMarkets> OffMarkets { get; set; }
+        public virtual DbSet<plm_vwProductsByEdition> plm_vwProductsByEdition { get; set; }
+        public virtual DbSet<EditionProductShots> EditionProductShots { get; set; }
+        public virtual DbSet<ProductShotTypes> ProductShotTypes { get; set; }
+        public virtual DbSet<FamilyPrefixes> FamilyPrefixes { get; set; }
+        public virtual DbSet<PrefixTypes> PrefixTypes { get; set; }
+        public virtual DbSet<Families> Families { get; set; }
+        public virtual DbSet<BarCodes> BarCodes { get; set; }
+        public virtual DbSet<PriceSources> PriceSources { get; set; }
+        public virtual DbSet<ProductBarCodes> ProductBarCodes { get; set; }
+        public virtual DbSet<ProductPrices> ProductPrices { get; set; }
     }
 }

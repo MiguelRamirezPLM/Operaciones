@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ActivityLogs">
           <Key>
             <PropertyRef Name="ActivityLogId" />
@@ -49,6 +49,36 @@
           <Property Name="ApplicationId" Type="int" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="BinnacleActivities">
+          <Key>
+            <PropertyRef Name="BinnacleId" />
+            <PropertyRef Name="ActivityId" />
+          </Key>
+          <Property Name="BinnacleId" Type="int" Nullable="false" />
+          <Property Name="ActivityId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="text" />
+        </EntityType>
+        <EntityType Name="Binnacles">
+          <Key>
+            <PropertyRef Name="BinnacleId" />
+          </Key>
+          <Property Name="BinnacleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
+          <Property Name="BinnacleDescription" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Comment" Type="text" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="InitialDate" Type="datetime" Nullable="false" />
+          <Property Name="FinalDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BinnacleStatus">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
+          <Property Name="StatusName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Countries">
           <Key>
             <PropertyRef Name="CountryId" />
@@ -59,13 +89,118 @@
           <Property Name="ID" Type="varchar" MaxLength="3" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="ErrorId" />
+          </Key>
+          <Property Name="ErrorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationId" Type="int" Nullable="false" />
+          <Property Name="Folio" Type="varchar" MaxLength="20" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Message" Type="varchar(max)" Nullable="false" />
+          <Property Name="StackTrace" Type="text" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Folios">
+          <Key>
+            <PropertyRef Name="FolioId" />
+          </Key>
+          <Property Name="FolioId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationId" Type="int" Nullable="false" />
+          <Property Name="InitialValue" Type="int" Nullable="false" />
+          <Property Name="Prefix" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="CurrentNumber" Type="int" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Menues">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="MenuName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OperationRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="OperationId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="OperationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Operations">
+          <Key>
+            <PropertyRef Name="OperationId" />
+          </Key>
+          <Property Name="OperationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectActivities">
+          <Key>
+            <PropertyRef Name="ActivityId" />
+          </Key>
+          <Property Name="ActivityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="ActivityDate" Type="datetime" Nullable="false" />
+          <Property Name="InvestedTime" Type="tinyint" Nullable="false" />
+          <Property Name="ActivityDescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Comment" Type="text" />
+          <Property Name="BinnacleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectId" />
+          </Key>
+          <Property Name="ProjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProjectDescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="InitialDate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="FinalDate" Type="datetime" Nullable="false" />
+          <Property Name="InvestedTime" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Roles">
           <Key>
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="30" />
+          <Property Name="Description" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolMenues">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+            <PropertyRef Name="WebSectionId" />
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="WebPageId" Type="int" Nullable="false" />
+          <Property Name="WebSectionId" Type="tinyint" Nullable="false" />
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Tables">
           <Key>
@@ -73,7 +208,7 @@
           </Key>
           <Property Name="TableId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ApplicationId" Type="int" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserCountries">
@@ -81,8 +216,18 @@
             <PropertyRef Name="UserId" />
             <PropertyRef Name="CountryId" />
           </Key>
-          <Property Name="UserId" Nullable="false" Type="int" />
-          <Property Name="CountryId" Nullable="false" Type="int" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProjects">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ProjectId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -101,6 +246,49 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="WebPages">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+          </Key>
+          <Property Name="WebPageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="ApplicationId" Type="int" Nullable="false" />
+          <Property Name="PageDescription" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Url" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="WebPageSectionMenues">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+            <PropertyRef Name="WebSectionId" />
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="WebPageId" Type="int" Nullable="false" />
+          <Property Name="WebSectionId" Type="tinyint" Nullable="false" />
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="Url" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImageName" Type="varchar" MaxLength="30" />
+          <Property Name="MenuOrder" Type="tinyint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebPageSections">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+            <PropertyRef Name="WebSectionId" />
+          </Key>
+          <Property Name="WebPageId" Type="int" Nullable="false" />
+          <Property Name="WebSectionId" Type="tinyint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebSections">
+          <Key>
+            <PropertyRef Name="WebSectionId" />
+          </Key>
+          <Property Name="WebSectionId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="tinyint" />
+          <Property Name="SectionName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <Association Name="AppTableId_FK">
           <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
           <End Role="Tables" Type="Self.Tables" Multiplicity="*" />
@@ -110,6 +298,118 @@
             </Principal>
             <Dependent Role="Tables">
               <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk">
+          <End Role="UserProjects" Type="Self.UserProjects" Multiplicity="1" />
+          <End Role="ProjectActivities" Type="Self.ProjectActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProjects">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ProjectActivities">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinnacleA__Activ__379037E3">
+          <End Role="ProjectActivities" Type="Self.ProjectActivities" Multiplicity="1" />
+          <End Role="BinnacleActivities" Type="Self.BinnacleActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectActivities">
+              <PropertyRef Name="ActivityId" />
+            </Principal>
+            <Dependent Role="BinnacleActivities">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinnacleA__Binna__369C13AA">
+          <End Role="Binnacles" Type="Self.Binnacles" Multiplicity="1" />
+          <End Role="BinnacleActivities" Type="Self.BinnacleActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Binnacles">
+              <PropertyRef Name="BinnacleId" />
+            </Principal>
+            <Dependent Role="BinnacleActivities">
+              <PropertyRef Name="BinnacleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Binnacles__Statu__31D75E8D">
+          <End Role="BinnacleStatus" Type="Self.BinnacleStatus" Multiplicity="1" />
+          <End Role="Binnacles" Type="Self.Binnacles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BinnacleStatus">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Binnacles">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Binnacles__UserI__30E33A54">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Binnacles" Type="Self.Binnacles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Binnacles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectAc__Binna__48BAC3E5">
+          <End Role="Binnacles" Type="Self.Binnacles" Multiplicity="1" />
+          <End Role="ProjectActivities" Type="Self.ProjectActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Binnacles">
+              <PropertyRef Name="BinnacleId" />
+            </Principal>
+            <Dependent Role="ProjectActivities">
+              <PropertyRef Name="BinnacleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProje__Proje__10766AC2">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="UserProjects" Type="Self.UserProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="UserProjects">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProje__RoleI__116A8EFB">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="UserProjects" Type="Self.UserProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserProjects">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProje__UserI__0F824689">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserProjects" Type="Self.UserProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProjects">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -149,9 +449,73 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Countries_Regions">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+          <End Role="Countries" Type="Self.Countries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Countries">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OperationRoles_Operations">
+          <End Role="Operations" Type="Self.Operations" Multiplicity="1" />
+          <End Role="OperationRoles" Type="Self.OperationRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operations">
+              <PropertyRef Name="OperationId" />
+            </Principal>
+            <Dependent Role="OperationRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OperationRoles_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="OperationRoles" Type="Self.OperationRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="OperationRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolMenues_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="RolMenues" Type="Self.RolMenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="RolMenues">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolMenues_WebPageSectionMenues">
+          <End Role="WebPageSectionMenues" Type="Self.WebPageSectionMenues" Multiplicity="1" />
+          <End Role="RolMenues" Type="Self.RolMenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebPageSectionMenues">
+              <PropertyRef Name="WebPageId" />
+              <PropertyRef Name="WebSectionId" />
+              <PropertyRef Name="MenuId" />
+            </Principal>
+            <Dependent Role="RolMenues">
+              <PropertyRef Name="WebPageId" />
+              <PropertyRef Name="WebSectionId" />
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserCountries_Countries">
-          <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
-          <End Type="Self.UserCountries" Multiplicity="*" Role="UserCountries" />
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="UserCountries" Type="Self.UserCountries" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Countries">
               <PropertyRef Name="CountryId" />
@@ -162,8 +526,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCountries_Users">
-          <End Type="Self.Users" Multiplicity="1" Role="Users" />
-          <End Type="Self.UserCountries" Multiplicity="*" Role="UserCountries" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserCountries" Type="Self.UserCountries" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="UserId" />
@@ -185,6 +549,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WebPages_Applications">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="WebPages" Type="Self.WebPages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="WebPages">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSectionMenues_Menues">
+          <End Role="Menues" Type="Self.Menues" Multiplicity="1" />
+          <End Role="WebPageSectionMenues" Type="Self.WebPageSectionMenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menues">
+              <PropertyRef Name="MenuId" />
+            </Principal>
+            <Dependent Role="WebPageSectionMenues">
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSectionMenues_WebPageSections">
+          <End Role="WebPageSections" Type="Self.WebPageSections" Multiplicity="1" />
+          <End Role="WebPageSectionMenues" Type="Self.WebPageSectionMenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebPageSections">
+              <PropertyRef Name="WebPageId" />
+              <PropertyRef Name="WebSectionId" />
+            </Principal>
+            <Dependent Role="WebPageSectionMenues">
+              <PropertyRef Name="WebPageId" />
+              <PropertyRef Name="WebSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSections_WebPages1">
+          <End Role="WebPages" Type="Self.WebPages" Multiplicity="1" />
+          <End Role="WebPageSections" Type="Self.WebPageSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebPages">
+              <PropertyRef Name="WebPageId" />
+            </Principal>
+            <Dependent Role="WebPageSections">
+              <PropertyRef Name="WebPageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSections_WebSections">
+          <End Role="WebSections" Type="Self.WebSections" Multiplicity="1" />
+          <End Role="WebPageSections" Type="Self.WebPageSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebSections">
+              <PropertyRef Name="WebSectionId" />
+            </Principal>
+            <Dependent Role="WebPageSections">
+              <PropertyRef Name="WebSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FKAPPLICATION_AS">
           <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
           <End Role="ActivitySessions" Type="Self.ActivitySessions" Multiplicity="*" />
@@ -193,6 +619,30 @@
               <PropertyRef Name="ApplicationId" />
             </Principal>
             <Dependent Role="ActivitySessions">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKAPPLICATION_EF">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="Folios" Type="Self.Folios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Folios">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKAPPLICATION_ER">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+          <End Role="Errors" Type="Self.Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Errors">
               <PropertyRef Name="ApplicationId" />
             </Dependent>
           </ReferentialConstraint>
@@ -219,14 +669,68 @@
           <EntitySet Name="ActivitySessions" EntityType="Self.ActivitySessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationUsers" EntityType="Self.ApplicationUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BinnacleActivities" EntityType="Self.BinnacleActivities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Binnacles" EntityType="Self.Binnacles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BinnacleStatus" EntityType="Self.BinnacleStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Errors" EntityType="Self.Errors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Folios" EntityType="Self.Folios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Menues" EntityType="Self.Menues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OperationRoles" EntityType="Self.OperationRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Operations" EntityType="Self.Operations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectActivities" EntityType="Self.ProjectActivities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolMenues" EntityType="Self.RolMenues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tables" EntityType="Self.Tables" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCountries" EntityType="Self.UserCountries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProjects" EntityType="Self.UserProjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebPages" EntityType="Self.WebPages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebPageSectionMenues" EntityType="Self.WebPageSectionMenues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebPageSections" EntityType="Self.WebPageSections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebSections" EntityType="Self.WebSections" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="AppTableId_FK" Association="Self.AppTableId_FK">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="Tables" EntitySet="Tables" />
+          </AssociationSet>
+          <AssociationSet Name="fk" Association="Self.fk">
+            <End Role="UserProjects" EntitySet="UserProjects" />
+            <End Role="ProjectActivities" EntitySet="ProjectActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinnacleA__Activ__379037E3" Association="Self.FK__BinnacleA__Activ__379037E3">
+            <End Role="ProjectActivities" EntitySet="ProjectActivities" />
+            <End Role="BinnacleActivities" EntitySet="BinnacleActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinnacleA__Binna__369C13AA" Association="Self.FK__BinnacleA__Binna__369C13AA">
+            <End Role="Binnacles" EntitySet="Binnacles" />
+            <End Role="BinnacleActivities" EntitySet="BinnacleActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Binnacles__Statu__31D75E8D" Association="Self.FK__Binnacles__Statu__31D75E8D">
+            <End Role="BinnacleStatus" EntitySet="BinnacleStatus" />
+            <End Role="Binnacles" EntitySet="Binnacles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Binnacles__UserI__30E33A54" Association="Self.FK__Binnacles__UserI__30E33A54">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Binnacles" EntitySet="Binnacles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectAc__Binna__48BAC3E5" Association="Self.FK__ProjectAc__Binna__48BAC3E5">
+            <End Role="Binnacles" EntitySet="Binnacles" />
+            <End Role="ProjectActivities" EntitySet="ProjectActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProje__Proje__10766AC2" Association="Self.FK__UserProje__Proje__10766AC2">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="UserProjects" EntitySet="UserProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProje__RoleI__116A8EFB" Association="Self.FK__UserProje__RoleI__116A8EFB">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserProjects" EntitySet="UserProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProje__UserI__0F824689" Association="Self.FK__UserProje__UserI__0F824689">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProjects" EntitySet="UserProjects" />
           </AssociationSet>
           <AssociationSet Name="FK_ApplicationUsers_Applications" Association="Self.FK_ApplicationUsers_Applications">
             <End Role="Applications" EntitySet="Applications" />
@@ -240,29 +744,76 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Countries_Regions" Association="Self.FK_Countries_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="Countries" EntitySet="Countries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OperationRoles_Operations" Association="Self.FK_OperationRoles_Operations">
+            <End Role="Operations" EntitySet="Operations" />
+            <End Role="OperationRoles" EntitySet="OperationRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OperationRoles_Roles" Association="Self.FK_OperationRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="OperationRoles" EntitySet="OperationRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolMenues_Roles" Association="Self.FK_RolMenues_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="RolMenues" EntitySet="RolMenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolMenues_WebPageSectionMenues" Association="Self.FK_RolMenues_WebPageSectionMenues">
+            <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+            <End Role="RolMenues" EntitySet="RolMenues" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserCountries_Countries" Association="Self.FK_UserCountries_Countries">
-            <End EntitySet="Countries" Role="Countries" />
-            <End EntitySet="UserCountries" Role="UserCountries" />
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="UserCountries" EntitySet="UserCountries" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCountries_Users" Association="Self.FK_UserCountries_Users">
-            <End EntitySet="Users" Role="Users" />
-            <End EntitySet="UserCountries" Role="UserCountries" />
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCountries" EntitySet="UserCountries" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Countries" Association="Self.FK_Users_Countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_WebPages_Applications" Association="Self.FK_WebPages_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="WebPages" EntitySet="WebPages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSectionMenues_Menues" Association="Self.FK_WebPageSectionMenues_Menues">
+            <End Role="Menues" EntitySet="Menues" />
+            <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSectionMenues_WebPageSections" Association="Self.FK_WebPageSectionMenues_WebPageSections">
+            <End Role="WebPageSections" EntitySet="WebPageSections" />
+            <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSections_WebPages1" Association="Self.FK_WebPageSections_WebPages1">
+            <End Role="WebPages" EntitySet="WebPages" />
+            <End Role="WebPageSections" EntitySet="WebPageSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSections_WebSections" Association="Self.FK_WebPageSections_WebSections">
+            <End Role="WebSections" EntitySet="WebSections" />
+            <End Role="WebPageSections" EntitySet="WebPageSections" />
+          </AssociationSet>
           <AssociationSet Name="FKAPPLICATION_AS" Association="Self.FKAPPLICATION_AS">
             <End Role="Applications" EntitySet="Applications" />
             <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+          </AssociationSet>
+          <AssociationSet Name="FKAPPLICATION_EF" Association="Self.FKAPPLICATION_EF">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Folios" EntitySet="Folios" />
+          </AssociationSet>
+          <AssociationSet Name="FKAPPLICATION_ER" Association="Self.FKAPPLICATION_ER">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Errors" EntitySet="Errors" />
           </AssociationSet>
           <AssociationSet Name="FKUSER_AS" Association="Self.FKUSER_AS">
             <End Role="Users" EntitySet="Users" />
             <End Role="ActivitySessions" EntitySet="ActivitySessions" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -305,6 +856,9 @@
           <NavigationProperty Name="ActivitySessions" Relationship="Self.FKAPPLICATION_AS" FromRole="Applications" ToRole="ActivitySessions" />
           <NavigationProperty Name="Tables" Relationship="Self.AppTableId_FK" FromRole="Applications" ToRole="Tables" />
           <NavigationProperty Name="ApplicationUsers" Relationship="Self.FK_ApplicationUsers_Applications" FromRole="Applications" ToRole="ApplicationUsers" />
+          <NavigationProperty Name="WebPages" Relationship="Model.FK_WebPages_Applications" FromRole="Applications" ToRole="WebPages" />
+          <NavigationProperty Name="Folios" Relationship="Model.FKAPPLICATION_EF" FromRole="Applications" ToRole="Folios" />
+          <NavigationProperty Name="Errors" Relationship="Model.FKAPPLICATION_ER" FromRole="Applications" ToRole="Errors" />
         </EntityType>
         <EntityType Name="ApplicationUsers">
           <Key>
@@ -329,15 +883,19 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Users_Countries" FromRole="Countries" ToRole="Users" />
           <NavigationProperty Name="UserCountries" Relationship="Model.Countries_UsersUserCountries" FromRole="Countries_Users" ToRole="UserCountries" />
+          <NavigationProperty Name="Regions" Relationship="Model.FK_Countries_Regions" FromRole="Countries_Users" ToRole="Regions" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ApplicationUsers" Relationship="Self.FK_ApplicationUsers_Roles" FromRole="Roles" ToRole="ApplicationUsers" />
+          <NavigationProperty Name="OperationRoles" Relationship="Model.FK_OperationRoles_Roles" FromRole="Roles" ToRole="OperationRoles" />
+          <NavigationProperty Name="UserProjects" Relationship="Model.FK__UserProje__RoleI__116A8EFB" FromRole="Roles" ToRole="UserProjects" />
+          <NavigationProperty Name="WebPageSectionMenues" Relationship="Model.RolMenues" FromRole="Roles" ToRole="WebPageSectionMenues" />
         </EntityType>
         <EntityType Name="Tables">
           <Key>
@@ -345,7 +903,7 @@
           </Key>
           <Property Name="TableId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ApplicationId" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Applications" Relationship="Self.AppTableId_FK" FromRole="Tables" ToRole="Applications" />
         </EntityType>
@@ -369,6 +927,8 @@
           <NavigationProperty Name="ApplicationUsers" Relationship="Self.FK_ApplicationUsers_Users" FromRole="Users" ToRole="ApplicationUsers" />
           <NavigationProperty Name="Countries" Relationship="Self.FK_Users_Countries" FromRole="Users" ToRole="Countries" />
           <NavigationProperty Name="UserCountries" Relationship="Model.UsersUserCountries" FromRole="Users" ToRole="UserCountries" />
+          <NavigationProperty Name="Binnacles" Relationship="Model.FK__Binnacles__UserI__30E33A54" FromRole="Users" ToRole="Binnacles" />
+          <NavigationProperty Name="UserProjects" Relationship="Model.FK__UserProje__UserI__0F824689" FromRole="Users" ToRole="UserProjects" />
         </EntityType>
         <Association Name="FKAPPLICATION_AS">
           <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
@@ -505,6 +1065,103 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserCountries" EntitySet="UserCountries" />
           </AssociationSet>
+          <EntitySet Name="BinnacleActivities" EntityType="Model.BinnacleActivities" />
+          <EntitySet Name="Binnacles" EntityType="Model.Binnacles" />
+          <EntitySet Name="BinnacleStatus" EntityType="Model.BinnacleStatus" />
+          <EntitySet Name="Errors" EntityType="Model.Errors" />
+          <EntitySet Name="Folios" EntityType="Model.Folios" />
+          <EntitySet Name="Menues" EntityType="Model.Menues" />
+          <EntitySet Name="OperationRoles" EntityType="Model.OperationRoles" />
+          <EntitySet Name="Operations" EntityType="Model.Operations" />
+          <EntitySet Name="ProjectActivities" EntityType="Model.ProjectActivities" />
+          <EntitySet Name="Projects" EntityType="Model.Projects" />
+          <EntitySet Name="Regions" EntityType="Model.Regions" />
+          <EntitySet Name="sysdiagrams" EntityType="Model.sysdiagrams" />
+          <EntitySet Name="UserProjects" EntityType="Model.UserProjects" />
+          <EntitySet Name="WebPages" EntityType="Model.WebPages" />
+          <EntitySet Name="WebPageSectionMenues" EntityType="Model.WebPageSectionMenues" />
+          <EntitySet Name="WebPageSections" EntityType="Model.WebPageSections" />
+          <EntitySet Name="WebSections" EntityType="Model.WebSections" />
+          <AssociationSet Name="FK_WebPages_Applications" Association="Model.FK_WebPages_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="WebPages" EntitySet="WebPages" />
+          </AssociationSet>
+          <AssociationSet Name="FKAPPLICATION_EF" Association="Model.FKAPPLICATION_EF">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Folios" EntitySet="Folios" />
+          </AssociationSet>
+          <AssociationSet Name="FKAPPLICATION_ER" Association="Model.FKAPPLICATION_ER">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinnacleA__Activ__379037E3" Association="Model.FK__BinnacleA__Activ__379037E3">
+            <End Role="ProjectActivities" EntitySet="ProjectActivities" />
+            <End Role="BinnacleActivities" EntitySet="BinnacleActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinnacleA__Binna__369C13AA" Association="Model.FK__BinnacleA__Binna__369C13AA">
+            <End Role="Binnacles" EntitySet="Binnacles" />
+            <End Role="BinnacleActivities" EntitySet="BinnacleActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Binnacles__Statu__31D75E8D" Association="Model.FK__Binnacles__Statu__31D75E8D">
+            <End Role="BinnacleStatus" EntitySet="BinnacleStatus" />
+            <End Role="Binnacles" EntitySet="Binnacles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Binnacles__UserI__30E33A54" Association="Model.FK__Binnacles__UserI__30E33A54">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Binnacles" EntitySet="Binnacles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProjectAc__Binna__48BAC3E5" Association="Model.FK__ProjectAc__Binna__48BAC3E5">
+            <End Role="Binnacles" EntitySet="Binnacles" />
+            <End Role="ProjectActivities" EntitySet="ProjectActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Countries_Regions" Association="Model.FK_Countries_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="Countries_Users" EntitySet="Countries_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSectionMenues_Menues" Association="Model.FK_WebPageSectionMenues_Menues">
+            <End Role="Menues" EntitySet="Menues" />
+            <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OperationRoles_Operations" Association="Model.FK_OperationRoles_Operations">
+            <End Role="Operations" EntitySet="Operations" />
+            <End Role="OperationRoles" EntitySet="OperationRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OperationRoles_Roles" Association="Model.FK_OperationRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="OperationRoles" EntitySet="OperationRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk" Association="Model.fk">
+            <End Role="UserProjects" EntitySet="UserProjects" />
+            <End Role="ProjectActivities" EntitySet="ProjectActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProje__Proje__10766AC2" Association="Model.FK__UserProje__Proje__10766AC2">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="UserProjects" EntitySet="UserProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProje__RoleI__116A8EFB" Association="Model.FK__UserProje__RoleI__116A8EFB">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserProjects" EntitySet="UserProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProje__UserI__0F824689" Association="Model.FK__UserProje__UserI__0F824689">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserProjects" EntitySet="UserProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSections_WebPages1" Association="Model.FK_WebPageSections_WebPages1">
+            <End Role="WebPages" EntitySet="WebPages" />
+            <End Role="WebPageSections" EntitySet="WebPageSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSectionMenues_WebPageSections" Association="Model.FK_WebPageSectionMenues_WebPageSections">
+            <End Role="WebPageSections" EntitySet="WebPageSections" />
+            <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebPageSections_WebSections" Association="Model.FK_WebPageSections_WebSections">
+            <End Role="WebSections" EntitySet="WebSections" />
+            <End Role="WebPageSections" EntitySet="WebPageSections" />
+          </AssociationSet>
+          <AssociationSet Name="RolMenues" Association="Model.RolMenues">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="plm_spLoginApplications_Result">
           <Property Type="Int32" Name="UsrUserId" Nullable="false" />
@@ -559,6 +1216,451 @@
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BinnacleActivities">
+          <Key>
+            <PropertyRef Name="BinnacleId" />
+            <PropertyRef Name="ActivityId" />
+          </Key>
+          <Property Name="BinnacleId" Type="Int32" Nullable="false" />
+          <Property Name="ActivityId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProjectActivities" Relationship="Model.FK__BinnacleA__Activ__379037E3" FromRole="BinnacleActivities" ToRole="ProjectActivities" />
+          <NavigationProperty Name="Binnacles" Relationship="Model.FK__BinnacleA__Binna__369C13AA" FromRole="BinnacleActivities" ToRole="Binnacles" />
+        </EntityType>
+        <EntityType Name="Binnacles">
+          <Key>
+            <PropertyRef Name="BinnacleId" />
+          </Key>
+          <Property Name="BinnacleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <Property Name="BinnacleDescription" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="InitialDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FinalDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="BinnacleActivities" Relationship="Model.FK__BinnacleA__Binna__369C13AA" FromRole="Binnacles" ToRole="BinnacleActivities" />
+          <NavigationProperty Name="BinnacleStatus" Relationship="Model.FK__Binnacles__Statu__31D75E8D" FromRole="Binnacles" ToRole="BinnacleStatus" />
+          <NavigationProperty Name="Users" Relationship="Model.FK__Binnacles__UserI__30E33A54" FromRole="Binnacles" ToRole="Users" />
+          <NavigationProperty Name="ProjectActivities" Relationship="Model.FK__ProjectAc__Binna__48BAC3E5" FromRole="Binnacles" ToRole="ProjectActivities" />
+        </EntityType>
+        <EntityType Name="BinnacleStatus">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <Property Name="StatusName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Binnacles" Relationship="Model.FK__Binnacles__Statu__31D75E8D" FromRole="BinnacleStatus" ToRole="Binnacles" />
+        </EntityType>
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="ErrorId" />
+          </Key>
+          <Property Name="ErrorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="Folio" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StackTrace" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Model.FKAPPLICATION_ER" FromRole="Errors" ToRole="Applications" />
+        </EntityType>
+        <EntityType Name="Folios">
+          <Key>
+            <PropertyRef Name="FolioId" />
+          </Key>
+          <Property Name="FolioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="InitialValue" Type="Int32" Nullable="false" />
+          <Property Name="Prefix" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="CurrentNumber" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Applications" Relationship="Model.FKAPPLICATION_EF" FromRole="Folios" ToRole="Applications" />
+        </EntityType>
+        <EntityType Name="Menues">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="MenuName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WebPageSectionMenues" Relationship="Model.FK_WebPageSectionMenues_Menues" FromRole="Menues" ToRole="WebPageSectionMenues" />
+        </EntityType>
+        <EntityType Name="OperationRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="OperationId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="OperationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Operations" Relationship="Model.FK_OperationRoles_Operations" FromRole="OperationRoles" ToRole="Operations" />
+          <NavigationProperty Name="Roles" Relationship="Model.FK_OperationRoles_Roles" FromRole="OperationRoles" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Operations">
+          <Key>
+            <PropertyRef Name="OperationId" />
+          </Key>
+          <Property Name="OperationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OperationRoles" Relationship="Model.FK_OperationRoles_Operations" FromRole="Operations" ToRole="OperationRoles" />
+        </EntityType>
+        <EntityType Name="ProjectActivities">
+          <Key>
+            <PropertyRef Name="ActivityId" />
+          </Key>
+          <Property Name="ActivityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActivityDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvestedTime" Type="Byte" Nullable="false" />
+          <Property Name="ActivityDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BinnacleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BinnacleActivities" Relationship="Model.FK__BinnacleA__Activ__379037E3" FromRole="ProjectActivities" ToRole="BinnacleActivities" />
+          <NavigationProperty Name="Binnacles" Relationship="Model.FK__ProjectAc__Binna__48BAC3E5" FromRole="ProjectActivities" ToRole="Binnacles" />
+          <NavigationProperty Name="UserProjects" Relationship="Model.fk" FromRole="ProjectActivities" ToRole="UserProjects" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectId" />
+          </Key>
+          <Property Name="ProjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InitialDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="FinalDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvestedTime" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserProjects" Relationship="Model.FK__UserProje__Proje__10766AC2" FromRole="Projects" ToRole="UserProjects" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Countries" Relationship="Model.FK_Countries_Regions" FromRole="Regions" ToRole="Countries_Users" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="UserProjects">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ProjectId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ProjectActivities" Relationship="Model.fk" FromRole="UserProjects" ToRole="ProjectActivities" />
+          <NavigationProperty Name="Projects" Relationship="Model.FK__UserProje__Proje__10766AC2" FromRole="UserProjects" ToRole="Projects" />
+          <NavigationProperty Name="Roles" Relationship="Model.FK__UserProje__RoleI__116A8EFB" FromRole="UserProjects" ToRole="Roles" />
+          <NavigationProperty Name="Users" Relationship="Model.FK__UserProje__UserI__0F824689" FromRole="UserProjects" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="WebPages">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+          </Key>
+          <Property Name="WebPageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="PageDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Applications" Relationship="Model.FK_WebPages_Applications" FromRole="WebPages" ToRole="Applications" />
+          <NavigationProperty Name="WebPageSections" Relationship="Model.FK_WebPageSections_WebPages1" FromRole="WebPages" ToRole="WebPageSections" />
+        </EntityType>
+        <EntityType Name="WebPageSectionMenues">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+            <PropertyRef Name="WebSectionId" />
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="WebPageId" Type="Int32" Nullable="false" />
+          <Property Name="WebSectionId" Type="Byte" Nullable="false" />
+          <Property Name="MenuId" Type="Int32" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImageName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MenuOrder" Type="Byte" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Menues" Relationship="Model.FK_WebPageSectionMenues_Menues" FromRole="WebPageSectionMenues" ToRole="Menues" />
+          <NavigationProperty Name="WebPageSections" Relationship="Model.FK_WebPageSectionMenues_WebPageSections" FromRole="WebPageSectionMenues" ToRole="WebPageSections" />
+          <NavigationProperty Name="Roles" Relationship="Model.RolMenues" FromRole="WebPageSectionMenues" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="WebPageSections">
+          <Key>
+            <PropertyRef Name="WebPageId" />
+            <PropertyRef Name="WebSectionId" />
+          </Key>
+          <Property Name="WebPageId" Type="Int32" Nullable="false" />
+          <Property Name="WebSectionId" Type="Byte" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WebPages" Relationship="Model.FK_WebPageSections_WebPages1" FromRole="WebPageSections" ToRole="WebPages" />
+          <NavigationProperty Name="WebPageSectionMenues" Relationship="Model.FK_WebPageSectionMenues_WebPageSections" FromRole="WebPageSections" ToRole="WebPageSectionMenues" />
+          <NavigationProperty Name="WebSections" Relationship="Model.FK_WebPageSections_WebSections" FromRole="WebPageSections" ToRole="WebSections" />
+        </EntityType>
+        <EntityType Name="WebSections">
+          <Key>
+            <PropertyRef Name="WebSectionId" />
+          </Key>
+          <Property Name="WebSectionId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Byte" />
+          <Property Name="SectionName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WebPageSections" Relationship="Model.FK_WebPageSections_WebSections" FromRole="WebSections" ToRole="WebPageSections" />
+        </EntityType>
+        <Association Name="FK_WebPages_Applications">
+          <End Type="Model.Applications" Role="Applications" Multiplicity="1" />
+          <End Type="Model.WebPages" Role="WebPages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="WebPages">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKAPPLICATION_EF">
+          <End Type="Model.Applications" Role="Applications" Multiplicity="1" />
+          <End Type="Model.Folios" Role="Folios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Folios">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKAPPLICATION_ER">
+          <End Type="Model.Applications" Role="Applications" Multiplicity="1" />
+          <End Type="Model.Errors" Role="Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinnacleA__Activ__379037E3">
+          <End Type="Model.ProjectActivities" Role="ProjectActivities" Multiplicity="1" />
+          <End Type="Model.BinnacleActivities" Role="BinnacleActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectActivities">
+              <PropertyRef Name="ActivityId" />
+            </Principal>
+            <Dependent Role="BinnacleActivities">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinnacleA__Binna__369C13AA">
+          <End Type="Model.Binnacles" Role="Binnacles" Multiplicity="1" />
+          <End Type="Model.BinnacleActivities" Role="BinnacleActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Binnacles">
+              <PropertyRef Name="BinnacleId" />
+            </Principal>
+            <Dependent Role="BinnacleActivities">
+              <PropertyRef Name="BinnacleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Binnacles__Statu__31D75E8D">
+          <End Type="Model.BinnacleStatus" Role="BinnacleStatus" Multiplicity="1" />
+          <End Type="Model.Binnacles" Role="Binnacles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BinnacleStatus">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Binnacles">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Binnacles__UserI__30E33A54">
+          <End Type="Model.Users" Role="Users" Multiplicity="1" />
+          <End Type="Model.Binnacles" Role="Binnacles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Binnacles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProjectAc__Binna__48BAC3E5">
+          <End Type="Model.Binnacles" Role="Binnacles" Multiplicity="1" />
+          <End Type="Model.ProjectActivities" Role="ProjectActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Binnacles">
+              <PropertyRef Name="BinnacleId" />
+            </Principal>
+            <Dependent Role="ProjectActivities">
+              <PropertyRef Name="BinnacleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Countries_Regions">
+          <End Type="Model.Regions" Role="Regions" Multiplicity="1" />
+          <End Type="Model.Countries_Users" Role="Countries_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="Countries_Users">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSectionMenues_Menues">
+          <End Type="Model.Menues" Role="Menues" Multiplicity="1" />
+          <End Type="Model.WebPageSectionMenues" Role="WebPageSectionMenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menues">
+              <PropertyRef Name="MenuId" />
+            </Principal>
+            <Dependent Role="WebPageSectionMenues">
+              <PropertyRef Name="MenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OperationRoles_Operations">
+          <End Type="Model.Operations" Role="Operations" Multiplicity="1" />
+          <End Type="Model.OperationRoles" Role="OperationRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operations">
+              <PropertyRef Name="OperationId" />
+            </Principal>
+            <Dependent Role="OperationRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OperationRoles_Roles">
+          <End Type="Model.Roles" Role="Roles" Multiplicity="1" />
+          <End Type="Model.OperationRoles" Role="OperationRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="OperationRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk">
+          <End Type="Model.UserProjects" Role="UserProjects" Multiplicity="1" />
+          <End Type="Model.ProjectActivities" Role="ProjectActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProjects">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ProjectActivities">
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProje__Proje__10766AC2">
+          <End Type="Model.Projects" Role="Projects" Multiplicity="1" />
+          <End Type="Model.UserProjects" Role="UserProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="UserProjects">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProje__RoleI__116A8EFB">
+          <End Type="Model.Roles" Role="Roles" Multiplicity="1" />
+          <End Type="Model.UserProjects" Role="UserProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserProjects">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProje__UserI__0F824689">
+          <End Type="Model.Users" Role="Users" Multiplicity="1" />
+          <End Type="Model.UserProjects" Role="UserProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserProjects">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSections_WebPages1">
+          <End Type="Model.WebPages" Role="WebPages" Multiplicity="1" />
+          <End Type="Model.WebPageSections" Role="WebPageSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebPages">
+              <PropertyRef Name="WebPageId" />
+            </Principal>
+            <Dependent Role="WebPageSections">
+              <PropertyRef Name="WebPageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSectionMenues_WebPageSections">
+          <End Type="Model.WebPageSections" Role="WebPageSections" Multiplicity="1" />
+          <End Type="Model.WebPageSectionMenues" Role="WebPageSectionMenues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebPageSections">
+              <PropertyRef Name="WebPageId" />
+              <PropertyRef Name="WebSectionId" />
+            </Principal>
+            <Dependent Role="WebPageSectionMenues">
+              <PropertyRef Name="WebPageId" />
+              <PropertyRef Name="WebSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebPageSections_WebSections">
+          <End Type="Model.WebSections" Role="WebSections" Multiplicity="1" />
+          <End Type="Model.WebPageSections" Role="WebPageSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebSections">
+              <PropertyRef Name="WebSectionId" />
+            </Principal>
+            <Dependent Role="WebPageSections">
+              <PropertyRef Name="WebSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RolMenues">
+          <End Type="Model.Roles" Role="Roles" Multiplicity="*" />
+          <End Type="Model.WebPageSectionMenues" Role="WebPageSectionMenues" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -693,6 +1795,202 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BinnacleActivities">
+            <EntityTypeMapping TypeName="Model.BinnacleActivities">
+              <MappingFragment StoreEntitySet="BinnacleActivities">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+                <ScalarProperty Name="BinnacleId" ColumnName="BinnacleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Binnacles">
+            <EntityTypeMapping TypeName="Model.Binnacles">
+              <MappingFragment StoreEntitySet="Binnacles">
+                <ScalarProperty Name="FinalDate" ColumnName="FinalDate" />
+                <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="BinnacleDescription" ColumnName="BinnacleDescription" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BinnacleId" ColumnName="BinnacleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BinnacleStatus">
+            <EntityTypeMapping TypeName="Model.BinnacleStatus">
+              <MappingFragment StoreEntitySet="BinnacleStatus">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Errors">
+            <EntityTypeMapping TypeName="Model.Errors">
+              <MappingFragment StoreEntitySet="Errors">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Folio" ColumnName="Folio" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ErrorId" ColumnName="ErrorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Folios">
+            <EntityTypeMapping TypeName="Model.Folios">
+              <MappingFragment StoreEntitySet="Folios">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="CurrentNumber" ColumnName="CurrentNumber" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="FolioId" ColumnName="FolioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Menues">
+            <EntityTypeMapping TypeName="Model.Menues">
+              <MappingFragment StoreEntitySet="Menues">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OperationRoles">
+            <EntityTypeMapping TypeName="Model.OperationRoles">
+              <MappingFragment StoreEntitySet="OperationRoles">
+                <ScalarProperty Name="OperationId" ColumnName="OperationId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operations">
+            <EntityTypeMapping TypeName="Model.Operations">
+              <MappingFragment StoreEntitySet="Operations">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="OperationId" ColumnName="OperationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectActivities">
+            <EntityTypeMapping TypeName="Model.ProjectActivities">
+              <MappingFragment StoreEntitySet="ProjectActivities">
+                <ScalarProperty Name="BinnacleId" ColumnName="BinnacleId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ActivityDescription" ColumnName="ActivityDescription" />
+                <ScalarProperty Name="InvestedTime" ColumnName="InvestedTime" />
+                <ScalarProperty Name="ActivityDate" ColumnName="ActivityDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="Model.Projects">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="InvestedTime" ColumnName="InvestedTime" />
+                <ScalarProperty Name="FinalDate" ColumnName="FinalDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+                <ScalarProperty Name="ProjectDescription" ColumnName="ProjectDescription" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="Model.Regions">
+              <MappingFragment StoreEntitySet="Regions">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProjects">
+            <EntityTypeMapping TypeName="Model.UserProjects">
+              <MappingFragment StoreEntitySet="UserProjects">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebPages">
+            <EntityTypeMapping TypeName="Model.WebPages">
+              <MappingFragment StoreEntitySet="WebPages">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="PageDescription" ColumnName="PageDescription" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebPageSectionMenues">
+            <EntityTypeMapping TypeName="Model.WebPageSectionMenues">
+              <MappingFragment StoreEntitySet="WebPageSectionMenues">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="MenuOrder" ColumnName="MenuOrder" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+                <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+                <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebPageSections">
+            <EntityTypeMapping TypeName="Model.WebPageSections">
+              <MappingFragment StoreEntitySet="WebPageSections">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+                <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebSections">
+            <EntityTypeMapping TypeName="Model.WebSections">
+              <MappingFragment StoreEntitySet="WebSections">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RolMenues" TypeName="Model.RolMenues" StoreEntitySet="RolMenues">
+            <EndProperty Name="WebPageSectionMenues">
+              <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+              <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+              <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+            </EndProperty>
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

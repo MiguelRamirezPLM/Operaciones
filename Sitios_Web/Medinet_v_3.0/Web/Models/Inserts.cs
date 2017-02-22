@@ -2,50 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Web.Models.Class;
-
 
 namespace Web.Models
 {
     public class Inserts
     {
         Medinet db = new Medinet();
+        PLMUsers plm = new PLMUsers();
         CRUD CRUD = new CRUD();
+        PLMUserActions Action = new PLMUserActions();
+        PLMUserTables Tables = new PLMUserTables();
 
-        public int inserproduct(int CountryId, int LaboratoryId, int AlphabetId, int ProductTypeId, string ProductName, string Description)
+        public int inserproduct(int CountryId, int LaboratoryId, int AlphabetId, int ProductTypeId, string ProductName, string Description, int UserIdP,string HashKeyP)
         {
             try
             {
                 
                 List<CreateProduct_result> LI = new List<CreateProduct_result>();
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
 
                 if (string.IsNullOrEmpty(Description))
                 {
                     Description = null;
                 }
                 int Active = 1;
-                int PproductId = 0;
+                int productId = 0;
+                string primaryKeyAffected;
+                string FieldsAffected;
 
-                // Create
-                LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProducts @productId=" + PproductId + ",@CRUDType=" + CRUD.Create + ", @countryId=" + CountryId + ", @laboratoryId=" + LaboratoryId + ", @alphabetId=" + AlphabetId + ", @ProductTypeId=" + ProductTypeId + ", @brand=" + ProductName + ",@description=" + Description + ", @active=" + Active + "").ToList();
+                LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProducts @productId= 0,@CRUDType=" + CRUD.Create + ", @countryId=" + CountryId + ", @laboratoryId=" + LaboratoryId + ", @alphabetId=" + AlphabetId + ", @ProductTypeId=" + ProductTypeId + ", @brand='" + ProductName.ToUpper().Trim() + "',@description='" + Description + "', @active=" + Active + "").ToList();
 
-                LI.ToString();
+                var qryprod = db.Products.Where(x => x.CountryId == CountryId && x.AlphabetId == AlphabetId && x.LaboratoryId == LaboratoryId && x.ProductTypeId == ProductTypeId && x.Brand.ToUpper().Trim() == ProductName.ToUpper().Trim()).ToList();
 
-                string _productId = String.Join(",", LI);
-                int productId = int.Parse(_productId);
+                productId = qryprod[0].ProductId;
+                primaryKeyAffected = "(ProductId," + productId + ")";
 
-                ////// REVISAR ////////
+                FieldsAffected = "(LaboratoryId," + LaboratoryId + ");(AlphabetId," + AlphabetId + ");(Brand,"+ ProductName + ");(Description," + Description + ");(Active," + Active + ")";
 
-                ////// REVISAR ////////
-
-                ////// REVISAR ////////
-                //var qryprod = db.Products.Where(x => x.CountryId == CountryId && x.AlphabetId == AlphabetId && x.LaboratoryId == LaboratoryId && x.ProductTypeId == ProductTypeId && x.Brand.ToUpper().Trim() == ProductName.ToUpper().Trim()).ToList();
-
-                //ProductId = qryprod[0].ProductId;
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.Products + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'"+ "").ToList();
 
                 return productId;
-
-                //return ProductId;
             }
             catch (Exception e)
             {
@@ -56,12 +52,16 @@ namespace Web.Models
 
         }
 
-        public bool insertproductpharmaforms(int ProductId, int PharmaFormId)
+        public bool insertproductpharmaforms(int ProductId, int PharmaFormId, int UserIdP, string HashKeyP)
         {
+            string primaryKeyAffected;
             try
             {
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDProductPharmaForms @CRUDType=" + CRUD.Create + ", @pharmaFormId= " + PharmaFormId + " ,@productId = " + ProductId + ",@active= 1");
-
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(ProductId," + ProductId + "); (PharmaFormId," + PharmaFormId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.ProductPharmaForms + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+               
                 return true;
             }
             catch (Exception e)
@@ -72,12 +72,16 @@ namespace Web.Models
             }
         }
 
-        public bool insertproductcategories(int ProductId, int PharmaFormId, int CategoryId, int DivisionId)
+        public bool insertproductcategories(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int UserIdP, string HashKeyP)
         {
+            string primaryKeyAffected;
             try
             {
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDProductCategories @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId= " + ProductId + ",@technicalSheet= 0, @CRUDType=" + CRUD.Create + "");
-
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(ProductId," + ProductId + "); (PharmaFormId," + PharmaFormId + ")" + "; ( CategoryId," + CategoryId + "; (DivisionId," + DivisionId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+               
                 return true;
             }
             catch (Exception e)
@@ -89,12 +93,16 @@ namespace Web.Models
 
         }
 
-        public bool insertparticipantproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId)
+        public bool insertparticipantproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int UserIdP, string HashKeyP)
         {
+            string primaryKeyAffected;
             try
             {
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDParticipantProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Create + "");
-
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.ParticipantProducts + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+               
                 return true;
             }
             catch (Exception e)
@@ -106,12 +114,16 @@ namespace Web.Models
 
         }
 
-        public bool insertnewproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId)
+        public bool insertnewproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int UserIdP, string HashKeyP)
         {
+            string primaryKeyAffected;
             try
             {
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDNewProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Create + "");
-
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.NewProducts + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+               
                 return true;
             }
             catch (Exception e)
@@ -123,12 +135,16 @@ namespace Web.Models
 
         }
 
-        public bool inserteditiondivisionproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId)
+        public bool inserteditiondivisionproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int UserIdP, string HashKeyP)
         {
+            string primaryKeyAffected;
             try
             {
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDEditionDivisionProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Create + "");
-
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.EditionDivisionProducts + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+               
                 return true;
             }
             catch (Exception e)
@@ -139,12 +155,15 @@ namespace Web.Models
             }
         }
 
-        public bool insertDivisionCategories(int DivisionId, int CategoryId)
+        public bool insertDivisionCategories(int DivisionId, int CategoryId, int UserIdP, string HashKeyP)
         {
+            string primaryKeyAffected;
             try
             {
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDDivisionCategories @CRUDType=" + CRUD.Create + ", @divisionId=" + DivisionId + ", @categoryId=" + CategoryId + "");
-
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(DivisionId," + DivisionId + "); (CategoryId" + CategoryId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.DivisionCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
                 return true;
             }
             catch (Exception e)

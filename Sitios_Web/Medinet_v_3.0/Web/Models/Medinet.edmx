@@ -5,24 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="ActiveSubstances">
-          <Key>
-            <PropertyRef Name="ActiveSubstanceId" />
-          </Key>
-          <Property Name="ActiveSubstanceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SubstanceKey" Type="varchar" MaxLength="8" />
-          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="EnglishDescription" Type="varchar" MaxLength="202" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Enunciative" Type="bit" Nullable="false" />
-          <Property Name="JSONFormat" Type="varchar(max)" />
-        </EntityType>
         <EntityType Name="Alphabet">
           <Key>
             <PropertyRef Name="AlphabetId" />
           </Key>
           <Property Name="AlphabetId" Type="tinyint" Nullable="false" />
           <Property Name="Letter" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BarCodes">
+          <Key>
+            <PropertyRef Name="BarCodeId" />
+          </Key>
+          <Property Name="BarCodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BarCode" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Books">
@@ -117,20 +113,6 @@
           <Property Name="ShortName" Type="varchar" MaxLength="100" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="EditionDivisionProducts">
-          <Key>
-            <PropertyRef Name="EditionId" />
-            <PropertyRef Name="DivisionId" />
-            <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="EditionId" Type="int" Nullable="false" />
-          <Property Name="DivisionId" Type="int" Nullable="false" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="PharmaFormId" Type="int" Nullable="false" />
-          <Property Name="ProductId" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="EditionPresentations">
           <Key>
             <PropertyRef Name="EditionId" />
@@ -138,6 +120,21 @@
           </Key>
           <Property Name="EditionId" Type="int" Nullable="false" />
           <Property Name="PresentationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EditionProductShots">
+          <Key>
+            <PropertyRef Name="EditionProductShotId" />
+          </Key>
+          <Property Name="EditionProductShotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="PSTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="ProductShot" Type="varchar" MaxLength="100" />
+          <Property Name="QtyCells" Type="tinyint" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Editions">
           <Key>
@@ -169,20 +166,27 @@
           <Property Name="ExternalPackId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ExternalPackName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="True" Type="varchar" MaxLength="100" />
         </EntityType>
-        <EntityType Name="ICD">
+        <EntityType Name="Families">
           <Key>
-            <PropertyRef Name="ICDId" />
+            <PropertyRef Name="FamilyId" />
           </Key>
-          <Property Name="ICDId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParentId" Type="int" />
-          <Property Name="ICDKey" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="EnglishDescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FamilyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PrefixId" Type="int" Nullable="false" />
+          <Property Name="FamilyString" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Level" Type="int" />
-          <Property Name="JSONFormat" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FamilyPrefixes">
+          <Key>
+            <PropertyRef Name="PrefixId" />
+          </Key>
+          <Property Name="PrefixId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="PrefixName" Type="varchar" MaxLength="50" />
+          <Property Name="CurrentValue" Type="int" Nullable="false" />
+          <Property Name="PrefixDescription" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="PrefixTypeId" Type="tinyint" />
         </EntityType>
         <EntityType Name="ImageSizes">
           <Key>
@@ -199,32 +203,30 @@
           <Property Name="InternalPackId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InternalPackName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="True" Type="varchar" MaxLength="100" />
         </EntityType>
-        <EntityType Name="IPPAProductInteractions">
+        <EntityType Name="Laboratories">
+          <Key>
+            <PropertyRef Name="LaboratoryId" />
+          </Key>
+          <Property Name="LaboratoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyTypeId" Type="tinyint" />
+          <Property Name="LaboratoryName" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="ImageName" Type="varchar" MaxLength="20" />
+          <Property Name="CourtesyImage" Type="varchar" MaxLength="25" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OffMarkets">
           <Key>
             <PropertyRef Name="DivisionId" />
             <PropertyRef Name="CategoryId" />
             <PropertyRef Name="PharmaFormId" />
             <PropertyRef Name="ProductId" />
-            <PropertyRef Name="ActiveSubstanceId" />
           </Key>
           <Property Name="DivisionId" Type="int" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="PharmaFormId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
-          <Property Name="StatusId" Type="tinyint" />
-          <Property Name="HTMLContent" Type="text" />
-          <Property Name="PlainContent" Type="text" />
-        </EntityType>
-        <EntityType Name="OtherElements">
-          <Key>
-            <PropertyRef Name="ElementId" />
-          </Key>
-          <Property Name="ElementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ElementName" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="OffDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ParticipantProducts">
           <Key>
@@ -255,12 +257,12 @@
           <Property Name="EnglishDescription" Type="varchar" MaxLength="150" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="PharmacologicalGroups">
+        <EntityType Name="PrefixTypes">
           <Key>
-            <PropertyRef Name="PharmaGroupId" />
+            <PropertyRef Name="PrefixTypeId" />
           </Key>
-          <Property Name="PharmaGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="GroupName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="PrefixTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Presentations">
@@ -284,6 +286,26 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="JSONFormat" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="PriceSources">
+          <Key>
+            <PropertyRef Name="PriceSourceId" />
+          </Key>
+          <Property Name="PriceSourceId" Type="tinyint" Nullable="false" />
+          <Property Name="SourceName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SourceShortName" Type="varchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductBarCodes">
+          <Key>
+            <PropertyRef Name="PresentationId" />
+            <PropertyRef Name="BarCodeId" />
+          </Key>
+          <Property Name="PresentationId" Type="int" Nullable="false" />
+          <Property Name="BarCodeId" Type="int" Nullable="false" />
+          <Property Name="AveragePrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ProductCategories">
           <Key>
             <PropertyRef Name="DivisionId" />
@@ -301,16 +323,6 @@
           <Property Name="SanitaryRegister" Type="varchar" MaxLength="255" />
           <Property Name="SSFraction" Type="varchar" MaxLength="255" />
           <Property Name="JSONFormat" Type="varchar(max)" />
-        </EntityType>
-        <EntityType Name="ProductICD">
-          <Key>
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ICDId" />
-          </Key>
-          <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="PharmaFormId" Type="int" Nullable="false" />
-          <Property Name="ICDId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductImages">
           <Key>
@@ -331,13 +343,27 @@
           <Property Name="ProductImageId" Type="int" Nullable="false" />
           <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
         </EntityType>
-        <EntityType Name="ProductIndications">
+        <EntityType Name="ProductPharmaForms">
           <Key>
+            <PropertyRef Name="PharmaFormId" />
             <PropertyRef Name="ProductId" />
-            <PropertyRef Name="IndicationId" />
           </Key>
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="IndicationId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ReferenceUrl" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ProductPrices">
+          <Key>
+            <PropertyRef Name="PresentationId" />
+            <PropertyRef Name="BarCodeId" />
+            <PropertyRef Name="PriceSourceId" />
+          </Key>
+          <Property Name="PresentationId" Type="int" Nullable="false" />
+          <Property Name="BarCodeId" Type="int" Nullable="false" />
+          <Property Name="PriceSourceId" Type="tinyint" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -353,41 +379,13 @@
           <Property Name="SanitaryRegistry" Type="varchar" MaxLength="50" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="ProductSubstanceInteractions">
+        <EntityType Name="ProductShotTypes">
           <Key>
-            <PropertyRef Name="SubstanceInteractId" />
-            <PropertyRef Name="DivisionId" />
-            <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="ActiveSubstanceId" />
+            <PropertyRef Name="PSTypeId" />
           </Key>
-          <Property Name="SubstanceInteractId" Type="int" Nullable="false" />
-          <Property Name="DivisionId" Type="int" Nullable="false" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="PharmaFormId" Type="int" Nullable="false" />
-          <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ProductTherapeuticOMS">
-          <Key>
-            <PropertyRef Name="TherapeuticOMSId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="TherapeuticOMSId" Type="int" Nullable="false" />
-          <Property Name="PharmaFormId" Type="int" Nullable="false" />
-          <Property Name="ProductId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ProductTherapeutics">
-          <Key>
-            <PropertyRef Name="TherapeuticId" />
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="PharmaFormId" />
-          </Key>
-          <Property Name="TherapeuticId" Type="int" Nullable="false" />
-          <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="PSTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductTypes">
           <Key>
@@ -397,30 +395,6 @@
           <Property Name="TypeName" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="TherapeuticOMS">
-          <Key>
-            <PropertyRef Name="TherapeuticOMSId" />
-          </Key>
-          <Property Name="TherapeuticOMSId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParentId" Type="int" />
-          <Property Name="TherapeuticKey" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Level" Type="tinyint" />
-        </EntityType>
-        <EntityType Name="Therapeutics">
-          <Key>
-            <PropertyRef Name="TherapeuticId" />
-          </Key>
-          <Property Name="TherapeuticId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParentId" Type="int" />
-          <Property Name="TherapeuticKey" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Level" Type="tinyint" />
-        </EntityType>
         <EntityType Name="WeightUnits">
           <Key>
             <PropertyRef Name="WeightUnitId" />
@@ -429,10 +403,9 @@
           <Property Name="UnitName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ShortName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="True" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="plm_vwProductsByEdition">
           <Key>
             <PropertyRef Name="CountryId" />
@@ -460,10 +433,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <PropertyRef Name="BookId" />
             <PropertyRef Name="BookName" />
             <PropertyRef Name="BookActive" />
-            <PropertyRef Name="WithoutContent" />
-            <PropertyRef Name="ContentType" />
-            <PropertyRef Name="SanitaryRegister" />
-            <PropertyRef Name="SSFraction" />
           </Key>
           <Property Name="CountryId" Type="int" Nullable="false" />
           <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
@@ -507,10 +476,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <Property Name="NumberOfTherapeutics" Type="int" />
           <Property Name="NumberOfOMSTherapeutics" Type="int" />
           <Property Name="CountryCodes" Type="varchar" MaxLength="1000" />
-          <Property Name="WithoutContent" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="ContentType" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="SanitaryRegister" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="SSFraction" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <Association Name="EditionPresentations_EditionId_FK">
           <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
@@ -533,6 +498,48 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Principal>
             <Dependent Role="EditionPresentations">
               <PropertyRef Name="PresentationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionProductShots_Editions_Fk">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionProductShots">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionProductShots_ProductCategories_Fk">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="EditionProductShots">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionProductShots_PShotType_Fk">
+          <End Role="ProductShotTypes" Type="Self.ProductShotTypes" Multiplicity="1" />
+          <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductShotTypes">
+              <PropertyRef Name="PSTypeId" />
+            </Principal>
+            <Dependent Role="EditionProductShots">
+              <PropertyRef Name="PSTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -608,45 +615,27 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EditionDivisionProducts_Editions">
-          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
-          <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+        <Association Name="FK_Families_FamilyPrefixes">
+          <End Role="FamilyPrefixes" Type="Self.FamilyPrefixes" Multiplicity="1" />
+          <End Role="Families" Type="Self.Families" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Editions">
-              <PropertyRef Name="EditionId" />
+            <Principal Role="FamilyPrefixes">
+              <PropertyRef Name="PrefixId" />
             </Principal>
-            <Dependent Role="EditionDivisionProducts">
-              <PropertyRef Name="EditionId" />
+            <Dependent Role="Families">
+              <PropertyRef Name="PrefixId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EditionDivisionProducts_ProductCategories">
-          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
-          <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+        <Association Name="FK_FamilyPrefixes_PrefixTypes">
+          <End Role="PrefixTypes" Type="Self.PrefixTypes" Multiplicity="0..1" />
+          <End Role="FamilyPrefixes" Type="Self.FamilyPrefixes" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductCategories">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
+            <Principal Role="PrefixTypes">
+              <PropertyRef Name="PrefixTypeId" />
             </Principal>
-            <Dependent Role="EditionDivisionProducts">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ICD_ICD">
-          <End Role="ICD" Type="Self.ICD" Multiplicity="0..1" />
-          <End Role="ICD1" Type="Self.ICD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ICD">
-              <PropertyRef Name="ICDId" />
-            </Principal>
-            <Dependent Role="ICD1">
-              <PropertyRef Name="ParentId" />
+            <Dependent Role="FamilyPrefixes">
+              <PropertyRef Name="PrefixTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -694,6 +683,20 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProductCategories_ProductPharmaForms">
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCategories">
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Products_ProductTypes">
           <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="1" />
           <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -718,39 +721,27 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FKPARENTID_TH">
-          <End Role="Therapeutics" Type="Self.Therapeutics" Multiplicity="0..1" />
-          <End Role="Therapeutics1" Type="Self.Therapeutics" Multiplicity="*" />
+        <Association Name="FKPHARMAFORM_PF">
+          <End Role="PharmaceuticalForms" Type="Self.PharmaceuticalForms" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Therapeutics">
-              <PropertyRef Name="TherapeuticId" />
+            <Principal Role="PharmaceuticalForms">
+              <PropertyRef Name="PharmaFormId" />
             </Principal>
-            <Dependent Role="Therapeutics1">
-              <PropertyRef Name="ParentId" />
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FKPRODUCT_PI">
+        <Association Name="FKPRODUCT_PD">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="ProductIndications" Type="Self.ProductIndications" Multiplicity="*" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="ProductIndications">
+            <Dependent Role="ProductPharmaForms">
               <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKTHERAPEUTIC_PT">
-          <End Role="Therapeutics" Type="Self.Therapeutics" Multiplicity="1" />
-          <End Role="ProductTherapeutics" Type="Self.ProductTherapeutics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Therapeutics">
-              <PropertyRef Name="TherapeuticId" />
-            </Principal>
-            <Dependent Role="ProductTherapeutics">
-              <PropertyRef Name="TherapeuticId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -820,6 +811,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Prod_Lab_fk">
+          <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="LaboratoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_14">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
           <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
@@ -829,6 +832,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Principal>
             <Dependent Role="ProductCategories">
               <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_16">
+          <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="1" />
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="LaboratoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -856,15 +871,15 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_274">
-          <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
-          <End Role="ProductSubstanceInteractions" Type="Self.ProductSubstanceInteractions" Multiplicity="*" />
+        <Association Name="R_25">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ActiveSubstances">
-              <PropertyRef Name="ActiveSubstanceId" />
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="ProductSubstanceInteractions">
-              <PropertyRef Name="SubstanceInteractId" />
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -877,6 +892,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Principal>
             <Dependent Role="Divisions">
               <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_33">
+          <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="1" />
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="LaboratoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -904,56 +931,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_402">
-          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
-          <End Role="IPPAProductInteractions" Type="Self.IPPAProductInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductCategories">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-            </Principal>
-            <Dependent Role="IPPAProductInteractions">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_403">
-          <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
-          <End Role="IPPAProductInteractions" Type="Self.IPPAProductInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActiveSubstances">
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Principal>
-            <Dependent Role="IPPAProductInteractions">
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_405">
-          <End Role="IPPAProductInteractions" Type="Self.IPPAProductInteractions" Multiplicity="1" />
-          <End Role="ProductSubstanceInteractions" Type="Self.ProductSubstanceInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="IPPAProductInteractions">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Principal>
-            <Dependent Role="ProductSubstanceInteractions">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_42">
           <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
           <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
@@ -966,15 +943,65 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_424">
-          <End Role="ICD" Type="Self.ICD" Multiplicity="1" />
-          <End Role="ProductICD" Type="Self.ProductICD" Multiplicity="*" />
+        <Association Name="R_47">
+          <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ICD">
-              <PropertyRef Name="ICDId" />
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
             </Principal>
-            <Dependent Role="ProductICD">
-              <PropertyRef Name="ICDId" />
+            <Dependent Role="Products">
+              <PropertyRef Name="LaboratoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_491">
+          <End Role="Presentations" Type="Self.Presentations" Multiplicity="1" />
+          <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presentations">
+              <PropertyRef Name="PresentationId" />
+            </Principal>
+            <Dependent Role="ProductBarCodes">
+              <PropertyRef Name="PresentationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_492">
+          <End Role="BarCodes" Type="Self.BarCodes" Multiplicity="1" />
+          <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BarCodes">
+              <PropertyRef Name="BarCodeId" />
+            </Principal>
+            <Dependent Role="ProductBarCodes">
+              <PropertyRef Name="BarCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_493">
+          <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="1" />
+          <End Role="ProductPrices" Type="Self.ProductPrices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductBarCodes">
+              <PropertyRef Name="PresentationId" />
+              <PropertyRef Name="BarCodeId" />
+            </Principal>
+            <Dependent Role="ProductPrices">
+              <PropertyRef Name="PresentationId" />
+              <PropertyRef Name="BarCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_494">
+          <End Role="PriceSources" Type="Self.PriceSources" Multiplicity="1" />
+          <End Role="ProductPrices" Type="Self.ProductPrices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceSources">
+              <PropertyRef Name="PriceSourceId" />
+            </Principal>
+            <Dependent Role="ProductPrices">
+              <PropertyRef Name="PriceSourceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -999,18 +1026,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Principal>
             <Dependent Role="ProductImageSizes">
               <PropertyRef Name="ProductImageId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_541">
-          <End Role="TherapeuticOMS" Type="Self.TherapeuticOMS" Multiplicity="1" />
-          <End Role="ProductTherapeuticOMS" Type="Self.ProductTherapeuticOMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TherapeuticOMS">
-              <PropertyRef Name="TherapeuticOMSId" />
-            </Principal>
-            <Dependent Role="ProductTherapeuticOMS">
-              <PropertyRef Name="TherapeuticOMSId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1062,6 +1077,24 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_701">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="OffMarkets" Type="Self.OffMarkets" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OffMarkets">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_9">
           <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
           <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -1075,8 +1108,8 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Model1StoreContainer">
-          <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Alphabet" EntityType="Self.Alphabet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
@@ -1086,32 +1119,31 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EditionPresentations" EntityType="Self.EditionPresentations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EditionProductShots" EntityType="Self.EditionProductShots" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EditionTypes" EntityType="Self.EditionTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExternalPacks" EntityType="Self.ExternalPacks" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ICD" EntityType="Self.ICD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FamilyPrefixes" EntityType="Self.FamilyPrefixes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="IPPAProductInteractions" EntityType="Self.IPPAProductInteractions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="OtherElements" EntityType="Self.OtherElements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OffMarkets" EntityType="Self.OffMarkets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PharmacologicalGroups" EntityType="Self.PharmacologicalGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrefixTypes" EntityType="Self.PrefixTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Presentations" EntityType="Self.Presentations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceSources" EntityType="Self.PriceSources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductBarCodes" EntityType="Self.ProductBarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductICD" EntityType="Self.ProductICD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductImageSizes" EntityType="Self.ProductImageSizes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductIndications" EntityType="Self.ProductIndications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductPrices" EntityType="Self.ProductPrices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductSubstanceInteractions" EntityType="Self.ProductSubstanceInteractions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductTherapeuticOMS" EntityType="Self.ProductTherapeuticOMS" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductTherapeutics" EntityType="Self.ProductTherapeutics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductShotTypes" EntityType="Self.ProductShotTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TherapeuticOMS" EntityType="Self.TherapeuticOMS" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Therapeutics" EntityType="Self.Therapeutics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeightUnits" EntityType="Self.WeightUnits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="plm_vwProductsByEdition" EntityType="Self.plm_vwProductsByEdition" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1156,11 +1188,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     [plm_vwProductsByEdition].[NumberOfIndications] AS [NumberOfIndications], 
     [plm_vwProductsByEdition].[NumberOfTherapeutics] AS [NumberOfTherapeutics], 
     [plm_vwProductsByEdition].[NumberOfOMSTherapeutics] AS [NumberOfOMSTherapeutics], 
-    [plm_vwProductsByEdition].[CountryCodes] AS [CountryCodes], 
-    [plm_vwProductsByEdition].[WithoutContent] AS [WithoutContent], 
-    [plm_vwProductsByEdition].[ContentType] AS [ContentType], 
-    [plm_vwProductsByEdition].[SanitaryRegister] AS [SanitaryRegister], 
-    [plm_vwProductsByEdition].[SSFraction] AS [SSFraction]
+    [plm_vwProductsByEdition].[CountryCodes] AS [CountryCodes]
     FROM [dbo].[plm_vwProductsByEdition] AS [plm_vwProductsByEdition]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="EditionPresentations_EditionId_FK" Association="Self.EditionPresentations_EditionId_FK">
@@ -1170,6 +1198,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <AssociationSet Name="EditionPresentations_PresentationId_FK" Association="Self.EditionPresentations_PresentationId_FK">
             <End Role="Presentations" EntitySet="Presentations" />
             <End Role="EditionPresentations" EntitySet="EditionPresentations" />
+          </AssociationSet>
+          <AssociationSet Name="EditionProductShots_Editions_Fk" Association="Self.EditionProductShots_Editions_Fk">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+          </AssociationSet>
+          <AssociationSet Name="EditionProductShots_ProductCategories_Fk" Association="Self.EditionProductShots_ProductCategories_Fk">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+          </AssociationSet>
+          <AssociationSet Name="EditionProductShots_PShotType_Fk" Association="Self.EditionProductShots_PShotType_Fk">
+            <End Role="ProductShotTypes" EntitySet="ProductShotTypes" />
+            <End Role="EditionProductShots" EntitySet="EditionProductShots" />
           </AssociationSet>
           <AssociationSet Name="EditionsParentId_fk" Association="Self.EditionsParentId_fk">
             <End Role="Editions" EntitySet="Editions" />
@@ -1195,17 +1235,13 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="Divisions" EntitySet="Divisions" />
             <End Role="DivisionInformation" EntitySet="DivisionInformation" />
           </AssociationSet>
-          <AssociationSet Name="FK_EditionDivisionProducts_Editions" Association="Self.FK_EditionDivisionProducts_Editions">
-            <End Role="Editions" EntitySet="Editions" />
-            <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+          <AssociationSet Name="FK_Families_FamilyPrefixes" Association="Self.FK_Families_FamilyPrefixes">
+            <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+            <End Role="Families" EntitySet="Families" />
           </AssociationSet>
-          <AssociationSet Name="FK_EditionDivisionProducts_ProductCategories" Association="Self.FK_EditionDivisionProducts_ProductCategories">
-            <End Role="ProductCategories" EntitySet="ProductCategories" />
-            <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ICD_ICD" Association="Self.FK_ICD_ICD">
-            <End Role="ICD" EntitySet="ICD" />
-            <End Role="ICD1" EntitySet="ICD" />
+          <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Self.FK_FamilyPrefixes_PrefixTypes">
+            <End Role="PrefixTypes" EntitySet="PrefixTypes" />
+            <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
           </AssociationSet>
           <AssociationSet Name="FK_ParticipantProducts_Editions" Association="Self.FK_ParticipantProducts_Editions">
             <End Role="Editions" EntitySet="Editions" />
@@ -1219,6 +1255,10 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="DivisionCategories" EntitySet="DivisionCategories" />
             <End Role="ProductCategories" EntitySet="ProductCategories" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductCategories_ProductPharmaForms" Association="Self.FK_ProductCategories_ProductPharmaForms">
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
           <AssociationSet Name="FK_Products_ProductTypes" Association="Self.FK_Products_ProductTypes">
             <End Role="ProductTypes" EntitySet="ProductTypes" />
             <End Role="Products" EntitySet="Products" />
@@ -1227,17 +1267,13 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FKPARENTID_TH" Association="Self.FKPARENTID_TH">
-            <End Role="Therapeutics" EntitySet="Therapeutics" />
-            <End Role="Therapeutics1" EntitySet="Therapeutics" />
+          <AssociationSet Name="FKPHARMAFORM_PF" Association="Self.FKPHARMAFORM_PF">
+            <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
           </AssociationSet>
-          <AssociationSet Name="FKPRODUCT_PI" Association="Self.FKPRODUCT_PI">
+          <AssociationSet Name="FKPRODUCT_PD" Association="Self.FKPRODUCT_PD">
             <End Role="Products" EntitySet="Products" />
-            <End Role="ProductIndications" EntitySet="ProductIndications" />
-          </AssociationSet>
-          <AssociationSet Name="FKTHERAPEUTIC_PT" Association="Self.FKTHERAPEUTIC_PT">
-            <End Role="Therapeutics" EntitySet="Therapeutics" />
-            <End Role="ProductTherapeutics" EntitySet="ProductTherapeutics" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
           </AssociationSet>
           <AssociationSet Name="Present_DivisionId_CategoryId_ProductId_PharmaFormId_FK" Association="Self.Present_DivisionId_CategoryId_ProductId_PharmaFormId_FK">
             <End Role="ProductCategories" EntitySet="ProductCategories" />
@@ -1259,9 +1295,17 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="WeightUnits" EntitySet="WeightUnits" />
             <End Role="Presentations" EntitySet="Presentations" />
           </AssociationSet>
+          <AssociationSet Name="Prod_Lab_fk" Association="Self.Prod_Lab_fk">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
           <AssociationSet Name="R_14" Association="Self.R_14">
             <End Role="Products" EntitySet="Products" />
             <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="R_16" Association="Self.R_16">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Divisions" EntitySet="Divisions" />
           </AssociationSet>
           <AssociationSet Name="R_17" Association="Self.R_17">
             <End Role="Countries" EntitySet="Countries" />
@@ -1271,12 +1315,16 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="Presentations" EntitySet="Presentations" />
             <End Role="ProductImages" EntitySet="ProductImages" />
           </AssociationSet>
-          <AssociationSet Name="R_274" Association="Self.R_274">
-            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
-            <End Role="ProductSubstanceInteractions" EntitySet="ProductSubstanceInteractions" />
+          <AssociationSet Name="R_25" Association="Self.R_25">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
           </AssociationSet>
           <AssociationSet Name="R_32" Association="Self.R_32">
             <End Role="Countries" EntitySet="Countries" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_33" Association="Self.R_33">
+            <End Role="Laboratories" EntitySet="Laboratories" />
             <End Role="Divisions" EntitySet="Divisions" />
           </AssociationSet>
           <AssociationSet Name="R_34" Association="Self.R_34">
@@ -1287,25 +1335,29 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="Alphabet" EntitySet="Alphabet" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="R_402" Association="Self.R_402">
-            <End Role="ProductCategories" EntitySet="ProductCategories" />
-            <End Role="IPPAProductInteractions" EntitySet="IPPAProductInteractions" />
-          </AssociationSet>
-          <AssociationSet Name="R_403" Association="Self.R_403">
-            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
-            <End Role="IPPAProductInteractions" EntitySet="IPPAProductInteractions" />
-          </AssociationSet>
-          <AssociationSet Name="R_405" Association="Self.R_405">
-            <End Role="IPPAProductInteractions" EntitySet="IPPAProductInteractions" />
-            <End Role="ProductSubstanceInteractions" EntitySet="ProductSubstanceInteractions" />
-          </AssociationSet>
           <AssociationSet Name="R_42" Association="Self.R_42">
             <End Role="Editions" EntitySet="Editions" />
             <End Role="Editions1" EntitySet="Editions" />
           </AssociationSet>
-          <AssociationSet Name="R_424" Association="Self.R_424">
-            <End Role="ICD" EntitySet="ICD" />
-            <End Role="ProductICD" EntitySet="ProductICD" />
+          <AssociationSet Name="R_47" Association="Self.R_47">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_491" Association="Self.R_491">
+            <End Role="Presentations" EntitySet="Presentations" />
+            <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+          </AssociationSet>
+          <AssociationSet Name="R_492" Association="Self.R_492">
+            <End Role="BarCodes" EntitySet="BarCodes" />
+            <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+          </AssociationSet>
+          <AssociationSet Name="R_493" Association="Self.R_493">
+            <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+            <End Role="ProductPrices" EntitySet="ProductPrices" />
+          </AssociationSet>
+          <AssociationSet Name="R_494" Association="Self.R_494">
+            <End Role="PriceSources" EntitySet="PriceSources" />
+            <End Role="ProductPrices" EntitySet="ProductPrices" />
           </AssociationSet>
           <AssociationSet Name="R_5" Association="Self.R_5">
             <End Role="Countries" EntitySet="Countries" />
@@ -1314,10 +1366,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <AssociationSet Name="R_501" Association="Self.R_501">
             <End Role="ProductImages" EntitySet="ProductImages" />
             <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
-          </AssociationSet>
-          <AssociationSet Name="R_541" Association="Self.R_541">
-            <End Role="TherapeuticOMS" EntitySet="TherapeuticOMS" />
-            <End Role="ProductTherapeuticOMS" EntitySet="ProductTherapeuticOMS" />
           </AssociationSet>
           <AssociationSet Name="R_578" Association="Self.R_578">
             <End Role="ContentTypes" EntitySet="ContentTypes" />
@@ -1334,6 +1382,10 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <AssociationSet Name="R_7" Association="Self.R_7">
             <End Role="Books" EntitySet="Books" />
             <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_701" Association="Self.R_701">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="OffMarkets" EntitySet="OffMarkets" />
           </AssociationSet>
           <AssociationSet Name="R_9" Association="Self.R_9">
             <End Role="Countries" EntitySet="Countries" />
@@ -1402,7 +1454,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="Editions" EntitySet="Editions" />
             <End Role="Editions1" EntitySet="Editions" />
           </AssociationSet>
-          <EntitySet Name="plm_vwProductsByEdition" EntityType="Model1.plm_vwProductsByEdition" />
           <EntitySet Name="ProductCategories" EntityType="Model1.ProductCategories" />
           <AssociationSet Name="FK_ParticipantProducts_ProductCategories" Association="Model1.FK_ParticipantProducts_ProductCategories">
             <End Role="ProductCategories" EntitySet="ProductCategories" />
@@ -1510,66 +1561,90 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="Divisions" EntitySet="Divisions" />
             <End Role="DivisionInformation" EntitySet="DivisionInformation" />
           </AssociationSet>
-          <EntitySet Name="EditionDivisionProducts" EntityType="Model1.EditionDivisionProducts" />
-          <AssociationSet Name="EditionsEditionDivisionProducts" Association="Model1.EditionsEditionDivisionProducts">
-            <End Role="Editions" EntitySet="Editions" />
-            <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+          <EntitySet Name="ProductPharmaForms" EntityType="Model1.ProductPharmaForms" />
+          <AssociationSet Name="FKPHARMAFORM_PF" Association="Model1.FKPHARMAFORM_PF">
+            <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
           </AssociationSet>
-          <AssociationSet Name="ProductCategoriesEditionDivisionProducts" Association="Model1.ProductCategoriesEditionDivisionProducts">
+          <AssociationSet Name="FK_ProductCategories_ProductPharmaForms" Association="Model1.FK_ProductCategories_ProductPharmaForms">
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
             <End Role="ProductCategories" EntitySet="ProductCategories" />
-            <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
           </AssociationSet>
-          <EntitySet Name="Therapeutics" EntityType="Model1.Therapeutics" />
-          <AssociationSet Name="FKPARENTID_TH" Association="Model1.FKPARENTID_TH">
-            <End Role="Therapeutics" EntitySet="Therapeutics" />
-            <End Role="Therapeutics1" EntitySet="Therapeutics" />
-          </AssociationSet>
-          <EntitySet Name="ProductTherapeutics" EntityType="Model1.ProductTherapeutics" />
-          <AssociationSet Name="FKTHERAPEUTIC_PT" Association="Model1.FKTHERAPEUTIC_PT">
-            <End Role="Therapeutics" EntitySet="Therapeutics" />
-            <End Role="ProductTherapeutics" EntitySet="ProductTherapeutics" />
-          </AssociationSet>
-          <EntitySet Name="ICD" EntityType="Model1.ICD" />
-          <AssociationSet Name="FK_ICD_ICD" Association="Model1.FK_ICD_ICD">
-            <End Role="ICD" EntitySet="ICD" />
-            <End Role="ICD1" EntitySet="ICD" />
-          </AssociationSet>
-          <EntitySet Name="ProductICD" EntityType="Model1.ProductICD" />
-          <AssociationSet Name="R_424" Association="Model1.R_424">
-            <End Role="ICD" EntitySet="ICD" />
-            <End Role="ProductICD" EntitySet="ProductICD" />
-          </AssociationSet>
-          <EntitySet Name="TherapeuticOMS" EntityType="Model1.TherapeuticOMS" />
-          <EntitySet Name="ProductTherapeuticOMS" EntityType="Model1.ProductTherapeuticOMS" />
-          <AssociationSet Name="R_541" Association="Model1.R_541">
-            <End Role="TherapeuticOMS" EntitySet="TherapeuticOMS" />
-            <End Role="ProductTherapeuticOMS" EntitySet="ProductTherapeuticOMS" />
-          </AssociationSet>
-          <EntitySet Name="PharmacologicalGroups" EntityType="Model1.PharmacologicalGroups" />
-          <EntitySet Name="OtherElements" EntityType="Model1.OtherElements" />
-          <EntitySet Name="ProductSubstanceInteractions" EntityType="Model1.ProductSubstanceInteractions" />
-          <EntitySet Name="ActiveSubstances" EntityType="Model1.ActiveSubstances" />
-          <AssociationSet Name="R_274" Association="Model1.R_274">
-            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
-            <End Role="ProductSubstanceInteractions" EntitySet="ProductSubstanceInteractions" />
-          </AssociationSet>
-          <EntitySet Name="IPPAProductInteractions" EntityType="Model1.IPPAProductInteractions" />
-          <AssociationSet Name="R_403" Association="Model1.R_403">
-            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
-            <End Role="IPPAProductInteractions" EntitySet="IPPAProductInteractions" />
-          </AssociationSet>
-          <AssociationSet Name="R_402" Association="Model1.R_402">
-            <End Role="ProductCategories" EntitySet="ProductCategories" />
-            <End Role="IPPAProductInteractions" EntitySet="IPPAProductInteractions" />
-          </AssociationSet>
-          <AssociationSet Name="IPPAProductInteractionsProductSubstanceInteractions" Association="Model1.IPPAProductInteractionsProductSubstanceInteractions">
-            <End Role="IPPAProductInteractions" EntitySet="IPPAProductInteractions" />
-            <End Role="ProductSubstanceInteractions" EntitySet="ProductSubstanceInteractions" />
-          </AssociationSet>
-          <EntitySet Name="ProductIndications" EntityType="Model1.ProductIndications" />
-          <AssociationSet Name="FKPRODUCT_PI" Association="Model1.FKPRODUCT_PI">
+          <AssociationSet Name="FKPRODUCT_PD" Association="Model1.FKPRODUCT_PD">
             <End Role="Products" EntitySet="Products" />
-            <End Role="ProductIndications" EntitySet="ProductIndications" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="R_25" Association="Model1.R_25">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <EntitySet Name="Laboratories" EntityType="Model1.Laboratories" />
+          <AssociationSet Name="R_16" Association="Model1.R_16">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_33" Association="Model1.R_33">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="Prod_Lab_fk" Association="Model1.Prod_Lab_fk">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_47" Association="Model1.R_47">
+            <End Role="Laboratories" EntitySet="Laboratories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="OffMarkets" EntityType="Model1.OffMarkets" />
+          <AssociationSet Name="R_701" Association="Model1.R_701">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="OffMarkets" EntitySet="OffMarkets" />
+          </AssociationSet>
+          <EntitySet Name="plm_vwProductsByEdition" EntityType="Model1.plm_vwProductsByEdition" />
+          <EntitySet Name="EditionProductShots" EntityType="Model1.EditionProductShots" />
+          <AssociationSet Name="EditionProductShots_Editions_Fk" Association="Model1.EditionProductShots_Editions_Fk">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+          </AssociationSet>
+          <AssociationSet Name="EditionProductShots_ProductCategories_Fk" Association="Model1.EditionProductShots_ProductCategories_Fk">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+          </AssociationSet>
+          <EntitySet Name="ProductShotTypes" EntityType="Model1.ProductShotTypes" />
+          <AssociationSet Name="EditionProductShots_PShotType_Fk" Association="Model1.EditionProductShots_PShotType_Fk">
+            <End Role="ProductShotTypes" EntitySet="ProductShotTypes" />
+            <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+          </AssociationSet>
+          <EntitySet Name="FamilyPrefixes" EntityType="Model1.FamilyPrefixes" />
+          <EntitySet Name="PrefixTypes" EntityType="Model1.PrefixTypes" />
+          <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Model1.FK_FamilyPrefixes_PrefixTypes">
+            <End Role="PrefixTypes" EntitySet="PrefixTypes" />
+            <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+          </AssociationSet>
+          <EntitySet Name="Families" EntityType="Model1.Families" />
+          <AssociationSet Name="FK_Families_FamilyPrefixes" Association="Model1.FK_Families_FamilyPrefixes">
+            <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+            <End Role="Families" EntitySet="Families" />
+          </AssociationSet>
+          <EntitySet Name="BarCodes" EntityType="Model1.BarCodes" />
+          <EntitySet Name="PriceSources" EntityType="Model1.PriceSources" />
+          <EntitySet Name="ProductBarCodes" EntityType="Model1.ProductBarCodes" />
+          <EntitySet Name="ProductPrices" EntityType="Model1.ProductPrices" />
+          <AssociationSet Name="R_492" Association="Model1.R_492">
+            <End Role="BarCodes" EntitySet="BarCodes" />
+            <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+          </AssociationSet>
+          <AssociationSet Name="R_491" Association="Model1.R_491">
+            <End Role="Presentations" EntitySet="Presentations" />
+            <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+          </AssociationSet>
+          <AssociationSet Name="R_494" Association="Model1.R_494">
+            <End Role="PriceSources" EntitySet="PriceSources" />
+            <End Role="ProductPrices" EntitySet="ProductPrices" />
+          </AssociationSet>
+          <AssociationSet Name="R_493" Association="Model1.R_493">
+            <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+            <End Role="ProductPrices" EntitySet="ProductPrices" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Countries">
@@ -1604,7 +1679,10 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <NavigationProperty Name="ProductCategories" Relationship="Model1.R_14" FromRole="Products" ToRole="ProductCategories" />
           <NavigationProperty Name="ProductTypes" Relationship="Model1.FK_Products_ProductTypes" FromRole="Products" ToRole="ProductTypes" />
           <NavigationProperty Name="Alphabet" Relationship="Model1.R_4" FromRole="Products" ToRole="Alphabet" />
-          <NavigationProperty Name="ProductIndications" Relationship="Model1.FKPRODUCT_PI" FromRole="Products" ToRole="ProductIndications" />
+          <NavigationProperty Name="ProductPharmaForms" Relationship="Model1.FKPRODUCT_PD" FromRole="Products" ToRole="ProductPharmaForms" />
+          <NavigationProperty Name="ProductPharmaForms1" Relationship="Model1.R_25" FromRole="Products" ToRole="ProductPharmaForms" />
+          <NavigationProperty Name="Laboratories" Relationship="Model1.Prod_Lab_fk" FromRole="Products" ToRole="Laboratories" />
+          <NavigationProperty Name="Laboratories1" Relationship="Model1.R_47" FromRole="Products" ToRole="Laboratories" />
         </EntityType>
         <Association Name="FKCOUNTRY_PR">
           <End Type="Model1.Countries" Role="Countries" Multiplicity="1" />
@@ -1647,6 +1725,8 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <NavigationProperty Name="DivisionCategories" Relationship="Model1.FK_DivisionCategories_DivisionCategories" FromRole="Divisions" ToRole="DivisionCategories" />
           <NavigationProperty Name="DivisionInformation" Relationship="Model1.FK_DivisionInformation_Divisions" FromRole="Divisions" ToRole="DivisionInformation" />
           <NavigationProperty Name="DivisionInformation1" Relationship="Model1.R_34" FromRole="Divisions" ToRole="DivisionInformation" />
+          <NavigationProperty Name="Laboratories" Relationship="Model1.R_16" FromRole="Divisions" ToRole="Laboratories" />
+          <NavigationProperty Name="Laboratories1" Relationship="Model1.R_33" FromRole="Divisions" ToRole="Laboratories" />
         </EntityType>
         <EntityType Name="Editions">
           <Key>
@@ -1672,7 +1752,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <NavigationProperty Name="Editions3" Relationship="Model1.R_42" FromRole="Editions1" ToRole="Editions" />
           <NavigationProperty Name="EditionTypes" Relationship="Model1.EditionTypes_Fk" FromRole="Editions" ToRole="EditionTypes" />
           <NavigationProperty Name="EditionPresentations" Relationship="Model1.EditionsEditionPresentations" FromRole="Editions" ToRole="EditionPresentations" />
-          <NavigationProperty Name="EditionDivisionProducts" Relationship="Model1.EditionsEditionDivisionProducts" FromRole="Editions" ToRole="EditionDivisionProducts" />
+          <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_Editions_Fk" FromRole="Editions" ToRole="EditionProductShots" />
         </EntityType>
         <EntityType Name="ParticipantProducts">
           <Key>
@@ -1792,85 +1872,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="plm_vwProductsByEdition">
-          <Key>
-            <PropertyRef Name="CountryId" />
-            <PropertyRef Name="CountryName" />
-            <PropertyRef Name="LaboratoryId" />
-            <PropertyRef Name="LaboratoryName" />
-            <PropertyRef Name="LabActive" />
-            <PropertyRef Name="DivisionId" />
-            <PropertyRef Name="DivisionName" />
-            <PropertyRef Name="DivisionActive" />
-            <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="CategoryName" />
-            <PropertyRef Name="CategoryActive" />
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="Brand" />
-            <PropertyRef Name="ProductActive" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="PharmaForm" />
-            <PropertyRef Name="PharmaActive" />
-            <PropertyRef Name="EditionId" />
-            <PropertyRef Name="NumberEdition" />
-            <PropertyRef Name="EditionActive" />
-            <PropertyRef Name="NewProduct" />
-            <PropertyRef Name="BriefProduct" />
-            <PropertyRef Name="BookId" />
-            <PropertyRef Name="BookName" />
-            <PropertyRef Name="BookActive" />
-            <PropertyRef Name="WithoutContent" />
-            <PropertyRef Name="ContentType" />
-            <PropertyRef Name="SanitaryRegister" />
-            <PropertyRef Name="SSFraction" />
-          </Key>
-          <Property Name="CountryId" Type="Int32" Nullable="false" />
-          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
-          <Property Name="LaboratoryName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="LabActive" Type="Boolean" Nullable="false" />
-          <Property Name="DivisionId" Type="Int32" Nullable="false" />
-          <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="DivisionShortName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DivisionActive" Type="Boolean" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="CategoryActive" Type="Boolean" Nullable="false" />
-          <Property Name="ProductTypeId" Type="Byte" />
-          <Property Name="ProductType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="Brand" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="SanitaryRegistry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="LabDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ProductActive" Type="Boolean" Nullable="false" />
-          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-          <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="EnglishPharmaForm" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="PharmaActive" Type="Boolean" Nullable="false" />
-          <Property Name="EditionId" Type="Int32" Nullable="false" />
-          <Property Name="NumberEdition" Type="Int32" Nullable="false" />
-          <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="EditionActive" Type="Boolean" Nullable="false" />
-          <Property Name="TypeInEdition" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="ModifiedContent" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Page" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="NewProduct" Type="Int32" Nullable="false" />
-          <Property Name="BriefProduct" Type="Int32" Nullable="false" />
-          <Property Name="BookId" Type="Int32" Nullable="false" />
-          <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="BookActive" Type="Boolean" Nullable="false" />
-          <Property Name="NumberOfActiveSubstances" Type="Int32" />
-          <Property Name="NumberOfIndications" Type="Int32" />
-          <Property Name="NumberOfTherapeutics" Type="Int32" />
-          <Property Name="NumberOfOMSTherapeutics" Type="Int32" />
-          <Property Name="CountryCodes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="WithoutContent" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="SanitaryRegister" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="SSFraction" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="ProductCategories">
           <Key>
             <PropertyRef Name="DivisionId" />
@@ -1892,8 +1893,9 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <NavigationProperty Name="Products" Relationship="Model1.R_14" FromRole="ProductCategories" ToRole="Products" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Present_DivisionId_CategoryId_ProductId_PharmaFormId_FK" FromRole="ProductCategories" ToRole="Presentations" />
           <NavigationProperty Name="DivisionCategories" Relationship="Model1.FK_ProductCategories_DivisionCategories" FromRole="ProductCategories" ToRole="DivisionCategories" />
-          <NavigationProperty Name="EditionDivisionProducts" Relationship="Model1.ProductCategoriesEditionDivisionProducts" FromRole="ProductCategories" ToRole="EditionDivisionProducts" />
-          <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.R_402" FromRole="ProductCategories" ToRole="IPPAProductInteractions" />
+          <NavigationProperty Name="ProductPharmaForms" Relationship="Model1.FK_ProductCategories_ProductPharmaForms" FromRole="ProductCategories" ToRole="ProductPharmaForms" />
+          <NavigationProperty Name="OffMarkets" Relationship="Model1.R_701" FromRole="ProductCategories" ToRole="OffMarkets" />
+          <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_ProductCategories_Fk" FromRole="ProductCategories" ToRole="EditionProductShots" />
         </EntityType>
         <Association Name="FK_ParticipantProducts_ProductCategories">
           <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
@@ -2029,7 +2031,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <Property Name="ExternalPackName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_ExternalPackId_FK" FromRole="ExternalPacks" ToRole="Presentations" />
-          <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="InternalPacks">
           <Key>
@@ -2039,7 +2040,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <Property Name="InternalPackName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_InternalPackId_FK" FromRole="InternalPacks" ToRole="Presentations" />
-          <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Presentations">
           <Key>
@@ -2068,6 +2068,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <NavigationProperty Name="WeightUnits" Relationship="Model1.Presentations_WeightUnits_FK" FromRole="Presentations" ToRole="WeightUnits" />
           <NavigationProperty Name="ProductImages" Relationship="Model1.R_192" FromRole="Presentations" ToRole="ProductImages" />
           <NavigationProperty Name="EditionPresentations" Relationship="Model1.PresentationsEditionPresentations" FromRole="Presentations" ToRole="EditionPresentations" />
+          <NavigationProperty Name="ProductBarCodes" Relationship="Model1.R_491" FromRole="Presentations" ToRole="ProductBarCodes" />
         </EntityType>
         <EntityType Name="WeightUnits">
           <Key>
@@ -2078,7 +2079,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <Property Name="ShortName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_WeightUnits_FK" FromRole="WeightUnits" ToRole="Presentations" />
-          <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="Presentations_ContentUnitId_FK">
           <End Type="Model1.ContentUnits" Role="ContentUnits" Multiplicity="0..1" />
@@ -2307,6 +2307,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <Property Name="Description" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="EnglishDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductPharmaForms" Relationship="Model1.FKPHARMAFORM_PF" FromRole="PharmaceuticalForms" ToRole="ProductPharmaForms" />
         </EntityType>
         <Association Name="R_4">
           <End Type="Model1.Alphabet" Role="Alphabet" Multiplicity="1" />
@@ -2382,337 +2383,456 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="EditionDivisionProducts">
+        <EntityType Name="ProductPharmaForms">
           <Key>
-            <PropertyRef Name="EditionId" />
-            <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="ProductId" />
             <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DivisionId" Type="Int32" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
           <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Editions" Relationship="Model1.EditionsEditionDivisionProducts" FromRole="EditionDivisionProducts" ToRole="Editions" />
-          <NavigationProperty Name="ProductCategories" Relationship="Model1.ProductCategoriesEditionDivisionProducts" FromRole="EditionDivisionProducts" ToRole="ProductCategories" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReferenceUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PharmaceuticalForms" Relationship="Model1.FKPHARMAFORM_PF" FromRole="ProductPharmaForms" ToRole="PharmaceuticalForms" />
+          <NavigationProperty Name="ProductCategories" Relationship="Model1.FK_ProductCategories_ProductPharmaForms" FromRole="ProductPharmaForms" ToRole="ProductCategories" />
+          <NavigationProperty Name="Products" Relationship="Model1.FKPRODUCT_PD" FromRole="ProductPharmaForms" ToRole="Products" />
+          <NavigationProperty Name="Products1" Relationship="Model1.R_25" FromRole="ProductPharmaForms" ToRole="Products" />
         </EntityType>
-        <Association Name="EditionsEditionDivisionProducts">
-          <End Type="Model1.Editions" Role="Editions" Multiplicity="1" />
-          <End Type="Model1.EditionDivisionProducts" Role="EditionDivisionProducts" Multiplicity="*" />
+        <Association Name="FKPHARMAFORM_PF">
+          <End Type="Model1.PharmaceuticalForms" Role="PharmaceuticalForms" Multiplicity="1" />
+          <End Type="Model1.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Editions">
-              <PropertyRef Name="EditionId" />
+            <Principal Role="PharmaceuticalForms">
+              <PropertyRef Name="PharmaFormId" />
             </Principal>
-            <Dependent Role="EditionDivisionProducts">
-              <PropertyRef Name="EditionId" />
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ProductCategoriesEditionDivisionProducts">
-          <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
-          <End Type="Model1.EditionDivisionProducts" Role="EditionDivisionProducts" Multiplicity="*" />
+        <Association Name="FK_ProductCategories_ProductPharmaForms">
+          <End Type="Model1.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="1" />
+          <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductCategories">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
+            <Principal Role="ProductPharmaForms">
               <PropertyRef Name="PharmaFormId" />
               <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="EditionDivisionProducts">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
+            <Dependent Role="ProductCategories">
               <PropertyRef Name="PharmaFormId" />
               <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Therapeutics">
-          <Key>
-            <PropertyRef Name="TherapeuticId" />
-          </Key>
-          <Property Name="TherapeuticId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="TherapeuticKey" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Level" Type="Byte" />
-          <NavigationProperty Name="Therapeutics1" Relationship="Model1.FKPARENTID_TH" FromRole="Therapeutics" ToRole="Therapeutics1" />
-          <NavigationProperty Name="Therapeutics2" Relationship="Model1.FKPARENTID_TH" FromRole="Therapeutics1" ToRole="Therapeutics" />
-          <NavigationProperty Name="ProductTherapeutics" Relationship="Model1.FKTHERAPEUTIC_PT" FromRole="Therapeutics" ToRole="ProductTherapeutics" />
-        </EntityType>
-        <Association Name="FKPARENTID_TH">
-          <End Type="Model1.Therapeutics" Role="Therapeutics" Multiplicity="0..1" />
-          <End Type="Model1.Therapeutics" Role="Therapeutics1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Therapeutics">
-              <PropertyRef Name="TherapeuticId" />
-            </Principal>
-            <Dependent Role="Therapeutics1">
-              <PropertyRef Name="ParentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ProductTherapeutics">
-          <Key>
-            <PropertyRef Name="TherapeuticId" />
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="PharmaFormId" />
-          </Key>
-          <Property Name="TherapeuticId" Type="Int32" Nullable="false" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Therapeutics" Relationship="Model1.FKTHERAPEUTIC_PT" FromRole="ProductTherapeutics" ToRole="Therapeutics" />
-        </EntityType>
-        <Association Name="FKTHERAPEUTIC_PT">
-          <End Type="Model1.Therapeutics" Role="Therapeutics" Multiplicity="1" />
-          <End Type="Model1.ProductTherapeutics" Role="ProductTherapeutics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Therapeutics">
-              <PropertyRef Name="TherapeuticId" />
-            </Principal>
-            <Dependent Role="ProductTherapeutics">
-              <PropertyRef Name="TherapeuticId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ICD">
-          <Key>
-            <PropertyRef Name="ICDId" />
-          </Key>
-          <Property Name="ICDId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="ICDKey" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="EnglishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Level" Type="Int32" />
-          <Property Name="JSONFormat" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ICD1" Relationship="Model1.FK_ICD_ICD" FromRole="ICD" ToRole="ICD1" />
-          <NavigationProperty Name="ICD2" Relationship="Model1.FK_ICD_ICD" FromRole="ICD1" ToRole="ICD" />
-          <NavigationProperty Name="ProductICD" Relationship="Model1.R_424" FromRole="ICD" ToRole="ProductICD" />
-        </EntityType>
-        <Association Name="FK_ICD_ICD">
-          <End Type="Model1.ICD" Role="ICD" Multiplicity="0..1" />
-          <End Type="Model1.ICD" Role="ICD1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ICD">
-              <PropertyRef Name="ICDId" />
-            </Principal>
-            <Dependent Role="ICD1">
-              <PropertyRef Name="ParentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ProductICD">
-          <Key>
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ICDId" />
-          </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-          <Property Name="ICDId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ICD" Relationship="Model1.R_424" FromRole="ProductICD" ToRole="ICD" />
-        </EntityType>
-        <Association Name="R_424">
-          <End Type="Model1.ICD" Role="ICD" Multiplicity="1" />
-          <End Type="Model1.ProductICD" Role="ProductICD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ICD">
-              <PropertyRef Name="ICDId" />
-            </Principal>
-            <Dependent Role="ProductICD">
-              <PropertyRef Name="ICDId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="TherapeuticOMS">
-          <Key>
-            <PropertyRef Name="TherapeuticOMSId" />
-          </Key>
-          <Property Name="TherapeuticOMSId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="TherapeuticKey" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Level" Type="Byte" />
-          <NavigationProperty Name="ProductTherapeuticOMS" Relationship="Model1.R_541" FromRole="TherapeuticOMS" ToRole="ProductTherapeuticOMS" />
-        </EntityType>
-        <EntityType Name="ProductTherapeuticOMS">
-          <Key>
-            <PropertyRef Name="TherapeuticOMSId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="TherapeuticOMSId" Type="Int32" Nullable="false" />
-          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="TherapeuticOMS" Relationship="Model1.R_541" FromRole="ProductTherapeuticOMS" ToRole="TherapeuticOMS" />
-        </EntityType>
-        <Association Name="R_541">
-          <End Type="Model1.TherapeuticOMS" Role="TherapeuticOMS" Multiplicity="1" />
-          <End Type="Model1.ProductTherapeuticOMS" Role="ProductTherapeuticOMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TherapeuticOMS">
-              <PropertyRef Name="TherapeuticOMSId" />
-            </Principal>
-            <Dependent Role="ProductTherapeuticOMS">
-              <PropertyRef Name="TherapeuticOMSId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="PharmacologicalGroups">
-          <Key>
-            <PropertyRef Name="PharmaGroupId" />
-          </Key>
-          <Property Name="PharmaGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="OtherElements">
-          <Key>
-            <PropertyRef Name="ElementId" />
-          </Key>
-          <Property Name="ElementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ElementName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ProductSubstanceInteractions">
-          <Key>
-            <PropertyRef Name="SubstanceInteractId" />
-            <PropertyRef Name="DivisionId" />
-            <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="ActiveSubstanceId" />
-          </Key>
-          <Property Name="SubstanceInteractId" Type="Int32" Nullable="false" />
-          <Property Name="DivisionId" Type="Int32" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_274" FromRole="ProductSubstanceInteractions" ToRole="ActiveSubstances" />
-          <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.IPPAProductInteractionsProductSubstanceInteractions" FromRole="ProductSubstanceInteractions" ToRole="IPPAProductInteractions" />
-        </EntityType>
-        <EntityType Name="ActiveSubstances">
-          <Key>
-            <PropertyRef Name="ActiveSubstanceId" />
-          </Key>
-          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SubstanceKey" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="EnglishDescription" Type="String" MaxLength="202" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Enunciative" Type="Boolean" Nullable="false" />
-          <Property Name="JSONFormat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ProductSubstanceInteractions" Relationship="Model1.R_274" FromRole="ActiveSubstances" ToRole="ProductSubstanceInteractions" />
-          <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.R_403" FromRole="ActiveSubstances" ToRole="IPPAProductInteractions" />
-        </EntityType>
-        <Association Name="R_274">
-          <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
-          <End Type="Model1.ProductSubstanceInteractions" Role="ProductSubstanceInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActiveSubstances">
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Principal>
-            <Dependent Role="ProductSubstanceInteractions">
-              <PropertyRef Name="SubstanceInteractId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="IPPAProductInteractions">
-          <Key>
-            <PropertyRef Name="DivisionId" />
-            <PropertyRef Name="CategoryId" />
-            <PropertyRef Name="PharmaFormId" />
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="ActiveSubstanceId" />
-          </Key>
-          <Property Name="DivisionId" Type="Int32" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
-          <Property Name="StatusId" Type="Byte" />
-          <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PlainContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_403" FromRole="IPPAProductInteractions" ToRole="ActiveSubstances" />
-          <NavigationProperty Name="ProductCategories" Relationship="Model1.R_402" FromRole="IPPAProductInteractions" ToRole="ProductCategories" />
-          <NavigationProperty Name="ProductSubstanceInteractions" Relationship="Model1.IPPAProductInteractionsProductSubstanceInteractions" FromRole="IPPAProductInteractions" ToRole="ProductSubstanceInteractions" />
-        </EntityType>
-        <Association Name="R_403">
-          <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
-          <End Type="Model1.IPPAProductInteractions" Role="IPPAProductInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ActiveSubstances">
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Principal>
-            <Dependent Role="IPPAProductInteractions">
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_402">
-          <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
-          <End Type="Model1.IPPAProductInteractions" Role="IPPAProductInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductCategories">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-            </Principal>
-            <Dependent Role="IPPAProductInteractions">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="IPPAProductInteractionsProductSubstanceInteractions">
-          <End Type="Model1.IPPAProductInteractions" Role="IPPAProductInteractions" Multiplicity="1" />
-          <End Type="Model1.ProductSubstanceInteractions" Role="ProductSubstanceInteractions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="IPPAProductInteractions">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Principal>
-            <Dependent Role="ProductSubstanceInteractions">
-              <PropertyRef Name="DivisionId" />
-              <PropertyRef Name="CategoryId" />
-              <PropertyRef Name="PharmaFormId" />
-              <PropertyRef Name="ProductId" />
-              <PropertyRef Name="ActiveSubstanceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ProductIndications">
-          <Key>
-            <PropertyRef Name="ProductId" />
-            <PropertyRef Name="IndicationId" />
-          </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="IndicationId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Model1.FKPRODUCT_PI" FromRole="ProductIndications" ToRole="Products" />
-        </EntityType>
-        <Association Name="FKPRODUCT_PI">
+        <Association Name="FKPRODUCT_PD">
           <End Type="Model1.Products" Role="Products" Multiplicity="1" />
-          <End Type="Model1.ProductIndications" Role="ProductIndications" Multiplicity="*" />
+          <End Type="Model1.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="ProductIndications">
+            <Dependent Role="ProductPharmaForms">
               <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_25">
+          <End Type="Model1.Products" Role="Products" Multiplicity="1" />
+          <End Type="Model1.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Laboratories">
+          <Key>
+            <PropertyRef Name="LaboratoryId" />
+          </Key>
+          <Property Name="LaboratoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyTypeId" Type="Byte" />
+          <Property Name="LaboratoryName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="ImageName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CourtesyImage" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Divisions" Relationship="Model1.R_16" FromRole="Laboratories" ToRole="Divisions" />
+          <NavigationProperty Name="Divisions1" Relationship="Model1.R_33" FromRole="Laboratories" ToRole="Divisions" />
+          <NavigationProperty Name="Products" Relationship="Model1.Prod_Lab_fk" FromRole="Laboratories" ToRole="Products" />
+          <NavigationProperty Name="Products1" Relationship="Model1.R_47" FromRole="Laboratories" ToRole="Products" />
+        </EntityType>
+        <Association Name="R_16">
+          <End Type="Model1.Laboratories" Role="Laboratories" Multiplicity="1" />
+          <End Type="Model1.Divisions" Role="Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="LaboratoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_33">
+          <End Type="Model1.Laboratories" Role="Laboratories" Multiplicity="1" />
+          <End Type="Model1.Divisions" Role="Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="LaboratoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Prod_Lab_fk">
+          <End Type="Model1.Laboratories" Role="Laboratories" Multiplicity="1" />
+          <End Type="Model1.Products" Role="Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="LaboratoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_47">
+          <End Type="Model1.Laboratories" Role="Laboratories" Multiplicity="1" />
+          <End Type="Model1.Products" Role="Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Laboratories">
+              <PropertyRef Name="LaboratoryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="LaboratoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OffMarkets">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="OffDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ProductCategories" Relationship="Model1.R_701" FromRole="OffMarkets" ToRole="ProductCategories" />
+        </EntityType>
+        <Association Name="R_701">
+          <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
+          <End Type="Model1.OffMarkets" Role="OffMarkets" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OffMarkets">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="plm_vwProductsByEdition">
+          <Key>
+            <PropertyRef Name="CountryId" />
+            <PropertyRef Name="CountryName" />
+            <PropertyRef Name="LaboratoryId" />
+            <PropertyRef Name="LaboratoryName" />
+            <PropertyRef Name="LabActive" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="DivisionName" />
+            <PropertyRef Name="DivisionActive" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="CategoryName" />
+            <PropertyRef Name="CategoryActive" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="Brand" />
+            <PropertyRef Name="ProductActive" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="PharmaForm" />
+            <PropertyRef Name="PharmaActive" />
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="NumberEdition" />
+            <PropertyRef Name="EditionActive" />
+            <PropertyRef Name="NewProduct" />
+            <PropertyRef Name="BriefProduct" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="BookName" />
+            <PropertyRef Name="BookActive" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+          <Property Name="LaboratoryName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="LabActive" Type="Boolean" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="DivisionShortName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DivisionActive" Type="Boolean" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryActive" Type="Boolean" Nullable="false" />
+          <Property Name="ProductTypeId" Type="Byte" />
+          <Property Name="ProductType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Brand" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SanitaryRegistry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LabDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ProductActive" Type="Boolean" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="EnglishPharmaForm" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="PharmaActive" Type="Boolean" Nullable="false" />
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="EditionActive" Type="Boolean" Nullable="false" />
+          <Property Name="TypeInEdition" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedContent" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Page" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="NewProduct" Type="Int32" Nullable="false" />
+          <Property Name="BriefProduct" Type="Int32" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BookActive" Type="Boolean" Nullable="false" />
+          <Property Name="NumberOfActiveSubstances" Type="Int32" />
+          <Property Name="NumberOfIndications" Type="Int32" />
+          <Property Name="NumberOfTherapeutics" Type="Int32" />
+          <Property Name="NumberOfOMSTherapeutics" Type="Int32" />
+          <Property Name="CountryCodes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EditionProductShots">
+          <Key>
+            <PropertyRef Name="EditionProductShotId" />
+          </Key>
+          <Property Name="EditionProductShotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PSTypeId" Type="Byte" Nullable="false" />
+          <Property Name="ProductShot" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="QtyCells" Type="Byte" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="Model1.EditionProductShots_Editions_Fk" FromRole="EditionProductShots" ToRole="Editions" />
+          <NavigationProperty Name="ProductCategories" Relationship="Model1.EditionProductShots_ProductCategories_Fk" FromRole="EditionProductShots" ToRole="ProductCategories" />
+          <NavigationProperty Name="ProductShotTypes" Relationship="Model1.EditionProductShots_PShotType_Fk" FromRole="EditionProductShots" ToRole="ProductShotTypes" />
+        </EntityType>
+        <Association Name="EditionProductShots_Editions_Fk">
+          <End Type="Model1.Editions" Role="Editions" Multiplicity="1" />
+          <End Type="Model1.EditionProductShots" Role="EditionProductShots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionProductShots">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionProductShots_ProductCategories_Fk">
+          <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
+          <End Type="Model1.EditionProductShots" Role="EditionProductShots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="EditionProductShots">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductShotTypes">
+          <Key>
+            <PropertyRef Name="PSTypeId" />
+          </Key>
+          <Property Name="PSTypeId" Type="Byte" Nullable="false" />
+          <Property Name="TypeName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_PShotType_Fk" FromRole="ProductShotTypes" ToRole="EditionProductShots" />
+        </EntityType>
+        <Association Name="EditionProductShots_PShotType_Fk">
+          <End Type="Model1.ProductShotTypes" Role="ProductShotTypes" Multiplicity="1" />
+          <End Type="Model1.EditionProductShots" Role="EditionProductShots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductShotTypes">
+              <PropertyRef Name="PSTypeId" />
+            </Principal>
+            <Dependent Role="EditionProductShots">
+              <PropertyRef Name="PSTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FamilyPrefixes">
+          <Key>
+            <PropertyRef Name="PrefixId" />
+          </Key>
+          <Property Name="PrefixId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="PrefixName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentValue" Type="Int32" Nullable="false" />
+          <Property Name="PrefixDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="PrefixTypeId" Type="Byte" />
+          <NavigationProperty Name="PrefixTypes" Relationship="Model1.FK_FamilyPrefixes_PrefixTypes" FromRole="FamilyPrefixes" ToRole="PrefixTypes" />
+          <NavigationProperty Name="Families" Relationship="Model1.FK_Families_FamilyPrefixes" FromRole="FamilyPrefixes" ToRole="Families" />
+        </EntityType>
+        <EntityType Name="PrefixTypes">
+          <Key>
+            <PropertyRef Name="PrefixTypeId" />
+          </Key>
+          <Property Name="PrefixTypeId" Type="Byte" Nullable="false" />
+          <Property Name="TypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FamilyPrefixes" Relationship="Model1.FK_FamilyPrefixes_PrefixTypes" FromRole="PrefixTypes" ToRole="FamilyPrefixes" />
+        </EntityType>
+        <Association Name="FK_FamilyPrefixes_PrefixTypes">
+          <End Type="Model1.PrefixTypes" Role="PrefixTypes" Multiplicity="0..1" />
+          <End Type="Model1.FamilyPrefixes" Role="FamilyPrefixes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrefixTypes">
+              <PropertyRef Name="PrefixTypeId" />
+            </Principal>
+            <Dependent Role="FamilyPrefixes">
+              <PropertyRef Name="PrefixTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Families">
+          <Key>
+            <PropertyRef Name="FamilyId" />
+          </Key>
+          <Property Name="FamilyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PrefixId" Type="Int32" Nullable="false" />
+          <Property Name="FamilyString" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FamilyPrefixes" Relationship="Model1.FK_Families_FamilyPrefixes" FromRole="Families" ToRole="FamilyPrefixes" />
+        </EntityType>
+        <Association Name="FK_Families_FamilyPrefixes">
+          <End Type="Model1.FamilyPrefixes" Role="FamilyPrefixes" Multiplicity="1" />
+          <End Type="Model1.Families" Role="Families" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FamilyPrefixes">
+              <PropertyRef Name="PrefixId" />
+            </Principal>
+            <Dependent Role="Families">
+              <PropertyRef Name="PrefixId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BarCodes">
+          <Key>
+            <PropertyRef Name="BarCodeId" />
+          </Key>
+          <Property Name="BarCodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BarCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductBarCodes" Relationship="Model1.R_492" FromRole="BarCodes" ToRole="ProductBarCodes" />
+        </EntityType>
+        <EntityType Name="PriceSources">
+          <Key>
+            <PropertyRef Name="PriceSourceId" />
+          </Key>
+          <Property Name="PriceSourceId" Type="Byte" Nullable="false" />
+          <Property Name="SourceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SourceShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductPrices" Relationship="Model1.R_494" FromRole="PriceSources" ToRole="ProductPrices" />
+        </EntityType>
+        <EntityType Name="ProductBarCodes">
+          <Key>
+            <PropertyRef Name="PresentationId" />
+            <PropertyRef Name="BarCodeId" />
+          </Key>
+          <Property Name="PresentationId" Type="Int32" Nullable="false" />
+          <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+          <Property Name="AveragePrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BarCodes" Relationship="Model1.R_492" FromRole="ProductBarCodes" ToRole="BarCodes" />
+          <NavigationProperty Name="Presentations" Relationship="Model1.R_491" FromRole="ProductBarCodes" ToRole="Presentations" />
+          <NavigationProperty Name="ProductPrices" Relationship="Model1.R_493" FromRole="ProductBarCodes" ToRole="ProductPrices" />
+        </EntityType>
+        <EntityType Name="ProductPrices">
+          <Key>
+            <PropertyRef Name="PresentationId" />
+            <PropertyRef Name="BarCodeId" />
+            <PropertyRef Name="PriceSourceId" />
+          </Key>
+          <Property Name="PresentationId" Type="Int32" Nullable="false" />
+          <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+          <Property Name="PriceSourceId" Type="Byte" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PriceSources" Relationship="Model1.R_494" FromRole="ProductPrices" ToRole="PriceSources" />
+          <NavigationProperty Name="ProductBarCodes" Relationship="Model1.R_493" FromRole="ProductPrices" ToRole="ProductBarCodes" />
+        </EntityType>
+        <Association Name="R_492">
+          <End Type="Model1.BarCodes" Role="BarCodes" Multiplicity="1" />
+          <End Type="Model1.ProductBarCodes" Role="ProductBarCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BarCodes">
+              <PropertyRef Name="BarCodeId" />
+            </Principal>
+            <Dependent Role="ProductBarCodes">
+              <PropertyRef Name="BarCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_491">
+          <End Type="Model1.Presentations" Role="Presentations" Multiplicity="1" />
+          <End Type="Model1.ProductBarCodes" Role="ProductBarCodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Presentations">
+              <PropertyRef Name="PresentationId" />
+            </Principal>
+            <Dependent Role="ProductBarCodes">
+              <PropertyRef Name="PresentationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_494">
+          <End Type="Model1.PriceSources" Role="PriceSources" Multiplicity="1" />
+          <End Type="Model1.ProductPrices" Role="ProductPrices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceSources">
+              <PropertyRef Name="PriceSourceId" />
+            </Principal>
+            <Dependent Role="ProductPrices">
+              <PropertyRef Name="PriceSourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_493">
+          <End Type="Model1.ProductBarCodes" Role="ProductBarCodes" Multiplicity="1" />
+          <End Type="Model1.ProductPrices" Role="ProductPrices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductBarCodes">
+              <PropertyRef Name="PresentationId" />
+              <PropertyRef Name="BarCodeId" />
+            </Principal>
+            <Dependent Role="ProductPrices">
+              <PropertyRef Name="PresentationId" />
+              <PropertyRef Name="BarCodeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2802,58 +2922,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="plm_vwProductsByEdition">
-            <EntityTypeMapping TypeName="Model1.plm_vwProductsByEdition">
-              <MappingFragment StoreEntitySet="plm_vwProductsByEdition">
-                <ScalarProperty Name="SSFraction" ColumnName="SSFraction" />
-                <ScalarProperty Name="SanitaryRegister" ColumnName="SanitaryRegister" />
-                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
-                <ScalarProperty Name="WithoutContent" ColumnName="WithoutContent" />
-                <ScalarProperty Name="CountryCodes" ColumnName="CountryCodes" />
-                <ScalarProperty Name="NumberOfOMSTherapeutics" ColumnName="NumberOfOMSTherapeutics" />
-                <ScalarProperty Name="NumberOfTherapeutics" ColumnName="NumberOfTherapeutics" />
-                <ScalarProperty Name="NumberOfIndications" ColumnName="NumberOfIndications" />
-                <ScalarProperty Name="NumberOfActiveSubstances" ColumnName="NumberOfActiveSubstances" />
-                <ScalarProperty Name="BookActive" ColumnName="BookActive" />
-                <ScalarProperty Name="BookName" ColumnName="BookName" />
-                <ScalarProperty Name="BookId" ColumnName="BookId" />
-                <ScalarProperty Name="BriefProduct" ColumnName="BriefProduct" />
-                <ScalarProperty Name="NewProduct" ColumnName="NewProduct" />
-                <ScalarProperty Name="Page" ColumnName="Page" />
-                <ScalarProperty Name="ModifiedContent" ColumnName="ModifiedContent" />
-                <ScalarProperty Name="TypeInEdition" ColumnName="TypeInEdition" />
-                <ScalarProperty Name="EditionActive" ColumnName="EditionActive" />
-                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
-                <ScalarProperty Name="NumberEdition" ColumnName="NumberEdition" />
-                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
-                <ScalarProperty Name="PharmaActive" ColumnName="PharmaActive" />
-                <ScalarProperty Name="EnglishPharmaForm" ColumnName="EnglishPharmaForm" />
-                <ScalarProperty Name="PharmaForm" ColumnName="PharmaForm" />
-                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
-                <ScalarProperty Name="ProductActive" ColumnName="ProductActive" />
-                <ScalarProperty Name="LabDescription" ColumnName="LabDescription" />
-                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
-                <ScalarProperty Name="SanitaryRegistry" ColumnName="SanitaryRegistry" />
-                <ScalarProperty Name="Brand" ColumnName="Brand" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
-                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
-                <ScalarProperty Name="CategoryActive" ColumnName="CategoryActive" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="DivisionActive" ColumnName="DivisionActive" />
-                <ScalarProperty Name="DivisionShortName" ColumnName="DivisionShortName" />
-                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
-                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
-                <ScalarProperty Name="LabActive" ColumnName="LabActive" />
-                <ScalarProperty Name="LaboratoryName" ColumnName="LaboratoryName" />
-                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
-                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProductCategories">
             <EntityTypeMapping TypeName="Model1.ProductCategories">
               <MappingFragment StoreEntitySet="ProductCategories">
@@ -2921,7 +2989,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <EntitySetMapping Name="ExternalPacks">
             <EntityTypeMapping TypeName="Model1.ExternalPacks">
               <MappingFragment StoreEntitySet="ExternalPacks">
-                <ScalarProperty Name="True" ColumnName="True" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ExternalPackName" ColumnName="ExternalPackName" />
                 <ScalarProperty Name="ExternalPackId" ColumnName="ExternalPackId" />
@@ -2931,7 +2998,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <EntitySetMapping Name="InternalPacks">
             <EntityTypeMapping TypeName="Model1.InternalPacks">
               <MappingFragment StoreEntitySet="InternalPacks">
-                <ScalarProperty Name="True" ColumnName="True" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="InternalPackName" ColumnName="InternalPackName" />
                 <ScalarProperty Name="InternalPackId" ColumnName="InternalPackId" />
@@ -2963,7 +3029,6 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <EntitySetMapping Name="WeightUnits">
             <EntityTypeMapping TypeName="Model1.WeightUnits">
               <MappingFragment StoreEntitySet="WeightUnits">
-                <ScalarProperty Name="True" ColumnName="True" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ShortName" ColumnName="ShortName" />
                 <ScalarProperty Name="UnitName" ColumnName="UnitName" />
@@ -3065,146 +3130,182 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EditionDivisionProducts">
-            <EntityTypeMapping TypeName="IsTypeOf(Model1.EditionDivisionProducts)">
-              <MappingFragment StoreEntitySet="EditionDivisionProducts">
+          <EntitySetMapping Name="ProductPharmaForms">
+            <EntityTypeMapping TypeName="Model1.ProductPharmaForms">
+              <MappingFragment StoreEntitySet="ProductPharmaForms">
+                <ScalarProperty Name="ReferenceUrl" ColumnName="ReferenceUrl" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Laboratories">
+            <EntityTypeMapping TypeName="Model1.Laboratories">
+              <MappingFragment StoreEntitySet="Laboratories">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CourtesyImage" ColumnName="CourtesyImage" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="LaboratoryName" ColumnName="LaboratoryName" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OffMarkets">
+            <EntityTypeMapping TypeName="Model1.OffMarkets">
+              <MappingFragment StoreEntitySet="OffMarkets">
+                <ScalarProperty Name="OffDate" ColumnName="OffDate" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="plm_vwProductsByEdition">
+            <EntityTypeMapping TypeName="Model1.plm_vwProductsByEdition">
+              <MappingFragment StoreEntitySet="plm_vwProductsByEdition">
+                <ScalarProperty Name="CountryCodes" ColumnName="CountryCodes" />
+                <ScalarProperty Name="NumberOfOMSTherapeutics" ColumnName="NumberOfOMSTherapeutics" />
+                <ScalarProperty Name="NumberOfTherapeutics" ColumnName="NumberOfTherapeutics" />
+                <ScalarProperty Name="NumberOfIndications" ColumnName="NumberOfIndications" />
+                <ScalarProperty Name="NumberOfActiveSubstances" ColumnName="NumberOfActiveSubstances" />
+                <ScalarProperty Name="BookActive" ColumnName="BookActive" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="BriefProduct" ColumnName="BriefProduct" />
+                <ScalarProperty Name="NewProduct" ColumnName="NewProduct" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="ModifiedContent" ColumnName="ModifiedContent" />
+                <ScalarProperty Name="TypeInEdition" ColumnName="TypeInEdition" />
+                <ScalarProperty Name="EditionActive" ColumnName="EditionActive" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="NumberEdition" ColumnName="NumberEdition" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="PharmaActive" ColumnName="PharmaActive" />
+                <ScalarProperty Name="EnglishPharmaForm" ColumnName="EnglishPharmaForm" />
+                <ScalarProperty Name="PharmaForm" ColumnName="PharmaForm" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductActive" ColumnName="ProductActive" />
+                <ScalarProperty Name="LabDescription" ColumnName="LabDescription" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="SanitaryRegistry" ColumnName="SanitaryRegistry" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="CategoryActive" ColumnName="CategoryActive" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionActive" ColumnName="DivisionActive" />
+                <ScalarProperty Name="DivisionShortName" ColumnName="DivisionShortName" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="LabActive" ColumnName="LabActive" />
+                <ScalarProperty Name="LaboratoryName" ColumnName="LaboratoryName" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EditionProductShots">
+            <EntityTypeMapping TypeName="Model1.EditionProductShots">
+              <MappingFragment StoreEntitySet="EditionProductShots">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="QtyCells" ColumnName="QtyCells" />
+                <ScalarProperty Name="ProductShot" ColumnName="ProductShot" />
+                <ScalarProperty Name="PSTypeId" ColumnName="PSTypeId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
                 <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="EditionProductShotId" ColumnName="EditionProductShotId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Therapeutics">
-            <EntityTypeMapping TypeName="Model1.Therapeutics">
-              <MappingFragment StoreEntitySet="Therapeutics">
-                <ScalarProperty Name="Level" ColumnName="Level" />
+          <EntitySetMapping Name="ProductShotTypes">
+            <EntityTypeMapping TypeName="Model1.ProductShotTypes">
+              <MappingFragment StoreEntitySet="ProductShotTypes">
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="SpanishDescription" ColumnName="SpanishDescription" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="TherapeuticKey" ColumnName="TherapeuticKey" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="TherapeuticId" ColumnName="TherapeuticId" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="PSTypeId" ColumnName="PSTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductTherapeutics">
-            <EntityTypeMapping TypeName="Model1.ProductTherapeutics">
-              <MappingFragment StoreEntitySet="ProductTherapeutics">
-                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="TherapeuticId" ColumnName="TherapeuticId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ICD">
-            <EntityTypeMapping TypeName="Model1.ICD">
-              <MappingFragment StoreEntitySet="ICD">
-                <ScalarProperty Name="JSONFormat" ColumnName="JSONFormat" />
-                <ScalarProperty Name="Level" ColumnName="Level" />
+          <EntitySetMapping Name="FamilyPrefixes">
+            <EntityTypeMapping TypeName="Model1.FamilyPrefixes">
+              <MappingFragment StoreEntitySet="FamilyPrefixes">
+                <ScalarProperty Name="PrefixTypeId" ColumnName="PrefixTypeId" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="EnglishDescription" ColumnName="EnglishDescription" />
-                <ScalarProperty Name="SpanishDescription" ColumnName="SpanishDescription" />
-                <ScalarProperty Name="ICDKey" ColumnName="ICDKey" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="ICDId" ColumnName="ICDId" />
+                <ScalarProperty Name="PrefixDescription" ColumnName="PrefixDescription" />
+                <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+                <ScalarProperty Name="PrefixName" ColumnName="PrefixName" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="PrefixId" ColumnName="PrefixId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductICD">
-            <EntityTypeMapping TypeName="Model1.ProductICD">
-              <MappingFragment StoreEntitySet="ProductICD">
-                <ScalarProperty Name="ICDId" ColumnName="ICDId" />
-                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TherapeuticOMS">
-            <EntityTypeMapping TypeName="Model1.TherapeuticOMS">
-              <MappingFragment StoreEntitySet="TherapeuticOMS">
-                <ScalarProperty Name="Level" ColumnName="Level" />
+          <EntitySetMapping Name="PrefixTypes">
+            <EntityTypeMapping TypeName="Model1.PrefixTypes">
+              <MappingFragment StoreEntitySet="PrefixTypes">
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="SpanishDescription" ColumnName="SpanishDescription" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="TherapeuticKey" ColumnName="TherapeuticKey" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="TherapeuticOMSId" ColumnName="TherapeuticOMSId" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="PrefixTypeId" ColumnName="PrefixTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductTherapeuticOMS">
-            <EntityTypeMapping TypeName="Model1.ProductTherapeuticOMS">
-              <MappingFragment StoreEntitySet="ProductTherapeuticOMS">
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
-                <ScalarProperty Name="TherapeuticOMSId" ColumnName="TherapeuticOMSId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PharmacologicalGroups">
-            <EntityTypeMapping TypeName="Model1.PharmacologicalGroups">
-              <MappingFragment StoreEntitySet="PharmacologicalGroups">
+          <EntitySetMapping Name="Families">
+            <EntityTypeMapping TypeName="Model1.Families">
+              <MappingFragment StoreEntitySet="Families">
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
-                <ScalarProperty Name="PharmaGroupId" ColumnName="PharmaGroupId" />
+                <ScalarProperty Name="FamilyString" ColumnName="FamilyString" />
+                <ScalarProperty Name="PrefixId" ColumnName="PrefixId" />
+                <ScalarProperty Name="FamilyId" ColumnName="FamilyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OtherElements">
-            <EntityTypeMapping TypeName="Model1.OtherElements">
-              <MappingFragment StoreEntitySet="OtherElements">
+          <EntitySetMapping Name="BarCodes">
+            <EntityTypeMapping TypeName="Model1.BarCodes">
+              <MappingFragment StoreEntitySet="BarCodes">
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="ElementName" ColumnName="ElementName" />
-                <ScalarProperty Name="ElementId" ColumnName="ElementId" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+                <ScalarProperty Name="BarCodeId" ColumnName="BarCodeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductSubstanceInteractions">
-            <EntityTypeMapping TypeName="Model1.ProductSubstanceInteractions">
-              <MappingFragment StoreEntitySet="ProductSubstanceInteractions">
-                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
-                <ScalarProperty Name="SubstanceInteractId" ColumnName="SubstanceInteractId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ActiveSubstances">
-            <EntityTypeMapping TypeName="Model1.ActiveSubstances">
-              <MappingFragment StoreEntitySet="ActiveSubstances">
-                <ScalarProperty Name="JSONFormat" ColumnName="JSONFormat" />
-                <ScalarProperty Name="Enunciative" ColumnName="Enunciative" />
+          <EntitySetMapping Name="PriceSources">
+            <EntityTypeMapping TypeName="Model1.PriceSources">
+              <MappingFragment StoreEntitySet="PriceSources">
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="EnglishDescription" ColumnName="EnglishDescription" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="SubstanceKey" ColumnName="SubstanceKey" />
-                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
+                <ScalarProperty Name="SourceShortName" ColumnName="SourceShortName" />
+                <ScalarProperty Name="SourceName" ColumnName="SourceName" />
+                <ScalarProperty Name="PriceSourceId" ColumnName="PriceSourceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="IPPAProductInteractions">
-            <EntityTypeMapping TypeName="Model1.IPPAProductInteractions">
-              <MappingFragment StoreEntitySet="IPPAProductInteractions">
-                <ScalarProperty Name="PlainContent" ColumnName="PlainContent" />
-                <ScalarProperty Name="HTMLContent" ColumnName="HTMLContent" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+          <EntitySetMapping Name="ProductBarCodes">
+            <EntityTypeMapping TypeName="Model1.ProductBarCodes">
+              <MappingFragment StoreEntitySet="ProductBarCodes">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="AveragePrice" ColumnName="AveragePrice" />
+                <ScalarProperty Name="BarCodeId" ColumnName="BarCodeId" />
+                <ScalarProperty Name="PresentationId" ColumnName="PresentationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductIndications">
-            <EntityTypeMapping TypeName="Model1.ProductIndications">
-              <MappingFragment StoreEntitySet="ProductIndications">
-                <ScalarProperty Name="IndicationId" ColumnName="IndicationId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <EntitySetMapping Name="ProductPrices">
+            <EntityTypeMapping TypeName="Model1.ProductPrices">
+              <MappingFragment StoreEntitySet="ProductPrices">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PriceSourceId" ColumnName="PriceSourceId" />
+                <ScalarProperty Name="BarCodeId" ColumnName="BarCodeId" />
+                <ScalarProperty Name="PresentationId" ColumnName="PresentationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
