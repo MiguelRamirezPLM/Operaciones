@@ -1,0 +1,322 @@
+﻿@model IEnumerable<CategoriesByAdvert>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "AdvertsByClient";
+    WebGrid _datagrid = new WebGrid(Model);
+    Guianet.Models.Sessions.SessionSpecialitiesSM ind = (Guianet.Models.Sessions.SessionSpecialitiesSM)Session["SessionSpecialitiesSM"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss, AdvertId;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+        AdvertId = Convert.ToInt32(ind.PId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+        AdvertId = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/SalesModule/Adverts")" class="ldr">Ventas</a></li>
+    <li><a href="@Url.Content("~/SalesModule/Adverts")" class="ldr">Anuncios</a></li>
+    <li class="active">Categorias</li>
+</ol>
+
+<br />
+@{
+    if (ind != null)
+    {
+        <table class="widthtable" border="0">
+
+            <tr>
+                <td style="width: 6%;"><label class="labelsform">País:</label></td>
+                <td>
+                    @{
+        var cts = (from _ct in db.Countries
+                   where _ct.CountryId == CountryIdss
+                   select _ct).ToList();
+        foreach (Countries _ct in cts)
+        {
+            <span class="spans">@_ct.CountryName</span>
+        }
+                    }
+                </td>
+                <td rowspan="5">
+                    <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("Adverts", "SalesModule")';return false;">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span>&nbsp; Regresar</span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Libro:</label></td>
+                <td>
+                    @{
+        var bks = (from _bk in db.Books
+                   where _bk.BookId == BookIds
+                   select _bk).ToList();
+        foreach (Books _bks in bks)
+        {
+            <span class="spans">@_bks.BookName</span>
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Edición:</label></td>
+                <td>
+                    @{
+        var eds = (from _ed in db.Editions
+                   where _ed.EditionId == EditionIds
+                   select _ed).ToList();
+        foreach (Editions _eds in eds)
+        {
+            <span class="spans">@_eds.NumberEdition</span>
+                        <input type="text" id="EditionId" value="@_eds.EditionId" style="display:none" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Cliente:</label></td>
+                <td>
+                    @{
+        var cl = (from _cl in db.Clients
+                  where _cl.ClientId == ClientIdss
+                  select _cl).ToList();
+        foreach (Clients _cl in cl)
+        {
+            <span class="spans" id="spnCompanyName">@_cl.CompanyName</span>
+                        <input type="text" id="ClientId" value="@_cl.ClientId" style="display:none" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Anuncio:</label></td>
+                <td>
+                    @{
+        var ad = (from _cl in db.Adverts
+                  where _cl.AdvertId == AdvertId
+                  select _cl).ToList();
+        foreach (Adverts _cl in ad)
+        {
+            <span class="spans" id="spnCompanyName">@_cl.AdvertName</span>
+                        <input type="text" value="@_cl.AdvertId" id="txtAdvertId" style="display:none" />
+        }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+}
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group stylish-input-group" style="float:right">
+                    @{
+        Guianet.Models.Sessions.SearchAdvertsSM SearchAdvertsSM = (Guianet.Models.Sessions.SearchAdvertsSM)Session["SearchAdvertsSM"];
+        if (SearchAdvertsSM != null)
+        {
+            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchCategoryName" maxlength="255" value="@SearchAdvertsSM.CategoryName" />
+        }
+        else
+        {
+            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchCategoryName" maxlength="255" />
+        }
+                    }
+                    <span class="input-group-addon ldr" style="width:0" onclick="searchAdverts()">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="input-group stylish-input-group" style="float:right">
+                    @{
+        Guianet.Models.Sessions.SearchAdvertsAsocSM SearchAdvertsAsocSM = (Guianet.Models.Sessions.SearchAdvertsAsocSM)Session["SearchAdvertsAsocSM"];
+        if (SearchAdvertsAsocSM != null)
+        {
+            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchCategoryNameAsoc" maxlength="255" value="@SearchAdvertsAsocSM.CategoryName" />
+        }
+        else
+        {
+            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchCategoryNameAsoc" maxlength="255" />
+        }
+                    }
+                    <span class="input-group-addon ldr" style="width:0" onclick="searchAdvertsAsoc()" id="btnSearchCategoriesAsoc">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                @{
+        List<CategoriesThree> LB = new List<CategoriesThree>();
+
+        if (SearchAdvertsSM != null)
+        {
+            LB = db.Database.SqlQuery<CategoriesThree>("plm_spGetCategoryThreeByClientByEdition @ClientId=" + ClientIdss + ", @AdvertId=" + AdvertId + ", @EditionId=" + EditionIds + ", @CategoryName='" + SearchAdvertsSM.CategoryName + "'").ToList();
+        }
+        else
+        {
+            LB = db.Database.SqlQuery<CategoriesThree>("plm_spGetCategoryThreeByClientByEdition @ClientId=" + ClientIdss + ", @EditionId=" + EditionIds + ", @AdvertId=" + AdvertId + "").ToList();
+        }
+
+
+        WebGrid _gridBrands = new WebGrid(LB, rowsPerPage: 20);
+
+        @_gridBrands.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table1",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _gridBrands.Column("", header: "Categoría", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblCategoryThree">@item.CategoryThree</label> </span>
+                                    <input id="lblCategoryThreeId" style="display:none;" value="@item.CategoryThreeId" />
+                                }
+                        </text>),
+
+                        _gridBrands.Column("", header: "Agregar", format: @<text>
+            @{
+                <button class="btn btn-success btn-sm ldr" onclick="OpenFormAddType($(this))">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            }
+                        </text>, style:"column5 text-center"),
+            })
+                }
+            </div>
+            <div class="col-lg-6">
+                <div style="width:100%" class="table-responsive">
+                    <table class="widthtable">
+                        <thead class="webgrid-header">
+                            <tr>
+                                <th>Categoría</th>
+                                <th>Ediciones</th>
+                                <th>Participante</th>
+                                <th>Tipo</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 12px; ">
+                            @{
+        foreach (CategoriesByAdvert item in Model)
+        {
+            <tr>
+                <td class="column19">
+                    <span class="display-mode"> <label id="lblName">@item.CategoryThree</label> </span>
+                    <input id="lblCategoryThreeIdAs" style="display:none;" value="@item.CategoryThreeId" />
+                </td>
+                <td class="column5 text-center">
+                    <span class="display-mode"> <label id="lblName">@item.Editions</label> </span>
+                </td>
+                <td class="column5 text-center">
+                    @{
+            int PP = Convert.ToInt32(item.PP);
+            if (PP == 1)
+            {
+                <input type="checkbox" checked="checked" onclick="InsertClientProductCategories($(this))" />
+            }
+            else
+            {
+                <input type="checkbox" onclick="InsertClientProductCategories($(this))" />
+            }
+                    }
+                </td>
+                <td class="column5 text-center">
+                    <span class="display-mode"> <label id="lblName">@item.Description</label> </span>
+                    <input type="text" value="@item.AdvertTypeId" id="AdvertTypeIdAs" style="display:none;" />
+                </td>
+                <td class="column5 text-center">
+                    @{
+            if (string.IsNullOrEmpty(item.Editions))
+            {
+                <button class="btn btn-danger btn-sm ldr" onclick="DeleteAdverts($(this))">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            }
+                    }
+                </td>
+            </tr>
+        }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}
+<br />
+
+<button id="BtnAddAdvert" data-toggle="modal" data-target="#AddAdvert" style="display:none"></button>
+<div class="modal fade" id="AddAdvert" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal" onclick="$('#divAdvertTypesA').removeClass('has-error'), $('.errorSATA').hide(), $('#bloqueo').hide()">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Seleccionar Tipo.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <label class="labelsform">Categoría: &nbsp;&nbsp;</label><label id="lblCategoryAddT"></label>
+                <input type="text" id="txtCategoryThreeIdAddT" style="display:none" />
+                <br />
+                <br />
+                <table class="widthtable">
+                    <tr>
+                        <td>
+                            <label class="labelsform">Tipo: </label>
+                        </td>
+                        <td>
+                            <div class="form-group has-feedback" id="divAdvertTypesA" style="margin-bottom: 0;">
+                                <select class="form-control" id="SelectAdvertTypes" onchange="$('#divAdvertTypesA').removeClass('has-error'), $('.errorSATA').hide()">
+                                    <option value="0" id="val0">Seleccione...</option>
+                                    @{
+                                        var at = db.AdvertTypes.Where(x => x.Active == true).OrderBy(x => x.Description).ToList();
+                                        foreach (AdvertTypes _ct in at)
+                                        {
+                                            <option value="@_ct.AdvertTypeId">@_ct.Description</option>
+                                        }
+                                    }
+                                </select>
+                                <span class="glyphicon glyphicon-remove form-control-feedback errorSATA" style="display:none"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="AddCategoriesToAdverts()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

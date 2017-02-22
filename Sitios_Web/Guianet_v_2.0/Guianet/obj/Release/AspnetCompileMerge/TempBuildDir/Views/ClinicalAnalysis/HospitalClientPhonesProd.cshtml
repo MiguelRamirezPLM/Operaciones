@@ -1,0 +1,280 @@
+﻿@model IEnumerable<GetClientPhones>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "HospitalClientPhonesProd";
+    Guianet.Models.Sessions.SessionHospitalsProd ind = (Guianet.Models.Sessions.SessionHospitalsProd)Session["SessionHospitalsProd"];
+    Guianet.Models.Sessions.SessionAddressIdCCA SAId = (Guianet.Models.Sessions.SessionAddressIdCCA)Session["SessionAddressIdCCA"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsProd")">Producción</a></li>
+    <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsProd")">Hospitales</a></li>
+    <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsAddressProd?ClientId=" + @ClientIdss + "")">Direcciones</a></li>
+    <li class="active">Teléfonos</li>
+</ol>
+<div class="row">
+
+    <div class="col-lg-6">
+        <table class="widthtable table-hover" border="0">
+            <tr>
+                <td style="width: 10%;"><label class="labelsform">País:</label></td>
+                <td>
+                    @{
+                        var cts = (from _ct in db.Countries
+                                   where _ct.CountryId == CountryIdss
+                                   select _ct).ToList();
+                        foreach (Countries _ct in cts)
+                        {
+                            <span class="spans">@_ct.CountryName</span>
+                            <input type="text" id="CountryId" value="@_ct.CountryId" style="display:none" />
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Libro:</label></td>
+                <td>
+                    @{
+                        var bks = (from _bk in db.Books
+                                   where _bk.BookId == BookIds
+                                   select _bk).ToList();
+                        foreach (Books _bks in bks)
+                        {
+                            <span class="spans">@_bks.BookName</span>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Edición:</label></td>
+                <td>
+                    @{
+                        var eds = (from _ed in db.Editions
+                                   where _ed.EditionId == EditionIds
+                                   select _ed).ToList();
+                        foreach (Editions _eds in eds)
+                        {
+                            <span class="spans">@_eds.NumberEdition</span>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Cliente:</label></td>
+                <td>
+                    @{
+                        var cl = (from _cl in db.Clients
+                                  where _cl.ClientId == ClientIdss
+                                  select _cl).ToList();
+                        foreach (Clients _cl in cl)
+                        {
+                            <span class="spans">@_cl.CompanyName</span>
+                            <input type="text" value="@_cl.ClientId" id="ClientId" style="display:none" />
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <table class="widthtable" border="0">
+            <tr>
+                <td style="width:33.33%">
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#AddPhone">
+                        <span class="glyphicon glyphicon-phone-alt"></span>
+                        <span>&nbsp; Agregar Telefóno</span>
+                    </button>
+                </td>
+                <td style="width:33.33%">
+                    @{
+                        <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("HospitalsAddressProd", "ClinicalAnalysis", new { ClientId = ClientIdss })';return false;">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span>&nbsp; Regresar</span>
+                        </button>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br />
+
+<div style="width:100%" class="table-responsive">
+    <table class="widthtable table-hover">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Tipo</th>
+                <th>Lada</th>
+                <th>Teléfono</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (GetClientPhones item in Model)
+                {
+                    <tr>
+                        <td style="width:22.5%">
+                            <span> <label id="lblDescription" style="font-size: 12px">@item.Description</label> </span>
+                            <input id="lblPhoneTypeId" style="display:none; width:20px" value="@item.PhoneTypeId" />
+                        </td>
+                        <td style="width:22.5%">
+                            <span class="display-modeCP"> <label id="lblLada" style="font-size: 12px">@item.Lada</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="10" id="txtLada" class="edit-modeCP edprod form-control">@item.Lada</textarea>
+                            <input id="lblClientPhoneId" style="display:none; width:20px" value="@item.ClientPhoneId" />
+                        </td>
+                        <td style="width:45%">
+                            <span class="display-modeCP"> <label id="lblNumber" style="font-size: 12px">@item.Number</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" id="txtNumber" class="edit-modeCP edprod form-control">@item.Number</textarea>
+                        </td>
+                        <td class="column10 text-center">
+                            <button class="btn btn-warning btn-sm display-modeCP" onclick="ActiveFieldsToEditPhoneCCA($(this))">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                            <button class="btn btn-primary btn-sm edit-modeCP" style="display:none" onclick="SaveChangesEditPhoneCCA($(this))">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                            <button class="btn btn-danger btn-sm edit-modeCP" style="display:none" onclick="CancelEditPhoneCCA($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                        <td class="column10 text-center">
+                            <button class="btn btn-danger btn-sm" onclick="DeletePhonesCCA($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="modal fade" id="AddPhone" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Teléfono.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Tipo de Teléfono: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <div class="form-group has-feedback" id="divPhoneTypes" style="margin-bottom: 0;">
+                                <select class="form-control" id="PhoneTypes" onchange="$('#divPhoneTypes').removeClass('has-error'), $('.errorPT').hide()">
+                                    <option value="0">Seleccione...</option>
+                                    @{
+                                        var pt = db.PhoneTypes.Where(x => x.Active == true).OrderBy(x => x.Description).ToList();
+
+                                        foreach (PhoneTypes _pt in pt)
+                                        {
+                                            <option value="@_pt.PhoneTypeId">@_pt.Description</option>
+                                        }
+                                    }
+                                </select>
+                                <span class="glyphicon glyphicon-remove form-control-feedback errorPT" style="display:none"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Lada: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+
+                            @{
+                                if (SAId != null)
+                                {
+                                    var cds = db.Countries.Where(x => x.CountryId == SAId.CountryId).ToList();
+
+                                    if (cds[0].CountryLada != null)
+                                    {
+                                        <div class="form-group has-feedback" id="divLada" style="margin-bottom: 0;">
+                                            <input type="text" placeholder="Lada..." class="form-control" disabled="disabled" value="@cds[0].CountryLada" maxlength="10" id="Lada" onkeypress="$('#divLada').removeClass('has-error'), $('.errorL').hide()" />
+                                            <span class="glyphicon glyphicon-remove form-control-feedback errorL" style="display:none"></span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group has-feedback" id="divLada" style="margin-bottom: 0;">
+                                            <input type="text" placeholder="Lada..." class="form-control" maxlength="10" id="Lada" onkeypress="$('#divLada').removeClass('has-error'), $('.errorL').hide()" />
+                                            <span class="glyphicon glyphicon-remove form-control-feedback errorL" style="display:none"></span>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="form-group has-feedback" id="divLada" style="margin-bottom: 0;">
+                                        <input type="text" placeholder="Lada..." class="form-control" maxlength="10" id="Lada" onkeypress="$('#divLada').removeClass('has-error'), $('.errorL').hide()" />
+                                        <span class="glyphicon glyphicon-remove form-control-feedback errorL" style="display:none"></span>
+                                    </div>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Número: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <div class="form-group has-feedback" id="divNumber" style="margin-bottom: 0;">
+                                <input type="text" placeholder="Número..." class="form-control" id="Number" onkeypress="$('#divNumber').removeClass('has-error'), $('.errorN').hide()" />
+                                <span class="glyphicon glyphicon-remove form-control-feedback errorN" style="display:none"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="AddPhonesCCA()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn" data-dismiss="modal" onclick="cancelAddBranchs()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

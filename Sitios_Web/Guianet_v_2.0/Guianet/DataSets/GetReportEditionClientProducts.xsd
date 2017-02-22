@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="GetReportEditionClientProducts" targetNamespace="http://tempuri.org/GetReportEditionClientProducts.xsd" xmlns:mstns="http://tempuri.org/GetReportEditionClientProducts.xsd" xmlns="http://tempuri.org/GetReportEditionClientProducts.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="GuiaConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="GuiaConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.GuiaConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GetReportEditionClientProductsTableAdapter" GeneratorDataComponentClassName="GetReportEditionClientProductsTableAdapter" Name="GetReportEditionClientProducts" UserDataComponentName="GetReportEditionClientProductsTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="GuiaConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT	DISTINCT
+		e.EditionId,
+		e.NumberEdition,
+		
+		c.ClientId,
+		c.CompanyName,
+		
+		p.ProductId,
+		p.ProductName,
+		
+                                     cp.RegisterSanitary,
+		bc.BarCode,
+
+		CASE WHEN ((SELECT COUNT(*) FROM EditionClientProducts 
+										WHERE ClientId = ec.ClientId AND 
+										ProductId = p.ProductId AND 
+										EditionId = @EditionId AND
+										StatusId = (select StatusId from Status where StatusName = 'Producto con Cambios'))&gt; 0)
+			THEN 'SI' ELSE 'NO' END AS CC,
+			
+		CASE WHEN ((SELECT COUNT(*) FROM EditionClientProducts 
+										WHERE ClientId = ec.ClientId AND 
+										ProductId = p.ProductId AND 
+										EditionId = @EditionId AND
+										StatusId = (select StatusId from Status where StatusName = 'Producto sin Cambios'))&gt; 0)
+			THEN 'SI' ELSE 'NO' END AS SC,
+		
+		CASE WHEN ((select COUNT(*) from EditionClientProducts ecp 
+										where ecp.ClientId = ec.ClientId and 
+											  ecp.ProductId = p.ProductId and
+											  ecp.EditionId = @EditionId) &gt; 0) 
+			THEN 'SI' ELSE 'NO' END as PP,
+		
+		CASE WHEN ((select COUNT(*) from EditionBookClientProducts ecp 
+		     where ecp.ClientId = ec.ClientId and 
+		     ecp.ProductId = p.ProductId and
+		     ecp.EditionId = @EditionId) &gt; 0 ) THEN 'SI' ELSE 'NO' END as MP,
+		     
+		CASE WHEN (((select COUNT(*) from EditionClientProductSIDEF pp 
+										 where pp.ClientId = ec.ClientId and 
+										 pp.ProductId = p.ProductId and
+										 pp.EditionId = @EditionId) &gt; 0) OR  (select COUNT(*) from EditionClientProductShots pp 
+										 where pp.ClientId = ec.ClientId and 
+										 pp.ProductId = p.ProductId and
+										 pp.EditionId = @EditionId) &gt; 0)
+		    
+		    THEN 'SI' ELSE 'NO' END as SIDEF,
+
+null as Count,
+null as UserName,
+null as Executive,
+null as Date,
+null as DateOfReport,
+
+ ec.AddedDate
+		
+
+
+			FROM EditionClientProducts ec
+INNER JOIN ClientProducts cp on ec.ClientId = cp.ClientId
+										and ec.ProductId = cp.ProductId
+			INNER JOIN ClientProductBarCodes cpbc on ec.ClientId = cpbc.ClientId
+												 and ec.ProductId = cpbc.ProductId
+			INNER JOIN BarCodes bc on cpbc.BarCodeId = bc.BarCodeId
+			INNER JOIN Editions e on ec.EditionId = e.EditionId
+			INNER JOIN Clients c on ec.ClientId = c.ClientId
+			INNER JOIN Products P ON EC.ProductId = P.ProductId
+			LEFT JOIN Status S ON ec.StatusId = s.StatusId
+			WHERE ec.AddedDate &gt;= CONVERT(varchar(10), @Date, 112) AND
+			ec.AddedDate &lt; CONVERT(varchar(10), @Date+1, 112) 
+			AND e.EditionId = @EditionId
+			order by e.EditionId, c.CompanyName, p.ProductName</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="Date" ColumnName="AddedDate" DataSourceName="Guia.dbo.EditionClientProducts" DataTypeServer="datetime" DbType="DateTime" Direction="Input" ParameterName="@Date" Precision="0" ProviderType="DateTime" Scale="0" Size="8" SourceColumn="AddedDate" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="EditionId" ColumnName="EditionId" DataSourceName="Guia.dbo.Editions" DataTypeServer="int" DbType="Int32" Direction="Input" ParameterName="@EditionId" Precision="0" ProviderType="Int" Scale="0" Size="4" SourceColumn="EditionId" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="EditionId" DataSetColumn="EditionId" />
+              <Mapping SourceColumn="NumberEdition" DataSetColumn="NumberEdition" />
+              <Mapping SourceColumn="ClientId" DataSetColumn="ClientId" />
+              <Mapping SourceColumn="CompanyName" DataSetColumn="CompanyName" />
+              <Mapping SourceColumn="ProductId" DataSetColumn="ProductId" />
+              <Mapping SourceColumn="ProductName" DataSetColumn="ProductName" />
+              <Mapping SourceColumn="CC" DataSetColumn="CC" />
+              <Mapping SourceColumn="SC" DataSetColumn="SC" />
+              <Mapping SourceColumn="PP" DataSetColumn="PP" />
+              <Mapping SourceColumn="MP" DataSetColumn="MP" />
+              <Mapping SourceColumn="SIDEF" DataSetColumn="SIDEF" />
+              <Mapping SourceColumn="Count" DataSetColumn="Count" />
+              <Mapping SourceColumn="UserName" DataSetColumn="UserName" />
+              <Mapping SourceColumn="Date" DataSetColumn="Date" />
+              <Mapping SourceColumn="RegisterSanitary" DataSetColumn="RegisterSanitary" />
+              <Mapping SourceColumn="BarCode" DataSetColumn="BarCode" />
+              <Mapping SourceColumn="AddedDate" DataSetColumn="AddedDate" />
+              <Mapping SourceColumn="Executive" DataSetColumn="Executive" />
+              <Mapping SourceColumn="DateOfReport" DataSetColumn="DateOfReport" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="GetReportEditionClientProducts" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="GetReportEditionClientProducts" msprop:Generator_UserDSName="GetReportEditionClientProducts">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="GetReportEditionClientProducts" msprop:Generator_TableClassName="GetReportEditionClientProductsDataTable" msprop:Generator_TableVarName="tableGetReportEditionClientProducts" msprop:Generator_TablePropName="_GetReportEditionClientProducts" msprop:Generator_RowDeletingName="GetReportEditionClientProductsRowDeleting" msprop:Generator_RowChangingName="GetReportEditionClientProductsRowChanging" msprop:Generator_RowEvHandlerName="GetReportEditionClientProductsRowChangeEventHandler" msprop:Generator_RowDeletedName="GetReportEditionClientProductsRowDeleted" msprop:Generator_UserTableName="GetReportEditionClientProducts" msprop:Generator_RowChangedName="GetReportEditionClientProductsRowChanged" msprop:Generator_RowEvArgName="GetReportEditionClientProductsRowChangeEvent" msprop:Generator_RowClassName="GetReportEditionClientProductsRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EditionId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnEditionId" msprop:Generator_ColumnPropNameInRow="EditionId" msprop:Generator_ColumnPropNameInTable="EditionIdColumn" msprop:Generator_UserColumnName="EditionId" type="xs:int" />
+              <xs:element name="NumberEdition" msprop:Generator_ColumnVarNameInTable="columnNumberEdition" msprop:Generator_ColumnPropNameInRow="NumberEdition" msprop:Generator_ColumnPropNameInTable="NumberEditionColumn" msprop:Generator_UserColumnName="NumberEdition" type="xs:int" />
+              <xs:element name="ClientId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnClientId" msprop:Generator_ColumnPropNameInRow="ClientId" msprop:Generator_ColumnPropNameInTable="ClientIdColumn" msprop:Generator_UserColumnName="ClientId" type="xs:int" />
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ProductId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnProductId" msprop:Generator_ColumnPropNameInRow="ProductId" msprop:Generator_ColumnPropNameInTable="ProductIdColumn" msprop:Generator_UserColumnName="ProductId" type="xs:int" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CC" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCC" msprop:Generator_ColumnPropNameInRow="CC" msprop:Generator_ColumnPropNameInTable="CCColumn" msprop:Generator_UserColumnName="CC" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SC" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnSC" msprop:Generator_ColumnPropNameInRow="SC" msprop:Generator_ColumnPropNameInTable="SCColumn" msprop:Generator_UserColumnName="SC" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PP" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnPP" msprop:Generator_ColumnPropNameInRow="PP" msprop:Generator_ColumnPropNameInTable="PPColumn" msprop:Generator_UserColumnName="PP" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MP" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnMP" msprop:Generator_ColumnPropNameInRow="MP" msprop:Generator_ColumnPropNameInTable="MPColumn" msprop:Generator_UserColumnName="MP" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SIDEF" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnSIDEF" msprop:Generator_ColumnPropNameInRow="SIDEF" msprop:Generator_ColumnPropNameInTable="SIDEFColumn" msprop:Generator_UserColumnName="SIDEF" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Count" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCount" msprop:Generator_ColumnPropNameInRow="Count" msprop:Generator_ColumnPropNameInTable="CountColumn" msprop:Generator_UserColumnName="Count" type="xs:int" minOccurs="0" />
+              <xs:element name="UserName" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnUserName" msprop:Generator_ColumnPropNameInRow="UserName" msprop:Generator_ColumnPropNameInTable="UserNameColumn" msprop:Generator_UserColumnName="UserName" type="xs:int" minOccurs="0" />
+              <xs:element name="Date" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnDate" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_UserColumnName="Date" type="xs:int" minOccurs="0" />
+              <xs:element name="RegisterSanitary" msprop:Generator_ColumnVarNameInTable="columnRegisterSanitary" msprop:Generator_ColumnPropNameInRow="RegisterSanitary" msprop:Generator_ColumnPropNameInTable="RegisterSanitaryColumn" msprop:Generator_UserColumnName="RegisterSanitary" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="150" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="BarCode" msprop:Generator_ColumnVarNameInTable="columnBarCode" msprop:Generator_ColumnPropNameInRow="BarCode" msprop:Generator_ColumnPropNameInTable="BarCodeColumn" msprop:Generator_UserColumnName="BarCode">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="150" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AddedDate" msprop:Generator_ColumnVarNameInTable="columnAddedDate" msprop:Generator_ColumnPropNameInRow="AddedDate" msprop:Generator_ColumnPropNameInTable="AddedDateColumn" msprop:Generator_UserColumnName="AddedDate" type="xs:dateTime" />
+              <xs:element name="Executive" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnExecutive" msprop:Generator_ColumnPropNameInRow="Executive" msprop:Generator_ColumnPropNameInTable="ExecutiveColumn" msprop:Generator_UserColumnName="Executive" type="xs:int" minOccurs="0" />
+              <xs:element name="DateOfReport" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnDateOfReport" msprop:Generator_ColumnPropNameInRow="DateOfReport" msprop:Generator_ColumnPropNameInTable="DateOfReportColumn" msprop:Generator_UserColumnName="DateOfReport" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

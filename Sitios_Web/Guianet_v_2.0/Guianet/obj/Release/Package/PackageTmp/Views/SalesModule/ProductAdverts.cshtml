@@ -1,0 +1,326 @@
+﻿@model IEnumerable<ProductAdverts>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "ProductAdverts";
+    Guianet.Models.Sessions.SessionSMSP ind = (Guianet.Models.Sessions.SessionSMSP)Session["SessionSMSP"];
+    GuiaEntities db = new GuiaEntities();
+    WebGrid _datagrid = new WebGrid(Model);
+    int EditionIds, BookIds, CountryIdss, ClientIdss;
+    byte ClientType;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+        ClientType = Convert.ToByte(ind.CTId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+        ClientType = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/SalesModule/SpecialProducts")" class="ldr">Ventas</a></li>
+    <li><a href="@Url.Content("~/SalesModule/SpecialProducts")" class="ldr">Productos Especiales</a></li>
+    <li class="active">Archivos</li>
+</ol>
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="widthtable" border="0">
+
+                    <tr>
+                        <td style="width: 10%;"><label class="labelsform">País:</label></td>
+                        <td>
+                            @{
+        var cts = (from _ct in db.Countries
+                   where _ct.CountryId == CountryIdss
+                   select _ct).ToList();
+        foreach (Countries _ct in cts)
+        {
+            <span class="spans">@_ct.CountryName</span>
+                                <input type="text" value="@_ct.CountryId" id="CountryId" style="display:none" />
+        }
+                            }
+                        </td>
+                        <td rowspan="5">
+                            <button class="btn btn-primary ldr" onclick="location.href = '@Url.Action("SpecialProducts", "SalesModule")'; return false;">
+                                <span class="glyphicon glyphicon-home"></span>
+                                <span class="spans" style="font-style:normal">&nbsp; Regresar...</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Libro:</label></td>
+                        <td>
+                            @{
+        var bks = (from _bk in db.Books
+                   where _bk.BookId == BookIds
+                   select _bk).ToList();
+        foreach (Books _bks in bks)
+        {
+            <span class="spans">@_bks.BookName</span>
+        }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Edición:</label></td>
+                        <td>
+                            @{
+        var eds = (from _ed in db.Editions
+                   where _ed.EditionId == EditionIds
+                   select _ed).ToList();
+        foreach (Editions _eds in eds)
+        {
+            <span class="spans">@_eds.NumberEdition</span>
+                                <input type="text" class="form-control" value="@_eds.EditionId" id="EditionId" style="display:none" />
+        }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Cliente:</label></td>
+                        <td>
+                            @{
+        var cl = (from _cl in db.Clients
+                  where _cl.ClientId == ClientIdss
+                  select _cl).ToList();
+        foreach (Clients _cl in cl)
+        {
+            <span class="spans">@_cl.CompanyName</span>
+                                <input type="text" class="form-control" value="@_cl.ClientId" id="ClientId" style="display:none" />
+        }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Tipo de Cliente:</label></td>
+                        <td>
+                            @{
+        var ct = (from _cl in db.ClientTypes
+                  where _cl.ClientTypeId == ClientType
+                  select _cl).ToList();
+        foreach (ClientTypes _cl in ct)
+        {
+            <span class="spans">@_cl.TypeName</span>
+                                <input type="text" value="@_cl.ClientTypeId" id="ClientTypeId" style="display:none" />
+        }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    }
+}
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-3">
+
+    </div>
+    <div class="col-lg-6">
+        <table class="widthtable" border="0">
+            <tr>
+                <td style="width:15%"><label class="labelsform">Archivo:</label></td>
+                <td style="width:85%">
+                    <div style="display:normal;border:none" id="DivAddHTMLFile">
+                        <form enctype="multipart/form-data" method="post" id="SendPDFFile">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip;
+                                    </span>
+                                    <input id="uploadBtn" type="file" accept=".pdf , .jpg , .png, .jpeg" name="file" style="display:none" onchange="rps($(this))" />
+                                </label>
+                                <input type="text" class="form-control" readonly id="txtFileName" onchange="rps($(this))">
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><br /></td>
+            </tr>
+            <tr>
+                <td style="width:15%"><label class="labelsform">Orden:</label></td>
+                <td style="width:85%">
+                    <div class="form-group has-feedback" id="SelectOrder" style="margin-bottom: 0;">
+                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="$('#SelectOrder').removeClass('has-error'), $('.errorO').hide()" class="form-control" id="OrderOfAdvert" />
+                        <span class="glyphicon glyphicon-remove form-control-feedback errorO" style="display:none"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><br /></td>
+            </tr>
+            <tr>
+                <td style="width:15%"><label class="labelsform">Descripción:</label></td>
+                <td style="width:85%">
+                    <textarea class="form-control" id="txtDescriptionProductAdvert"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><br /></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button class="btn btn-primary btn-sm" onclick="SaveAddPDF($(this))">
+                        <span class="glyphicon glyphicon-saved"></span>
+                        <span>&nbsp; Guardar</span>
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="HideFormAddPDF($(this))">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span>&nbsp; Cancelar</span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-3">
+
+    </div>
+</div>
+<br />
+<br />
+@*<table class="widthtable webgrid-table1 table-hover">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Nombre de Archivo</th>
+                <th>Descripción</th>
+                <th>Cargado</th>
+                <th>Orden</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (ProductAdverts item in Model)
+                {
+                    <tr class="webgrid-row-style">
+                        <td>@item.ProductAdvertName</td>
+                        <td>@item.Description</td>
+                        <td>@item.Order</td>
+                        <td>@item.Order</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>*@
+
+<div style="width:100%" class="table-responsive">
+    @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table1",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Archivo", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblName">@item.ProductAdvertName</label> </span>
+                                    @*<input id="lblProductid" style="display:none;" value="@item.ProductId" />*@
+                                }
+                        </text>, style:"column40"),
+
+         _datagrid.Column("", header: "Descripción", format: @<text>
+        @{
+            <span class="display-mode"> <label id="lblregister">@item.Description</label> </span>
+            <textarea style="display:none; color:red; font-size: 12px;" maxlength="150" id="Register" class="edit-mode edreg form-control">@item.Description</textarea>
+        }
+        </text>, style:"column40"),
+
+         _datagrid.Column("", header: "Orden", format: @<text>
+        @{
+            <span class="display-mode"> <label id="lblbarcode">@item.Order</label> </span>
+            <textarea style="display:none; color:red; font-size: 12px;" maxlength="150" id="barcode" class="edit-mode barcode form-control">@item.Order</textarea>
+        }
+        </text>, style:"text-center column5"),
+
+            _datagrid.Column("", header: "Archivo", format: @<text>
+        @{
+            string Ext = Path.GetExtension(item.ProductAdvertName);
+
+            if(Ext.ToUpper() == ".PDF")
+            {
+                @*<a target="_blank" href="@Url.Action("GetPDFS", "SalesModule", new { ProductAdvertName = item.ProductAdvertName, ClientId = ClientIdss })" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-file"></span>
+                <span>&nbsp; PDF</span>
+                </a>*@
+            
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Item_@item.ProductAdvertId">
+                <span class="glyphicon glyphicon-file"></span>
+                    <span>&nbsp; PDF</span>
+                </button>
+                <div class="modal fade" id="Item_@item.ProductAdvertId" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header label-primary">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title" style="color:white" id="messageerror"><i>Archivo.</i></h3>
+                            </div>
+                            <div class="modal-body" id="contenteditions">
+                                <iframe style="width:100%;height:100%" src="@Url.Action("GetPDFS", "SalesModule", new { ProductAdvertName = item.ProductAdvertName, ClientId = ClientIdss, CountryId = CountryIdss })"></iframe>
+                            </div>
+                            <div class="modal-footer" id="divbtncloseerror">
+                                <button class="btn btn-danger" data-dismiss="modal">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span>&nbsp; Cerrar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            }
+            else
+            {
+                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Item_@item.ProductAdvertId">
+                    <span class="glyphicon glyphicon-camera"></span>
+                    <span>&nbsp; IMG</span>
+                </button>
+                <div class="modal fade" id="Item_@item.ProductAdvertId" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header label-primary">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title" style="color:white" id="messageerror"><i>Archivo.</i></h3>
+                            </div>
+                            <div class="modal-body" id="contenteditions">
+                                <img style="width:100%" src="@Url.Action("ProductAdvertsImages", "SalesModule", new { ProductAdvertName = item.ProductAdvertName, ClientId = ClientIdss, CountryId = CountryIdss })" />
+                            </div>
+                            <div class="modal-footer" id="divbtncloseerror">
+                                <button class="btn btn-danger" data-dismiss="modal">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span>&nbsp; Cerrar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+            </text>,style:"text-center column15")
+        })
+</div>
+
+<script>
+    function downloadFile(value) {
+        window.location.href = '../SalesModule/Download?ProductAdvertName=' + value + '&Client=' + @ClientIdss + ''
+    }
+</script>

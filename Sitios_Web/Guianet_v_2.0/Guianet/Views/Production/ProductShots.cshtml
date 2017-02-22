@@ -1,0 +1,238 @@
+﻿@model IEnumerable<GetProductShots>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "ProductShots";
+    Guianet.Models.Sessions.SessionProduction SessionProduction = (Guianet.Models.Sessions.SessionProduction)Session["SessionProduction"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss, ProductIds;
+    if (SessionProduction != null)
+    {
+        ClientIdss = SessionProduction.ClId;
+        EditionIds = SessionProduction.EId;
+        BookIds = SessionProduction.BId;
+        CountryIdss = SessionProduction.CId;
+        ProductIds = Convert.ToInt32(SessionProduction.PId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+        ProductIds = 0;
+    }
+}
+<script src="@Url.Content("~/Scripts/ScriptsSalesModule.js")"></script>
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Production/Index")" class="ldr">Producción</a></li>
+    <li><a href="@Url.Content("~/Production/Index")" class="ldr">Productos</a></li>
+    <li class="active">Imagenes de Productos</li>
+</ol>
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            if (SessionProduction != null)
+            {
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width: 6%;"><label class="labelsform">País:</label></td>
+                        <td>
+                            @{
+                                var cts = (from _ct in db.Countries
+                                           where _ct.CountryId == CountryIdss
+                                           select _ct).ToList();
+                                foreach (Countries _ct in cts)
+                                {
+                                    <span class="spans">@_ct.CountryName</span>
+                                <input type="text" id="CountryId" value="@_ct.CountryId" style="display:none"/>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Libro:</label></td>
+                        <td>
+                            @{
+                                var bks = (from _bk in db.Books
+                                           where _bk.BookId == BookIds
+                                           select _bk).ToList();
+                                foreach (Books _bks in bks)
+                                {
+                                    <span class="spans">@_bks.BookName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Edición:</label></td>
+                        <td>
+                            @{
+                                var eds = (from _ed in db.Editions
+                                           where _ed.EditionId == EditionIds
+                                           select _ed).ToList();
+                                foreach (Editions _eds in eds)
+                                {
+                                    <span class="spans">@_eds.NumberEdition</span>
+                                    <input type="text" value="@_eds.EditionId" id="EditionId" style="display:none"/>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Cliente:</label></td>
+                        <td>
+                            @{
+                                var cl = (from _cl in db.Clients
+                                          where _cl.ClientId == ClientIdss
+                                          select _cl).ToList();
+                                foreach (Clients _cl in cl)
+                                {
+                                    <span class="spans">@_cl.CompanyName</span>
+                                    <input type="text" value="@_cl.ClientId" id="ClientId" style="display:none"/>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Producto:</label></td>
+                        <td>
+                            @{
+                                var pr = (from _pr in db.Products
+                                          where _pr.ProductId == ProductIds
+                                          select _pr).ToList();
+                                foreach (Products _pr in pr)
+                                {
+                                    <span class="spans">@_pr.ProductName</span>
+                                    <input type="text" value="@_pr.ProductId" id="ProductId" style="display:none" />
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            }
+        }
+    </div>
+    <div class="col-lg-6" style="text-align:center">
+        <button class="btn btn-primary ldr" onclick="location.href='@Url.Content("~/Production/Index")';return false;">
+            <span class="glyphicon glyphicon-home"></span>
+            <span>&nbsp; Regresar</span>
+        </button>
+    </div>
+</div>
+<br />
+<br />
+<div style="display:normal;border:none; width:50%;margin-left:25%" id="DivAddHTMLFile">
+    <table class="widthtable">
+        <tr>
+            <td style="width:20%">
+                <label class="labelsform">Tamaño: </label>
+            </td>
+            <td style="width:80%">
+                <select class="form-control" id="SelectImageSize">
+                    <option value="0">Seleccione...</option>
+                    @{
+                        var ims = db.ImageSizes.Where(x => x.Active == true).OrderBy(x => x.ImageSize).ToList();
+                        
+                        foreach(ImageSizes _ims in ims)
+                        {
+                            <option value="@_ims.ImageSizeId">@_ims.ImageSize</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <form enctype="multipart/form-data" method="post" id="SendProductShots">
+        <div class="input-group">
+            <label class="input-group-btn">
+                <span class="btn btn-primary">
+                    Browse&hellip;
+                </span>
+                <input id="uploadBtn" type="file" accept="image/png" name="file" style="display:none" onchange="addBrandName($(this))" />
+            </label>
+            <input type="text" class="form-control" readonly id="txtFileName">
+        </div>
+    </form>
+    <br />
+    <br />
+    <button style="float:right" class="btn btn-danger btn-sm" onclick="CancelProductShot($(this))">
+        <span class="glyphicon glyphicon-remove"></span>
+        <span>&nbsp; Cancelar</span>
+    </button>
+    <button style="float:right" class="btn btn-primary btn-sm" onclick="SaveProductShot($(this))">
+        <span class="glyphicon glyphicon-saved"></span>
+        <span>&nbsp; Guardar</span>&nbsp;&nbsp;
+    </button>
+</div>
+<br />
+<br />
+<br />
+<br />
+<div class="widthtable">
+    <table class="widthtable">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Nombre de Imagen</th>
+                <th>Tamaño</th>
+                <th>Imagen</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach(GetProductShots item in Model)
+                {
+                    <tr>
+                        <td>
+                            <label style="font-size:12px">
+                                @item.ProductShot
+                            </label>
+                            <input type="text" value="@item.EditionClientProductShotId" id="EditionClientProductShotId" style="display:none"/>
+                        </td>
+                        <td class="text-center">
+                            <label style="font-size:12px">@item.ImageSize</label>
+                            <input type="text" value="@item.ImageSizeId" id="ImageSizeId" style="display:none"/>
+                        </td>
+                        <td>
+                            <div class="responsive-container">
+                                <div class="img-container">
+                                    @{
+                                        if(item.ImageSizeId != null)
+                                        {
+                                            <img src="@Url.Action("GetProductShots", "Production", new { EditionClientProductShotId = item.EditionClientProductShotId, ImageSizeId = item.ImageSizeId,CountryId = CountryIdss })" class="aiimg" style="width: 70px; height: 70px" />       
+                                        }
+                                        else
+                                        {
+                                            <img src="@Url.Action("GetProductShotsSIDEF", "Production", new { EditionClientProductShotId = item.EditionClientProductShotId, ClientId = ClientIdss, EditionId = EditionIds, CountryId = CountryIdss })" class="aiimg" style="width: 70px; height: 70px" />       
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td class="column5 text-center">
+                            @{
+                                if(item.ImageSizeId != null)
+                                {
+                                    <button class="btn btn-danger btn-sm" onclick="DeleteProductShot($(this))">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn-sm" onclick="DeleteProductShotSIDEF($(this))">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                }
+                            }
+                        </td>
+                    </tr>   
+                }
+            }
+        </tbody>
+    </table>
+</div>

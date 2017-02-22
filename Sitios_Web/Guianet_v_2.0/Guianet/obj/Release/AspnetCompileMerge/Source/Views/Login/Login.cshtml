@@ -1,0 +1,47 @@
+﻿@model Guianet.Models.Users
+@{
+    ViewBag.Title = "Login";
+}
+
+<html>
+<head>
+    <title></title>
+    <link href="@Url.Content("~/Content/Login.css")" rel="stylesheet">
+</head>
+<body style="background-color: #ecf0f5">
+    <br />
+    <img src="@Url.Content("~/Images/Guianet.png")" style="float:left; width:25%;top:0; position:fixed" />
+    <br />
+    <div style="height:100px;"></div>
+    <div id="contenedor">
+        <div id="contenido">
+            <div class="row" style="margin-left:2px; margin-left:2px; border:none;">
+                <form action="" method="post" name="Login_Form" class="form-signin">
+                    <h2 class="form-login-heading">INICIAR SESIÓN</h2>
+                    <div class="login-wrap">
+                        <div class="form-group has-feedback" style="color:red">
+                            @Html.ValidationSummary(true)
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.TextBoxFor(m => m.NickName, new { @class = "form-control", placeholder = "Usuario", Id = "inputUser", Required = "required autofocus" })
+                            @Html.ValidationMessageFor(m => m.NickName)
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Contraseña", Id = "inputPassword", Required = "required" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        <button class="btn btn-block" onclick="login($('#inputUser'), $('#inputPassword'))"><i class="fa fa-lock"></i> Entrar</button><br />
+                        @{
+                            String Version = System.Configuration.ConfigurationManager.AppSettings["Version"].ToString();
+                            <h4 style="color: #3a6f9f; text-align: right; bottom: 0"><i>@Version</i></h4>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer style="bottom: 0; position: fixed; height: 5%" class="widthtable">
+        <img src="@Url.Content("~/Images/PLM1.png")" style="width: 3%;" />&nbsp; <strong>-</strong> &nbsp; <strong> @DateTime.Now.Year</strong>&nbsp; <span class="glyphicon glyphicon-copyright-mark"></span>
+    </footer>
+</body>
+</html>

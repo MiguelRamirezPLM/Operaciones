@@ -1,0 +1,525 @@
+﻿@using Guianet.Models;
+@{
+    PLMUsers PLMUsers = new PLMUsers();
+    string HashKey = System.Configuration.ConfigurationManager.AppSettings["HashKey"];
+
+    var apps = PLMUsers.Applications.Where(x => x.HashKey == HashKey).ToList();
+
+    int ApplicationId = apps[0].ApplicationId;
+
+    Guianet.Models.CountriesUsers c = (Guianet.Models.CountriesUsers)Session["CountriesUsers"];
+
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - GUIANET</title>
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <script src="@Url.Content("~/Scripts/ScriptsSalesModule.js")"></script>
+    <link href="@Url.Content("~/Content/Guianet.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/estilos.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/apprise.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/AdminLTE.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/_all-skins.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/blue.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/jquery-jvectormap-1.2.2.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/datepicker3.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/daterangepicker-bs3.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/bootstrap3-wysihtml5.min.css")" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador">
+            <img src="~/Images/477.GIF" style="">
+        </div>
+    </div>
+    <div class="wrapper">
+        @if (Request.IsAuthenticated)
+        {
+
+
+            <header class="main-header">
+                <span class="logo">
+                    <span class="logo-mini"><img src="@Url.Content("~/Images/PLM2.png")" class="classimagelogo" /></span>
+                    <span class="logo-lg"><img src="@Url.Content("~/Images/Guianet2.png")" class="classimagelogo" /></span>
+                </span>
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="@Url.Content("~/Images/user.png")" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">@User.Identity.Name.ToUpper()</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="@Url.Content("~/Images/user.png")" class="img-circle" alt="User Image">
+                                        <p>
+                                            @User.Identity.Name.ToUpper()
+                                            <small>@DateTime.Now.Date.Day / @DateTime.Now.Date.Month / @DateTime.Now.Date.Year</small>
+                                        </p>
+                                    </li>
+                                    <li class="user-footer">
+                                        <div class="pull-right">
+                                            <a href="@Url.Content("~/Login/Logout")" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li class="header">MENÚ</li>
+                        @{
+            if (c != null)
+            {
+
+                var user = c.userId;
+                var app = c.ApplicationId;
+                var userid = (from UR in PLMUsers.ApplicationUsers
+                              where UR.UserId == user
+                              && UR.ApplicationId == app
+                              join rol in PLMUsers.Roles
+                              on UR.RoleId equals rol.RoleId
+                              select rol).ToList();
+                foreach (Guianet.Models.Roles a in userid)
+                {
+                    if (a.Description == "Administrador")
+                    {
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-pie-chart"></i>
+                                <span>Ventas</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Content("~/SalesModule/Adverts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anuncios</a></li>
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Análisis Clínicos</a></li>
+                                <li><a href="@Url.Content("~/IP/InternationalClients")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Clientes Internacionales</a></li>
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/Hospitals")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Hospitales</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/Brands")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Marcas</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/SpecialProducts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Especiales</a></li>
+                                <li><a href="@Url.Content("~/IP/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Internacionales</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/Branchs")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anunciantes - Sucursales</a></li>
+                            </ul>
+                        </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-laptop"></i>
+                                    <span>LI</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Content("~/ClinicalAnalysis/IndexLI")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Análisis Clínicos</a></li>
+                                    <li><a href="@Url.Content("~/LI/Categories")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Categorías</a></li>
+                                    <li><a href="@Url.Content("~/IP/Geolocalization")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                                    <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsLI")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Hospitales</a></li>
+                                    <li><a href="@Url.Content("~/LI/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-edit"></i> <span>Producción</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Content("~/Production/Adverts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anuncios</a></li>
+                                    <li><a href="@Url.Content("~/ClinicalAnalysis/IndexProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Análisis Clínicos</a></li>
+                                    <li><a href="@Url.Content("~/IP/InternationalClientsProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Clientes Internacionales</a></li>
+                                    <li><a href="@Url.Content("~/Targets/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Etiquetas</a></li>
+                                    <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Hospitales</a></li>
+                                    <li><a href="@Url.Content("~/Production/Brands")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Marcas</a></li>
+                                    <li><a href="@Url.Content("~/Production/CategoryThree")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Paginar Categorías</a></li>
+                                    <li><a href="@Url.Content("~/Production/ClientsByEdition")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Paginar Clientes</a></li>
+                                    <li><a href="@Url.Content("~/Production/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                    <li><a href="@Url.Content("~/Production/SpecialProducts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Especiales</a></li>
+                                    <li><a href="@Url.Content("~/IP/IndexProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Internacionales</a></li>
+                                    <li><a href="@Url.Content("~/Production/SegmentHTML")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Segmentar HTML</a></li>
+                                    <li><a href="@Url.Content("~/Production/Branchs")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anunciantes - Sucursales</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="@Url.Content("~/Reports/Index")" onclick="show_loader()">
+                                    <i class="fa fa-file-pdf-o"></i> <span>Reportes</span>
+                                </a>
+                            </li>
+                            <li class="treeview notifications" onclick="unset()">
+                                <a href="#" data-toggle="control-sidebar">
+                                    <i class="fa fa-th SpanNotification"></i> <span class="SpanNotification">Notificaciones</span> <span class="label pull-right bg-green IDNotifications" id="smNotifications" style="display:none">1</span>
+                                </a>
+                            </li>
+                    }
+                    if (a.Description == "Vendedor")
+                    {
+                        <li class="treeview active">
+                            <a href="#">
+                                <i class="fa fa-pie-chart"></i>
+                                <span>Ventas</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Content("~/SalesModule/Adverts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anuncios</a></li>
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Análisis Clínicos</a></li>
+                                <li><a href="@Url.Content("~/IP/InternationalClients")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Clientes Internacionales</a></li>
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/Hospitals")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Hospitales</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/Brands")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Marcas</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/SpecialProducts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Especiales</a></li>
+                                <li><a href="@Url.Content("~/IP/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Internacionales</a></li>
+                                <li><a href="@Url.Content("~/SalesModule/Branchs")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anunciantes - Sucursales</a></li>
+                            </ul>
+                        </li>
+                            <li class="treeview">
+                                <a href="#" data-toggle="control-sidebar">
+                                    <i class="fa fa-th"></i> <span>Notificaciones</span> <span class="label pull-right bg-green" id="smNotifications" style="display:none">1</span>
+                                </a>
+                            </li>
+                    }
+                    if (a.Description == "Laboratorio de Información")
+                    {
+                        <li class="treeview active">
+                            <a href="#">
+                                <i class="fa fa-laptop"></i>
+                                <span>LI</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/IndexLI")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Análisis Clínicos</a></li>
+                                <li><a href="@Url.Content("~/LI/Categories")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Categorías</a></li>
+                                <li><a href="@Url.Content("~/IP/Geolocalization")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsLI")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Hospitales</a></li>
+                                <li><a href="@Url.Content("~/LI/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos</a></li>
+                            </ul>
+                        </li>
+                            <li class="treeview">
+                                <a href="#" data-toggle="control-sidebar">
+                                    <i class="fa fa-th"></i> <span>Notificaciones</span> <span class="label pull-right bg-green" id="smNotifications" style="display:none">1</span>
+                                </a>
+                            </li>
+                    }
+                    if (a.Description == "Diagramador")
+                    {
+                        <li class="treeview active">
+                            <a href="#">
+                                <i class="fa fa-edit"></i> <span>Producción</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Content("~/Production/Adverts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anuncios</a></li>
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/IndexProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Análisis Clínicos</a></li>
+                                <li><a href="@Url.Content("~/IP/InternationalClientsProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Clientes Internacionales</a></li>
+                                @{
+                        var AdmTarget = System.Configuration.ConfigurationManager.AppSettings["Targets"];
+                        var usrTarget = PLMUsers.Users.Where(x => x.UserId == user).ToList();
+
+                        foreach (Users _usr in usrTarget)
+                        {
+                            if (AdmTarget.Contains(_usr.NickName))
+                            {
+                                <li><a href="@Url.Content("~/Targets/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Etiquetas</a></li>
+                            }
+                        }
+                                }
+                                <li><a href="@Url.Content("~/ClinicalAnalysis/HospitalsProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Hospitales</a></li>
+                                <li><a href="@Url.Content("~/Production/Brands")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Marcas</a></li>
+                                <li><a href="@Url.Content("~/Production/CategoryThree")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Paginar Categorías</a></li>
+                                <li><a href="@Url.Content("~/Production/ClientsByEdition")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Paginar Clientes</a></li>
+                                <li><a href="@Url.Content("~/Production/Index")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                <li><a href="@Url.Content("~/Production/SpecialProducts")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Especiales</a></li>
+                                <li><a href="@Url.Content("~/IP/IndexProd")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Productos Internacionales</a></li>
+                                <li><a href="@Url.Content("~/Production/SegmentHTML")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Segmentar HTML</a></li>
+                                <li><a href="@Url.Content("~/Production/Branchs")" onclick="show_loader()"><i class="fa fa-circle-o"></i> Anunciantes - Sucursales</a></li>
+                            </ul>
+                        </li>
+                            <li class="treeview">
+                                <a href="#" data-toggle="control-sidebar">
+                                    <i class="fa fa-th"></i> <span>Notificaciones</span> <span class="label pull-right bg-green" id="smNotifications" style="display:none">1</span>
+                                </a>
+                            </li>
+                    }
+                    var Admuser = System.Configuration.ConfigurationManager.AppSettings["AdminReports"];
+                    var usr = PLMUsers.Users.Where(x => x.NickName == Admuser && x.UserId == user).ToList();
+                    if (usr.LongCount() > 0)
+                    {
+                        <li class="treeview">
+                            <a href="@Url.Content("~/Reports/Index")" onclick="show_loader()">
+                                <i class="fa fa-file-pdf-o"></i> <span>Reportes</span>
+                            </a>
+                        </li>
+                    }
+
+                }
+            }
+            else
+            {
+                Session.Abandon();
+                Response.Redirect(Url.Action("Logout", "Login"));
+                Response.End();
+            }
+                        }
+                    </ul>
+                </section>
+            </aside>
+            <div class="content-wrapper">
+                <div style="margin-left:10px; margin-right:10px">
+                    @RenderBody()
+                </div>
+
+                <button id="BtnAddNews" data-toggle="modal" data-target="#AddNews" style="display:none">X</button>
+                <div class="modal fade" id="AddNews" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header label-primary">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar solicitúd de Categoría</i></h3>
+                            </div>
+                            <div class="modal-body" id="contenteditions">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <input type="text" id="txtClientIdAN" style="display:none; text-align:left" />
+                                        <label class="labelsform" style="float:left">Cliente: &nbsp;&nbsp;</label>
+                                        <label id="lblCompanyNameAN" style="float:left"></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <input type="text" id="txtProductIdAN" style="display:none; text-align:left" />
+                                        <label class="labelsform" style="float:left">Producto: &nbsp;&nbsp;</label>
+                                        <label id="lblProductNameAN" style="float:left"></label>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 14px; color: #003870">Categoría Nivel 3:</label>
+                                        <div class="form-group has-feedback" id="divAddCategoryNameAN3" style="margin-bottom: 0;">
+                                            <textarea class="form-control" style="text-transform:uppercase" id="AddCategoryNameAN3" onkeypress="$('#divAddCategoryNameAN3').removeClass('has-error'), $('.errorAN3').hide(), $('#AlertSuccessAW').fadeOut('slow'), $('#AlertErrorAW').fadeOut('slow');"></textarea>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback errorAN3" style="display:none"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 14px; color: #003870">Categoría Nivel 4:</label>
+                                        <div class="form-group has-feedback" id="divAddCategoryNameAN" style="margin-bottom: 0;">
+                                            <textarea class="form-control" style="text-transform:uppercase" id="AddCategoryNameAN" onkeypress="$('#divAddCategoryNameAN').removeClass('has-error'), $('.errorAN').hide(), $('#AlertSuccessAW').fadeOut('slow'), $('#AlertErrorAW').fadeOut('slow');"></textarea>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback errorAN" style="display:none"></span>
+                                        </div>
+                                        <br />
+                                        <button class="btn btn-success" onclick="GetCategoriestoAdd($('#AddCategoryNameAN').val(), $('#AddCategoryNameAN3').val())">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            <span>&nbsp; Agregar</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 14px; color: #003870">Categorías a solicitar:</label>
+                                        <ul id="listWorkstoAdd" style="list-style:none"></ul>
+                                        <table border="0" class="widthtable" >
+                                            <thead>
+                                            <tr>
+                                                <th style="width:45%"><span style="font-size:12px">Nivel 3</span></th>
+                                                <th style="width:45%"><span style="font-size:12px">Nivel 4</span></th>
+                                                <th style="width:10%"><span style="font-size:12px">Borrar</span></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tableWorkstoAdd"></tbody>
+                                            @*<tr>
+                                                    <td>Categoría 3</td>
+                                                    <td>Categoría 4</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <span class="glyphicon glyphicon-remove"></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>*@
+                                        </table>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="alert alert-danger" id="AlertErrorAW" style="display: none">
+                                    <span class="glyphicon glyphicon-remove"></span> <span id="MessageExistsCategory"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer" id="divbtncloseerror">
+                                <button class="btn btn-primary" onclick="SaveNewsNew()">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    <span>&nbsp; Aceptar</span>
+                                </button>
+                                <button class="btn btn-danger" data-dismiss="modal" id="CancelSaveNewsAN" onclick="CancelAddNews()">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span>&nbsp; Cancelar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="BtnSeeNews" data-toggle="modal" data-target="#SeeNews" style="display:none">X</button>
+                <div class="modal fade" id="SeeNews" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header label-primary">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title" style="color:white" id="messageerror"><i>Categorías solicitadas para el Producto</i></h3>
+                            </div>
+                            <div class="modal-body" id="contenteditions">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="labelsform" style="float:left">Cliente: &nbsp;&nbsp;</label>
+                                        <label id="lblCompanyNameSN" style="float:left"></label>
+                                        <input type="text" id="ADNewsClientId" style="display:none" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="labelsform" style="float:left">Producto: &nbsp;&nbsp;</label>
+                                        <label id="lblProductNameSN" style="float:left"></label>
+                                        <input type="text" id="ADNewsProductId" style="display:none" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @*<label style="font-size: 14px; color: #003870">Categoría:</label>*@
+                                        <div id="SeeCategoryNameSN"></div>
+                                        <br />
+                                        <table style="display:none" id="TableDetails">
+                                            <tr>
+                                                <td style="width:90%">
+                                                    <input class="form-control" id="AddDetailToAddCategory" style="color:red" onkeypress="$('#AlertSuccessAC').fadeOut('slow')" />
+                                                    <input class="form-control" id="WorkIdAD" style="display:none" />
+                                                </td>
+                                                <td style="width:10%; text-align:center">
+                                                    <button class="btn btn-primary" onclick="SaveCategoryWork()">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </button>
+                                                    <button class="btn btn-danger" onclick="CancelAddCategoryWork()">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="modal-footer" id="divbtncloseerror">
+                                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelSeeNews()">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span>&nbsp; Cerrar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="content-wrapper" style="margin-left:0">
+                <div style="margin-left: 10px; margin-right: 10px">
+                    @RenderBody()
+                </div>
+            </div>
+        }
+
+        <aside class="control-sidebar control-sidebar-dark" style="height: 100%; overflow-x: scroll; overflow-y:no-display">
+            <h5 style="cursor: pointer; margin-right: 12px" class="pull-right" data-toggle="control-sidebar"><span>Cerrar</span>&nbsp; <span class="glyphicon glyphicon-remove"></span></h5>
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+
+                <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><h3><i>Tareas</i></h3></a></li>
+                @*<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>*@
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="control-sidebar-home-tab">
+                    <ul class="control-sidebar-menu" id="listWorks"></ul>
+                </div>
+            </div>
+        </aside>
+
+
+        @*<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>*@
+
+    </div>
+
+    <script src="@Url.Content("~/Scripts/jQuery-2.1.4.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.sparkline.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-jvectormap-1.2.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-jvectormap-world-mill-en.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.knob.js")"></script>
+    <script src="@Url.Content("~/Scripts/daterangepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap3-wysihtml5.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.slimscroll.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/fastclick.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/app.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Filters.js")"></script>
+    <script src="@Url.Content("~/Scripts/ScriptsSalesModule.js")"></script>
+    <script src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
+    <script>
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                $("#btnSearchCategories").trigger("click");
+            }
+        });
+    </script>
+
+    <script>
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                $("#btnSearchProducts").trigger("click");
+
+            }
+        });
+    </script>
+
+    <script>
+        loadAddHTML();
+    </script>
+
+    <script>
+        $(".ldr").click(function () {
+            $("#bloqueo").show();
+        })
+    </script>
+
+    <script>
+        checks();
+    </script>
+
+    <script>
+        GetWorks();
+    </script>
+
+</body>
+</html>

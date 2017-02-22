@@ -1,0 +1,478 @@
+﻿@model IEnumerable<HTMLAttributes>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "AddHTML";
+    Guianet.Models.Sessions.SessionProduction SessionProduction = (Guianet.Models.Sessions.SessionProduction)Session["SessionProduction"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss, ProductId;
+    if (SessionProduction != null)
+    {
+        ClientIdss = SessionProduction.ClId;
+        EditionIds = SessionProduction.EId;
+        BookIds = SessionProduction.BId;
+        CountryIdss = SessionProduction.CId;
+        ProductId = Convert.ToInt32(SessionProduction.PId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+        ProductId = 0;
+    }
+}
+
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Production/Index")" class="ldr">Producción</a></li>
+    <li><a href="@Url.Content("~/Production/Index")" class="ldr">Productos</a></li>
+    <li class="active">Agregar HTML</li>
+</ol>
+<br />
+@{
+    if (SessionProduction != null)
+    {
+        <table class="widthtable" border="0">
+
+            <tr>
+                <td style="width: 6%;"><label class="labelsform">País:</label></td>
+                <td>
+                    @{
+        var cts = (from _ct in db.Countries
+                   where _ct.CountryId == CountryIdss
+                   select _ct).ToList();
+        foreach (Countries _ct in cts)
+        {
+            <span class="spans">@_ct.CountryName</span>
+    <input type="text" value="@_ct.CountryId" id="CountryId" style="display:none"/>
+        }
+}
+                </td>
+                <td rowspan="5" style="text-align:center">
+                    <button class="btn btn-primary ldr" onclick="location.href='@Url.Content("~/Production/Index")';return false;">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span>&nbsp; Regresar</span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Libro:</label></td>
+                <td>
+                    @{
+        var bks = (from _bk in db.Books
+                   where _bk.BookId == BookIds
+                   select _bk).ToList();
+        foreach (Books _bks in bks)
+        {
+            <span class="spans">@_bks.BookName</span>
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Edición:</label></td>
+                <td>
+                    @{
+        var eds = (from _ed in db.Editions
+                   where _ed.EditionId == EditionIds
+                   select _ed).ToList();
+        foreach (Editions _eds in eds)
+        {
+            <span class="spans">@_eds.NumberEdition</span>
+                        <input type="text" value="@_eds.EditionId" id="EditionId" style="display:none" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Cliente:</label></td>
+                <td>
+                    @{
+        var cl = (from _cl in db.Clients
+                  where _cl.ClientId == ClientIdss
+                  select _cl).ToList();
+        foreach (Clients _cl in cl)
+        {
+            <span class="spans">@_cl.CompanyName</span>
+                        <input type="text" value="@_cl.ClientId" id="ClientId" style="display:none" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Producto:</label></td>
+                <td>
+                    @{
+        var pr = (from _pr in db.Products
+                  where _pr.ProductId == ProductId
+                  select _pr).ToList();
+        foreach (Products _pr in pr)
+        {
+            <span class="spans">@_pr.ProductName</span>
+                        <input type="text" value="@_pr.ProductId" id="ProductId" style="display:none" />
+        }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+}
+<br />
+<br />
+<div class="widthtable">
+    <ul class="nav nav-tabs">
+        <li><a data-toggle="tab" href="#home" onclick="sessionStorage.ElmId = 'AddHTML'" id="AddHTML">Cargar HTML</a></li>
+        <li><a data-toggle="tab" href="#menu1" class="labelsform" onclick="sessionStorage.ElmId = 'AttrHTML'" id="AttrHTML">Atributos de HTML</a></li>
+        <li><a data-toggle="tab" href="#menu2" onclick="sessionStorage.ElmId = 'AddATG'" id="AddATG">Asociar atributos maestros</a></li>
+        <li><a data-toggle="tab" href="#menu3" onclick="sessionStorage.ElmId = 'CNTATTR'" id="CNTATTR">Insertar contenido por atributos</a></li>
+        <li><a data-toggle="tab" href="#menu4" onclick="GetHTMLContent()" id="HTML">Ver HTML</a></li>
+        @*<li><a data-toggle="tab" href="#menu5" onclick="sessionStorage.ElmId = 'XML'" id="XML">Ver XML</a></li>*@
+        <li><a data-toggle="tab" href="#menu5" onclick="getxmlcnt()" id="XML">Ver XML</a></li>
+
+        <li><a data-toggle="tab" href="#menu6" onclick="GetContent()" id="PC">Ver contenido por atributos</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade">
+            <br />
+            <br />
+            <div style="display:normal;border:none; width:50%;margin-left:25%" id="DivAddHTMLFile">
+                <form enctype="multipart/form-data" method="post" id="SendHTMLFile">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                Browse&hellip;
+                            </span>
+                            <input id="uploadBtn" type="file" accept=".html" name="file" style="display:none" onchange="addHTMLFile($(this))" />
+                        </label>
+                        <input type="text" class="form-control" readonly id="txtFileName">
+                    </div>
+                </form>
+                <button style="float:right" class="btn btn-danger btn-sm" onclick="CanceladdHTMLFile($(this))">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+                <button style="float:right" class="btn btn-primary btn-sm" onclick="SaveHTMLFile($(this))">
+                    <span class="glyphicon glyphicon-saved"></span>
+                    <span>&nbsp; Guardar</span>
+                </button>
+
+
+            </div>
+            @{
+                var pp = db.ParticipantProducts.Where(x => x.ClientId == ClientIdss && x.EditionId == EditionIds && x.ProductId == ProductId && x.HTMLContent != null).ToList();
+                if (pp.LongCount() > 0)
+                {
+                    <p style="bottom:20%; position:fixed"><span class="glyphicon glyphicon-ok"></span>&nbsp; <label class="labelsform">El Producto ya tiene contenido</label></p>
+                }
+
+                var pc = db.ProductContents.Where(x => x.ClientId == ClientIdss && x.EditionId == EditionIds && x.ProductId == ProductId && x.Content != null).ToList();
+                if (pc.LongCount() > 0)
+                {
+                    <p style="bottom:15%; position:fixed"><span class="glyphicon glyphicon-ok"></span>&nbsp; <label class="labelsform">El Producto ya tiene contenido por Atributos</label></p>
+                }
+            }
+
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <br />
+            <br />
+            <div class="widthtable">
+                <table border="0" class="table-hover widthtable">
+                    <thead class="webgrid-header">
+                        <tr>
+                            <th style="text-align:center">Atributos Nuevos de Formación</th>
+                            <th style="text-align:center">Existe en BD</th>
+                        </tr>
+                    </thead>
+                    @{
+                        if (Model.LongCount() > 0)
+                        {
+                            int countt = 0;
+                            foreach (HTMLAttributes item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <label style='font-weight:100; font-size:11px' class='NewAttributes'>@item.AttributeName</label>
+                                        @*<input type="text" style="display:none" value="@item." class="newitems" id="@item" />*@
+                                    </td>
+                                    @{
+                                var ats = (from _at in db.Attributes
+                                           where _at.Description == item.AttributeName
+                                           select _at).ToList();
+                                if (ats.LongCount() > 0)
+                                {
+                                    countt = countt + 1;
+                                    <td style="text-align:center">
+                                        <span class='glyphicon glyphicon-ok'></span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="text-align:center"></td>
+                                }
+                                    }
+                                </tr>
+                            }
+                            <tr>
+                                @{
+                            if (countt != Model.LongCount())
+                            {
+                                <td style="text-align:center" colspan="2">
+
+                                    <button onclick="AddNewAttributes()" style="display:normal" id="AddNewAttributes" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-save"></span>
+                                        <span>&nbsp; Agregar atributos</span>
+                                    </button>
+                                </td>
+                            }
+
+                                }
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="text-align:center">
+                                    <label class="labelsform">Actualmente no hay Atributos Nuevos en la Formación</label>
+                                    @*<p></p><label class="labels">Véa</label><label f>"Asociar Rubros Maestros"</label>*@
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+                <br />
+                <br />
+                <br />
+                <button onclick="AddNewAttributes()" style="display:none;margin-left:50%" id="AddNewAttributes" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <span>&nbsp; Agregar atributos</span>
+                </button>
+
+            </div>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <br />
+            <br />
+            <table border="0" class="widthtable table-hover">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th style="width: 33.33%">Atributos Nuevos de Formación</th>
+                        <th style="width: 33.33%">Atributos Maestros Asociados</th>
+                        <th style="width: 33.33%">Atributos Maestros</th>
+                    </tr>
+                </thead>
+                @{
+                    Guianet.Models.Sessions.SessionAttributeGroup l = (Guianet.Models.Sessions.SessionAttributeGroup)Session["SessionAttributeGroup"];
+                    if (l != null)
+                    {
+                        List<HTMLAttributes> list = l.LA;
+
+                        if (list.LongCount() > 0)
+                        {
+                            foreach (HTMLAttributes item in list)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                var aa = (from _aa in db.Attributes
+                                          where _aa.Description == item.AttributeName
+                                          select _aa).ToList();
+                                foreach (Attributes _aa in aa)
+                                {
+                                    <label style='font-weight:100; font-size:11px'>@_aa.Description</label>
+                                            <input type="text" style="display:none" value="@_aa.AttributeId" id="AttributeId" />
+                                }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                var a = (from _a in db.Attributes
+                                         where _a.Description == item.AttributeName
+                                         select _a).ToList();
+                                if (a.LongCount() > 0)
+                                {
+                                    foreach (Attributes _a in a)
+                                    {
+                                        var eag = (from _eag in db.EditionAttributeGroup
+                                                   where _eag.AttributeId == _a.AttributeId
+                                                   && _eag.EditionId == EditionIds
+                                                   select _eag).ToList();
+                                        if (eag.LongCount() > 0)
+                                        {
+                                            foreach (EditionAttributeGroup _eag in eag)
+                                            {
+                                                var ag = (from _ag in db.AttributeGroup
+                                                          where _ag.AttributeGroupId == _eag.AttributeGroupId
+                                                          orderby _ag.Description ascending
+                                                          select _ag).ToList();
+
+                                                foreach (AttributeGroup _ag in ag)
+                                                {
+                                                    <label style='font-weight:100; font-size:11px'>@_ag.Description</label>
+                                                    <input type="text" style="display: none" value="@_ag.AttributeGroupId" id="AttributeGroupId" />
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                        }
+                                    </td>
+                                    <td style="text-align:center">
+                                        <select class="form-control" style="vertical-align:middle" onchange="AddEditionAttributeGroup($(this))">
+                                            @{
+                                var aag = (from _ag in db.AttributeGroup
+                                           orderby _ag.Description ascending
+                                           select _ag).ToList();
+
+                                        <option value="0">Seleccione...</option>
+
+                                foreach (AttributeGroup _ag in aag)
+                                {
+
+                                    <option value="@_ag.AttributeGroupId">@_ag.Description</option>
+
+                                }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="text-align:center" colspan="3">
+                                    <label class="labelsform">Actualmente no hay Atributos Nuevos en la Formación para Asociar Atributos Maestros</label>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </table>
+
+        </div>
+        <div id="menu3" class="tab-pane fade">
+            <br />
+            <br />
+            @{
+                // Guianet.Models.Sessions.SessionAttributeGroup l = (Guianet.Models.Sessions.SessionAttributeGroup)Session["SessionAttributeGroup"];
+                if (l != null)
+                {
+                    List<HTMLAttributes> lists = l.LA;
+
+                    var ad = lists.LongCount();
+
+                    int count = 0;
+                    int countattr = 0;
+
+                    foreach (HTMLAttributes item in Model)
+                    {
+                        var aa = (from _aa in db.Attributes
+                                  where _aa.Description == item.AttributeName
+                                  select _aa).ToList();
+                        if (aa.LongCount() > 0)
+                        {
+                            foreach (Attributes _aa in aa)
+                            {
+                                var eag = (from _eag in db.EditionAttributeGroup
+                                           where _eag.EditionId == EditionIds
+                                           && _eag.AttributeId == _aa.AttributeId
+                                           select _eag).ToList();
+
+                                if (eag.LongCount() > 0)
+                                {
+                                    count = count + 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            countattr = countattr + 1;
+                        }
+                    }
+                    if (countattr > 0)
+                    {
+                        <div style="text-align: center; display: normal" id="divverify">
+                            <label class="labelsform">Para poder insertar Contenidos</label>
+                            <br />
+                            <br />
+                            <label class="labelsform">Primero debe Insertar todos los atributos. Ver "Atributos de HTML"</label>
+                            <input value="0" id="verify" style="display:none" />
+                        </div>
+                    }
+                    else
+                    {
+                        if (count == ad)
+                        {
+                            if (count == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                <div style="text-align:center; display:normal" id="divcancharge">
+                                    <label class="labelsform">Todo está Listo!!!</label><br />
+                                    <label class="labelsform">Ahora puede Cargar el Contenido</label>
+                                    <input value="@count" id="verify" style="display:none" />
+                                    <br />
+                                    <br />
+                                    <button id="chargecontent" class="btn btn-primary" onclick="InsertProductContents()">
+                                        <span class="glyphicon glyphicon-upload"></span>
+                                        <span>&nbsp; Cargar Contenido</span>
+                                    </button>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="progress progress-striped active" style="width: 100%; border: none; border-top: 1px solid #ddd; display: none" id="progressbar">
+                                    <div class="progress-bar bar" role="progressbar"
+                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                         style="float: left; width: 0%; " data-percentage="100">
+                                    </div>
+                                </div>
+                            }
+                        }
+                        if (count != ad)
+                        {
+                            <div style="text-align:center; display:normal" id="divverify">
+                                <label class="labelsform">Para poder insertar Contenidos</label>
+                                <br />
+                                <br />
+                                <label class="labelsform">Debe Asociar todos los atributos con Atributos Maestros. Ver "Asociar Atributos Maestros"</label>
+                                <input value="0" id="verify" style="display:none" />
+                            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+        <div id="menu4" class="tab-pane fade">
+            <br />
+            <div class="widthtable" style="border:none" id="DivHTMLContent">
+
+            </div>
+            <br />
+        </div>
+        <div id="menu5" class="tab-pane fade getxmlcnt">
+        </div>
+        <div id="menu6" class="tab-pane fade" style="text-align:center">
+            <br />
+            <br />
+            <label class="labelsform" id="messagecontent" style="display:none; font-size:16px">Contenido por Atributos Asociado al Producto</label>
+            <br />
+            <br />
+            <table id="tablecontent" border="0" style="width:100%; text-align: justify" class="table-hover"></table>
+
+            <div style='width:100%; text-align: justify' class="ifmt"></div>
+
+            <label class="labelsform" id="messagecontentnull" style="display:none">Actualmente NO hay contenido por Atributos asociado al Producto</label>
+            <br />
+        </div>
+    </div>
+</div>
+<br />
+

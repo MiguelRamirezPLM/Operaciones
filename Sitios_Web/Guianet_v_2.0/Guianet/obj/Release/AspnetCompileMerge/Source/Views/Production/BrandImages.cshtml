@@ -1,0 +1,186 @@
+﻿@model IEnumerable<BrandImagesByEditionByClientByProduct>
+@using Guianet.Models;
+
+@{
+    ViewBag.Title = "Brands";
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 20);
+    Guianet.Models.Sessions.SessionBrandsProd ind = (Guianet.Models.Sessions.SessionBrandsProd)Session["SessionBrandsProd"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss, BrandIds;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+        BrandIds = Convert.ToInt32(ind.PId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+        BrandIds = 0;
+    }
+}
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Production/Brands")" class="ldr">Producción</a></li>
+    <li><a href="@Url.Content("~/Production/Brands")" class="ldr">Marcas</a></li>
+    <li class="active">Agregar Imagen</li>
+</ol>
+<div class="row">
+    <div class="col-lg-6">
+        @{
+            if (ind != null)
+            {
+                <table class="widthtable table-hover">
+
+                    <tr>
+                        <td style="width: 6%;"><label class="labelsform">País:</label></td>
+                        <td>
+                            @{
+                var cts = (from _ct in db.Countries
+                           where _ct.CountryId == CountryIdss
+                           select _ct).ToList();
+                foreach (Countries _ct in cts)
+                {
+                    <span class="spans">@_ct.CountryName</span>
+                                <input type="text" id="CountryId" value="@_ct.CountryId" style="display:none"/>
+                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Libro:</label></td>
+                        <td>
+                            @{
+                var bks = (from _bk in db.Books
+                           where _bk.BookId == BookIds
+                           select _bk).ToList();
+                foreach (Books _bks in bks)
+                {
+                    <span class="spans">@_bks.BookName</span>
+                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Edición:</label></td>
+                        <td>
+                            @{
+                var eds = (from _ed in db.Editions
+                           where _ed.EditionId == EditionIds
+                           select _ed).ToList();
+                foreach (Editions _eds in eds)
+                {
+                    <span class="spans">@_eds.NumberEdition</span>
+                                <input type="text" value="@_eds.EditionId" id="EditionId" style="display:none" />
+                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Cliente:</label></td>
+                        <td>
+                            @{
+                var cl = (from _cl in db.Clients
+                          where _cl.ClientId == ClientIdss
+                          select _cl).ToList();
+                foreach (Clients _cl in cl)
+                {
+                    <span class="spans">@_cl.CompanyName</span>
+                                <input type="text" value="@_cl.ClientId" id="ClientId" style="display:none" />
+                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:6%"><label class="labelsform">Marca:</label></td>
+                        <td>
+                            @{
+                var br = (from _br in db.Brands
+                          where _br.BrandId == BrandIds
+                          select _br).ToList();
+                foreach (Brands _br in br)
+                {
+                    <span class="spans">@_br.BrandName</span>
+                                <input type="text" value="@_br.BrandId" id="BrandId" style="display:none" />
+                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            }
+        }
+    </div>
+    <div class="col-lg-6" style="text-align:center">
+        <button class="btn btn-primary ldr" onclick="location.href='@Url.Content("~/Production/Brands")';return false;">
+            <span class="glyphicon glyphicon-home"></span>
+            <span>&nbsp; Regresar</span>
+        </button>
+    </div>
+</div>
+<br />
+<div style="display:normal;border:none; width:50%;margin-left:25%" id="DivAddHTMLFile">
+    <form enctype="multipart/form-data" method="post" id="SendBrandImages">
+        <div class="input-group">
+            <label class="input-group-btn">
+                <span class="btn btn-primary">
+                    Browse&hellip;
+                </span>
+                <input id="uploadBtn" type="file" accept="image/png" name="file" style="display:none" onchange="addBrandName($(this))" />
+            </label>
+            <input type="text" class="form-control" readonly id="txtFileName">
+        </div>
+    </form>
+    <br />
+    <br />
+    <button style="float:right" class="btn btn-danger btn-sm" onclick="CancelSaveBrand($(this))">
+        <span class="glyphicon glyphicon-remove"></span>
+        <span>&nbsp; Cancelar</span>
+    </button>
+    <button style="float:right" class="btn btn-primary btn-sm" onclick="SaveBrandImage($(this))">
+        <span class="glyphicon glyphicon-saved"></span>
+        <span>&nbsp; Guardar</span>&nbsp;&nbsp;
+    </button>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="widthtable">
+    <table class="widthtable">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Nombre de Imagen</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach(BrandImagesByEditionByClientByProduct _br in Model)
+                {
+                    <tr>
+                        <td style="width:75%">
+                            <label style="font-size:12px">
+                                @_br.Logo
+                            </label>
+                        </td>
+                        <td style="width:20%">
+                            <div class="responsive-container" id="DivAdvertImage">
+                                <div class="img-container">
+                                    <img src="@Url.Action("GetBrandImages", "Production", new { BrandId = _br.BrandId, CountryId = CountryIdss })" class="aiimg" style="width: 70px; height: 70px" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>   
+                }
+            }
+        </tbody>
+    </table>
+</div>

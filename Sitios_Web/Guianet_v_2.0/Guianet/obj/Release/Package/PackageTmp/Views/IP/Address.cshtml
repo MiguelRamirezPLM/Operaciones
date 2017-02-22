@@ -1,0 +1,219 @@
+﻿@model IEnumerable<ICAddress>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "Address";
+    Guianet.Models.Sessions.SessionICLI ind = (Guianet.Models.Sessions.SessionICLI)Session["SessionICLI"];
+    GuiaEntities db = new GuiaEntities();
+    
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    byte ClientType;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+        ClientType = Convert.ToByte(ind.CTId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+        ClientType = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/IP/Geolocalization")" class="ldr">LI</a></li>
+    <li class="active">Geolocalización</li>
+</ol>
+<br />
+@{
+    if (ind != null)
+    {     
+        <table class="widthtable" border="0">
+
+            <tr>
+                <td style="width: 8%;"><label class="labelsform">País:</label></td>
+                <td>
+                    @{
+        var cts = (from _ct in db.Countries
+                   where _ct.CountryId == CountryIdss
+                   select _ct).ToList();
+        foreach (Countries _ct in cts)
+        {
+            <span class="spans">@_ct.CountryName</span>
+        }
+                    }
+                </td>
+                <td rowspan="4" style="width:25%">
+
+                    <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Content("~/IP/Geolocalization")';return false;">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span>&nbsp; Regresar</span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Libro:</label></td>
+                <td>
+                    @{
+        var bks = (from _bk in db.Books
+                   where _bk.BookId == BookIds
+                   select _bk).ToList();
+        foreach (Books _bks in bks)
+        {
+            <span class="spans">@_bks.BookName</span>
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Edición:</label></td>
+                <td>
+                    @{
+        var eds = (from _ed in db.Editions
+                   where _ed.EditionId == EditionIds
+                   select _ed).ToList();
+        foreach (Editions _eds in eds)
+        {
+            <span class="spans">@_eds.NumberEdition</span>
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Cliente:</label></td>
+                <td>
+                    @{
+        var cl = (from _cl in db.Clients
+                  where _cl.ClientId == ClientIdss
+                  select _cl).ToList();
+        foreach (Clients _cl in cl)
+        {
+            <span class="spans">@_cl.CompanyName</span>
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:6%"><label class="labelsform">Tipo de Cliente:</label></td>
+                <td>
+                    @{
+        var ct = (from _cl in db.ClientTypes
+                  where _cl.ClientTypeId == ClientType
+                  select _cl).ToList();
+        foreach (ClientTypes _cl in ct)
+        {
+            <span class="spans">@_cl.TypeName</span>
+        }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+}
+<br />
+
+@{
+    
+    if(ind != null)
+    {
+        <div style="width:100%" class="table-responsive">
+            <table class="widthtable table-hover">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Calle</th>
+                        <th>Colonia</th>
+                        <th>Locación</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>País</th>
+                        <th>CP</th>
+                        <th>E-mail</th>
+                        <th>Web</th>
+                        <th>Latitud</th>
+                        <th>Longitud</th>
+                        <th>Editar</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (ICAddress item in Model)
+                        {
+                            <tr>
+                                <td class="column944">
+                                    <span> <label id="lblAddress" style="font-size: 12px">@item.Address</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtAddress" class="edprod form-control">@item.Address</textarea>
+                                    <input id="lblAddressId" style="display:none; width:20px" value="@item.AddressId" />
+                                </td>
+                                <td class="column944">
+                                    <span> <label id="lblSuburb" style="font-size: 12px">@item.Suburb</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtSuburb" class="edprod form-control">@item.Suburb</textarea>
+                                </td>
+                                <td class="column944">
+                                    <span class="display-modeA"> <label id="lblLocation" style="font-size: 12px">@item.Location</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtLocation" class="edprod form-control">@item.Location</textarea>
+                                </td>
+                                <td class="column944">
+                                    <span> <label id="lblCity" style="font-size: 12px">@item.City</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtCity" class="edprod form-control">@item.City</textarea>
+                                </td>
+                                <td class="column944">
+                                    @{
+                            var st = db.States.Where(x => x.StateId == item.StateId).Select(x => x.StateName).ToList();
+                            if (st.LongCount() > 0)
+                            {
+                                <span> <label id="lblState" style="font-size: 12px">@st[0]</label> </span>
+                            }
+
+                                    }
+                                </td>
+                                <td class="column944">
+                                    <span> <label id="lblCountryName" style="font-size: 12px">@item.CountryName</label> </span>
+                                </td>
+                                <td class="column5">
+                                    <span> <label id="lblZipCode" style="font-size: 12px">@item.ZipCode</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="15" id="txtZipCode" class="edprod form-control">@item.ZipCode</textarea>
+                                </td>
+                                <td class="column944">
+                                    <span> <label id="lblEmail" style="font-size: 12px">@item.Email</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtEmail" class="edprod form-control">@item.Email</textarea>
+                                </td>
+                                <td class="column944">
+                                    <span> <label id="lblWeb" style="font-size: 12px">@item.Web</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtWeb" class="edprod form-control">@item.Web</textarea>
+                                </td>
+                                <td class="text-center column5">
+                                    <span class="display-modeA"> <label id="lblLatitud" style="font-size: 12px">@item.Latitud</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtLatitud" class="edit-modeA edprod form-control">@item.Latitud</textarea>
+                                </td>
+                                <td class="text-center column5">
+                                    <span class="display-modeA"> <label id="lblLongitud" style="font-size: 12px">@item.Longitud</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtLongitud" class="edit-modeA edprod form-control">@item.Longitud</textarea>
+                                </td>
+                                <td class="text-center column5">
+                                    <button class="btn btn-warning btn-sm display-modeA" onclick="ActiveFieldstoEditGeolocalization($(this))">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm edit-modeA" style="display:none" onclick="updateGeolocalization($(this))">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm edit-modeA" style="display:none" onclick="CancelEditGeolocalization($(this))">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    
+}

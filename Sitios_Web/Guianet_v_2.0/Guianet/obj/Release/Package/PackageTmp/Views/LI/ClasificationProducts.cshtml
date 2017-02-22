@@ -1,0 +1,217 @@
+﻿@model IEnumerable<Guianet.Models.HomogeneousCategoriesByClientByProduct>
+@using Guianet.Models;
+@using Guianet.Models.Sessions;
+@{
+    ViewBag.Title = "ClasificationProducts";
+    List<GetHomogeneousCategories> Cats = new List<GetHomogeneousCategories>();
+    SessionClasification ind = (SessionClasification)Session["SessionClasification"];
+    GuiaEntities db = new GuiaEntities();
+    SearchCategoryCL SearchCategoryCL = (SearchCategoryCL)Session["SearchCategoryCL"];
+    WebGrid _datagridcc = new WebGrid(Model, rowsPerPage: 20);
+}
+<script src="@Url.Content("~/Scripts/ScriptsSalesModule.js")"></script>
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/LI/Index")" class="ldr">LI</a></li>
+    <li><a href="@Url.Content("~/LI/Index")" class="ldr">Productos</a></li>
+    <li class="active">Clasificación</li>
+</ol>
+@{
+    if (ind != null)
+    {
+        <table style="width:100%" border="0">
+            <tr>
+                <td style="width:6%"><label class="labelsform">País: </label> </td>
+                <td>
+                    @{
+        int countryid = ind.CId;
+        var countr = from countries in db.Countries
+                     where countries.CountryId == countryid
+                     select countries;
+        foreach (Countries c in countr)
+        {
+            <span class="spans">@c.CountryName</span><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+        }
+
+                    }
+                </td>
+                <td rowspan="5" style="text-align:left">
+                    <table class="widthtable" border="0">
+                        <tr>
+                            <td style="text-align:center">
+                                <button class="btn btn-primary ldr" onclick="location.href = '@Url.Action("Index", "LI")'; return false;">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                    <span class="spans">&nbsp; Regresar...</span>
+                                </button>
+                            </td>
+                            <td style="text-align:center">
+                                <a target="_blank" href="@Url.Action("GetCategoriesByProductReportLI", "GetReports", new { id = "PDF", ProductId = ind.PId })"><img src="@Url.Content("~/Images/ProductCategories.png")" style="height:75px;width:60px"></a>
+                            </td>
+                        </tr>
+                    </table>
+                    
+
+                    
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labelsform">Obra:</label></td>
+                <td>
+                    @{
+        int bookid = ind.BId;
+        var books = from book in db.Books
+                    where book.BookId == bookid
+                    select book;
+        foreach (Books b in books)
+        {
+            <span class="spans">@b.BookName</span><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labelsform">Edición:</label></td>
+                <td>
+                    @{
+        int edition = ind.EId;
+        var _edition = from editions in db.Editions
+                       where editions.EditionId == edition
+                       select editions;
+        foreach (Editions e in _edition)
+        {
+            <span class="spans">@e.NumberEdition</span><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labelsform">Cliente:</label></td>
+                <td>
+                    @{
+        int client = ind.ClId;
+        var clients = from _clients in db.Clients
+                      where _clients.ClientId == client
+                      select _clients;
+        foreach (Clients c in clients)
+        {
+            <span class="spans">@c.CompanyName</span><input type="text" style="display:none" id="clientid" value="@c.ClientId" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labelsform">Producto:</label></td>
+                <td>
+                    @{
+        int? productid = ind.PId;
+        var products = from _products in db.Products
+                       where _products.ProductId == productid
+                       select _products;
+        foreach (Products p in products)
+        {
+            <span class="spans">@p.ProductName.ToUpper()</span><input type="text" style="display:none" id="ProductId" value="@p.ProductId" />
+        }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+}
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        @*<input type="text" class="form-control" placeholder="Buscar Categorías..."/>*@
+        <div class="input-group stylish-input-group">
+            @{
+                if (SearchCategoryCL != null)
+                {
+                    <input type="text" class="form-control" placeholder="Buscar Categorías..." id="TextSearch" value="@SearchCategoryCL.CategoryName">
+                }
+                else
+                {
+                    <input type="text" class="form-control" placeholder="Buscar Categorías..." id="TextSearch">
+                }
+            }
+
+            <span class="input-group-addon" style="width:0" onclick="searchCategoriesCL()" id="btnSearchCategories">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        <div>
+            <button style="float:right" class="btn btn-danger" onclick="saveCategoriesCL()">
+                <span class="glyphicon glyphicon-forward"></span>
+                <span>&nbsp; Asociar</span>
+            </button>
+            <div class="scrollbar1">
+                @{
+                    if (SearchCategoryCL != null)
+                    {
+                        Cats = db.Database.SqlQuery<GetHomogeneousCategories>("plm_spGetCategoryThree @HomogeneousCategoryId= 0, @TextSearch='" + SearchCategoryCL.CategoryName + "', @ClientId=" + ind.ClId + ", @ProductId=" + ind.PId + "").ToList();
+                    }
+                    else
+                    {
+                        Cats = db.Database.SqlQuery<GetHomogeneousCategories>("plm_spGetCategoryThree @HomogeneousCategoryId= 0, @ClientId=" + ind.ClId + ", @ProductId=" + ind.PId + "").ToList();
+                    }
+                    <ul style="list-style: none;">
+                        @foreach (GetHomogeneousCategories _cat in Cats)
+                        {
+                            <li>
+
+                                <span class="glyphicon glyphicon-plus" id="Expand_@_cat.HomogeneousCategoryId" onclick="getlevel4CL(@_cat.HomogeneousCategoryId)" style="cursor:pointer"></span>
+
+                                <span class="glyphicon glyphicon-minus" style="display:none" id="Collapse_@_cat.HomogeneousCategoryId" onclick="collapselevel4(@_cat.HomogeneousCategoryId)"></span>
+                                <label style="font-weight:100">@_cat.HomogeneousCategory</label>
+                                <ul id="ListL2_@_cat.HomogeneousCategoryId" style="list-style: none;"></ul>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-lg-6">
+        @_datagridcc.GetHtml(
+                              headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table1",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                            @*_datagridcc.Column("",header:"Categoría Nivel 1", format: @<text>
+                                    <label>&nbsp;@item.CategoryNameL1</label>
+                                    <input type="text" style="display:none" value="@item.CategoryIdL1" />
+                                </text>),
+                                _datagridcc.Column("",header:"Categoría Nivel 2", format: @<text>
+                                    <label>&nbsp;@item.CategoryNameL2</label>
+                                    <input type="text" style="display:none" value="@item.CategoryIdL2" />
+                                </text>),*@
+                            _datagridcc.Column("",header:"Categoría Nivel 3", format: @<text>
+            <label style="font-weight:100; font-size:12px">&nbsp;&nbsp;@item.HomogeneousCategoryL3</label>
+            <input type="text" style="display:none" id="HomogeneousCategoryIdL3" value="@item.HomogeneousCategoryIdL3" />
+                            </text>,style:"column47"),
+                            _datagridcc.Column("",header:"Categoría Nivel 4", format: @<text>
+            <label style="font-weight:100; font-size:12px">&nbsp;@item.LeafCategoryL4</label>
+            <input type="text" style="display:none" id="LeafCategoryIdL4" value="@item.LeafCategoryIdL4" />
+                            </text>,style:"column47"),
+                            _datagridcc.Column("",header:"Eliminar", format: @<text>
+            <button class="btn btn-danger btn-sm" onclick="deleteProductLeafCategoriesCL($(this))">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+                            </text>,style:"text-center column5")
+                          })
+    </div>
+</div>
+<br />
+

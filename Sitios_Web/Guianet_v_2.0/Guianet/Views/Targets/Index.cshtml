@@ -1,0 +1,157 @@
+﻿@model IEnumerable<String>
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Targets/Index")">Producción</a></li>
+    <li class="active">Modificar Etiquetas</li>
+</ol>
+
+<div class="widthtable">
+    <ul class="nav nav-tabs">
+        <li><a data-toggle="tab" href="#home" onclick="sessionStorage.ElmId = 'AddHTML'" id="AddHTML">Etiquetas de Formación</a></li>
+        <li><a data-toggle="tab" href="#menu1" class="labelsform" onclick="sessionStorage.ElmId = 'AttrHTML'" id="AttrHTML">Etiquetas a reemplazar</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade">
+            <br />
+            <br />
+            <table border="0" style="width:100%">
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Nombre de Producto:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="pname" value="@ViewData["pnametargets"]" /></td>
+                    <td rowspan="4" style="width: 20%;text-align:center"><button class=" btn btn-primary" onclick="SaveTargets()">Envíar Datos</button></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Base de Propaganda:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="propag" value="@ViewData["Bproptargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Atributos:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="attribute" value="@ViewData["attrtargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Laboratorio:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="laboratory" value="@ViewData["labnametargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Parrafo:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblpf" value="@ViewData["paragrapgtargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Imagen:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblimg" value="@ViewData["Imagetargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Tabla:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lbltable" value="@ViewData["Tabletargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Fila:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lbltr" value="@ViewData["Rowtargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Columna:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lbltd" value="@ViewData["Columntargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Registro:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblreg" value="@ViewData["Registertargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Viñetas:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblbullet" value="@ViewData["Bulletstargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Viñetas 1:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblbullet1" value="@ViewData["Bullets1targets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Viñetas 2:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblbullet2" value="@ViewData["Bullets3targets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Viñetas 3:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblbullet3" value="@ViewData["Bullets3targets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Logo:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lbllogo" value="@ViewData["Logotargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Negrita:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblbold" value="@ViewData["Boldtargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Referencias:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblreference" value="@ViewData["Referencetargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Superíndice:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblsuperindice" value="@ViewData["SupIndtargets"]" /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Datos de Laboratorio:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lbldata" value="@ViewData["Datatargets"]" /></ /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Contenedor:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblcontainer" value="@ViewData["Containertargets"]" /></ /></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%; line-height: 40px;text-align:left"><label class="labelsform">Etiqueta Cuerpo de Página:</label></td>
+                    <td style="width: 50%; text-align: left; line-height: 40px;"><input type="text" class="form-control" id="lblbody" value="@ViewData["Bodytargets"]" /></ /></td>
+                </tr>
+            </table>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <br />
+            <br />
+            <table class="widthtable" border="0">
+                <tr>
+                    <td style="width:70%">
+                        <input class="form-control" id="TargetDescription"/>
+                    </td>
+                    <td style="text-align:center">
+                        <button class="btn btn-primary" onclick="SendTargets()">
+                            <span class="glyphicon glyphicon-send"></span>
+                            <span>&nbsp; Guardar</span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            
+            <br />
+            <br />
+            <table border="0" class="widthtable">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th>Etiqueta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (String item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <label class="labelsform">@item</label>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<br />
+<br />

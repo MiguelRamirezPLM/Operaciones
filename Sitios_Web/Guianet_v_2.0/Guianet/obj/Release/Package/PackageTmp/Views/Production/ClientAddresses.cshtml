@@ -1,0 +1,408 @@
+﻿@model IEnumerable<ICAddress>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "ClientAddresses";
+    Guianet.Models.Sessions.SessionBranchProd ind = (Guianet.Models.Sessions.SessionBranchProd)Session["SessionBranchProd"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Production/Branchs")" class="ldr">Producción</a></li>
+    <li><a href="@Url.Content("~/Production/Branchs")" class="ldr">Sucursales</a></li>
+    <li class="active">Direcciones</li>
+</ol>
+<div class="row">
+
+    <div class="col-lg-6">
+        <table class="widthtable table-hover" border="0">
+            <tr>
+                <td style="width: 10%;"><label class="labelsform">País:</label></td>
+                <td>
+                    @{
+                        var cts = (from _ct in db.Countries
+                                   where _ct.CountryId == CountryIdss
+                                   select _ct).ToList();
+                        foreach (Countries _ct in cts)
+                        {
+                            <span class="spans">@_ct.CountryName</span>
+                            <input type="text" id="CountryId" value="@_ct.CountryId" style="display:none" />
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Libro:</label></td>
+                <td>
+                    @{
+                        var bks = (from _bk in db.Books
+                                   where _bk.BookId == BookIds
+                                   select _bk).ToList();
+                        foreach (Books _bks in bks)
+                        {
+                            <span class="spans">@_bks.BookName</span>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Edición:</label></td>
+                <td>
+                    @{
+                        var eds = (from _ed in db.Editions
+                                   where _ed.EditionId == EditionIds
+                                   select _ed).ToList();
+                        foreach (Editions _eds in eds)
+                        {
+                            <span class="spans">@_eds.NumberEdition</span>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Cliente:</label></td>
+                <td>
+                    @{
+                        var cl = (from _cl in db.Clients
+                                  where _cl.ClientId == ClientIdss
+                                  select _cl).ToList();
+                        foreach (Clients _cl in cl)
+                        {
+                            <span class="spans">@_cl.CompanyName</span>
+                            <input type="text" value="@_cl.ClientId" id="ClientId" style="display:none" />
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:10%"><label class="labelsform">Sucursal:</label></td>
+                <td>
+                    @{
+                        Guianet.Models.Sessions.SessionBrnachId SessionBrnachId = (Guianet.Models.Sessions.SessionBrnachId)Session["SessionBrnachId"];
+                        if (SessionBrnachId != null)
+                        {
+                            var br = (from _cl in db.Clients
+                                      where _cl.ClientId == SessionBrnachId.ClientId
+                                      select _cl).ToList();
+
+                            foreach (Clients _cl in br)
+                            {
+                                <span class="spans">@_cl.CompanyName</span>
+                                <input type="text" id="BranchId" style="display:none" value="@_cl.ClientId" />
+                            }
+                        }
+                        else
+                        {
+                            <span class="spans">-----</span>
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <table class="widthtable" border="0">
+            <tr>
+                <td style="width: 33.33%; text-align: center">
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#AddAddressProd">
+                        Agregar Dirección
+                    </button>
+                </td>
+                <td style="width: 33.33%; text-align: center">
+                    <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Content("~/Production/Branchs")';return false;">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span>&nbsp; Regresar</span>
+                    </button>
+                </td>
+                <td style="width: 33.33%; text-align: center">
+                    @{
+                        if (SessionBrnachId != null)
+                        {
+                            <a target="_blank" href="@Url.Action("GetAddressByClientSM", "GetReports", new { id = "PDF", ClientId = SessionBrnachId.ClientId, EditionId = EditionIds })"><img src="@Url.Content("~/Images/AddressByClient.png")" style="height:75px;width:60px"></a>
+                        }
+                        else
+                        {
+                            <a target="_blank" href="@Url.Action("GetAddressByClientSM", "GetReports", new { id = "PDF", ClientId = ClientIdss, EditionId = EditionIds })"><img src="@Url.Content("~/Images/AddressByClient.png")" style="height:75px;width:60px"></a>
+                        }
+                    }
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+<div style="width:100%" class="table-responsive">
+    <table class="widthtable table-hover">
+        <thead class="webgrid-header">
+            <tr>
+                <th>Calle</th>
+                <th>Colonia</th>
+                <th>Locación</th>
+                <th>Ciudad</th>
+                <th>Estado</th>
+                <th>País</th>
+                <th>CP</th>
+                <th>E-mail</th>
+                <th>Web</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+                <th>Telefónos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (ICAddress item in Model)
+                {
+                    <tr>
+                        <td class="column944">
+                            <span class="display-modeAProd"> <label id="lblAddressProd" style="font-size: 12px">@item.Address</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtAddressProd" class="edit-modeAProd edprod form-control">@item.Address</textarea>
+                            <input id="lblAddressIdProd" style="display:none; width:20px" value="@item.AddressId" />
+                        </td>
+                        <td class="column944">
+                            @*<label style="font-size: 12px">@item.Suburb</label>*@
+                            <span class="display-modeAProd"> <label id="lblSuburbProd" style="font-size: 12px">@item.Suburb</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtSuburbProd" class="edit-modeAProd edprod form-control">@item.Suburb</textarea>
+                        </td>
+                        <td class="column944">
+                            <span class="display-modeAProd"> <label id="lblLocationProd" style="font-size: 12px">@item.Location</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtLocationProd" class="edit-modeAProd edprod form-control">@item.Location</textarea>
+                        </td>
+                        <td class="column944">
+                            <span class="display-modeAProd"> <label id="lblCityProd" style="font-size: 12px">@item.City</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtCityProd" class="edit-modeAProd edprod form-control">@item.City</textarea>
+                        </td>
+                        <td class="column944">
+                            @{
+                    var st = db.States.Where(x => x.StateId == item.StateId).Select(x => x.StateName).ToList();
+                    if (st.LongCount() > 0)
+                    {
+                        <span class="display-modeAProd"> <label id="lblState" style="font-size: 12px">@st[0]</label> </span>
+                    }
+                    <select class="edit-modeAProd form-control" style="display:none; color:red" id="SelectStateIdProd">
+                        <option value="0">Seleccione...</option>
+                        @{
+                    var sts = db.States.Where(x => x.Active == true && x.CountryId == CountryIdss).OrderBy(x => x.StateName).ToList();
+
+                    foreach (States _st in sts)
+                    {
+                        if (_st.StateId == item.StateId)
+                        {
+                            <option value="@_st.StateId" selected="selected">@_st.StateName</option>
+                        }
+                        else
+                        {
+                            <option value="@_st.StateId">@_st.StateName</option>
+                        }
+                    }
+                        }
+                    </select>
+                            }
+                        </td>
+                        <td class="column944 text-center">
+                            <label id="lblCountryName" style="font-size: 12px">@item.CountryName</label>
+                            <input type="text" value="@item.CountryId" style="display:none"/>
+                        </td>
+                        <td class="column944 text-center">
+                            <span class="display-modeAProd"> <label id="lblZipCodeProd" style="font-size: 12px">@item.ZipCode</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="15" id="txtZipCodeProd" class="edit-modeAProd edprod form-control">@item.ZipCode</textarea>
+                        </td>
+                        <td class="column944">
+                            <span class="display-modeAProd"> <label id="lblEmailProd" style="font-size: 12px">@item.Email</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="255" id="txtEmailProd" class="edit-modeAProd edprod form-control">@item.Email</textarea>
+                        </td>
+                        <td class="column944">
+                            <span class="display-modeAProd"> <label id="lblWebProd" style="font-size: 12px">@item.Web</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="100" id="txtWebProd" class="edit-modeAProd edprod form-control">@item.Web</textarea>
+                        </td>
+                        <td class="text-center column7">
+                            <button class="btn btn-warning btn-sm display-modeAProd" onclick="ActiveFieldstoEditAddressProd($(this))">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                            <button class="btn btn-primary btn-sm edit-modeAProd" style="display:none" onclick="SaveChangedAddressProd($(this))">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                            <button class="btn btn-danger btn-sm edit-modeAProd" style="display:none" onclick="CancelEditAddressProd($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                        <td class="text-center column5">
+                            <button class="btn btn-danger btn-sm" onclick="DeleteAddressesProd($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                        <td class="text-center column5">
+                            @{
+                    if (SessionBrnachId != null)
+                    {
+                        <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("ClientPhones", "Production", new { ClientId = SessionBrnachId.ClientId, AddressId = item.AddressId, CountryId = item.CountryId })';return false;">
+                            <span class="glyphicon glyphicon-phone"></span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("ClientPhones", "Production", new { ClientId = ClientIdss, AddressId = item.AddressId, CountryId = item.CountryId })';return false;">
+                            <span class="glyphicon glyphicon-phone"></span>
+                        </button>
+                    }
+}
+
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="AddAddressProd" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Dirección.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Estado: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <select class="form-control" id="SelectStateIdProdFrm">
+                                <option value="0">Seleccione...</option>
+                                @{
+                                    var s = db.States.Where(x => x.Active == true && x.CountryId == CountryIdss).OrderBy(x => x.StateName);
+                                    foreach (States _s in s)
+                                    {
+                                        <option value="@_s.StateId">@_s.StateName</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Ciudad: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Ciudad..." class="form-control" maxlength="100" id="CityProd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Colonia: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Colonia..." class="form-control" maxlength="255" id="SuburbProd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Locación: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Locación..." class="form-control" maxlength="255" id="LocationProd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Código Postal: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Código Postal..." class="form-control" maxlength="15" id="ZipCodeProd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Calle: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Calle..." class="form-control" maxlength="255" id="StreetProd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Email: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Email..." class="form-control" maxlength="255" id="EmailProd" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Web: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" class="form-control" id="WebProd" placeholder="Web..." maxlength="100" />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="AddAddressProd()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn" data-dismiss="modal" onclick="cancelAddBranchsProd()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

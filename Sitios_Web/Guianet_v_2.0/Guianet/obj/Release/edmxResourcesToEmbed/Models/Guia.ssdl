@@ -1,0 +1,1770 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GuiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Address" Type="varchar" MaxLength="255" />
+    <Property Name="ZipCode" Type="varchar" MaxLength="30" />
+    <Property Name="City" Type="varchar" MaxLength="100" />
+    <Property Name="Email" Type="varchar" MaxLength="255" />
+    <Property Name="Web" Type="varchar" MaxLength="100" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="AddressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Suburb" Type="varchar" MaxLength="255" />
+    <Property Name="StateId" Type="int" />
+    <Property Name="Location" Type="varchar" MaxLength="255" />
+    <Property Name="Longitud" Type="varchar" MaxLength="255" />
+    <Property Name="Latitud" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Adverts">
+    <Key>
+      <PropertyRef Name="AdvertId" />
+    </Key>
+    <Property Name="AdvertId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdvertName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="AdvertDescription" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="AdvertFile" Type="varchar" MaxLength="255" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="255" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdvertTypes">
+    <Key>
+      <PropertyRef Name="AdvertTypeId" />
+    </Key>
+    <Property Name="AdvertTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Alphabet">
+    <Key>
+      <PropertyRef Name="AlphabetId" />
+    </Key>
+    <Property Name="AlphabetId" Type="tinyint" Nullable="false" />
+    <Property Name="Letter" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AttributeGroupOrder" Type="int" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="varchar" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BarCodes">
+    <Key>
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="BarCodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BarCode" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BookName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BrandName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Logo" Type="varchar" MaxLength="60" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="100" />
+    <Property Name="AlphabetId" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="CategoryThree">
+    <Key>
+      <PropertyRef Name="CategoryThreeId" />
+    </Key>
+    <Property Name="CategoryThreeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryThree" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Level" Type="tinyint" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientAddresses">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="AddressId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientAdvertCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AdvertId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="CategoryThreeId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="AdvertId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="CategoryThreeId" Type="int" Nullable="false" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+    <Property Name="AdvertTypeId" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="ClientAdverts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AdvertId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="AdvertId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientBrands">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="tinyint" />
+    <Property Name="Page" Type="varchar" MaxLength="50" />
+    <Property Name="ExpireDescription" Type="varchar" MaxLength="100" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="BrandId" Type="int" Nullable="false" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientBrandTypes">
+    <Key>
+      <PropertyRef Name="ClientBrandTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="30" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientPhones">
+    <Key>
+      <PropertyRef Name="ClientPhoneId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="ClientPhoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PhoneTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Number" Type="varchar(max)" Nullable="false" />
+    <Property Name="Lada" Type="varchar" MaxLength="10" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="AddressId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProductAdverts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductAdvertId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductAdvertId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProductBarCodes">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="BarCodeId" Type="int" Nullable="false" />
+    <Property Name="AveragePrice" Type="float" />
+  </EntityType>
+  <EntityType Name="ClientProductLeafCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="LeafCategoryId" />
+      <PropertyRef Name="CategoryThreeId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="LeafCategoryId" Type="int" Nullable="false" />
+    <Property Name="Module" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="CategoryThreeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="RegisterSanitary" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientIdParent" Type="int" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Image" Type="varchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ShortName" Type="varchar" MaxLength="200" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="AlphabetId" Type="tinyint" />
+    <Property Name="CountryId" Type="tinyint" />
+    <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientTypes">
+    <Key>
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryCode" Type="tinyint" />
+    <Property Name="ID" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="CountryLada" Type="varchar" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="DistributorProducts">
+    <Key>
+      <PropertyRef Name="DistributorId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="DistributorId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Distributors">
+    <Key>
+      <PropertyRef Name="DistributorId" />
+    </Key>
+    <Property Name="DistributorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Distributor" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="int" Nullable="false" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionBookClientProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="100" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionCategoryThree">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="CategoryThreeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="CategoryThreeId" Type="int" Nullable="false" />
+    <Property Name="CategoryProductPage" Type="varchar" MaxLength="100" />
+    <Property Name="CategoryPSPage" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="EditionClientProductAdverts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductAdvertId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductAdvertId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="StatusId" Type="int" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+    <Property Name="Validation" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientProductShots">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ProductShot" Type="varchar" MaxLength="100" />
+    <Property Name="EditionId" Type="int" />
+    <Property Name="ClientId" Type="int" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientProductSIDEF">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ImageName" Type="varchar" MaxLength="200" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="200" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClients">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="100" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionProductShotSizes">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="int" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NumberEdition" Type="int" Nullable="false" />
+    <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="BarCode" Type="varchar" MaxLength="80" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="BookId" Type="int" Nullable="false" />
+    <Property Name="EditionCode" Type="varchar" MaxLength="10" />
+    <Property Name="AddDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ImageSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+    <Property Name="ImageSize" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InternationalClientProducts">
+    <Key>
+      <PropertyRef Name="InternationalProductId" />
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="InternationalProductId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InternationalEditionClientProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="InternationalProductId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="InternationalProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InternationalProducts">
+    <Key>
+      <PropertyRef Name="InternationalProductId" />
+    </Key>
+    <Property Name="InternationalProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="InternationalProductName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AlphabetId" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="LeafCategories">
+    <Key>
+      <PropertyRef Name="LeafCategoryId" />
+    </Key>
+    <Property Name="LeafCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LeafCategory" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Level" Type="tinyint" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LeafHomogeneousCategories">
+    <Key>
+      <PropertyRef Name="LeafCategoryId" />
+      <PropertyRef Name="CategoryThreeId" />
+    </Key>
+    <Property Name="LeafCategoryId" Type="int" Nullable="false" />
+    <Property Name="CategoryThreeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Manufacturers">
+    <Key>
+      <PropertyRef Name="ManufacturerId" />
+    </Key>
+    <Property Name="ManufacturerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Manufacturer" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="HTMLContent" Type="text" />
+    <Property Name="XMLContent" Type="text" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PhoneTypes">
+    <Key>
+      <PropertyRef Name="PhoneTypeId" />
+    </Key>
+    <Property Name="PhoneTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductAdverts">
+    <Key>
+      <PropertyRef Name="ProductAdvertId" />
+    </Key>
+    <Property Name="ProductAdvertId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductAdvertName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="PlainContent" Type="text" />
+    <Property Name="Content" Type="text" />
+    <Property Name="HtmlContent" Type="text" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AlphabetId" Type="tinyint" />
+    <Property Name="ManufacturerId" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductStatus">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReassignCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="LeafCategoryId" />
+      <PropertyRef Name="CategoryThreeId" />
+    </Key>
+    <Property Name="NickName" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="LeafCategoryId" Type="int" Nullable="false" />
+    <Property Name="CategoryThreeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StateName" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StatusName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Works">
+    <Key>
+      <PropertyRef Name="WorkId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="WorkId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="WorkDescription" Type="varchar(max)" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="NickName" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Module" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Details" Type="varchar(max)" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="WorkDescriptionLevelThree" Type="varchar(max)" />
+  </EntityType>
+  <Association Name="R_104">
+    <End Role="ClientAddresses" Type="Self.ClientAddresses" Multiplicity="1" />
+    <End Role="ClientPhones" Type="Self.ClientPhones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientAddresses">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="AddressId" />
+      </Principal>
+      <Dependent Role="ClientPhones">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_114">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_115">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProducts">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_119">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_123">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="0..1" />
+    <End Role="EditionClientProductShots" Type="Self.EditionClientProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionClientProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_124">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_139">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductBarCodes" Type="Self.ClientProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductBarCodes">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_140">
+    <End Role="BarCodes" Type="Self.BarCodes" Multiplicity="1" />
+    <End Role="ClientProductBarCodes" Type="Self.ClientProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ClientProductBarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_149">
+    <End Role="EditionClientProductShots" Type="Self.EditionClientProductShots" Multiplicity="1" />
+    <End Role="EditionProductShotSizes" Type="Self.EditionProductShotSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClientProductShots">
+        <PropertyRef Name="EditionClientProductShotId" />
+      </Principal>
+      <Dependent Role="EditionProductShotSizes">
+        <PropertyRef Name="EditionClientProductShotId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_150">
+    <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
+    <End Role="EditionProductShotSizes" Type="Self.EditionProductShotSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="EditionProductShotSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_155">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductLeafCategories" Type="Self.ClientProductLeafCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductLeafCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_157">
+    <End Role="LeafHomogeneousCategories" Type="Self.LeafHomogeneousCategories" Multiplicity="1" />
+    <End Role="ClientProductLeafCategories" Type="Self.ClientProductLeafCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LeafHomogeneousCategories">
+        <PropertyRef Name="LeafCategoryId" />
+        <PropertyRef Name="CategoryThreeId" />
+      </Principal>
+      <Dependent Role="ClientProductLeafCategories">
+        <PropertyRef Name="LeafCategoryId" />
+        <PropertyRef Name="CategoryThreeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_16">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="States" Type="Self.States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_160">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ProductStatus" Type="Self.ProductStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductStatus">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_161">
+    <End Role="Status" Type="Self.Status" Multiplicity="1" />
+    <End Role="ProductStatus" Type="Self.ProductStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="ProductStatus">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_166">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_167">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_168">
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClientProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_181">
+    <End Role="Manufacturers" Type="Self.Manufacturers" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Manufacturers">
+        <PropertyRef Name="ManufacturerId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="ManufacturerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_183">
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="1" />
+    <End Role="EditionBookClientProducts" Type="Self.EditionBookClientProducts" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClientProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionBookClientProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_184">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="EditionClientProductSIDEF" Type="Self.EditionClientProductSIDEF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionClientProductSIDEF">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_185">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClientProductSIDEF" Type="Self.EditionClientProductSIDEF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientProductSIDEF">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_186">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ReassignCategories" Type="Self.ReassignCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ReassignCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_187">
+    <End Role="LeafHomogeneousCategories" Type="Self.LeafHomogeneousCategories" Multiplicity="1" />
+    <End Role="ReassignCategories" Type="Self.ReassignCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LeafHomogeneousCategories">
+        <PropertyRef Name="LeafCategoryId" />
+        <PropertyRef Name="CategoryThreeId" />
+      </Principal>
+      <Dependent Role="ReassignCategories">
+        <PropertyRef Name="LeafCategoryId" />
+        <PropertyRef Name="CategoryThreeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_188">
+    <End Role="Distributors" Type="Self.Distributors" Multiplicity="1" />
+    <End Role="DistributorProducts" Type="Self.DistributorProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Distributors">
+        <PropertyRef Name="DistributorId" />
+      </Principal>
+      <Dependent Role="DistributorProducts">
+        <PropertyRef Name="DistributorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_189">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="DistributorProducts" Type="Self.DistributorProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="DistributorProducts">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_191">
+    <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_192">
+    <End Role="States" Type="Self.States" Multiplicity="0..1" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_193">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientAdverts" Type="Self.ClientAdverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientAdverts">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_194">
+    <End Role="Adverts" Type="Self.Adverts" Multiplicity="1" />
+    <End Role="ClientAdverts" Type="Self.ClientAdverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Adverts">
+        <PropertyRef Name="AdvertId" />
+      </Principal>
+      <Dependent Role="ClientAdverts">
+        <PropertyRef Name="AdvertId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_196">
+    <End Role="ClientAdverts" Type="Self.ClientAdverts" Multiplicity="1" />
+    <End Role="ClientAdvertCategories" Type="Self.ClientAdvertCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientAdverts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="AdvertId" />
+      </Principal>
+      <Dependent Role="ClientAdvertCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="AdvertId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_197">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="ClientAdvertCategories" Type="Self.ClientAdvertCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientAdvertCategories">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_198">
+    <End Role="CategoryThree" Type="Self.CategoryThree" Multiplicity="1" />
+    <End Role="ClientAdvertCategories" Type="Self.ClientAdvertCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CategoryThree">
+        <PropertyRef Name="CategoryThreeId" />
+      </Principal>
+      <Dependent Role="ClientAdvertCategories">
+        <PropertyRef Name="CategoryThreeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_199">
+    <End Role="AdvertTypes" Type="Self.AdvertTypes" Multiplicity="0..1" />
+    <End Role="ClientAdvertCategories" Type="Self.ClientAdvertCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdvertTypes">
+        <PropertyRef Name="AdvertTypeId" />
+      </Principal>
+      <Dependent Role="ClientAdvertCategories">
+        <PropertyRef Name="AdvertTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_200">
+    <End Role="InternationalProducts" Type="Self.InternationalProducts" Multiplicity="1" />
+    <End Role="InternationalClientProducts" Type="Self.InternationalClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InternationalProducts">
+        <PropertyRef Name="InternationalProductId" />
+      </Principal>
+      <Dependent Role="InternationalClientProducts">
+        <PropertyRef Name="InternationalProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_201">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="InternationalClientProducts" Type="Self.InternationalClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="InternationalClientProducts">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_202">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="InternationalEditionClientProducts" Type="Self.InternationalEditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="InternationalEditionClientProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_203">
+    <End Role="InternationalClientProducts" Type="Self.InternationalClientProducts" Multiplicity="1" />
+    <End Role="InternationalEditionClientProducts" Type="Self.InternationalEditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="InternationalClientProducts">
+        <PropertyRef Name="InternationalProductId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="InternationalEditionClientProducts">
+        <PropertyRef Name="InternationalProductId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_207">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="InternationalProducts" Type="Self.InternationalProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="InternationalProducts">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_208">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="Works" Type="Self.Works" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Works">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_209">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientProductAdverts" Type="Self.ClientProductAdverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientProductAdverts">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_210">
+    <End Role="ProductAdverts" Type="Self.ProductAdverts" Multiplicity="1" />
+    <End Role="ClientProductAdverts" Type="Self.ClientProductAdverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductAdverts">
+        <PropertyRef Name="ProductAdvertId" />
+      </Principal>
+      <Dependent Role="ClientProductAdverts">
+        <PropertyRef Name="ProductAdvertId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_212">
+    <End Role="ClientProductAdverts" Type="Self.ClientProductAdverts" Multiplicity="1" />
+    <End Role="EditionClientProductAdverts" Type="Self.EditionClientProductAdverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductAdverts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductAdvertId" />
+      </Principal>
+      <Dependent Role="EditionClientProductAdverts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductAdvertId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_213">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="EditionClientProductAdverts" Type="Self.EditionClientProductAdverts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClientProductAdverts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_214">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionCategoryThree" Type="Self.EditionCategoryThree" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionCategoryThree">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_215">
+    <End Role="CategoryThree" Type="Self.CategoryThree" Multiplicity="1" />
+    <End Role="EditionCategoryThree" Type="Self.EditionCategoryThree" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CategoryThree">
+        <PropertyRef Name="CategoryThreeId" />
+      </Principal>
+      <Dependent Role="EditionCategoryThree">
+        <PropertyRef Name="CategoryThreeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Role="Books" Type="Self.Books" Multiplicity="1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="Clients1" Type="Self.Clients" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="Clients1">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_29">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Products1" Type="Self.Products" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Products1">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_3">
+    <End Role="ClientBrandTypes" Type="Self.ClientBrandTypes" Multiplicity="0..1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientBrandTypes">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_31">
+    <End Role="PhoneTypes" Type="Self.PhoneTypes" Multiplicity="1" />
+    <End Role="ClientPhones" Type="Self.ClientPhones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneTypes">
+        <PropertyRef Name="PhoneTypeId" />
+      </Principal>
+      <Dependent Role="ClientPhones">
+        <PropertyRef Name="PhoneTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_33">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_46">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_55">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_56">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_70">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientAddresses" Type="Self.ClientAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientAddresses">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_71">
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
+    <End Role="ClientAddresses" Type="Self.ClientAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="AddressId" />
+      </Principal>
+      <Dependent Role="ClientAddresses">
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_81">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_82">
+    <End Role="Brands" Type="Self.Brands" Multiplicity="1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_88">
+    <End Role="ClientTypes" Type="Self.ClientTypes" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientTypes">
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_89">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_91">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Brands" Type="Self.Brands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Brands">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_92">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_94">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_96">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_97">
+    <End Role="AttributeGroup" Type="Self.AttributeGroup" Multiplicity="1" />
+    <End Role="EditionAttributeGroup" Type="Self.EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AttributeGroup">
+        <PropertyRef Name="AttributeGroupId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="AttributeGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_98">
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="1" />
+    <End Role="EditionAttributeGroup" Type="Self.EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_99">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GuiaModelStoreContainer">
+    <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Adverts" EntityType="Self.Adverts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdvertTypes" EntityType="Self.AdvertTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Alphabet" EntityType="Self.Alphabet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CategoryThree" EntityType="Self.CategoryThree" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientAddresses" EntityType="Self.ClientAddresses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientAdvertCategories" EntityType="Self.ClientAdvertCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientAdverts" EntityType="Self.ClientAdverts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientBrands" EntityType="Self.ClientBrands" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientBrandTypes" EntityType="Self.ClientBrandTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientPhones" EntityType="Self.ClientPhones" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProductAdverts" EntityType="Self.ClientProductAdverts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProductBarCodes" EntityType="Self.ClientProductBarCodes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProductLeafCategories" EntityType="Self.ClientProductLeafCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProducts" EntityType="Self.ClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientTypes" EntityType="Self.ClientTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DistributorProducts" EntityType="Self.DistributorProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Distributors" EntityType="Self.Distributors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionAttributeGroup" EntityType="Self.EditionAttributeGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionAttributes" EntityType="Self.EditionAttributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionBookClientProducts" EntityType="Self.EditionBookClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionCategoryThree" EntityType="Self.EditionCategoryThree" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientProductAdverts" EntityType="Self.EditionClientProductAdverts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientProducts" EntityType="Self.EditionClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientProductShots" EntityType="Self.EditionClientProductShots" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientProductSIDEF" EntityType="Self.EditionClientProductSIDEF" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClients" EntityType="Self.EditionClients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionProductShotSizes" EntityType="Self.EditionProductShotSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InternationalClientProducts" EntityType="Self.InternationalClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InternationalEditionClientProducts" EntityType="Self.InternationalEditionClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InternationalProducts" EntityType="Self.InternationalProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LeafCategories" EntityType="Self.LeafCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LeafHomogeneousCategories" EntityType="Self.LeafHomogeneousCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Manufacturers" EntityType="Self.Manufacturers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhoneTypes" EntityType="Self.PhoneTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductAdverts" EntityType="Self.ProductAdverts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductContents" EntityType="Self.ProductContents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductStatus" EntityType="Self.ProductStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReassignCategories" EntityType="Self.ReassignCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="R_104" Association="Self.R_104">
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+      <End Role="ClientPhones" EntitySet="ClientPhones" />
+    </AssociationSet>
+    <AssociationSet Name="R_114" Association="Self.R_114">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_115" Association="Self.R_115">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_119" Association="Self.R_119">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_123" Association="Self.R_123">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="EditionClientProductShots" EntitySet="EditionClientProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_124" Association="Self.R_124">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_139" Association="Self.R_139">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductBarCodes" EntitySet="ClientProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_140" Association="Self.R_140">
+      <End Role="BarCodes" EntitySet="BarCodes" />
+      <End Role="ClientProductBarCodes" EntitySet="ClientProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_149" Association="Self.R_149">
+      <End Role="EditionClientProductShots" EntitySet="EditionClientProductShots" />
+      <End Role="EditionProductShotSizes" EntitySet="EditionProductShotSizes" />
+    </AssociationSet>
+    <AssociationSet Name="R_150" Association="Self.R_150">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="EditionProductShotSizes" EntitySet="EditionProductShotSizes" />
+    </AssociationSet>
+    <AssociationSet Name="R_155" Association="Self.R_155">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductLeafCategories" EntitySet="ClientProductLeafCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_157" Association="Self.R_157">
+      <End Role="LeafHomogeneousCategories" EntitySet="LeafHomogeneousCategories" />
+      <End Role="ClientProductLeafCategories" EntitySet="ClientProductLeafCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_16" Association="Self.R_16">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_160" Association="Self.R_160">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ProductStatus" EntitySet="ProductStatus" />
+    </AssociationSet>
+    <AssociationSet Name="R_161" Association="Self.R_161">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="ProductStatus" EntitySet="ProductStatus" />
+    </AssociationSet>
+    <AssociationSet Name="R_166" Association="Self.R_166">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_167" Association="Self.R_167">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_168" Association="Self.R_168">
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_181" Association="Self.R_181">
+      <End Role="Manufacturers" EntitySet="Manufacturers" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_183" Association="Self.R_183">
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+      <End Role="EditionBookClientProducts" EntitySet="EditionBookClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_184" Association="Self.R_184">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="EditionClientProductSIDEF" EntitySet="EditionClientProductSIDEF" />
+    </AssociationSet>
+    <AssociationSet Name="R_185" Association="Self.R_185">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientProductSIDEF" EntitySet="EditionClientProductSIDEF" />
+    </AssociationSet>
+    <AssociationSet Name="R_186" Association="Self.R_186">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ReassignCategories" EntitySet="ReassignCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_187" Association="Self.R_187">
+      <End Role="LeafHomogeneousCategories" EntitySet="LeafHomogeneousCategories" />
+      <End Role="ReassignCategories" EntitySet="ReassignCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_188" Association="Self.R_188">
+      <End Role="Distributors" EntitySet="Distributors" />
+      <End Role="DistributorProducts" EntitySet="DistributorProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_189" Association="Self.R_189">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="DistributorProducts" EntitySet="DistributorProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_191" Association="Self.R_191">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_192" Association="Self.R_192">
+      <End Role="States" EntitySet="States" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_193" Association="Self.R_193">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientAdverts" EntitySet="ClientAdverts" />
+    </AssociationSet>
+    <AssociationSet Name="R_194" Association="Self.R_194">
+      <End Role="Adverts" EntitySet="Adverts" />
+      <End Role="ClientAdverts" EntitySet="ClientAdverts" />
+    </AssociationSet>
+    <AssociationSet Name="R_196" Association="Self.R_196">
+      <End Role="ClientAdverts" EntitySet="ClientAdverts" />
+      <End Role="ClientAdvertCategories" EntitySet="ClientAdvertCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_197" Association="Self.R_197">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="ClientAdvertCategories" EntitySet="ClientAdvertCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_198" Association="Self.R_198">
+      <End Role="CategoryThree" EntitySet="CategoryThree" />
+      <End Role="ClientAdvertCategories" EntitySet="ClientAdvertCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_199" Association="Self.R_199">
+      <End Role="AdvertTypes" EntitySet="AdvertTypes" />
+      <End Role="ClientAdvertCategories" EntitySet="ClientAdvertCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_200" Association="Self.R_200">
+      <End Role="InternationalProducts" EntitySet="InternationalProducts" />
+      <End Role="InternationalClientProducts" EntitySet="InternationalClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_201" Association="Self.R_201">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="InternationalClientProducts" EntitySet="InternationalClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_202" Association="Self.R_202">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="InternationalEditionClientProducts" EntitySet="InternationalEditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_203" Association="Self.R_203">
+      <End Role="InternationalClientProducts" EntitySet="InternationalClientProducts" />
+      <End Role="InternationalEditionClientProducts" EntitySet="InternationalEditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_207" Association="Self.R_207">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="InternationalProducts" EntitySet="InternationalProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_208" Association="Self.R_208">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="Works" EntitySet="Works" />
+    </AssociationSet>
+    <AssociationSet Name="R_209" Association="Self.R_209">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientProductAdverts" EntitySet="ClientProductAdverts" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="Self.R_21">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_210" Association="Self.R_210">
+      <End Role="ProductAdverts" EntitySet="ProductAdverts" />
+      <End Role="ClientProductAdverts" EntitySet="ClientProductAdverts" />
+    </AssociationSet>
+    <AssociationSet Name="R_212" Association="Self.R_212">
+      <End Role="ClientProductAdverts" EntitySet="ClientProductAdverts" />
+      <End Role="EditionClientProductAdverts" EntitySet="EditionClientProductAdverts" />
+    </AssociationSet>
+    <AssociationSet Name="R_213" Association="Self.R_213">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="EditionClientProductAdverts" EntitySet="EditionClientProductAdverts" />
+    </AssociationSet>
+    <AssociationSet Name="R_214" Association="Self.R_214">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionCategoryThree" EntitySet="EditionCategoryThree" />
+    </AssociationSet>
+    <AssociationSet Name="R_215" Association="Self.R_215">
+      <End Role="CategoryThree" EntitySet="CategoryThree" />
+      <End Role="EditionCategoryThree" EntitySet="EditionCategoryThree" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="Self.R_23">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="Self.R_24">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Clients1" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_29" Association="Self.R_29">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Products1" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_3" Association="Self.R_3">
+      <End Role="ClientBrandTypes" EntitySet="ClientBrandTypes" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_31" Association="Self.R_31">
+      <End Role="PhoneTypes" EntitySet="PhoneTypes" />
+      <End Role="ClientPhones" EntitySet="ClientPhones" />
+    </AssociationSet>
+    <AssociationSet Name="R_33" Association="Self.R_33">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_46" Association="Self.R_46">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_55" Association="Self.R_55">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_56" Association="Self.R_56">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_70" Association="Self.R_70">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_71" Association="Self.R_71">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_81" Association="Self.R_81">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_82" Association="Self.R_82">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_88" Association="Self.R_88">
+      <End Role="ClientTypes" EntitySet="ClientTypes" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_89" Association="Self.R_89">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_91" Association="Self.R_91">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Brands" EntitySet="Brands" />
+    </AssociationSet>
+    <AssociationSet Name="R_92" Association="Self.R_92">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_94" Association="Self.R_94">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="R_96" Association="Self.R_96">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="R_97" Association="Self.R_97">
+      <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="R_98" Association="Self.R_98">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="R_99" Association="Self.R_99">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

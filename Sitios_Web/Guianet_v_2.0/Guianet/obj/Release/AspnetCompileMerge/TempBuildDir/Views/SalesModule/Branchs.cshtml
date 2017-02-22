@@ -1,0 +1,524 @@
+﻿@model IEnumerable<BranchsByClients>
+@using Guianet.Models;
+@{
+    ViewBag.Title = "Branchs";
+    WebGrid _datagrid = new WebGrid(Model);
+    Guianet.Models.Sessions.SessionBranchSM ind = (Guianet.Models.Sessions.SessionBranchSM)Session["SessionBranchSM"];
+    GuiaEntities db = new GuiaEntities();
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/SalesModule/Branchs")">Ventas</a></li>
+    <li class="active">Sucursales</li>
+</ol>
+<div class="row">
+    <div class="col-lg-6" style="border: none">
+        @using (Html.BeginForm())
+        {
+        <div style="text-align:right;display:none">
+            <p>
+                @{
+                    if (ind != null)
+                    {
+
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CId">
+                            <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BId">
+                            <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EId">
+                            <label>client</label><input id="ClientId" name="ClientId" type="text" value="@ind.ClId">
+                            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+
+                    }
+                    else
+                    {
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                            <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                            <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                            <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                    }
+                }
+            </p>
+        </div>
+        }
+        @{
+            if (ind == null)
+            {
+        <div style="width: 100%; float: left">
+            <table style="width:100%" border="0">
+                <tr>
+                    <td width="100px" style="line-height: 30px;">
+                        <label class="labelsform">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <div style="text-align:left;">
+                            <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                <option class="null">Seleccione...</option>
+                                @{
+                                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                            if (Session["CountriesUsers"] == null)
+                                            {
+                                                Session.Abandon();
+                                                Response.Redirect(Url.Action("Logout", "Login"));
+                                                Response.End();
+                                            }
+                                            else if (p != null)
+                                            {
+                                                List<string> d = p.var;
+                                                foreach (var f in d)
+                                                {
+                                                    var countries = (from country in db.Countries
+                                                                     where country.ID == f
+                                                                     select country);
+                                                    foreach (Countries w in countries)
+                                                    {
+                                                        int CountryId = w.CountryId;
+                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                    }
+                                                }
+                                            }
+                                }
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="bookname" id="lblbook" style="display:normal" class="labelsform">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="Edition" id="lblEdition" style="display: normal" class="labelsform">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="DivisionName" id="lblclient" style="display: normal" class="labelsform">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            }
+            else
+            {
+        <div style="width: 100%;">
+            <table style="width:100%" border="0">
+                <tr>
+                    <td width="100px" style="line-height: 30px;">
+                        <label class="labelsform">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <div style="text-align:left;">
+                            <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                <option class="null">Seleccione...</option>
+                                @{
+                                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                            if (Session["CountriesUsers"] == null)
+                                            {
+                                                Session.Abandon();
+                                                Response.Redirect(Url.Action("Logout", "Login"));
+                                                Response.End();
+                                            }
+                                            else if (p != null)
+                                            {
+                                                List<string> d = p.var;
+                                                foreach (var f in d)
+                                                {
+                                                    var countries = (from country in db.Countries
+                                                                     where country.ID == f
+                                                                     select country);
+                                                    foreach (Countries w in countries)
+                                                    {
+                                                        int CountryId = ind.CId;
+                                                        if (w.CountryId == CountryId)
+                                                        {
+                                        <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                                        }
+                                                        else
+                                                        {
+                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                }
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="bookname" id="lblbook" style="display:normal" class="labelsform">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                    </td>
+                    <td style="width:15px"></td>
+                    <td style="line-height: 30px; height: 30px">
+                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                            <option>Seleccione...</option>
+                            @{
+                                        int BookId = ind.BId;
+
+                                        var bk = (from book in db.Books
+                                                  where book.BookId == BookId
+                                                  select book).ToList();
+                                        foreach (Books _book in bk)
+                                        {
+                                            if (_book.BookId == BookId)
+                                            {
+                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                            }
+                                            else
+                                            {
+                                    <option value="@_book.BookId">@_book.BookName</option>
+                                            }
+                                        }
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="Edition" id="lblEdition" style="display: normal" class="labelsform">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                            <option>Seleccione...</option>
+                            @{
+                                        int EditionId = ind.EId;
+                                        int CountryIds = ind.CId;
+                                        var ed = (from _ed in db.Editions
+                                                  where _ed.CountryId == CountryIds
+                                                  select _ed).ToList();
+
+                                        foreach (Editions _ed in ed)
+                                        {
+                                            if (_ed.EditionId == EditionId)
+                                            {
+                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                            }
+                                            else
+                                            {
+                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                            }
+                                        }
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="DivisionName" id="lblclient" style="display: normal" class="labelsform">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                            <option>Seleccione...</option>
+                            @{
+                                        byte clienttypeid = 0;
+                                        var ct = (from clientt in db.ClientTypes
+                                                  where clientt.TypeName == "ANUNCIANTE"
+                                                  select clientt).ToList();
+                                        foreach (ClientTypes _ct in ct)
+                                        {
+                                            clienttypeid = _ct.ClientTypeId;
+                                        }
+
+                                        var _clients = (from c in db.Clients
+                                                        join ec in db.EditionClients
+                                                        on c.ClientId equals ec.ClientId
+                                                        where ec.ClientTypeId == clienttypeid
+                                                        && c.CountryId == CountryIdss
+                                                        orderby c.CompanyName ascending
+                                                        select c).Distinct().OrderBy(x => x.CompanyName).ToList();
+                                        foreach (Clients c in _clients)
+                                        {
+                                    <option value="@c.ClientId">@c.CompanyName</option>
+                                        }
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            }
+        }
+    </div>
+    @{
+        if (ind != null)
+        {
+            <div class="col-lg-6" style="text-align:center">
+                <a target="_blank" href="@Url.Action("GetBranchsByClientSM", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfbranchs.png")" style="height:75px;width:60px"></a>
+            </div>       
+        }
+    }
+</div>
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="row">
+
+            <div class="col-lg-6">
+                <table class="widthtable table-hover" border="0">
+                    <tr>
+                        <td style="width: 15%;"><label class="labelsform">País:</label></td>
+                        <td>
+                            @{
+        var cts = (from _ct in db.Countries
+                                           where _ct.CountryId == CountryIdss
+                                           select _ct).ToList();
+                                foreach (Countries _ct in cts)
+                                {
+                            <span class="spans">@_ct.CountryName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%"><label class="labelsform">Libro:</label></td>
+                        <td>
+                            @{
+                                var bks = (from _bk in db.Books
+                                           where _bk.BookId == BookIds
+                                           select _bk).ToList();
+                                foreach (Books _bks in bks)
+                                {
+                            <span class="spans">@_bks.BookName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%"><label class="labelsform">Edición:</label></td>
+                        <td>
+                            @{
+                                var eds = (from _ed in db.Editions
+                                           where _ed.EditionId == EditionIds
+                                           select _ed).ToList();
+                                foreach (Editions _eds in eds)
+                                {
+                            <span class="spans">@_eds.NumberEdition</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%"><label class="labelsform">Cliente:</label></td>
+                        <td>
+                            @{
+                                var cl = (from _cl in db.Clients
+                                          where _cl.ClientId == ClientIdss
+                                          select _cl).ToList();
+                                foreach (Clients _cl in cl)
+                                {
+                                    <span class="spans edtdc" id="SPRSClient">@_cl.CompanyName</span>
+    <input type="text" value="@_cl.CompanyName" class="form-control shdc" style="color:red; display:none" id="RSClient" />
+                                }
+}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%"><label class="labelsform">Nombre Corto:</label></td>
+                        <td>
+                            @{
+                                foreach (Clients _cl in cl)
+                                {
+                                    <span class="spans edtdc" id="SPSNClient">@_cl.ShortName</span>
+                                    <input type="text" value="@_cl.ShortName" class="form-control shdc" style="color:red;display:none" id="SNClient"/>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width:25%">
+                            <button class="btn btn-warning btn-sm edtdc" onclick="EditClientData()">
+                                Editar Cliente
+                            </button>
+                            <button class="btn btn-primary btn-sm shdc" onclick="saveEditClientData()" style="display:none">
+                                Guardar
+                            </button>
+                            <button class="btn btn-danger btn-sm shdc" onclick="CancelClientData()" style="display:none">
+                                Cancelar
+                            </button>
+                            
+                        </td>
+                        <td style="width:25%">
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#AddBranch">
+                                Agregar Sucursal
+                            </button>
+                        </td>
+                        <td style="width:25%">
+                            <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("ClientAddresses", "SalesModule", new { ClientId = ClientIdss })';return false;">
+                                Ver / Editar dirección Matríz
+                            </button>
+                        </td>
+                        <td style="width:25%;text-align:right">
+                            @{
+                                var ca = db.ClientAddresses.Where(x => x.ClientId == ClientIdss).ToList();
+                                
+                            <label class="labelsforms">Cantidad de direcciones <br /> Matríz: <span> @ca.LongCount() </span></label>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+}
+<br />
+@{
+    if (ind != null)
+    {
+<div style="width:100%" class="table-responsive">
+    <table class="widthtable">
+        <thead class="webgrid-header">
+            <tr>
+                <th class="column37">Nombre Sucursal</th>
+                <th class="column37">Nombre Corto</th>
+                <th class="column5">Participante</th>
+                <th class="column5">Editar</th>
+                <th class="column10">Cantidad de direcciones</th>
+                <th class="column7">Ver / Editar direcciones</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 12px; ">
+            @{
+                foreach (BranchsByClients item in Model)
+                {
+                    <tr>
+                        <td class="column37">
+                            <span class="display-modeB"> <label id="lblCompanyNameB">@item.CompanyName</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="CompanyNameB" class="edit-modeB edprod form-control" onkeypress="removerequieredfieldSM($(this))">@item.CompanyName</textarea>
+                            <input id="lblClientIdB" style="display:none;" value="@item.ClientId" />
+                        </td>
+                        <td class="column37">
+                            <span class="display-modeB"> <label id="lblShortNameB">@item.ShortName</label> </span>
+                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="ShortNameB" class="edit-modeB edprod form-control">@item.ShortName</textarea>
+                        </td>
+                        <td class="column5 text-center">
+                            @{
+                                bool Participant = false;
+                                int? PP = item.PP;
+
+                                if (PP == 1)
+                                {
+                                    Participant = true;
+                                }
+                                <input type="checkbox" onclick="InsertParticipantClient($(this))" checked="@Participant" />
+                            }
+                        </td>
+                        <td class="column7 text-center">
+                            <button class="btn btn-warning btn-sm display-modeB" onclick="ActivefieldstoEditBranch($(this))">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                            <button class="btn btn-primary btn-sm edit-modeB" style="display:none" onclick="SaveChangesBranch($(this))">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                            <button class="btn btn-danger btn-sm edit-modeB" style="display:none" onclick="CancelEditBranch($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                        <td class="column10 text-center">
+                            @{
+                                int? QttyAddress = item.QttyAddress;
+                                <span class="display-mode"> <label id="lblName">@QttyAddress</label> </span>
+                            }
+                        </td>
+                        <td class="column7 text-center">
+                            <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("ClientAddresses", "SalesModule", new { ClientId = item.ClientId })';return false;">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+        }
+}
+<div class="modal fade" id="AddBranch" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Sucursal.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Nombre de Sucursal: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <div class="form-group has-feedback" id="divAddBranch" style="margin-bottom: 0;">
+                                <input type="text" placeholder="Nombre de Sucursal..." maxlength="200" class="form-control" id="BranchName" onkeypress="$('#divAddBranch').removeClass('has-error'), $('.errorB').hide()" />
+                                <span class="glyphicon glyphicon-remove form-control-feedback errorB" style="display:none"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labelsform">Nombre Corto: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" class="form-control" id="BranchShortName" maxlength="200" placeholder="Nombre Corto..." />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="AddBranchs()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn" data-dismiss="modal" onclick="cancelAddBranchs()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
