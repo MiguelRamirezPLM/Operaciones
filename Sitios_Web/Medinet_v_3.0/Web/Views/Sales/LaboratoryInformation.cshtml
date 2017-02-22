@@ -4,47 +4,8 @@
     ViewBag.Title = "LaboratoryInformation";
     Web.Models.Sessions.SessionM _Session1 = (Web.Models.Sessions.SessionM)Session["SessionM"];
     Medinet db = new Medinet();
-    PLMUsers plm = new PLMUsers();
     SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
 
-    CountriesUsers _CountriesUsersSalesLI = (CountriesUsers)Session["CountriesUsers"];
-    int iduser = _CountriesUsersSalesLI.userId;
-    int AppId = _CountriesUsersSalesLI.ApplicationId;
-    string HasKey = null;
-
-    var Hkey = (from _A in plm.Applications
-                where _A.ApplicationId == _CountriesUsersSalesLI.ApplicationId
-                select _A).ToList();
-
-    foreach (var _item in Hkey)
-    {
-        HasKey = _item.HashKey;
-    } 
-
-    var RoleIdU = (from _R in plm.ApplicationUsers
-                   where _R.ApplicationId == _CountriesUsersSalesLI.ApplicationId
-                          && _R.UserId == _CountriesUsersSalesLI.userId
-                   select _R).ToList();
-
-    foreach (var _row in RoleIdU)
-    {
-        if (_row.RoleId == 5)
-        {
-            ViewData["Pagination"] = null;
-            ViewData["Medicos"] = null;
-            ViewData["Producción"] = null;
-            ViewData["Inicio"] = null;
-        }
-        else
-        {
-            ViewData["Pagination"] = "True";
-            ViewData["Medicos"] = "True";
-            ViewData["Producción"] = "True";
-            ViewData["Inicio"] = "True";
-        }
-    }
-    ViewData["Ventas"] = "True";
-    
     int DivisionId, EditionId, BookId, CountryId;
     if (_Session != null)
     {
@@ -86,20 +47,12 @@
         var desc = $("#DVSDescription").val();
         var sn = $("#DVSShortName").val();
         var DId = $("#DivisionId").val();
-        var _UserID = $("#_iduser").val();
-        var _HasKey = $("#_haskey").val();
-        alert(_UserID);
+
         $.ajax({
             Type: "POST",
             dataType: "Json",
             url: "@Url.Content("~/Sales/EditDivision")",
-            data: {
-                Division: DId,
-                Description: desc,
-                ShortName: sn,
-                UserID: _UserID,
-                HashKey: _HasKey
-            },
+            data: { Division: DId, Description: desc, ShortName: sn },
             success: function (data) {
                 if (data == true) {
                     $("#lblDescription").text(desc);
@@ -185,8 +138,6 @@
         var cty = tr.find("#txtCity").val();
         var st = tr.find("#txtState").val();
         var ct = tr.find("#txtContact").val();
-        var _UserID = $("#_iduser").val();
-        var _HasKey = $("#_haskey").val();
 
         var content = "";
 
@@ -224,9 +175,7 @@
                     Fax: fx,
                     Web: wb,
                     State: st,
-                    Contact: ct,
-                    UserID: _UserID,
-                    HashKey: _HasKey
+                    Contact: ct
                 },
                 success: function (data) {
                     if (data == true) {
@@ -264,9 +213,6 @@
         var ct = $("#City").val();
         var st = $("#State").val();
         var cnt = $("#Contact").val();
-        var _UserID = $("#_iduser").val();
-        var _HasKey = $("#_haskey").val();
-
 
         if ((!addr.trim() == true) &&
             (!sub.trim() == true) &&
@@ -299,9 +245,7 @@
                     City: ct,
                     State: st,
                     Contact: cnt,
-                    Division: DId,
-                    UserID: _UserID,
-                    HashKey: _HasKey
+                    Division: DId
                 },
                 success: function (data) {
                     if (data == true)
@@ -344,9 +288,6 @@
 
         var DId = tr.find("#DivisionInfId").val();
 
-        var _UserID = $("#_iduser").val();
-        var _HasKey = $("#_haskey").val();
-
         swal({
             title: '¿Desea eliminar la Dirección ',
             type: "warning",
@@ -363,9 +304,7 @@
                 dataType: "Json",
                 url: "@Url.Content("~/Sales/DeleteAddress")",
                 data: {
-                    Division: DId,
-                    UserID: _UserID,
-                    HashKey: _HasKey
+                    Division: DId
                 },
                 success: function (data) {
                     if (data == true) {
@@ -378,6 +317,7 @@
 </script>
 
 
+<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
 
 
 
@@ -513,15 +453,10 @@
 </div>
 <br />
 
-<input type="hidden" id="_iduser" value="@iduser" />
-<input type="hidden" id="_haskey" value="@HasKey" />
-
 <div class="row col-md-12" align="center">
     <span class="Titles">Editar Laboratorio</span>
-    <br />
-    <br />
 </div>
-
+<br />
 
 <div class="row col-md-12">
     <div class="col-lg-12">
@@ -567,10 +502,8 @@
             </table>
         </div>
     </div>
-    <br />
-    <br />
 </div>
-
+<br />
 <div class="row col-md-12">
     <div class="col-lg-12">
         <div class="row col-md-12 table-responsive">

@@ -18,9 +18,6 @@ namespace Web.Models
         public Roles()
         {
             this.ApplicationUsers = new HashSet<ApplicationUsers>();
-            this.OperationRoles = new HashSet<OperationRoles>();
-            this.UserProjects = new HashSet<UserProjects>();
-            this.WebPageSectionMenues = new HashSet<WebPageSectionMenues>();
         }
     
         public int RoleId { get; set; }
@@ -29,11 +26,5 @@ namespace Web.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApplicationUsers> ApplicationUsers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OperationRoles> OperationRoles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserProjects> UserProjects { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WebPageSectionMenues> WebPageSectionMenues { get; set; }
     }
 }

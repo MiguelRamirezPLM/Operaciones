@@ -20,8 +20,6 @@ namespace Web.Models
             this.ActivitySessions = new HashSet<ActivitySessions>();
             this.ApplicationUsers = new HashSet<ApplicationUsers>();
             this.UserCountries = new HashSet<UserCountries>();
-            this.Binnacles = new HashSet<Binnacles>();
-            this.UserProjects = new HashSet<UserProjects>();
         }
     
         public int UserId { get; set; }
@@ -44,9 +42,5 @@ namespace Web.Models
         public virtual Countries_Users Countries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCountries> UserCountries { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Binnacles> Binnacles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserProjects> UserProjects { get; set; }
     }
 }

@@ -1,0 +1,264 @@
+﻿@model IEnumerable<Web.Models.Class.TherapeuticsEphMRA>
+@using Web.Models;
+@{
+    ViewBag.Title = "ATCEphMRA";
+    Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
+    Medinet db = new Medinet();
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage:25);
+    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS,BookId;
+
+    if (_Session != null)
+    {
+        CountryId = _Session.CountryId;
+        DivisionId = _Session.DivisionId;
+        ProductId = Convert.ToInt32(_Session.ProductId);
+        PharmaFormId = Convert.ToInt32(_Session.PharmaFormId);
+        CategoryId = Convert.ToInt32(_Session.CategoryId);
+        EditionIdS = Convert.ToInt32(_Session.EditionId);
+        BookId = Convert.ToInt32(_Session.BookId);
+    }
+    else
+    {
+        CountryId = 0;
+        DivisionId = 0;
+        ProductId = 0;
+        PharmaFormId = 0;
+        CategoryId = 0;
+        EditionIdS = 0;
+        BookId = 0;
+    }
+}
+
+<div class="row">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Médicos</strong> | Laboratorios y productos</div>
+        </div>
+    </div>
+    <br />
+    <nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default">
+        <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                            Productos
+                            <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ATC EphMRA<span style="margin-left:5px;" class="glyphicon glyphicon-chevron-right"></span></a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand ldr" title="Anterior" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span>&nbsp; Regresar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+        <div class="message-item" id="m16">
+            <div class="message-inner">
+                <div class="avatar pull-left"></div>
+                <div class="user-detail">
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">País: <span style="color: #de5145">@c[0].CountryName</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@d[0].Description</span></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var p = db.Products.Where(x => x.ProductId == ProductId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Producto: <span style="color: #de5145; ">@p[0].Brand</span></span>
+                                        <input type="text" class="form-control" value="@p[0].ProductId" id="ProductId" style="display:none"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var pf = db.PharmaceuticalForms.Where(x => x.PharmaFormId == PharmaFormId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Forma Farmacéutica: <span style="color: #de5145; ">@pf[0].Description</span></span>
+                                        <input type="text" class="form-control" value="@pf[0].PharmaFormId" id="PharmaFormId" style="display:none" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var ct = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Categoría: <span style="color: #de5145; ">@ct[0].Description</span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<ul class="nav nav-tabs">
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Sustancias Activas</a></li>
+    <li class="active"><a href="#" onclick="location.href='@Url.Action("ATCEphMRA", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC EphMRA</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Contraindications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Contraindicaciones</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("CIE", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">CIE-10</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("ATCOMS", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC OMS</a></li>
+    <li class="ldr"><a href="#">Vías de Administración</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Interactions", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Interacciones Medicamentosas</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Indications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Indicaciones</a></li>
+</ul>
+
+
+<br />
+<br />
+@{
+    
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="text-right">
+                <button class="btn btn-success" onclick="SaveAddATCEphMRA()">
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                    <span>&nbsp; Asociar.</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-6" style="vertical-align:bottom">
+        </div>
+        <div class="col-lg-3">
+            <div class="text-left">
+                <button class="btn btn-danger" onclick="RemoveATCEphMRA()">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                    <span>&nbsp; Quitar.</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-6">
+            <br />
+            <div class="scrollbar1">
+
+                @{
+                    List<Web.Models.Therapeutics> LS = db.Therapeutics.Where(x => x.Active == true && x.ParentId == null).OrderBy(x => x.TherapeuticKey).ToList();
+
+                    WebGrid _datagridDT = new WebGrid(LS, rowsPerPage: 25);
+
+                    <ul style="list-style: none; font-family: Arial;font-size:12px">
+                        @{
+                            foreach (Therapeutics item in LS)
+                            {
+                                <li>
+                                    <span class="glyphicon glyphicon-plus" id="Expand_@item.TherapeuticId" onclick="getlevel2SM(@item.TherapeuticId)" style="cursor:pointer"></span>
+                                    <span class="glyphicon glyphicon-minus" style="display: none; cursor: pointer" id="Collapse_@item.TherapeuticId" onclick="collapselevel2(@item.TherapeuticId)"></span>
+                                    <label style="font-weight: bold; color: #065977; margin-bottom: 5px"><b>@item.TherapeuticKey</b></label> - <span style="font-weight:100">@item.SpanishDescription</span>
+                                    <ul id="ListL2_@item.TherapeuticId" style="list-style: none;margin-left:30px"></ul>
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <br />
+            <div class="table-responsive">
+                @_datagrid.GetHtml(
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        tableStyle: "webgrid-table1 table-hover",
+                        mode: WebGridPagerModes.All,
+                        columns: new[] {
+                             _datagrid.Column("", header: "Clave", format: @<text>
+                                @{
+                                    <label id="lblTherapeuticKey">@item.TherapeuticKey.ToUpper()</label>
+                                }
+                        </text>, style:"column5"),
+                        _datagrid.Column("", header: "Nombre del Uso Terapéutico", format: @<text>
+                                @{
+                                    <label id="lblDescription">@item.SpanishDescription.ToUpper()</label>
+                                    <input id="lblProductid" style="display:none;" value="@item.TherapeuticId" />
+                                }
+                        </text>),
+                    _datagrid.Column("", header: "Quitar", format: @<text>
+                    @{
+                        @*<button class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("DeleteProductSubstances", "Medical", new { ProductId = ProductId, TherapeuticId = item.TherapeuticId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>*@
+                        <input type="checkbox" onclick="AddATCEphMRARemove($(this))" value="@item.TherapeuticId" />
+                    }
+                    </text>, style:"column5 text-center")
+                    })
+            </div>
+        </div>
+
+    </div>
+    <br />
+}
+
+<div class="modal fade" id="asdfsd" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheader"><i>Loading...</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" id="divprogressbar"
+                             aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width:100%">
+                            <span id="label"></span>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -792,7 +792,9 @@
                                       + "</span>Ver</button>";
                         }
                         else {
-                            item.View = "";
+                            item.View = "<button onclick='_plusImgPresentation($(this))' class='btn btn-success btn-sm loading'>"
+                                      + "<span class='glyphicon glyphicon glyphicon-plus'>"
+                                      + "</span></button>";
                         }
                         if (item.LongCount > 7) {
                             $("#_dvPresentations").addClass("heightdiv");
@@ -802,18 +804,18 @@
                         }
                         $("#_elementPresentation tbody").append(
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyExternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ExternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyInternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.InternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyContentUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ContentUnitName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyWeightUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.WeightUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyExternalPack' value=" + item.QtyExternalPack + ">" + item.QtyExternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlExternalPackId' value=" + item.ExternalPackId + ">" + item.ExternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyInternalPack' value=" + item.QtyInternalPack + ">" + item.QtyInternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlInternalPackId' value=" + item.InternalPackId + ">" + item.InternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyContentUnit' value=" + item.QtyContentUnit + ">" + item.QtyContentUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlContentUnitId' value=" + item.ContentUnitId + ">" + item.ContentUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyWeightUnit' value=" + item.QtyWeightUnit + ">" + item.QtyWeightUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlWeightUnitId' value=" + item.WeightUnitId + ">" + item.WeightUnitName + "</td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
                             + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
-                            + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading'>"
+                            + "<button onclick='_vlepresentation($(this))' class='btn btn-default  btn-sm loading'>"
                             + "<i class='glyphicon glyphicon-pencil'>"
                             + "</i>"
                             + "</button>"
@@ -838,6 +840,7 @@
         $("._modalPresentation").addClass("modal-wide");
         $("._modalPresentation").removeClass("modalLeft");
         $('._modalAddPresentation').modal('hide');
+        $("._modalPlusImages").modal("hide");
         $('._modalImages').modal('hide');
         $("#File400").fileinput('clear')
         $("#File384").fileinput('clear')
@@ -859,6 +862,23 @@
         $("#_fvlweightUnits").addClass("hide");
         $("#_tgetWeightUnits").addClass("hide");
         $('html').css('overflow', 'auto');
+        $("._vlmpresentation").modal("hide");
+        $("#_updatetvlexternalPack").addClass("hide");
+        $("#_updatefvlexternalPack").addClass("hide");
+        $("#_updatefgetExternalPack").addClass("hide");
+        $("#_updatetgetExternalPack").addClass("hide");
+        $("#_updatetvlinternalPack").addClass("hide");
+        $("#_updatefgetInternalPack").addClass("hide");
+        $("#_updatefvlinternalPack").addClass("hide");
+        $("#_updatetgetInternalPack").addClass("hide");
+        $("#_updatetvlcontentUnits").addClass("hide");
+        $("#_updatefgetContentUnits").addClass("hide");
+        $("#_updatefvlcontentUnits").addClass("hide");
+        $("#_updatetgetContentUnits").addClass("hide");
+        $("#_updatetvlweightUnits").addClass("hide");
+        $("#_updatefgetWeightUnits").addClass("hide");
+        $("#_updatefvlweightUnits").addClass("hide");
+        $("#_updatetgetWeightUnits").addClass("hide");
     }
 </script>
 @*Shows the modal window in which a new presentation will be added, showing the values ​​set*@
@@ -869,7 +889,9 @@
         var _spharmaceuticalForm = _vlpositionp.find("#_pharmaceuticalForm").text();
         $("._modalAddPresentation").addClass("overflowModal");
         $('html').css('overflow', 'hidden');
+        $("._vlmpresentation").modal("hide");
         $("._modalImages").modal("hide");
+        $("._modalPlusImages").modal("hide");
         $("#_sproductName").empty();
         $("#_sproductName").append(_sproductname);
         $("#_scategoryName").empty();
@@ -1251,22 +1273,24 @@
                                       + "</span>Ver</button>";
                         }
                         else {
-                            item.View = "";
+                            item.View = "<button onclick='_plusImgPresentation($(this))' class='btn btn-success btn-sm loading'>"
+                                      + "<span class='glyphicon glyphicon glyphicon-plus'>"
+                                      + "</span></button>";
                         }
                         $("#_elementPresentation tbody").append(
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyExternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ExternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyInternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.InternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyContentUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ContentUnitName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyWeightUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.WeightUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyExternalPack' value=" + item.QtyExternalPack + ">" + item.QtyExternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlExternalPackId' value=" + item.ExternalPackId + ">" + item.ExternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyInternalPack' value=" + item.QtyInternalPack + ">" + item.QtyInternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlInternalPackId' value=" + item.InternalPackId + ">" + item.InternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyContentUnit' value=" + item.QtyContentUnit + ">" + item.QtyContentUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlContentUnitId' value=" + item.ContentUnitId + ">" + item.ContentUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyWeightUnit' value=" + item.QtyWeightUnit + ">" + item.QtyWeightUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlWeightUnitId' value=" + item.WeightUnitId + ">" + item.WeightUnitName + "</td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
                             + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
-                            + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading'>"
+                            + "<button onclick='_vlepresentation($(this))' class='btn btn-default  btn-sm loading'>"
                             + "<i class='glyphicon glyphicon-pencil'>"
                             + "</i>"
                             + "</button>"
@@ -1313,6 +1337,595 @@
                 processData: false
             });
         }
+    }
+</script>
+<script>
+    function _plusImgPresentation(item) {
+        var tr = $(item).parents("tr:first");
+        var _txtproductName = $("#_vproductName").text();
+        var _txtpharmaceuticalForm = $("#_vpharmaceuticalForm").text();
+        var _txtcategoryName = $("#_vcategoryName").text();
+        var _txtPresentation = tr.find("#_vlxpresentation").text();
+        var _vlupdatePresentationId = tr.find("#_vlpresentationId").val();
+        $("#_updateImgvlpresentationId").val("");
+        $("#_updateImgvlpresentationId").val(_vlupdatePresentationId);
+        $("._modalPresentation").removeClass("modal-wide");
+        $("._modalPresentation").addClass("modalLeft");
+        $("._modalAddPresentation").modal("hide");
+        $("._modalImages").modal('hide');
+        $("._vlmpresentation").modal("hide");
+        $("._modalPlusImages").modal("show");
+        $("#_ilplusProductName").empty();
+        $("#_ilplusProductName").append(_txtproductName);
+        $("#_ilplusPharmaceuticalForm").empty();
+        $("#_ilplusPharmaceuticalForm").append(_txtpharmaceuticalForm);
+        $("#_ilplusCategoryName").empty();
+        $("#_ilplusCategoryName").append(_txtcategoryName);
+        $("#_ilplusPresentation").empty();
+        $("#_ilplusPresentation").append(_txtPresentation);
+        $("#_plusOneFile").fileinput('clear');
+        $("#_plustwOfile").fileinput('clear');
+        $("#_plusThreeFile").fileinput('clear');
+    }
+</script>
+<script>
+    function _vlplusCloseImg(item) {
+        $("._modalPresentation").addClass("modal-wide");
+        $("._modalPresentation").removeClass("modalLeft");
+        $("._modalPlusImages").modal("hide");
+    }
+</script>
+<script>
+    function _vlplusAdd(item) {
+        var _plusOneFile = document.getElementById("_plusOneFile").files[0];
+        var _plustwOfile = document.getElementById("_plustwOfile").files[0];
+        var _plusThreeFile = document.getElementById("_plusThreeFile").files[0];
+        if (_plusOneFile == null && _plustwOfile == null && _plusThreeFile == null) {
+            swal({ title: "¡Atención!", type: "error", text: "Debe cargar al menos una imagen para la presentación" });
+        }
+        else {
+            var _plusPresentationId = $("#_updateImgvlpresentationId").val();
+            var _plusxdivisionId = _vlpositionp.find("#_divisionId").val();
+            var _plusxproductId = _vlpositionp.find("#_productId").val();
+            var _plusxcategoryId = _vlpositionp.find("#_categoryId").val();
+            var _plusxpharmaFormId = _vlpositionp.find("#_pharmaFormId").val();
+            var _plusxeditionId = $("#_editionId").val();
+            var _vlplusData = new FormData();
+            _vlplusData.append("_oneFile", _plusOneFile);
+            _vlplusData.append("_twOfile", _plustwOfile);
+            _vlplusData.append("_ThreeFile", _plusThreeFile);
+            _vlplusData.append("PresentationId", _plusPresentationId);
+            _vlplusData.append("DivisionId", _plusxdivisionId);
+            _vlplusData.append("ProductId", _plusxproductId);
+            _vlplusData.append("CategoryId", _plusxcategoryId);
+            _vlplusData.append("PharmaFormId", _plusxpharmaFormId);
+            _vlplusData.append("EditionId", _plusxeditionId);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Content("~/Production/AddPresentationImages")',
+                data: _vlplusData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $("#_elementPresentation tbody").empty();
+                    $.each(response, function (index, item) {
+                        if (item.QtyExternalPack == null) {
+                            item.QtyExternalPack = "";
+                        }
+                        if (item.ExternalPackName == null) {
+                            item.ExternalPackName = "";
+                        }
+                        if (item.QtyInternalPack == null) {
+                            item.QtyInternalPack = "";
+                        }
+                        if (item.InternalPackName == null) {
+                            item.InternalPackName = "";
+                        }
+                        if (item.QtyContentUnit == null) {
+                            item.QtyContentUnit = "";
+                        }
+                        if (item.ContentUnitName == null) {
+                            item.ContentUnitName = "";
+                        }
+                        if (item.QtyWeightUnit == null) {
+                            item.QtyWeightUnit = "";
+                        }
+                        if (item.WeightUnitName == null) {
+                            item.WeightUnitName = "";
+                        }
+                        if (item.View != null) {
+                            item.View = "<button onclick='_viewPresentation($(this))' class='btn btn-default btn-sm loading'>"
+                                      + "<span class='glyphicon glyphiconr glyphicon glyphicon-picture'>"
+                                      + "</span>Ver</button>";
+                        }
+                        else {
+                            item.View = "<button onclick='_plusImgPresentation($(this))' class='btn btn-success btn-sm loading'>"
+                                      + "<span class='glyphicon glyphicon glyphicon-plus'>"
+                                      + "</span></button>";
+                        }
+                        $("#_elementPresentation tbody").append(
+                            "<tr>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyExternalPack' value=" + item.QtyExternalPack + ">" + item.QtyExternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlExternalPackId' value=" + item.ExternalPackId + ">" + item.ExternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyInternalPack' value=" + item.QtyInternalPack + ">" + item.QtyInternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlInternalPackId' value=" + item.InternalPackId + ">" + item.InternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyContentUnit' value=" + item.QtyContentUnit + ">" + item.QtyContentUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlContentUnitId' value=" + item.ContentUnitId + ">" + item.ContentUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyWeightUnit' value=" + item.QtyWeightUnit + ">" + item.QtyWeightUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlWeightUnitId' value=" + item.WeightUnitId + ">" + item.WeightUnitName + "</td>"
+                            + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>"
+                            + "<button onclick='_vlepresentation($(this))' class='btn btn-default  btn-sm loading'>"
+                            + "<i class='glyphicon glyphicon-pencil'>"
+                            + "</i>"
+                            + "</button>"
+                            + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlpresentationId' type='hidden' value='" + item.PresentationId + "'>"
+                            + "<button onclick='_vldpresentation($(this))' class='btn btn-danger btn-sm loading'>"
+                            + "<i class='glyphicon glyphicon-remove'>"
+                            + "</i>"
+                            + "</td>"
+                            + "</tr>");
+                    });
+                    $("._modalPresentation").addClass("modal-wide");
+                    $("._modalPresentation").removeClass("modalLeft");
+                    $("._modalPlusImages").modal("hide");
+                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                },
+                error: function (error) {
+                    swal({ title: "¡Error!", type: "error", text: "Ocurrio un problema al cargar las imagenes, intentelo nuevamente", });
+                }
+            });
+        }
+    }
+</script>
+<script>
+    function _vlupdatePresentation(item) {
+        var _updatevlxpresentationId = $("#_updatevlpresentationId").val();
+        var _updatevlxexternalPack = $("#_updatevlexternalPack").val();
+        var _updatevlxinternalPack = $("#_updatevlinternalPack").val();
+        var _updatevlxcontentUnits = $("#_updatevlcontentUnits").val();
+        var _updatevlxweightUnits = $("#_updatevlweightUnits").val();
+        var _updatevlxeditionId = $("#_editionId").val();
+        var _updatevlxdivisionId = _vlpositionp.find("#_divisionId").val();
+        var _updatevlxproductId = _vlpositionp.find("#_productId").val();
+        var _updatevlxcategoryId = _vlpositionp.find("#_categoryId").val();
+        var _updatevlxpharmaFormId = _vlpositionp.find("#_pharmaFormId").val();
+        var _updatevlzexternalPackId = $("#_updategetExternalPack option:selected").val();
+        var _updatevlzinternalPackId = $("#_updategetInternalPack option:selected").val();
+        var _updatevlzcontentUnitsId = $("#_updategetContentUnits option:selected").val();
+        var _updatevlzweightUnitsId = $("#_updategetWeightUnits option:selected").val();
+        $("#_updatetvlexternalPack").addClass("hide");
+        $("#_updatefvlexternalPack").addClass("hide");
+        $("#_updatefgetExternalPack").addClass("hide");
+        $("#_updatetgetExternalPack").addClass("hide");
+        $("#_updatetvlinternalPack").addClass("hide");
+        $("#_updatefgetInternalPack").addClass("hide");
+        $("#_updatefvlinternalPack").addClass("hide");
+        $("#_updatetgetInternalPack").addClass("hide");
+        $("#_updatetvlcontentUnits").addClass("hide");
+        $("#_updatefgetContentUnits").addClass("hide");
+        $("#_updatefvlcontentUnits").addClass("hide");
+        $("#_updatetgetContentUnits").addClass("hide");
+        $("#_updatetvlweightUnits").addClass("hide");
+        $("#_updatefgetWeightUnits").addClass("hide");
+        $("#_updatefvlweightUnits").addClass("hide");
+        $("#_updatetgetWeightUnits").addClass("hide");
+        if (_updatevlxexternalPack.trim() == false
+            && _updatevlxinternalPack.trim() == false
+            && _updatevlxcontentUnits.trim() == false
+            && _updatevlxweightUnits.trim() == false
+            && _updatevlzexternalPackId == "0"
+            && _updatevlzinternalPackId == "0"
+            && _updatevlzcontentUnitsId == "0"
+            && _updatevlzweightUnitsId == "0") {
+            $("#_updatefvlexternalPack").removeClass("hide");
+            $("#_updatefgetExternalPack").removeClass("hide");
+            $("#_updatefgetInternalPack").removeClass("hide");
+            $("#_updatefvlinternalPack").removeClass("hide");
+            $("#_updatefgetContentUnits").removeClass("hide");
+            $("#_updatefvlcontentUnits").removeClass("hide");
+            $("#_updatefgetWeightUnits").removeClass("hide");
+            $("#_updatefvlweightUnits").removeClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "La presentación no tiene valores" });
+        }
+        else if (_updatevlzexternalPackId == "0" && _updatevlxexternalPack.trim() != false) {
+            $("#_updatetvlexternalPack").removeClass("hide");
+            $("#_updatefgetExternalPack").removeClass("hide");
+            $("#_updatefvlexternalPack").addClass("hide");
+            $("#_updatetgetExternalPack").addClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "El empaque externo no puede quedar vacio" });
+        }
+        else if (_updatevlzexternalPackId != "0" && _updatevlxexternalPack.trim() == false) {
+            $("#_updatetvlexternalPack").addClass("hide");
+            $("#_updatefgetExternalPack").addClass("hide");
+            $("#_updatefvlexternalPack").removeClass("hide");
+            $("#_updatetgetExternalPack").removeClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "La cantidad del empaque externo no puede quedar vacio" });
+        }
+        else if (_updatevlzinternalPackId == "0" && _updatevlxinternalPack.trim() != false) {
+            $("#_updatetvlinternalPack").removeClass("hide");
+            $("#_updatefgetInternalPack").removeClass("hide");
+            $("#_updatefvlinternalPack").addClass("hide");
+            $("#_updatetgetInternalPack").addClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "El empaque interno no puede quedar vacio" });
+        }
+        else if (_updatevlzinternalPackId != "0" && _updatevlxinternalPack.trim() == false) {
+            $("#_updatetvlinternalPack").addClass("hide");
+            $("#_updatefgetInternalPack").addClass("hide");
+            $("#_updatefvlinternalPack").removeClass("hide");
+            $("#_updatetgetInternalPack").removeClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "La cantidad del empaque interno no puede quedar vacio" });
+        }
+        else if (_updatevlzcontentUnitsId == "0" && _updatevlxcontentUnits.trim() != false) {
+            $("#_updatetvlcontentUnits").removeClass("hide");
+            $("#_updatefgetContentUnits").removeClass("hide");
+            $("#_updatefvlcontentUnits").addClass("hide");
+            $("#_updatetgetContentUnits").addClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "El contenido del producto no puede quedar vacio" });
+        }
+        else if (_updatevlzcontentUnitsId != "0" && _updatevlxcontentUnits.trim() == false) {
+            $("#_updatetvlcontentUnits").addClass("hide");
+            $("#_updatefgetContentUnits").addClass("hide");
+            $("#_updatefvlcontentUnits").removeClass("hide");
+            $("#_updatetgetContentUnits").removeClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "La cantidad del contenido del producto no puede quedar vacio" });
+        }
+        else if (_updatevlzweightUnitsId == "0" && _updatevlxweightUnits.trim() != false) {
+            $("#_updatetvlweightUnits").removeClass("hide");
+            $("#_updatefgetWeightUnits").removeClass("hide");
+            $("#_updatefvlweightUnits").addClass("hide");
+            $("#_updatetgetWeightUnits").addClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "La concentración del producto no puede quedar vacio" });
+        }
+        else if (_updatevlzweightUnitsId != "0" && _updatevlxweightUnits.trim() == false) {
+            $("#_updatetvlweightUnits").addClass("hide");
+            $("#_updatefgetWeightUnits").addClass("hide");
+            $("#_updatefvlweightUnits").removeClass("hide");
+            $("#_updatetgetWeightUnits").removeClass("hide");
+            swal({ title: "¡Atención!", type: "error", text: "La cantidad de concentración del producto no puede quedar vacio" });
+        }
+        else {
+            if (_updatevlzexternalPackId != "0" && _updatevlxexternalPack.trim() != false) {
+                $("#_updatetvlexternalPack").removeClass("hide");
+                $("#_updatefgetExternalPack").addClass("hide");
+                $("#_updatefvlexternalPack").addClass("hide");
+                $("#_updatetgetExternalPack").removeClass("hide");
+            }
+            else {
+                $("#_updatetvlexternalPack").addClass("hide");
+                $("#_updatefgetExternalPack").addClass("hide");
+                $("#_updatefvlexternalPack").addClass("hide");
+                $("#_updatetgetExternalPack").addClass("hide");
+            }
+            if (_updatevlzinternalPackId != "0" && _updatevlxinternalPack.trim() != false) {
+                $("#_updatetvlinternalPack").removeClass("hide");
+                $("#_updatefgetInternalPack").addClass("hide");
+                $("#_updatefvlinternalPack").addClass("hide");
+                $("#_updatetgetInternalPack").removeClass("hide");
+            }
+            else {
+                $("#_updatetvlinternalPack").addClass("hide");
+                $("#_updatefgetInternalPack").addClass("hide");
+                $("#_updatefvlinternalPack").addClass("hide");
+                $("#_updatetgetInternalPack").addClass("hide");
+            }
+            if (_updatevlzcontentUnitsId != "0" && _updatevlxcontentUnits.trim() != false) {
+                $("#_updatetvlcontentUnits").removeClass("hide");
+                $("#_updatefgetContentUnits").addClass("hide");
+                $("#_updatefvlcontentUnits").addClass("hide");
+                $("#_updatetgetContentUnits").removeClass("hide");
+            }
+            else {
+                $("#_updatetvlcontentUnits").addClass("hide");
+                $("#_updatefgetContentUnits").addClass("hide");
+                $("#_updatefvlcontentUnits").addClass("hide");
+                $("#_updatetgetContentUnits").addClass("hide");
+            }
+            if (_updatevlzweightUnitsId != "0" && _updatevlxweightUnits.trim() != false) {
+                $("#_updatetvlweightUnits").removeClass("hide");
+                $("#_updatefgetWeightUnits").addClass("hide");
+                $("#_updatefvlweightUnits").addClass("hide");
+                $("#_updatetgetWeightUnits").removeClass("hide");
+            }
+            else {
+                $("#_updatetvlweightUnits").addClass("hide");
+                $("#_updatefgetWeightUnits").addClass("hide");
+                $("#_updatefvlweightUnits").addClass("hide");
+                $("#_updatetgetWeightUnits").addClass("hide");
+            }
+            if (_updatevlxexternalPack == "") {
+                _updatevlxexternalPack = "0";
+            }
+            if (_updatevlxinternalPack == "") {
+                _updatevlxinternalPack = "0";
+            }
+            if (_updatevlxcontentUnits == "") {
+                _updatevlxcontentUnits = "0";
+            }
+            if (_updatevlxweightUnits == "") {
+                _updatevlxweightUnits = "0";
+            }
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "@Url.Content("~/Production/updatePresentation")",
+                traditional: true,
+                data: {
+                    PresentationId: _updatevlxpresentationId,
+                    EditionId: _updatevlxeditionId,
+                    DivisionId: _updatevlxdivisionId,
+                    CategoryId: _updatevlxcategoryId,
+                    ProductId: _updatevlxproductId,
+                    PharmaFormId: _updatevlxpharmaFormId,
+                    QtyExternalPack: _updatevlxexternalPack,
+                    ExternalPackId: _updatevlzexternalPackId,
+                    QtyInternalPack: _updatevlxinternalPack,
+                    InternalPackId: _updatevlzinternalPackId,
+                    QtyContentUnit: _updatevlxcontentUnits,
+                    ContentUnitId: _updatevlzcontentUnitsId,
+                    QtyWeightUnit: _updatevlxweightUnits,
+                    WeightUnitId: _updatevlzweightUnitsId,
+                },
+                success: function (data) {
+                    $("#_elementPresentation tbody").empty();
+                    $.each(data, function (index, item) {
+                        if (item.QtyExternalPack == null) {
+                            item.QtyExternalPack = "";
+                        }
+                        if (item.ExternalPackName == null) {
+                            item.ExternalPackName = "";
+                        }
+                        if (item.QtyInternalPack == null) {
+                            item.QtyInternalPack = "";
+                        }
+                        if (item.InternalPackName == null) {
+                            item.InternalPackName = "";
+                        }
+                        if (item.QtyContentUnit == null) {
+                            item.QtyContentUnit = "";
+                        }
+                        if (item.ContentUnitName == null) {
+                            item.ContentUnitName = "";
+                        }
+                        if (item.QtyWeightUnit == null) {
+                            item.QtyWeightUnit = "";
+                        }
+                        if (item.WeightUnitName == null) {
+                            item.WeightUnitName = "";
+                        }
+                        if (item.View != null) {
+                            item.View = "<button onclick='_viewPresentation($(this))' class='btn btn-default btn-sm loading'>"
+                                      + "<span class='glyphicon glyphiconr glyphicon glyphicon-picture'>"
+                                      + "</span>Ver</button>";
+                        }
+                        else {
+                            item.View = "<button onclick='_plusImgPresentation($(this))' class='btn btn-success btn-sm loading'>"
+                                      + "<span class='glyphicon glyphicon glyphicon-plus'>"
+                                      + "</span></button>";
+                        }
+                        $("#_elementPresentation tbody").append(
+                            "<tr>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyExternalPack' value=" + item.QtyExternalPack + ">" + item.QtyExternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlExternalPackId' value=" + item.ExternalPackId + ">" + item.ExternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyInternalPack' value=" + item.QtyInternalPack + ">" + item.QtyInternalPack + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlInternalPackId' value=" + item.InternalPackId + ">" + item.InternalPackName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyContentUnit' value=" + item.QtyContentUnit + ">" + item.QtyContentUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlContentUnitId' value=" + item.ContentUnitId + ">" + item.ContentUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyWeightUnit' value=" + item.QtyWeightUnit + ">" + item.QtyWeightUnit + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlWeightUnitId' value=" + item.WeightUnitId + ">" + item.WeightUnitName + "</td>"
+                            + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>"
+                            + "<button onclick='_vlepresentation($(this))' class='btn btn-default  btn-sm loading'>"
+                            + "<i class='glyphicon glyphicon-pencil'>"
+                            + "</i>"
+                            + "</button>"
+                            + "</td>"
+                            + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlpresentationId' type='hidden' value='" + item.PresentationId + "'>"
+                            + "<button onclick='_vldpresentation($(this))' class='btn btn-danger btn-sm loading'>"
+                            + "<i class='glyphicon glyphicon-remove'>"
+                            + "</i>"
+                            + "</td>"
+                            + "</tr>");
+                    });
+                    $("#_updatetvlexternalPack").addClass("hide");
+                    $("#_updatefvlexternalPack").addClass("hide");
+                    $("#_updatefgetExternalPack").addClass("hide");
+                    $("#_updatetgetExternalPack").addClass("hide");
+                    $("#_updatetvlinternalPack").addClass("hide");
+                    $("#_updatefgetInternalPack").addClass("hide");
+                    $("#_updatefvlinternalPack").addClass("hide");
+                    $("#_updatetgetInternalPack").addClass("hide");
+                    $("#_updatetvlcontentUnits").addClass("hide");
+                    $("#_updatefgetContentUnits").addClass("hide");
+                    $("#_updatefvlcontentUnits").addClass("hide");
+                    $("#_updatetgetContentUnits").addClass("hide");
+                    $("#_updatetvlweightUnits").addClass("hide");
+                    $("#_updatefgetWeightUnits").addClass("hide");
+                    $("#_updatefvlweightUnits").addClass("hide");
+                    $("#_updatetgetWeightUnits").addClass("hide");
+                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                },
+            });
+        }
+    }
+</script>
+<script>
+    var _positionPresentation;
+    function _vlepresentation(item) {
+        var _uproductname = _vlpositionp.find("#_productName").text();
+        var _upharmaceuticalForm = _vlpositionp.find("#_pharmaceuticalForm").text();
+        var _ucategoryName = _vlpositionp.find("#_categoryName").text();
+        var tr = $(item).parents("tr:first");
+        _positionPresentation = tr;
+        var _vlpresentationId = tr.find("#_vlpresentationId").val();
+        var _vlQtyExternalPack = tr.find("#_vlQtyExternalPack").val();
+        var _vlExternalPackId = tr.find("#_vlExternalPackId").val();
+        var _vlQtyInternalPack = tr.find("#_vlQtyInternalPack").val();
+        var _vlInternalPackId = tr.find("#_vlInternalPackId").val();
+        var _vlQtyContentUnit = tr.find("#_vlQtyContentUnit").val();
+        var _vlContentUnitId = tr.find("#_vlContentUnitId").val();
+        var _vlQtyWeightUnit = tr.find("#_vlQtyWeightUnit").val();
+        var _vlWeightUnitId = tr.find("#_vlWeightUnitId").val();
+        var _vlPresentation = tr.find("#_vlxpresentation").text();
+        $("#_updatevlpresentationId").val("");
+        $("#_updatevlpresentationId").val(_vlpresentationId);
+        $("._vlmpresentation").modal("show");
+        $("._modalPresentation").removeClass("modal-wide");
+        $("._modalPresentation").addClass("modalLeft");
+        $("._modalAddPresentation").modal("hide");
+        $('._modalImages').modal('hide');
+        $("._modalPlusImages").modal("hide");
+        $("#_updateProductName").empty();
+        $("#_updateProductName").append(_uproductname);
+        $("#_updatePharmaceuticalForm").empty();
+        $("#_updatePharmaceuticalForm").append(_upharmaceuticalForm);
+        $("#_updateCategoryName").empty();
+        $("#_updateCategoryName").append(_ucategoryName);
+        $("#_updatePresentation").empty();
+        $("#_updatePresentation").append(_vlPresentation);
+        $("#_updatevlexternalPack").val("");
+        $("#_updatevlinternalPack").val("");
+        $("#_updatevlcontentUnits").val("");
+        $("#_updatevlweightUnits").val("");
+        $("#_updatetvlexternalPack").addClass("hide");
+        $("#_updatefvlexternalPack").addClass("hide");
+        $("#_updatefgetExternalPack").addClass("hide");
+        $("#_updatetgetExternalPack").addClass("hide");
+        $("#_updatetvlinternalPack").addClass("hide");
+        $("#_updatefgetInternalPack").addClass("hide");
+        $("#_updatefvlinternalPack").addClass("hide");
+        $("#_updatetgetInternalPack").addClass("hide");
+        $("#_updatetvlcontentUnits").addClass("hide");
+        $("#_updatefgetContentUnits").addClass("hide");
+        $("#_updatefvlcontentUnits").addClass("hide");
+        $("#_updatetgetContentUnits").addClass("hide");
+        $("#_updatetvlweightUnits").addClass("hide");
+        $("#_updatefgetWeightUnits").addClass("hide");
+        $("#_updatefvlweightUnits").addClass("hide");
+        $("#_updatetgetWeightUnits").addClass("hide");
+        if (_vlExternalPackId == "null") {
+            _vlExternalPackId = 0;
+        }
+        if (_vlInternalPackId == "null") {
+            _vlInternalPackId = 0;
+        }
+        if (_vlContentUnitId == "null") {
+            _vlContentUnitId = 0;
+        }
+        if (_vlWeightUnitId == "null") {
+            _vlWeightUnitId = 0;
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getUpdateExternalPack")",
+            traditional: true,
+            data: { ExternalPackId: _vlExternalPackId },
+            success: function (data) {
+                $("#_updatevlexternalPack").val("");
+                $("#_updatevlexternalPack").val(_vlQtyExternalPack);
+                $('#_updategetExternalPack').empty();
+                $('#_updategetExternalPack').append("'<option value='0'>Seleccione...</option>'");
+                $.each(data, function (index, item) {
+                    if (item.True == "True") {
+                        $('#_updategetExternalPack').append('<option selected value="' + item.ExternalPackId + '">' + item.ExternalPackName + '</option>');
+                    }
+                    else {
+                        $('#_updategetExternalPack').append('<option value="' + item.ExternalPackId + '">' + item.ExternalPackName + '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getUpdateInternalPack")",
+            traditional: true,
+            data: { InternalPackId: _vlInternalPackId },
+            success: function (data) {
+                $("#_updatevlinternalPack").val("");
+                $("#_updatevlinternalPack").val(_vlQtyInternalPack);
+                $('#_updategetInternalPack').empty();
+                $('#_updategetInternalPack').append("'<option value='0'>Seleccione...</option>'");
+                $.each(data, function (index, item) {
+                    if (item.True == "True") {
+                        $('#_updategetInternalPack').append('<option selected value="' + item.InternalPackId + '">' + item.InternalPackName + '</option>');
+                    }
+                    else {
+                        $('#_updategetInternalPack').append('<option value="' + item.InternalPackId + '">' + item.InternalPackName + '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getUpdateContentUnits")",
+            traditional: true,
+            data: { ContentUnitId: _vlContentUnitId },
+            success: function (data) {
+                $("#_updatevlcontentUnits").val("");
+                $("#_updatevlcontentUnits").val(_vlQtyContentUnit);
+                $('#_updategetContentUnits').empty();
+                $('#_updategetContentUnits').append("'<option value='0'>Seleccione...</option>'");
+                $.each(data, function (index, item) {
+                    if (item.True == "True") {
+                        $('#_updategetContentUnits').append('<option selected value="' + item.ContentUnitId + '">' + item.UnitName + '</option>');
+                    }
+                    else {
+                        $('#_updategetContentUnits').append('<option value="' + item.ContentUnitId + '">' + item.UnitName + '</option>');
+                    }
+                });
+            }
+        });
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getUpdateWeightUnits")",
+            traditional: true,
+            data: { WeightUnitId: _vlWeightUnitId },
+            success: function (data) {
+                $("#_updatevlweightUnits").val("");
+                $("#_updatevlweightUnits").val(_vlQtyWeightUnit);
+                $('#_updategetWeightUnits').empty();
+                $('#_updategetWeightUnits').append("'<option value='0'>Seleccione...</option>'");
+                $.each(data, function (index, item) {
+                    if (item.True == "True") {
+                        $('#_updategetWeightUnits').append('<option selected value="' + item.WeightUnitId + '">' + item.UnitName + '</option>');
+                    }
+                    else {
+                        $('#_updategetWeightUnits').append('<option value="' + item.WeightUnitId + '">' + item.UnitName + '</option>');
+                    }
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function _vlupdateClose(item) {
+        $("._modalPresentation").addClass("modal-wide");
+        $("._modalPresentation").removeClass("modalLeft");
+        $('._vlmpresentation').modal('hide');
+        $("#_updatetvlexternalPack").addClass("hide");
+        $("#_updatefvlexternalPack").addClass("hide");
+        $("#_updatefgetExternalPack").addClass("hide");
+        $("#_updatetgetExternalPack").addClass("hide");
+        $("#_updatetvlinternalPack").addClass("hide");
+        $("#_updatefgetInternalPack").addClass("hide");
+        $("#_updatefvlinternalPack").addClass("hide");
+        $("#_updatetgetInternalPack").addClass("hide");
+        $("#_updatetvlcontentUnits").addClass("hide");
+        $("#_updatefgetContentUnits").addClass("hide");
+        $("#_updatefvlcontentUnits").addClass("hide");
+        $("#_updatetgetContentUnits").addClass("hide");
+        $("#_updatetvlweightUnits").addClass("hide");
+        $("#_updatefgetWeightUnits").addClass("hide");
+        $("#_updatefvlweightUnits").addClass("hide");
+        $("#_updatetgetWeightUnits").addClass("hide");
     }
 </script>
 @*Closes the modal window in which the user adds a new presentation*@
@@ -1379,6 +1992,7 @@
                 },
                 success: function (data) {
                     tr.remove();
+                    $("._vlmpresentation").modal("hide");
                     $("._modalAddPresentation").modal("hide");
                     $("._modalImages").modal('hide');
                     $("._modalPresentation").addClass("modal-wide");
@@ -1387,6 +2001,112 @@
                 }
             });
         });
+    }
+</script>
+<script>
+    function _deletePresentationImage(item) {
+        var _vldeleteEditionId = $("#_editionId").val();
+        var _vldeleteDivisionId = _vlpositionp.find("#_divisionId").val();
+        var _vldeleteProductId = _vlpositionp.find("#_productId").val();
+        var _vldeleteCategoryId = _vlpositionp.find("#_categoryId").val();
+        var _vldeletePharmaFormId = _vlpositionp.find("#_pharmaFormId").val();
+        var _vldeletePresentationId = _positionproductImageId.find("#_vlpresentationId").val();
+        var _vldeleteImageId = _positionproductImageId.find("#_vlproductImageId").val();
+        swal({
+            title: '¿Desea eliminar la imagen de la presentación?',
+            text: "Esto implica que los tamaños de las imagenes serán eliminados",
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Aceptar",
+            closeOnConfirm: false
+        },
+       function () {
+           $.ajax({
+               type: "POST",
+               dataType: "json",
+               url: "@Url.Content("~/Production/deletePresentationImage")",
+               traditional: true,
+               data: {
+                   EditionId: _vldeleteEditionId,
+                   DivisionId: _vldeleteDivisionId,
+                   ProductId: _vldeleteProductId,
+                   CategoryId: _vldeleteCategoryId,
+                   PharmaFormId: _vldeletePharmaFormId,
+                   PresentationId: _vldeletePresentationId,
+                   ProductImageId: _vldeleteImageId
+               },
+               success: function (data) {
+                   $("#_elementPresentation tbody").empty();
+                   $.each(data, function (index, item) {
+                       if (item.QtyExternalPack == null) {
+                           item.QtyExternalPack = "";
+                       }
+                       if (item.ExternalPackName == null) {
+                           item.ExternalPackName = "";
+                       }
+                       if (item.QtyInternalPack == null) {
+                           item.QtyInternalPack = "";
+                       }
+                       if (item.InternalPackName == null) {
+                           item.InternalPackName = "";
+                       }
+                       if (item.QtyContentUnit == null) {
+                           item.QtyContentUnit = "";
+                       }
+                       if (item.ContentUnitName == null) {
+                           item.ContentUnitName = "";
+                       }
+                       if (item.QtyWeightUnit == null) {
+                           item.QtyWeightUnit = "";
+                       }
+                       if (item.WeightUnitName == null) {
+                           item.WeightUnitName = "";
+                       }
+                       if (item.View != null) {
+                           item.View = "<button onclick='_viewPresentation($(this))' class='btn btn-default btn-sm loading'>"
+                                     + "<span class='glyphicon glyphiconr glyphicon glyphicon-picture'>"
+                                     + "</span>Ver</button>";
+                       }
+                       else {
+                           item.View = "<button onclick='_plusImgPresentation($(this))' class='btn btn-success btn-sm loading'>"
+                                     + "<span class='glyphicon glyphicon glyphicon-plus'>"
+                                     + "</span></button>";
+                       }
+                       $("#_elementPresentation tbody").append(
+                           "<tr>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyExternalPack' value=" + item.QtyExternalPack + ">" + item.QtyExternalPack + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlExternalPackId' value=" + item.ExternalPackId + ">" + item.ExternalPackName + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyInternalPack' value=" + item.QtyInternalPack + ">" + item.QtyInternalPack + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlInternalPackId' value=" + item.InternalPackId + ">" + item.InternalPackName + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyContentUnit' value=" + item.QtyContentUnit + ">" + item.QtyContentUnit + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlContentUnitId' value=" + item.ContentUnitId + ">" + item.ContentUnitName + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlQtyWeightUnit' value=" + item.QtyWeightUnit + ">" + item.QtyWeightUnit + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input type='hidden' id='_vlWeightUnitId' value=" + item.WeightUnitId + ">" + item.WeightUnitName + "</td>"
+                           + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>"
+                           + "<button onclick='_vlepresentation($(this))' class='btn btn-default  btn-sm loading'>"
+                           + "<i class='glyphicon glyphicon-pencil'>"
+                           + "</i>"
+                           + "</button>"
+                           + "</td>"
+                           + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlpresentationId' type='hidden' value='" + item.PresentationId + "'>"
+                           + "<button onclick='_vldpresentation($(this))' class='btn btn-danger btn-sm loading'>"
+                           + "<i class='glyphicon glyphicon-remove'>"
+                           + "</i>"
+                           + "</td>"
+                           + "</tr>"
+                           );
+                   });
+                   $("._modalImages").modal("hide");
+                   $("._modalPresentation").addClass("modal-wide");
+                   $("._modalPresentation").removeClass("modalLeft");
+                   swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+               }
+           });
+       });
     }
 </script>
 @*Modal window showing the image sizes associated with the selected presentation*@
@@ -1414,7 +2134,8 @@
         $("._modalAddPresentation").modal("hide");
         $("._modalImages").addClass("overflowModal");
         $("._modalImages").modal("show");
-        $("._modalImages").modal("show");
+        $("._vlmpresentation").modal("hide");
+        $("._modalPlusImages").modal("hide");
         // imgOne
         $("#_srcOneImg").removeClass("hide");
         $("#_oneDiv").addClass("hide");
@@ -1722,15 +2443,13 @@
                         $("#_ilImageName").empty();
                         $("#_ilImageName").append(item.ProductImageName);
                         var _getElement = $("#_oneImgName").text();
-                        if (_getElement != "Sin imagen")
-                        {
+                        if (_getElement != "Sin imagen") {
                             $("#_oneImgName").removeClass("hide");
                             $("#_oneImgName").empty();
                             $("#_oneImgName").append("Imagen: " + "<i style='color:#de5246'>" + item.ProductImageName + "</i>");
                         }
                         var _getThreeElement = $("#_fwOimgName").text();
-                        if (_getThreeElement != "Sin imagen")
-                        {
+                        if (_getThreeElement != "Sin imagen") {
                             $("#_fwOimgName").removeClass("hide");
                             $("#_fwOimgName").empty();
                             $("#_fwOimgName").append("Imagen: " + "<i style='color:#de5246'>" + item.ProductImageName + "</i>");
@@ -2249,7 +2968,7 @@
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exportar productos<span style="margin-left: 5px; color: black" class="caret"></span></a>
                         <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
-                            <li><a class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
+                            <li><a href="@Url.Content("~/Production/ExcelProductsByEdition/" + _Session.ad + "/" + _Session.ud)"  class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -2351,16 +3070,16 @@
                             if (System.IO.File.Exists(_fullPath))
                             {
                                 <img id="_srcImage" src="@Url.Content("~/DivisionImages/" + _row.ImageName)" class="img-responsive" alt="Logo">
-                    <br />
+                                <br />
                                 <span id="_notLogo" style="font-size:15px; text-transform:none">@_row.ImageName</span>
                             }
                             else
                             {
                                 <img id="_srcImage" src="@Url.Content("~/Images/sinLogo.gif")" class="img-responsive" alt="Logo">
-                    <br />
+                                <br />
                                 <span id="_notLogo" style="font-size:15px; text-transform:none">No se encontro el logo</span>
                             }
-                            <input type="hidden" id="_vllogoName" value="@_row.ImageName"/>
+                            <input type="hidden" id="_vllogoName" value="@_row.ImageName" />
                         }
                         <div class="details">
                             <hr>
@@ -2372,7 +3091,7 @@
                     else
                     {
                         <img id="_srcImage" src="@Url.Content("~/Images/sinLogo.gif")" class="img-responsive" alt="avatar">
-                    <br />
+                        <br />
                         <span id="_notLogo" style="font-size:15px; text-transform:none">Sin logo</span>
                         <div class="details">
                             <hr>
@@ -2430,7 +3149,7 @@
                 <td align="center" style="vertical-align:middle" class="tdback">Nuevo</td>
                 <td align="center" style="vertical-align:middle" class="tdback">Con cambios</td>
                 <td align="center" style="vertical-align:middle" class="tdback">Rubros</td>
-                <td align="center" style="vertical-align:middle" class="tdback">Cambio ortografico</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Cambio ortográfico</td>
                 <td width="100" align="center" style="vertical-align:middle" class="tdback">Registro sanitario</td>
                 <td width="70" align="center" style="vertical-align:middle" class="tdback">Fracción cofepris</td>
                 <td align="center" style="vertical-align:middle" class="tdback">Presentación</td>
@@ -2524,7 +3243,7 @@
                         <td style="vertical-align:middle" align="right">
                             @{
                     if (_row.SSFraction == null)
-                    {                                                                                              
+                    {
                         <span id="_fraction" style="margin-right:10px;"></span><button id="_plusFraction" onclick="_vlgetFraction($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-success  btn-sm loading"><i class="glyphicon glyphicon-plus"></i></button>
                                 <button id="_fractionPencil" onclick="_fractionPencil($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-default  btn-sm loading hide"><i class="glyphicon glyphicon-pencil"></i></button>
                     }
@@ -2649,7 +3368,7 @@
                 </div>
             </div>
             <div align="center">
-                <button id="_vlsaveRegister" onclick="_vlsaveRegister($(this))" class="btn btn-default"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                <button id="_vlsaveRegister" onclick="_vlsaveRegister($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
                 <button id="_vladdRegister" onclick="_vlsaveRegister($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-plus"></span>Agregar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             </div>
@@ -2702,7 +3421,7 @@
             </div>
             <div align="center">
                 <button id="_addFraction" onclick="_saveFraction($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-plus"></span>Agregar</button>
-                <button id="_saveFraction" onclick="_saveFraction($(this))" class="btn btn-default"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                <button id="_saveFraction" onclick="_saveFraction($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             </div>
             <br />
@@ -3014,7 +3733,7 @@
                     </div>
                     <div class=" col-md-2">
                         <div style="padding-top:10px;" class="image-container" align="center">
-                            <img src="@Url.Content("~/Images/presentacion.gif")" class="img-responsive img-circle" alt="Presentación">
+                            <img src="@Url.Content("~/Images/pencil.gif")" class="img-responsive" alt="Presentación">
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -3188,9 +3907,17 @@
                     </div>
                 </div>
                 <div align="center" class="row">
-                    <p style="padding-left:18px;">
-                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Imagen: <span id="_ilImageName" style="color: #de5145;"></span>&ensp;</span>
-                    </p>
+                    <div class="col-md-9 table-responsive">
+                        <p style="padding-left:18px;">
+                            <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Imagen: <span id="_ilImageName" style="color: #de5145;"></span>&ensp;</span>
+                        </p>
+                    </div>
+                    <div align="left" class="col-md-2">
+                        <button onclick="_deletePresentationImage($(this))" class="btn btn-sm btn-danger"><i class="glyphicon glyphiconr glyphicon-remove"></i>Eliminar</button>
+                    </div>
+                    <div class="col-md-1">
+
+                    </div>
                 </div>
                 <hr />
                 <div class="row">
@@ -3216,24 +3943,24 @@
                             </div>
                             <br />
                             <div id="_oneDiv" class="hide">
-                                    <input id="_oneFile" type="file" accept="image/*" class="file-loading">
-                                    <script>
-                                        $(document).on('ready', function () {
-                                            $("#_oneFile").fileinput({
-                                                showZoom: false,
-                                                previewFileType: "image",
-                                                browseClass: "btn btn-success",
-                                                browseLabel: "Seleccione...",
-                                                browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
-                                                removeClass: "btn btn-danger",
-                                                removeLabel: "",
-                                                removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
-                                                uploadClass: "btn btn-info _swOneFile",
-                                                uploadLabel: "",
-                                                uploadIcon: "<i  class=\"glyphicon glyphicon-cloud-upload\"></i> "
-                                            });
+                                <input id="_oneFile" type="file" accept="image/*" class="file-loading">
+                                <script>
+                                    $(document).on('ready', function () {
+                                        $("#_oneFile").fileinput({
+                                            showZoom: false,
+                                            previewFileType: "image",
+                                            browseClass: "btn btn-success",
+                                            browseLabel: "Seleccione...",
+                                            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+                                            removeClass: "btn btn-danger",
+                                            removeLabel: "",
+                                            removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+                                            uploadClass: "btn btn-info _swOneFile",
+                                            uploadLabel: "",
+                                            uploadIcon: "<i  class=\"glyphicon glyphicon-cloud-upload\"></i> "
                                         });
-                                    </script>
+                                    });
+                                </script>
                             </div>
                             <br class="hide" id="_brafterImg" />
                             <button id="_oneCancel" onclick="_wOneCancel($(this))" class="btn btn-danger btn-sm hide"><i class="glyphicon glyphiconr glyphicon-remove"></i>Cancelar</button>
@@ -3334,6 +4061,246 @@
             </div>
             <div align="center">
                 <button onclick="_vlcloseImages($(this))" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+@*Modal editar presentación*@
+<div class="modal _vlmpresentation fade modalRight" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="_vlupdateClose($(this))" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Presentación</span></h4>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row">
+                    <div style="padding-top:15px;" class="qa-message-list col-md-9" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <div class="row">
+                                        <div>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_updateProductName" style="color: #de5145;"></span>&ensp;</span>
+                                            </p>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_updatePharmaceuticalForm" style="color: #de5145;"></span>&ensp;</span>
+                                            </p>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_updateCategoryName" style="color: #de5145;"></span>&ensp;</span>
+                                            </p>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Presentación: <span id="_updatePresentation" style="color: #de5145;"></span>&ensp;</span>
+                                                <input type="hidden" id="_updatevlpresentationId" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-2">
+                        <br />
+                        <div style="padding-top:10px;" class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/pencil.gif")" class="img-responsive" alt="Presentación">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+                <div align="center">
+                    <span style="font-size:17px;">Edite la presentación</span>
+                </div>
+                <hr />
+                <div class="name">
+                    <span>Cantidad:</span> <input onkeypress='validate(event)' id="_updatevlexternalPack" type="text" />
+                    <span id="_updatetvlexternalPack" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefvlexternalPack" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                    <span style="padding-left:63px;">Empaque externo:</span>
+                    <select name="select-choice" id="_updategetExternalPack"></select>
+                    <span id="_updatetgetExternalPack" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefgetExternalPack" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                </div>
+                <hr />
+                <div class="name">
+                    <span></span> Cantidad: <input onkeypress='validate(event)' id="_updatevlinternalPack" type="text" />
+                    <span id="_updatetvlinternalPack" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefvlinternalPack" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                    <span style="padding-left:68px;">Empaque interno:</span>
+                    <select name="select-choice" id="_updategetInternalPack"></select>
+                    <span id="_updatetgetInternalPack" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefgetInternalPack" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                </div>
+                <hr />
+                <div class="name">
+                    <span></span> Cantidad: <input onkeypress='validate(event)' id="_updatevlcontentUnits" type="text" />
+                    <span id="_updatetvlcontentUnits" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefvlcontentUnits" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                    <span style="padding-left:27px;">Contenido del producto:</span>
+                    <select name="select-choice" id="_updategetContentUnits"></select>
+                    <span id="_updatetgetContentUnits" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefgetContentUnits" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                </div>
+                <hr />
+                <div class="name">
+                    <span></span> Cantidad: <input onkeypress='validate(event)' id="_updatevlweightUnits" type="text" />
+                    <span id="_updatetvlweightUnits" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefvlweightUnits" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                    Concentración del producto:
+                    <select name="select-choice" id="_updategetWeightUnits"></select>
+                    <span id="_updatetgetWeightUnits" style="padding-left:5px; color:#19a15f" class="glyphicon glyphicon glyphicon-ok hide"></span>
+                    <span id="_updatefgetWeightUnits" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div align="center">
+                    <button onclick="_vlupdatePresentation($(this))" class="btn btn-success"><i class="glyphicon glyphiconr glyphicon-floppy-disk"></i>Guardar</button>
+                    <button onclick="_vlupdateClose($(this))" class="btn btn-danger">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade _modalPlusImages modalRight" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="_vlplusCloseImg($(this))" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Imagenes</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:15px;" class="qa-message-list col-md-8" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <div class="row">
+                                        <div>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_ilplusProductName" style="color: #de5145;"></span>&ensp;</span>
+                                            </p>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_ilplusPharmaceuticalForm" style="color: #de5145;"></span>&ensp;</span>
+                                            </p>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_ilplusCategoryName" style="color: #de5145;"></span>&ensp;</span>
+                                            </p>
+                                            <p style="padding-left:18px;">
+                                                <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Presentación: <span id="_ilplusPresentation" style="color: #de5145;"></span>&ensp;</span>
+                                                <input type="hidden" id="_updateImgvlpresentationId" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/productimages.gif")" class="img-responsive" alt="Presentación">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+                <div align="center" class="row">
+                    <p style="padding-left:18px;">
+                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Agregue las imagenes de la presentación</span>
+                    </p>
+                </div>
+                <hr />
+                <div class="row">
+                    <div align="center">
+                        <span style="font-size:18px;">Tamaños</span>
+                    </div>
+                    <br />
+                    <div class='list-group gallery'>
+                        <div align="center" class='col-md-4'>
+                            <div>
+                                <span style="font-size:18px;">320 x 480</span>
+                            </div>
+                            <br />
+                            <div>
+                                <input id="_plusOneFile" type="file" accept="image/*" class="file-loading">
+                                <script>
+                                    $(document).on('ready', function () {
+                                        $("#_plusOneFile").fileinput({
+                                            showZoom: false,
+                                            previewFileType: "image",
+                                            browseClass: "btn btn-default loading",
+                                            browseLabel: "Seleccione...",
+                                            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+                                            removeClass: "btn btn-danger",
+                                            removeLabel: "Quitar",
+                                            removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+                                            showUpload: false,
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div align="center" class='col-md-4'>
+                            <div>
+                                <span style="font-size:18px;">384 x 512</span>
+                            </div>
+                            <br />
+                            <div>
+                                <input id="_plustwOfile" type="file" accept="image/*" class="file-loading">
+                                <script>
+                                    $(document).on('ready', function () {
+                                        $("#_plustwOfile").fileinput({
+                                            showZoom: false,
+                                            previewFileType: "image",
+                                            browseClass: "btn btn-default loading",
+                                            browseLabel: "Seleccione...",
+                                            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+                                            removeClass: "btn btn-danger",
+                                            removeLabel: "Quitar",
+                                            removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+                                            showUpload: false,
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div align="center" class='col-md-4'>
+                            <div>
+                                <span style="font-size:18px;">400 x 400</span>
+                            </div>
+                            <br />
+                            <div>
+                                <input id="_plusThreeFile" type="file" accept="image/*" class="file-loading">
+                                <script>
+                                    $(document).on('ready', function () {
+                                        $("#_plusThreeFile").fileinput({
+                                            showZoom: false,
+                                            previewFileType: "image",
+                                            browseClass: "btn btn-default loading",
+                                            browseLabel: "Seleccione...",
+                                            browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+                                            removeClass: "btn btn-danger",
+                                            removeLabel: "Quitar",
+                                            removeIcon: "<i class=\"glyphicon glyphicon-trash\"></i> ",
+                                            showUpload: false,
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div align="center">
+                <button onclick="_vlplusAdd($(this))" type="button" class="btn btn-success"><i class="glyphicon glyphicor glyphicon-plus"></i> Agregar</button>
+                <button onclick="_vlplusCloseImg($(this))" type="button" class="btn btn-danger">Cancelar</button>
             </div>
             <br />
         </div>

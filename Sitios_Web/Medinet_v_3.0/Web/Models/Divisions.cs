@@ -36,7 +36,5 @@ namespace Web.Models
         public virtual ICollection<DivisionCategories> DivisionCategories { get; set; }
         public virtual ICollection<DivisionInformation> DivisionInformation { get; set; }
         public virtual ICollection<DivisionInformation> DivisionInformation1 { get; set; }
-        public virtual Laboratories Laboratories { get; set; }
-        public virtual Laboratories Laboratories1 { get; set; }
     }
 }

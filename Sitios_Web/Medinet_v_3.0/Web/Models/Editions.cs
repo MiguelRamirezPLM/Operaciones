@@ -19,7 +19,7 @@ namespace Web.Models
             this.Editions1 = new HashSet<Editions>();
             this.ParticipantProducts = new HashSet<ParticipantProducts>();
             this.EditionPresentations = new HashSet<EditionPresentations>();
-            this.EditionProductShots = new HashSet<EditionProductShots>();
+            this.EditionDivisionProducts = new HashSet<EditionDivisionProducts>();
         }
     
         public int EditionId { get; set; }
@@ -43,6 +43,6 @@ namespace Web.Models
         public virtual Editions Editions3 { get; set; }
         public virtual EditionTypes EditionTypes { get; set; }
         public virtual ICollection<EditionPresentations> EditionPresentations { get; set; }
-        public virtual ICollection<EditionProductShots> EditionProductShots { get; set; }
+        public virtual ICollection<EditionDivisionProducts> EditionDivisionProducts { get; set; }
     }
 }

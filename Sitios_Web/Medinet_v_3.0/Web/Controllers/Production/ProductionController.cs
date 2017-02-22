@@ -1,16 +1,19 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Web.Models;
 namespace Web.Controllers.Production
 {
     public class ProductionController : Controller
     {
+        private DataTable table = new DataTable();
         Medinet db = new Medinet();
         public ActionResult Index()
         {
@@ -167,9 +170,9 @@ namespace Web.Controllers.Production
                 {
                     if (_rowContent.HTMLContent == null)
                     {
-                        //_plm_vwProductsByEdition.WithoutContent = "Sin contenido";
+                        _plm_vwProductsByEdition.WithoutContent = "Sin contenido";
                     }
-                    //_plm_vwProductsByEdition.ContentType = _rowContent.ContentType;
+                    _plm_vwProductsByEdition.ContentType = _rowContent.ContentType;
                 }
                 var _productcategories = (from _pc in db.ProductCategories
                                           where _pc.ProductId == _row.ProductId
@@ -179,8 +182,8 @@ namespace Web.Controllers.Production
                                           select new { _pc.SanitaryRegister, _pc.SSFraction }).ToList();
                 foreach (var _rowcategories in _productcategories)
                 {
-                    //_plm_vwProductsByEdition.SanitaryRegister = _rowcategories.SanitaryRegister;
-                    //_plm_vwProductsByEdition.SSFraction = _rowcategories.SSFraction;
+                    _plm_vwProductsByEdition.SanitaryRegister = _rowcategories.SanitaryRegister;
+                    _plm_vwProductsByEdition.SSFraction = _rowcategories.SSFraction;
                 }
                 _plm_vwProductsByEdition.ProductId = _row.ProductId;
                 _plm_vwProductsByEdition.PharmaFormId = _row.PharmaFormId;
@@ -934,13 +937,93 @@ namespace Web.Controllers.Production
             }
             return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult getUpdateExternalPack(int ExternalPackId)
+        {
+            var _getElements = (from _ep in db.ExternalPacks
+                                orderby _ep.ExternalPackName
+                                select _ep).ToList();
+            ExternalPacks _ExternalPacks = new ExternalPacks();
+            List<ExternalPacks> _l_ExternalPacks = new List<ExternalPacks>();
+            foreach (var _row in _getElements)
+            {
+                _ExternalPacks = new ExternalPacks();
+                if (_row.ExternalPackId == ExternalPackId)
+                {
+                    //_ExternalPacks.True = "True";
+                }
+                _ExternalPacks.ExternalPackId = _row.ExternalPackId;
+                _ExternalPacks.ExternalPackName = _row.ExternalPackName;
+                _l_ExternalPacks.Add(_ExternalPacks);
+            }
+            return Json(_l_ExternalPacks, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getUpdateInternalPack(int InternalPackId)
+        {
+            var _getElements = (from _ip in db.InternalPacks
+                                orderby _ip.InternalPackName
+                                select _ip).ToList();
+            InternalPacks _InternalPacks = new InternalPacks();
+            List<InternalPacks> _l_InternalPacks = new List<InternalPacks>();
+            foreach (var _row in _getElements)
+            {
+                _InternalPacks = new InternalPacks();
+                if (_row.InternalPackId == InternalPackId)
+                {
+                    //_InternalPacks.True = "True";
+                }
+                _InternalPacks.InternalPackId = _row.InternalPackId;
+                _InternalPacks.InternalPackName = _row.InternalPackName;
+                _l_InternalPacks.Add(_InternalPacks);
+            }
+            return Json(_l_InternalPacks, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getUpdateContentUnits(int ContentUnitId)
+        {
+            var _getElements = (from _cu in db.ContentUnits
+                                orderby _cu.UnitName
+                                select _cu).ToList();
+            ContentUnits _ContentUnits = new ContentUnits();
+            List<ContentUnits> _l_ContentUnits = new List<ContentUnits>();
+            foreach (var _row in _getElements)
+            {
+                _ContentUnits = new ContentUnits();
+                if (_row.ContentUnitId == ContentUnitId)
+                {
+                    //_ContentUnits.True = "True";
+                }
+                _ContentUnits.ContentUnitId = _row.ContentUnitId;
+                _ContentUnits.UnitName = _row.UnitName;
+                _l_ContentUnits.Add(_ContentUnits);
+            }
+            return Json(_l_ContentUnits, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getUpdateWeightUnits(int WeightUnitId)
+        {
+            var _getElements = (from _wu in db.WeightUnits
+                                orderby _wu.UnitName
+                                select _wu).ToList();
+            WeightUnits _WeightUnits = new WeightUnits();
+            List<WeightUnits> _l_WeightUnits = new List<WeightUnits>();
+            foreach (var _row in _getElements)
+            {
+                _WeightUnits = new WeightUnits();
+                if (_row.WeightUnitId == WeightUnitId)
+                {
+                    //_WeightUnits.True = "True";
+                }
+                _WeightUnits.WeightUnitId = _row.WeightUnitId;
+                _WeightUnits.UnitName = _row.UnitName;
+                _l_WeightUnits.Add(_WeightUnits);
+            }
+            return Json(_l_WeightUnits, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult oneProductImages(int ProductImageId)
         {
             ProductImagesInfo _ProductImagesInfo = new ProductImagesInfo();
             List<ProductImagesInfo> _l_ProductImagesInfo = new List<ProductImagesInfo>();
             var _getElement = (from _productImages in db.ProductImages
-                                   where _productImages.ProductImageId == ProductImageId
-                                   select _productImages).ToList();
+                               where _productImages.ProductImageId == ProductImageId
+                               select _productImages).ToList();
             if (_getElement.LongCount() != 0)
             {
                 foreach (var _row in _getElement)
@@ -984,6 +1067,411 @@ namespace Web.Controllers.Production
                 _l_ProductImagesInfo.Add(_ProductImagesInfo);
             }
             return Json(_l_ProductImagesInfo, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult updatePresentation(int PresentationId, int EditionId, int DivisionId, int CategoryId, int ProductId, int PharmaFormId,
+                                             string QtyExternalPack, int? ExternalPackId, int? QtyInternalPack, int? InternalPackId, string QtyContentUnit,
+                                             int? ContentUnitId, string QtyWeightUnit, int? WeightUnitId)
+        {
+            if (QtyExternalPack == "0")
+            {
+                QtyExternalPack = "";
+            }
+            if (ExternalPackId == 0)
+            {
+                ExternalPackId = null;
+            }
+            if (QtyInternalPack == 0)
+            {
+                QtyInternalPack = null;
+            }
+            if (InternalPackId == 0)
+            {
+                InternalPackId = null;
+            }
+            if (QtyContentUnit == "0")
+            {
+                QtyContentUnit = "";
+            }
+            if (ContentUnitId == 0)
+            {
+                ContentUnitId = null;
+            }
+            if (QtyWeightUnit == "0")
+            {
+                QtyWeightUnit = "";
+            }
+            if (WeightUnitId == 0)
+            {
+                WeightUnitId = null;
+            }
+            var _getElements = (from _presentation in db.Presentations
+                                where _presentation.PresentationId == PresentationId
+                                && _presentation.DivisionId == DivisionId
+                                && _presentation.CategoryId == CategoryId
+                                && _presentation.ProductId == ProductId
+                                && _presentation.PharmaFormId == PharmaFormId
+                                select _presentation).ToList();
+            var _itemExternalPack = "";
+            if (ExternalPackId != null)
+            {
+                var _getExternalPack = (from _ex in db.ExternalPacks
+                                        where _ex.ExternalPackId == ExternalPackId
+                                        select _ex).ToList();
+                foreach (var _row in _getExternalPack)
+                {
+                    _itemExternalPack = _row.ExternalPackName + ",";
+                }
+            }
+            var _itemInternalPack = "";
+            if (InternalPackId != null)
+            {
+                var _getInternalPack = (from _in in db.InternalPacks
+                                        where _in.InternalPackId == InternalPackId
+                                        select _in).ToList();
+                foreach (var _row in _getInternalPack)
+                {
+                    _itemInternalPack = _row.InternalPackName + ",";
+                }
+            }
+            var _itemContentUnit = "";
+            if (ContentUnitId != null)
+            {
+                var _getContentUnit = (from _cu in db.ContentUnits
+                                       where _cu.ContentUnitId == ContentUnitId
+                                       select _cu).ToList();
+                foreach (var _row in _getContentUnit)
+                {
+                    _itemContentUnit = _row.UnitName + ",";
+                }
+            }
+            var _itemWeightUnit = "";
+            if (WeightUnitId != null)
+            {
+                var _getWeightUnit = (from _w in db.WeightUnits
+                                      where _w.WeightUnitId == WeightUnitId
+                                      select _w).ToList();
+                foreach (var _row in _getWeightUnit)
+                {
+                    _itemWeightUnit = _row.UnitName;
+                }
+            }
+            string _contentPresentation = "";
+            _contentPresentation = QtyExternalPack.ToString().Trim()
+                + " " +
+                _itemExternalPack.Trim()
+                + " " +
+                QtyInternalPack.ToString().Trim()
+                + " " +
+                _itemInternalPack.Trim()
+                + " " +
+                QtyContentUnit.Trim()
+                + " " +
+                _itemContentUnit.Trim()
+                + " " +
+                QtyWeightUnit.Trim()
+                + " " +
+                _itemWeightUnit.Trim();
+            foreach (var _update in _getElements)
+            {
+                if (QtyExternalPack == "")
+                {
+                    QtyExternalPack = "0";
+                }
+                int? _QtyExternalPack = int.Parse(QtyExternalPack);
+                if (_QtyExternalPack == 0)
+                {
+                    _QtyExternalPack = null;
+                }
+                _update.QtyExternalPack = _QtyExternalPack;
+                _update.ExternalPackId = ExternalPackId;
+                _update.QtyInternalPack = QtyInternalPack;
+                _update.InternalPackId = InternalPackId;
+                _update.QtyContentUnit = QtyContentUnit;
+                _update.ContentUnitId = ContentUnitId;
+                _update.QtyWeightUnit = QtyWeightUnit;
+                _update.WeightUnitId = WeightUnitId;
+                _update.Presentation = _contentPresentation;
+                _update.JSONFormat = "{" + "PresentationId:" + _update.PresentationId + "," + "Presentation:" + "" + _contentPresentation + "" + "}";
+                db.SaveChanges();
+            }
+            List<plm_spGetPresentationsByEditionByProduct> _getPresentations = db.Database.SqlQuery<plm_spGetPresentationsByEditionByProduct>
+                            ("EXECUTE dbo.plm_spGetPresentationsByEditionByProduct"
+                            + " @productId=" + ProductId
+                            + ",@categoryId=" + CategoryId
+                            + ",@pharmaFormId=" + PharmaFormId
+                            + ",@divisionId=" + DivisionId
+                            + ",@editionId=" + EditionId + "").ToList();
+            plm_spGetPresentationsByEditionByProduct _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+            List<plm_spGetPresentationsByEditionByProduct> _l_plm_spGetPresentationsByEditionByProduct = new List<plm_spGetPresentationsByEditionByProduct>();
+            foreach (var _row in _getPresentations)
+            {
+                _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+                _plm_spGetPresentationsByEditionByProduct.PresentationId = _row.PresentationId;
+                var _getProductImage = (from _p in db.ProductImages
+                                        where _p.PresentationId == _row.PresentationId
+                                        select _p).ToList();
+                foreach (var _rowImg in _getProductImage)
+                {
+                    _plm_spGetPresentationsByEditionByProduct.ProductImageId = _rowImg.ProductImageId;
+                    _plm_spGetPresentationsByEditionByProduct.ProductShot = _rowImg.ProductShot;
+                    _plm_spGetPresentationsByEditionByProduct.View = "true";
+                }
+                _plm_spGetPresentationsByEditionByProduct.QtyExternalPack = _row.QtyExternalPack;
+                _plm_spGetPresentationsByEditionByProduct.ExternalPackId = _row.ExternalPackId;
+                _plm_spGetPresentationsByEditionByProduct.ExternalPackName = _row.ExternalPackName;
+                _plm_spGetPresentationsByEditionByProduct.QtyInternalPack = _row.QtyInternalPack;
+                _plm_spGetPresentationsByEditionByProduct.InternalPackId = _row.InternalPackId;
+                _plm_spGetPresentationsByEditionByProduct.InternalPackName = _row.InternalPackName;
+                _plm_spGetPresentationsByEditionByProduct.ContentUnitId = _row.ContentUnitId;
+                _plm_spGetPresentationsByEditionByProduct.QtyContentUnit = _row.QtyContentUnit;
+                _plm_spGetPresentationsByEditionByProduct.ContentUnitName = _row.ContentUnitName;
+                _plm_spGetPresentationsByEditionByProduct.QtyWeightUnit = _row.QtyWeightUnit;
+                _plm_spGetPresentationsByEditionByProduct.WeightUnitId = _row.WeightUnitId;
+                _plm_spGetPresentationsByEditionByProduct.WeightUnitName = _row.WeightUnitName;
+                _plm_spGetPresentationsByEditionByProduct.Presentation = _row.Presentation;
+                _plm_spGetPresentationsByEditionByProduct.LongCount = _getPresentations.LongCount();
+                _l_plm_spGetPresentationsByEditionByProduct.Add(_plm_spGetPresentationsByEditionByProduct);
+            }
+            return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult AddPresentationImages()
+        {
+            string[] _editionId = Request.Form.GetValues("EditionId");
+            string[] _divisionId = Request.Form.GetValues("DivisionId");
+            string[] _categoryId = Request.Form.GetValues("CategoryId");
+            string[] _productId = Request.Form.GetValues("ProductId");
+            string[] _pharmaFormId = Request.Form.GetValues("PharmaFormId");
+            string[] _presentationId = Request.Form.GetValues("PresentationId");
+            string EditionId = String.Join(",", _editionId);
+            int _EditionId = int.Parse(EditionId);
+            string DivisionId = String.Join(",", _divisionId);
+            int _DivisionId = int.Parse(DivisionId);
+            string CategoryId = String.Join(",", _categoryId);
+            int _CategoryId = int.Parse(CategoryId);
+            string ProductId = String.Join(",", _productId);
+            int _ProductId = int.Parse(ProductId);
+            string PharmaFormId = String.Join(",", _pharmaFormId);
+            int _PharmaFormId = int.Parse(PharmaFormId);
+            string PresentationId = String.Join(",", _presentationId);
+            int _PresentationId = int.Parse(PresentationId);
+            if (Request.Files.Count != 0)
+            {
+                var _image400px = Request.Files.Get("_ThreeFile");
+                var _image384px = Request.Files.Get("_twOfile");
+                var _image320px = Request.Files.Get("_oneFile");
+                var _onlyFileName = "";
+                if (_image320px != null)
+                {
+                    _onlyFileName = _image320px.FileName;
+                }
+                if (_onlyFileName == "")
+                {
+                    if (_image384px != null)
+                    {
+                        _onlyFileName = _image384px.FileName;
+                    }
+                }
+                if (_onlyFileName == "")
+                {
+                    if (_image400px != null)
+                    {
+                        _onlyFileName = _image400px.FileName;
+                    }
+                }
+                ProductImageSizes _wProductImageSizes = new ProductImageSizes();
+                List<ProductImageSizes> _l_ProductImageSizes = new List<ProductImageSizes>();
+                if (_image400px != null)
+                {
+                    var _path400px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/400x400"), _onlyFileName);
+                    _image400px.SaveAs(_path400px);
+                    var _size400px = (from _z in db.ImageSizes
+                                      where _z.Size == "400 x 400"
+                                      select _z).ToList();
+                    foreach (var _row in _size400px)
+                    {
+                        _wProductImageSizes = new ProductImageSizes();
+                        _wProductImageSizes.ImageSizeId = _row.ImageSizeId;
+                        _l_ProductImageSizes.Add(_wProductImageSizes);
+                    }
+                }
+                if (_image384px != null)
+                {
+                    var _path384px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/384x512"), _onlyFileName);
+                    _image384px.SaveAs(_path384px);
+                    var _size384 = (from _z in db.ImageSizes
+                                    where _z.Size == "384 x 512"
+                                    select _z).ToList();
+                    foreach (var _row in _size384)
+                    {
+                        _wProductImageSizes = new ProductImageSizes();
+                        _wProductImageSizes.ImageSizeId = _row.ImageSizeId;
+                        _l_ProductImageSizes.Add(_wProductImageSizes);
+                    }
+                }
+                if (_image320px != null)
+                {
+                    var _path320px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/320x480"), _onlyFileName);
+                    _image320px.SaveAs(_path320px);
+                    var _size320 = (from _z in db.ImageSizes
+                                    where _z.Size == "320 x 480"
+                                    select _z).ToList();
+                    foreach (var _row in _size320)
+                    {
+                        _wProductImageSizes = new ProductImageSizes();
+                        _wProductImageSizes.ImageSizeId = _row.ImageSizeId;
+                        _l_ProductImageSizes.Add(_wProductImageSizes);
+                    }
+                }
+                ProductImages _ProductImages = new ProductImages();
+                _ProductImages.ProductShot = _onlyFileName;
+                DateTime myDateTime = DateTime.Now;
+                string dateTime = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                System.DateTime sqlFormattedDate = System.DateTime.Parse(dateTime);
+                _ProductImages.LastUpdate = sqlFormattedDate;
+                _ProductImages.BaseURL = "";
+                _ProductImages.Active = true;
+                _ProductImages.PresentationId = _PresentationId;
+                db.Entry(_ProductImages).State = EntityState.Added;
+                db.SaveChanges();
+                foreach (var _row in _l_ProductImageSizes)
+                {
+                    ProductImageSizes _ProductImageSizes = new ProductImageSizes();
+                    _ProductImageSizes.ImageSizeId = _row.ImageSizeId;
+                    _ProductImageSizes.ProductImageId = _ProductImages.ProductImageId;
+                    db.Entry(_ProductImageSizes).State = EntityState.Added;
+                    db.SaveChanges();
+                }
+            }
+            List<plm_spGetPresentationsByEditionByProduct> _getPresentations = db.Database.SqlQuery<plm_spGetPresentationsByEditionByProduct>
+                            ("EXECUTE dbo.plm_spGetPresentationsByEditionByProduct"
+                            + " @productId=" + _ProductId
+                            + ",@categoryId=" + _CategoryId
+                            + ",@pharmaFormId=" + _PharmaFormId
+                            + ",@divisionId=" + _DivisionId
+                            + ",@editionId=" + _EditionId + "").ToList();
+            plm_spGetPresentationsByEditionByProduct _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+            List<plm_spGetPresentationsByEditionByProduct> _l_plm_spGetPresentationsByEditionByProduct = new List<plm_spGetPresentationsByEditionByProduct>();
+            foreach (var _row in _getPresentations)
+            {
+                _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+                _plm_spGetPresentationsByEditionByProduct.PresentationId = _row.PresentationId;
+                var _getProductImage = (from _p in db.ProductImages
+                                        where _p.PresentationId == _row.PresentationId
+                                        select _p).ToList();
+                foreach (var _rowImg in _getProductImage)
+                {
+                    _plm_spGetPresentationsByEditionByProduct.ProductImageId = _rowImg.ProductImageId;
+                    _plm_spGetPresentationsByEditionByProduct.ProductShot = _rowImg.ProductShot;
+                    _plm_spGetPresentationsByEditionByProduct.View = "true";
+                }
+                _plm_spGetPresentationsByEditionByProduct.QtyExternalPack = _row.QtyExternalPack;
+                _plm_spGetPresentationsByEditionByProduct.ExternalPackId = _row.ExternalPackId;
+                _plm_spGetPresentationsByEditionByProduct.ExternalPackName = _row.ExternalPackName;
+                _plm_spGetPresentationsByEditionByProduct.QtyInternalPack = _row.QtyInternalPack;
+                _plm_spGetPresentationsByEditionByProduct.InternalPackId = _row.InternalPackId;
+                _plm_spGetPresentationsByEditionByProduct.InternalPackName = _row.InternalPackName;
+                _plm_spGetPresentationsByEditionByProduct.ContentUnitId = _row.ContentUnitId;
+                _plm_spGetPresentationsByEditionByProduct.QtyContentUnit = _row.QtyContentUnit;
+                _plm_spGetPresentationsByEditionByProduct.ContentUnitName = _row.ContentUnitName;
+                _plm_spGetPresentationsByEditionByProduct.QtyWeightUnit = _row.QtyWeightUnit;
+                _plm_spGetPresentationsByEditionByProduct.WeightUnitId = _row.WeightUnitId;
+                _plm_spGetPresentationsByEditionByProduct.WeightUnitName = _row.WeightUnitName;
+                _plm_spGetPresentationsByEditionByProduct.Presentation = _row.Presentation;
+                _plm_spGetPresentationsByEditionByProduct.LongCount = _getPresentations.LongCount();
+                _l_plm_spGetPresentationsByEditionByProduct.Add(_plm_spGetPresentationsByEditionByProduct);
+            }
+            return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deletePresentationImage(int EditionId, int DivisionId, int ProductId, int CategoryId, int PharmaFormId, int PresentationId, int ProductImageId)
+        {
+            var _contentProductImageSizes = (from _p in db.Presentations
+                                             join _pi in db.ProductImages
+                                             on _p.PresentationId equals _pi.PresentationId
+                                             join _pz in db.ProductImageSizes
+                                             on _pi.ProductImageId equals _pz.ProductImageId
+                                             where _p.PresentationId == PresentationId
+                                             select new { _pz, _pi }).ToList();
+            foreach (var _row in _contentProductImageSizes)
+            {
+                var imageName = "";
+                imageName = _row._pi.ProductShot;
+                if (_row._pz.ImageSizes.Size == "400 x 400")
+                {
+                    var _path400px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/400x400"), imageName);
+                    if (System.IO.File.Exists(_path400px))
+                    {
+                        System.IO.File.Delete(_path400px);
+                    }
+                }
+                if (_row._pz.ImageSizes.Size == "384 x 512")
+                {
+                    var _path384px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/384x512"), imageName);
+                    if (System.IO.File.Exists(_path384px))
+                    {
+                        System.IO.File.Delete(_path384px);
+                    }
+                }
+                if (_row._pz.ImageSizes.Size == "320 x 480")
+                {
+                    var _path320px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/320x480"), imageName);
+                    if (System.IO.File.Exists(_path320px))
+                    {
+                        System.IO.File.Delete(_path320px);
+                    }
+                }
+                var _productImagesSizes = db.ProductImageSizes.Where(model => model.ProductImageId == _row._pz.ProductImageId && model.ImageSizeId == _row._pz.ImageSizeId).ToList();
+                foreach (var _remove in _productImagesSizes)
+                {
+                    db.ProductImageSizes.Remove(_remove);
+                    db.SaveChanges();
+                }
+            }
+            var _productImages = db.ProductImages.Where(model => model.PresentationId == PresentationId).ToList();
+            foreach (var _remove in _productImages)
+            {
+                db.ProductImages.Remove(_remove);
+                db.SaveChanges();
+            }
+            List<plm_spGetPresentationsByEditionByProduct> _getPresentations = db.Database.SqlQuery<plm_spGetPresentationsByEditionByProduct>
+                            ("EXECUTE dbo.plm_spGetPresentationsByEditionByProduct"
+                            + " @productId=" + ProductId
+                            + ",@categoryId=" + CategoryId
+                            + ",@pharmaFormId=" + PharmaFormId
+                            + ",@divisionId=" + DivisionId
+                            + ",@editionId=" + EditionId + "").ToList();
+            plm_spGetPresentationsByEditionByProduct _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+            List<plm_spGetPresentationsByEditionByProduct> _l_plm_spGetPresentationsByEditionByProduct = new List<plm_spGetPresentationsByEditionByProduct>();
+            foreach (var _row in _getPresentations)
+            {
+                _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+                _plm_spGetPresentationsByEditionByProduct.PresentationId = _row.PresentationId;
+                var _getProductImage = (from _p in db.ProductImages
+                                        where _p.PresentationId == _row.PresentationId
+                                        select _p).ToList();
+                foreach (var _rowImg in _getProductImage)
+                {
+                    _plm_spGetPresentationsByEditionByProduct.ProductImageId = _rowImg.ProductImageId;
+                    _plm_spGetPresentationsByEditionByProduct.ProductShot = _rowImg.ProductShot;
+                    _plm_spGetPresentationsByEditionByProduct.View = "true";
+                }
+                _plm_spGetPresentationsByEditionByProduct.QtyExternalPack = _row.QtyExternalPack;
+                _plm_spGetPresentationsByEditionByProduct.ExternalPackId = _row.ExternalPackId;
+                _plm_spGetPresentationsByEditionByProduct.ExternalPackName = _row.ExternalPackName;
+                _plm_spGetPresentationsByEditionByProduct.QtyInternalPack = _row.QtyInternalPack;
+                _plm_spGetPresentationsByEditionByProduct.InternalPackId = _row.InternalPackId;
+                _plm_spGetPresentationsByEditionByProduct.InternalPackName = _row.InternalPackName;
+                _plm_spGetPresentationsByEditionByProduct.ContentUnitId = _row.ContentUnitId;
+                _plm_spGetPresentationsByEditionByProduct.QtyContentUnit = _row.QtyContentUnit;
+                _plm_spGetPresentationsByEditionByProduct.ContentUnitName = _row.ContentUnitName;
+                _plm_spGetPresentationsByEditionByProduct.QtyWeightUnit = _row.QtyWeightUnit;
+                _plm_spGetPresentationsByEditionByProduct.WeightUnitId = _row.WeightUnitId;
+                _plm_spGetPresentationsByEditionByProduct.WeightUnitName = _row.WeightUnitName;
+                _plm_spGetPresentationsByEditionByProduct.Presentation = _row.Presentation;
+                _plm_spGetPresentationsByEditionByProduct.LongCount = _getPresentations.LongCount();
+                _l_plm_spGetPresentationsByEditionByProduct.Add(_plm_spGetPresentationsByEditionByProduct);
+            }
+            return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
         }
         public ActionResult saveOneProductImage()
         {
@@ -1592,6 +2080,139 @@ namespace Web.Controllers.Production
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        public FileResult ExcelProductsByEdition(int id, int ed)
+        {
+            var bind = new GridView();
+
+            DataColumn Categoría = new DataColumn();
+            Categoría.DataType = typeof(string);
+            Categoría.ColumnName = "Categoría";
+
+            DataColumn Producto = new DataColumn();
+            Producto.DataType = typeof(string);
+            Producto.ColumnName = "Producto";
+
+            DataColumn Forma = new DataColumn();
+            Forma.DataType = typeof(string);
+            Forma.ColumnName = "Forma farmaceutica";
+
+            DataColumn Tipo = new DataColumn();
+            Tipo.DataType = typeof(string);
+            Tipo.ColumnName = "Tipo de producto";
+
+            DataColumn Descripción = new DataColumn();
+            Descripción.DataType = typeof(string);
+            Descripción.ColumnName = "Descripción";
+
+            DataColumn Contenido = new DataColumn();
+            Contenido.DataType = typeof(string);
+            Contenido.ColumnName = "Contenido modificado";
+
+            DataColumn Laboratorio = new DataColumn();
+            Laboratorio.DataType = typeof(string);
+            Laboratorio.ColumnName = "Laboratorio";
+
+            DataColumn Edición = new DataColumn();
+            Edición.DataType = typeof(string);
+            Edición.ColumnName = "Edición";
+
+            DataColumn Obra = new DataColumn();
+            Obra.DataType = typeof(string);
+            Obra.ColumnName = "Obra";
+
+            table.Columns.Add(Categoría);
+            table.Columns.Add(Producto);
+            table.Columns.Add(Forma);
+            table.Columns.Add(Tipo);
+            table.Columns.Add(Descripción);
+            table.Columns.Add(Contenido);
+            table.Columns.Add(Laboratorio);
+            table.Columns.Add(Edición);
+            table.Columns.Add(Obra);
+
+            var _getElements = (from _products in db.plm_vwProductsByEdition
+                                where _products.EditionId == id
+                                && _products.DivisionId == ed
+                                orderby _products.CategoryName, _products.Brand
+                                select _products).ToList();
+            ContentTypes _ContentTypes = new ContentTypes();
+            foreach (var _row in _getElements)
+            {
+                var _getContents = (from _participantProducts in db.ParticipantProducts
+                                    join _contentType in db.ContentTypes
+                                    on _participantProducts.ContentTypeId equals _contentType.ContentTypeId
+                                    where _participantProducts.ProductId == _row.ProductId
+                                    && _participantProducts.DivisionId == _row.DivisionId
+                                    && _participantProducts.CategoryId == _row.CategoryId
+                                    && _participantProducts.PharmaFormId == _row.PharmaFormId
+                                    && _participantProducts.EditionId == _row.EditionId
+                                    select new { _participantProducts, _contentType }).ToList();
+                foreach (var _content in _getContents)
+                {
+                    _ContentTypes.ContentType = _content._contentType.ContentType;
+                }
+                table.Rows.Add(
+                   _row.CategoryName,
+                   _row.Brand,
+                   _row.PharmaForm,
+                   _row.ProductType,
+                   _row.ProductDescription,
+                   _ContentTypes.ContentType,
+                   _row.DivisionName,
+                   _row.NumberEdition,
+                   _row.BookName);
+            }
+            string Directory = Request.MapPath("~/ReportesXLS");
+            if (System.IO.Directory.Exists(Directory))
+            {
+                //
+            }
+            else
+            {   // Crea el directorio
+                System.IO.Directory.CreateDirectory(Directory);
+            }
+            bind.DataSource = table;
+            FileInfo newFile = new FileInfo(Request.MapPath("~/ReportesXLS/ReporteExcel.xlsx"));
+            ExcelPackage pkg = new ExcelPackage(newFile);
+            if (newFile.Exists)
+            {
+                System.IO.File.Delete(Server.MapPath("~/ReportesXLS/ReporteExcel.xlsx"));
+                newFile.Delete();
+                pkg.Workbook.Worksheets.Delete("Reporte Excel");
+                ExcelWorksheet worksheet = pkg.Workbook.Worksheets.Add("Reporte Excel");
+                worksheet.Cells["A1"].LoadFromDataTable(table, true);
+                using (ExcelRange range = worksheet.Cells["A1:K1"])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.DimGray);
+                    range.Style.Font.Color.SetColor(Color.White);
+                    range.Style.ShrinkToFit = false;
+                }
+                worksheet.Cells.Style.Font.Size = 12;
+                worksheet.Cells.AutoFitColumns();
+                worksheet.Cells.Style.Font.Name = "Arial Narrow";
+            }
+            else
+            {
+                ExcelWorksheet worksheet = pkg.Workbook.Worksheets.Add("Reporte Excel");
+                worksheet.Cells["A1"].LoadFromDataTable(table, true);
+                using (ExcelRange range = worksheet.Cells["A1:K1"])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.DimGray);
+                    range.Style.Font.Color.SetColor(Color.White);
+                    range.Style.ShrinkToFit = false;
+                }
+                worksheet.Cells.Style.Font.Size = 12;
+                worksheet.Cells.AutoFitColumns();
+                worksheet.Cells.Style.Font.Name = "Arial Narrow";
+            }
+            pkg.SaveAs(newFile);
+            var filepath = System.IO.Path.Combine(Server.MapPath("~/ReportesXLS/ReporteExcel.xlsx"));
+            return File(filepath, "application/vnd.ms-excel", "ReporteExcel.xlsx");
         }
     }
 }

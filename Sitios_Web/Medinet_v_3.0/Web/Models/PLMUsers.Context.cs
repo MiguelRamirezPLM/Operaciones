@@ -36,23 +36,6 @@ namespace Web.Models
         public virtual DbSet<Tables> Tables { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserCountries> UserCountries { get; set; }
-        public virtual DbSet<BinnacleActivities> BinnacleActivities { get; set; }
-        public virtual DbSet<Binnacles> Binnacles { get; set; }
-        public virtual DbSet<BinnacleStatus> BinnacleStatus { get; set; }
-        public virtual DbSet<Errors> Errors { get; set; }
-        public virtual DbSet<Folios> Folios { get; set; }
-        public virtual DbSet<Menues> Menues { get; set; }
-        public virtual DbSet<OperationRoles> OperationRoles { get; set; }
-        public virtual DbSet<Operations> Operations { get; set; }
-        public virtual DbSet<ProjectActivities> ProjectActivities { get; set; }
-        public virtual DbSet<Projects> Projects { get; set; }
-        public virtual DbSet<Regions> Regions { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<UserProjects> UserProjects { get; set; }
-        public virtual DbSet<WebPages> WebPages { get; set; }
-        public virtual DbSet<WebPageSectionMenues> WebPageSectionMenues { get; set; }
-        public virtual DbSet<WebPageSections> WebPageSections { get; set; }
-        public virtual DbSet<WebSections> WebSections { get; set; }
     
         public virtual ObjectResult<plm_spLoginApplications_Result> plm_spLoginApplications(string user, string password, string hashKey)
         {

@@ -16,28 +16,38 @@
         });
     }
 </script>
+@*Obtener libros*@
 <script>
     $(document).ready(function () {
         $("#_elementCountry li").click(function () {
             $("#_elementCountry").slideUp("400");
-            $("#_elementLaboratory").empty();
             $("#_contentElements").removeClass("hide");
             $("#_dvCountry").removeClass("hide");
-            $("#_ulLaboratory").removeClass("hide");
+            $("#_dvBook").addClass("hide");
+            $("#_dvEdition").addClass("hide");
+            $("#_dvLaboratory").addClass("hide");
+            $("#_ulEdition").addClass("hide");
+            $("#_ulLaboratory").addClass("hide");
+            $("#_elementEdition").empty();
+            $("#_nameEdition").empty();
+            $("#_nameLaboratory").empty();
+            $("#_elementEdition").addClass("hide");
+            $("#_elementLaboratory").addClass("hide");
             var _getContent = $(this).text();
             $("#_nameCountry").empty();
             $("#_nameCountry").append(_getContent);
+            $("#_ulBook").removeClass("hide");
+            $("#_elementBook").empty();
+            $("#_nameBook").empty();
             var _vlCountryId = $(this).find("#_vlCountryId").val();
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Medical/GetLaboratories")",
+                url: "@Url.Content("~/Production/getBooks")",
                 traditional: true,
-                data: { id: _vlCountryId },
+                data: { CountryId: _vlCountryId },
                 success: function (data) {
-
-                    var baseSiteURL = '@Url.Content("~/")';
-                    $("#_elementLaboratory").append("<ol>"
+                    $("#_elementBook").append("<ol style='margin-top:-5px;'>"
                         + "<div id='custom-search-input'>"
                         + "<div class='input-group col-md-11'>"
                         + "<input type='text' onkeyup='filter(this)' class='form-control' placeholder='Buscar' />"
@@ -47,12 +57,14 @@
                         + "<li>"
                         + "<p>"
                         + "</p>"
-                        + "</li>")
+                        + "</ol>")
                     $.each(data, function (index, val) {
-
-                        $("#_elementLaboratory")
+                        $("#_elementBook")
                         .append($("<li>"
-                            + "<a class='zindex' href='" + baseSiteURL + "Medical/Content?CId=" + val.CountryId + "&DId=" + val.DivisionId + "'>" + val.ShortName + "</a>"
+                            + "<a>"
+                            + "<input type='hidden' id='_vlCountryId' value='" + val.CountryId + "' />"
+                            + "<input type='hidden' id='_vlBookId' value='" + val.BookId + "' />" + val.BookName
+                            + "</a>"
                             + "</li>"));
                     });
                 }
@@ -60,6 +72,106 @@
         });
     });
 </script>
+@*Obtener ediciones*@
+<script>
+    $(function () {
+        $("#_elementBook").on('click', 'li', function () {
+            $("#_elementBook").slideUp("400");
+            $("#_dvBook").removeClass("hide");
+            $("#_dvEdition").addClass("hide");
+            $("#_dvLaboratory").addClass("hide");
+            $("#_nameBook").empty();
+            $("#_nameEdition").empty();
+            $("#_nameLaboratory").empty();
+            $("#_elementEdition").empty();
+            var _contentBook = $(this).text();
+            $("#_nameBook").append(_contentBook);
+            $("#_ulEdition").removeClass("hide");
+            $("#_ulLaboratory").addClass("hide");
+            $("#_elementEdition").removeClass("hide");
+            var _vlBookId = $(this).find("#_vlBookId").val();
+            var _vlCountryId = $(this).find("#_vlCountryId").val();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "@Url.Content("~/Production/getEditions")",
+                traditional: true,
+                data: { CountryId: _vlCountryId, BookId: _vlBookId },
+                success: function (data) {
+                    $("#_elementEdition").append("<ol style='margin-top:-5px;'>"
+                        + "<div id='custom-search-input'>"
+                        + "<div class='input-group col-md-11'>"
+                        + "<input type='text' onkeyup='filterEdition(this)' class='form-control' placeholder='Buscar' />"
+                        + "</div>"
+                        + "</div>"
+                        + "</ol>"
+                        + "<li>"
+                        + "<p>"
+                        + "</p>"
+                        + "</ol>")
+                    $.each(data, function (index, val) {
+                        $("#_elementEdition")
+                        .append($("<li>"
+                            + "<a>"
+                            + "<input type='hidden' id='_vlCountryId' value='" + val.CountryId + "' />"
+                            + "<input type='hidden' id='_vlBookId' value='" + val.BookId + "' />"
+                            + "<input type='hidden' id='_vlEditionId' value='" + val.EditionId + "' />" + val.NumberEdition
+                            + "</a>"
+                            + "</li>"));
+                    });
+                }
+            });
+        });
+    });
+</script>
+@*Obtener laboratorios*@
+<script>
+    $(function () {
+        $("#_elementEdition").on('click', 'li', function () {
+            $("#_elementEdition").slideUp("400");
+            $("#_dvEdition").removeClass("hide");
+            $("#_dvLaboratory").addClass("hide");
+            $("#_nameEdition").empty();
+            $("#_nameLaboratory").empty();
+            $("#_elementLaboratory").empty();
+            var _contentEdition = $(this).text();
+            $("#_nameEdition").append(_contentEdition);
+            $("#_ulLaboratory").removeClass("hide");
+            $("#_elementLaboratory").removeClass("hide");
+            var _vlCountryId = $(this).find("#_vlCountryId").val();
+            var _vlBookId = $(this).find("#_vlBookId").val();
+            var _vlEditionId = $(this).find("#_vlEditionId").val();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "@Url.Content("~/Production/getLaboratories")",
+                traditional: true,
+                data: { CountryId: _vlCountryId, BookId: _vlBookId, EditionId: _vlEditionId },
+                success: function (data) {
+                    var baseSiteURL = '@Url.Content("~/")';
+                    $("#_elementLaboratory").append("<ol style='margin-top:-5px;'>"
+                        + "<div id='custom-search-input'>"
+                        + "<div class='input-group col-md-11'>"
+                        + "<input type='text' onkeyup='filterLaboratory(this)' class='form-control' placeholder='Buscar' />"
+                        + "</div>"
+                        + "</div>"
+                        + "</ol>"
+                        + "<li>"
+                        + "<p>"
+                        + "</p>"
+                        + "</li>")
+                    $.each(data, function (index, val) {
+                        $("#_elementLaboratory")
+                        .append($("<li>"
+                            + "<a onclick='_zindex()' href='" + baseSiteURL + "Medical/Content?CId=" + val.CountryId + "&BId=" + val.BookId + "&EId=" + val.EditionId + "&DId=" + val.DivisionId + "'>" + val.DivisionName + "</a>"
+                            + "</li>"));
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 <script>
     $(function () {
         $("#_elementLaboratory").on('click', 'li', function () {
@@ -96,7 +208,7 @@
                         {
                             List<string> _listCountries = _CountriesUsers.var;
                             <a id="_title" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">País<span style="margin-left:5px;" class="caret"></span></a>
-                            <ul id="_elementCountry" class="dropdown-menu" role="menu">
+                            <ul id="_elementCountry" class="dropdown-menu" role="menu" style="cursor:pointer">
                                 @{
                             List<string> d = _CountriesUsers.var;
                             foreach (string f in d)
@@ -113,6 +225,18 @@
                             </ul>
                         }
                     }
+                </li>
+            </ul>
+            <ul id="_ulBook" class="nav navbar-nav hov hide">
+                <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Obra<span style="margin-left:5px;" class="caret"></span></a>
+                    <ul id="_elementBook" class="dropdown-menu" role="menu" style="height: 400px; overflow: auto; border-radius:10px;cursor:pointer"></ul>
+                </li>
+            </ul>
+            <ul id="_ulEdition" class="nav navbar-nav hov hide">
+                <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Edición<span style="margin-left:5px;" class="caret"></span></a>
+                    <ul id="_elementEdition" class="dropdown-menu" role="menu" style="height: 200px; overflow: auto; border-radius: 10px; cursor: pointer"></ul>
                 </li>
             </ul>
             <ul id="_ulLaboratory" class="nav navbar-nav hov hide">

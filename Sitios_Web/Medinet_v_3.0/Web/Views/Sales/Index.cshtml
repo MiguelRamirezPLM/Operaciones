@@ -3,36 +3,6 @@
     ViewBag.Title = "Ventas";
     Medinet db = new Medinet();
     PLMUsers plm = new PLMUsers();
-    ViewData["Pagination"] = "True";
-
-
-    CountriesUsers _CountriesUsers = (CountriesUsers)Session["CountriesUsers"];
-    int iduser = _CountriesUsers.userId;
-    int AppId = _CountriesUsers.ApplicationId;
-
-    var RoleIdU = (from _R in plm.ApplicationUsers
-                   where _R.ApplicationId == _CountriesUsers.ApplicationId 
-                          && _R.UserId == _CountriesUsers.userId
-                   select _R).ToList();
-
-    foreach (var _row in RoleIdU)
-            {
-                     if (_row.RoleId == 5)
-                     {
-                         ViewData["Pagination"] = null;
-                         ViewData["Medicos"] = null;
-                         ViewData["Producción"] = null;
-                         ViewData["Inicio"] = null;
-                     }                   
-                     else
-                     {
-                         ViewData["Pagination"] = "True";
-                         ViewData["Medicos"] = "True";
-                         ViewData["Producción"] = "True";
-                         ViewData["Inicio"] = "True";
-                     }
-            }
-    ViewData["Ventas"] = "True";
 }
 
 @*Buscadores...*@
@@ -99,7 +69,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Sales/getBooks")",
+                url: "@Url.Content("~/Production/getBooks")",
                 traditional: true,
                 data: { CountryId: _vlCountryId },
                 success: function (data) {
@@ -147,13 +117,12 @@
             $("#_elementEdition").removeClass("hide");
             var _vlBookId = $(this).find("#_vlBookId").val();
             var _vlCountryId = $(this).find("#_vlCountryId").val();
-            var EditionTypeT = -20;
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Sales/getEditions")",
+                url: "@Url.Content("~/Production/getEditions")",
                 traditional: true,
-                data: { CountryId: _vlCountryId, BookId: _vlBookId, EditionType: EditionTypeT },
+                data: { CountryId: _vlCountryId, BookId: _vlBookId },
                 success: function (data) {
                     $("#_elementEdition").append("<ol>"
                         + "<div id='custom-search-input'>"
@@ -201,7 +170,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Sales/getLaboratories")",
+                url: "@Url.Content("~/Production/getLaboratories")",
                 traditional: true,
                 data: { CountryId: _vlCountryId, BookId: _vlBookId, EditionId: _vlEditionId },
                 success: function (data) {
@@ -250,7 +219,7 @@
     <div class="headergroup">
         <div class="title">
             <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
-            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Ventas</strong>| Laboratorios y productos</div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Producción</strong>| Laboratorios y productos</div>
         </div>
     </div>
 </div>
@@ -263,7 +232,7 @@
             <ul class="nav navbar-nav hov">
                 <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                     @{
-                        
+                        CountriesUsers _CountriesUsers = (CountriesUsers)Session["CountriesUsers"];
                         if (_CountriesUsers != null)
                         {
                             List<string> _listCountries = _CountriesUsers.var;
@@ -271,13 +240,11 @@
                             <ul id="_elementCountry" class="dropdown-menu" role="menu">
                                 @{
                             List<string> _list = _CountriesUsers.var;
-                            _list.Sort();
                             foreach (string _row in _list)
                             {
                                 var _countries = (from country in db.Countries
                                                   where country.ID == _row
-                                                  orderby country.CountryName
-                                                  select country).ToList();
+                                                  select country);
                                 foreach (Countries _rowCountries in _countries)
                                 {
                                     <li><a> <input type="hidden" id="_vlCountryId" value="@_rowCountries.CountryId" /> @_rowCountries.CountryName</a></li>

@@ -27,8 +27,23 @@
     <script src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
     <script src="@Url.Content("~/Scripts/Medical.js")"></script>
 
+
+
 </head>
 <body id="_body">
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador" class="contenedor">
+            <div class="progress contenido">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" id="divprogressbar"
+                     aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width: 100%; background-color: #003870">
+                    <span id="label"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="pushWrapper">
         <header class="pageHeader">
             <button class="menu-trigger">
@@ -53,59 +68,30 @@
                         El panel debe funcionar dinamicamente para cada módulo.
                         Nota: Si desea agregar mas iconos vaya a la hoja de estilos Layout.css y agrege el nuevo ícono bajo el código que encontrará en la página http://fontawesome.io/icons/
                     *@
-                    
-                    @{
-                        var _trueI = ViewData["Inicio"];
-                        if (_trueI != null)
-                        {
-                            <li>
+                    <li>
                         <a href="@Url.Content("~/Login/RedirectToAction")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
                             <div align="center" class="IconHome notify"></div>
                             <span style="padding-left:10px;" class="text">Inicio</span>
                         </a>
                     </li>
-                        }
-
-                    }
-                    @{
-                        var _trueV = ViewData["Ventas"];
-                        if (_trueV != null)
-                        {
-                            <li>
-                                <a href="@Url.Content("~/Sales/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
-                                    <div align="center" class="IconSales notify"></div>
-                                    <span style="padding-left:10px;" class="text">Ventas</span>
-                                </a>
-                            </li>
-                        }
-
-                    }
-                    @{
-                        var _trueP = ViewData["Producción"];
-                        if (_trueP != null)
-                        {
-                            <li>
-                                <a href="@Url.Content("~/Production/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
-                                <div align="center" class="IconProduction notify"></div>
-                                <span style="padding-left:10px;" class="text">Producción</span>
-                                 </a>
-                            </li>
-                        }
-
-                    }
-                     @{
-                         var _trueM = ViewData["Medicos"];
-                         if (_trueM != null)
-                         {
-                             <li>
-                                 <a href="@Url.Content("~/Medical/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
-                                     <div align="center" class="IconMedical notify"></div>
-                                     <span style="padding-left:10px;" class="text">Médicos</span>
-                                 </a>
-                             </li>
-                         }
-                         
-                     }
+                    <li>
+                        <a href="@Url.Content("~/Sales/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
+                            <div align="center" class="IconSales notify"></div>
+                            <span style="padding-left:10px;" class="text">Ventas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Content("~/Production/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
+                            <div align="center" class="IconProduction notify"></div>
+                            <span style="padding-left:10px;" class="text">Producción</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Content("~/Medical/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
+                            <div align="center" class="IconMedical notify"></div>
+                            <span style="padding-left:10px;" class="text">Médicos</span>
+                        </a>
+                    </li>
                     @{
                         var _true = ViewData["Pagination"];
                         if (_true != null)
@@ -118,15 +104,15 @@
                             </li>
                         }
                     }
-                    <li>
-                        <a href="" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
+                    @*<li>
+                        <a href="" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">*@
                             @*
                                 Viewdata["_notifications"] = recibira el número de tareas pendientes que tenga el usuario.
                             *@
-                            <div data-count="@ViewData["_notifications"] 3" align="center" class="notification notify show-count"></div>
+                            @*<div data-count="@ViewData["_notifications"] 3" align="center" class="notification notify show-count"></div>
                             <span style="padding-left:10px;" class="text">Notificaciones</span>
                         </a>
-                    </li>
+                    </li>*@
                     <li>
                         <a target="_blank" style="text-decoration:none; padding-left:20px;" class="smoothScroll" href="">
                             <div align="center" class="IconManual notify"></div>
@@ -261,3 +247,15 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(function () {
+        $(".ldr").click(function () {
+            $("#bloqueo").show();
+        })
+    })
+</script>
+<script>
+    load();
+</script>

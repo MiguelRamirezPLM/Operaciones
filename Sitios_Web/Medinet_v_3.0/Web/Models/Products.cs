@@ -17,8 +17,7 @@ namespace Web.Models
         public Products()
         {
             this.ProductCategories = new HashSet<ProductCategories>();
-            this.ProductPharmaForms = new HashSet<ProductPharmaForms>();
-            this.ProductPharmaForms1 = new HashSet<ProductPharmaForms>();
+            this.ProductIndications = new HashSet<ProductIndications>();
         }
     
         public int ProductId { get; set; }
@@ -36,9 +35,6 @@ namespace Web.Models
         public virtual ICollection<ProductCategories> ProductCategories { get; set; }
         public virtual ProductTypes ProductTypes { get; set; }
         public virtual Alphabet Alphabet { get; set; }
-        public virtual ICollection<ProductPharmaForms> ProductPharmaForms { get; set; }
-        public virtual ICollection<ProductPharmaForms> ProductPharmaForms1 { get; set; }
-        public virtual Laboratories Laboratories { get; set; }
-        public virtual Laboratories Laboratories1 { get; set; }
+        public virtual ICollection<ProductIndications> ProductIndications { get; set; }
     }
 }

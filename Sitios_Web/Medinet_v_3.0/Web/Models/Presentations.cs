@@ -18,7 +18,6 @@ namespace Web.Models
         {
             this.ProductImages = new HashSet<ProductImages>();
             this.EditionPresentations = new HashSet<EditionPresentations>();
-            this.ProductBarCodes = new HashSet<ProductBarCodes>();
         }
     
         public int PresentationId { get; set; }
@@ -45,6 +44,5 @@ namespace Web.Models
         public virtual WeightUnits WeightUnits { get; set; }
         public virtual ICollection<ProductImages> ProductImages { get; set; }
         public virtual ICollection<EditionPresentations> EditionPresentations { get; set; }
-        public virtual ICollection<ProductBarCodes> ProductBarCodes { get; set; }
     }
 }
