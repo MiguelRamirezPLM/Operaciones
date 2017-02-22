@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UsersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ActivityLogs">
+    <Key>
+      <PropertyRef Name="ActivityLogId" />
+    </Key>
+    <Property Name="ActivityLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="TableId" Type="Int32" Nullable="false" />
+    <Property Name="OperationId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PrimaryKeyAffected" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="FieldsAffected" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ActivitySessions">
+    <Key>
+      <PropertyRef Name="ActivitySessionId" />
+    </Key>
+    <Property Name="ActivitySessionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Applications" Relationship="Self.FKAPPLICATION_AS" FromRole="ActivitySessions" ToRole="Applications" />
+    <NavigationProperty Name="Users" Relationship="Self.FKUSER_AS" FromRole="ActivitySessions" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Applications">
+    <Key>
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="HashKey" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="URL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RootUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Version" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="DocumentFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ActivitySessions" Relationship="Self.FKAPPLICATION_AS" FromRole="Applications" ToRole="ActivitySessions" />
+    <NavigationProperty Name="Tables" Relationship="Self.AppTableId_FK" FromRole="Applications" ToRole="Tables" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="Self.FK_ApplicationUsers_Applications" FromRole="Applications" ToRole="ApplicationUsers" />
+    <NavigationProperty Name="WebPages" Relationship="UsersModel.FK_WebPages_Applications" FromRole="Applications" ToRole="WebPages" />
+  </EntityType>
+  <EntityType Name="ApplicationUsers">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Applications" Relationship="Self.FK_ApplicationUsers_Applications" FromRole="ApplicationUsers" ToRole="Applications" />
+    <NavigationProperty Name="Roles" Relationship="Self.FK_ApplicationUsers_Roles" FromRole="ApplicationUsers" ToRole="Roles" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_ApplicationUsers_Users" FromRole="ApplicationUsers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="CountriesUser">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_Countries" FromRole="Countries" ToRole="Users" />
+    <NavigationProperty Name="UserCountries" Relationship="UsersModel.CountriesUserCountries" FromRole="Countries" ToRole="UserCountries" />
+  </EntityType>
+  <EntityType Name="Operations">
+    <Key>
+      <PropertyRef Name="OperationId" />
+    </Key>
+    <Property Name="OperationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="Self.FK_ApplicationUsers_Roles" FromRole="Roles" ToRole="ApplicationUsers" />
+    <NavigationProperty Name="RolMenues" Relationship="UsersModel.RolesRolMenues" FromRole="Roles" ToRole="RolMenues" />
+  </EntityType>
+  <EntityType Name="Tables">
+    <Key>
+      <PropertyRef Name="TableId" />
+    </Key>
+    <Property Name="TableId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Applications" Relationship="Self.AppTableId_FK" FromRole="Tables" ToRole="Applications" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SecondLastName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NickName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AddedDate" Type="DateTime" Precision="3" />
+    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActivitySessions" Relationship="Self.FKUSER_AS" FromRole="Users" ToRole="ActivitySessions" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="Self.FK_ApplicationUsers_Users" FromRole="Users" ToRole="ApplicationUsers" />
+    <NavigationProperty Name="Countries" Relationship="Self.FK_Users_Countries" FromRole="Users" ToRole="Countries" />
+    <NavigationProperty Name="UserCountries" Relationship="UsersModel.UsersUserCountries" FromRole="Users" ToRole="UserCountries" />
+  </EntityType>
+  <Association Name="FKAPPLICATION_AS">
+    <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+    <End Role="ActivitySessions" Type="Self.ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKUSER_AS">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ActivitySessions" Type="Self.ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AppTableId_FK">
+    <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+    <End Role="Tables" Type="Self.Tables" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="Tables">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Applications">
+    <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+    <End Role="ApplicationUsers" Type="Self.ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Roles">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+    <End Role="ApplicationUsers" Type="Self.ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ApplicationUsers" Type="Self.ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Countries">
+    <End Role="Countries" Type="UsersModel.CountriesUser" Multiplicity="1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PLMUsers" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ActivityLogs" EntityType="Self.ActivityLogs" />
+    <EntitySet Name="ActivitySessions" EntityType="Self.ActivitySessions" />
+    <EntitySet Name="Applications" EntityType="Self.Applications" />
+    <EntitySet Name="ApplicationUsers" EntityType="Self.ApplicationUsers" />
+    <EntitySet Name="CountriesUser" EntityType="UsersModel.CountriesUser" />
+    <EntitySet Name="Operations" EntityType="Self.Operations" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" />
+    <EntitySet Name="Tables" EntityType="Self.Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FKAPPLICATION_AS" Association="Self.FKAPPLICATION_AS">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="FKUSER_AS" Association="Self.FKUSER_AS">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="AppTableId_FK" Association="Self.AppTableId_FK">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="Tables" EntitySet="Tables" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Applications" Association="Self.FK_ApplicationUsers_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Roles" Association="Self.FK_ApplicationUsers_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Users" Association="Self.FK_ApplicationUsers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Countries" Association="Self.FK_Users_Countries">
+      <End Role="Countries" EntitySet="CountriesUser" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <EntitySet Name="UserCountries" EntityType="UsersModel.UserCountries" />
+    <AssociationSet Name="UsersUserCountries" Association="UsersModel.UsersUserCountries">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserCountries" EntitySet="UserCountries" />
+    </AssociationSet>
+    <AssociationSet Name="CountriesUserCountries" Association="UsersModel.CountriesUserCountries">
+      <End Role="Countries" EntitySet="CountriesUser" />
+      <End Role="UserCountries" EntitySet="UserCountries" />
+    </AssociationSet>
+    <EntitySet Name="Menues" EntityType="UsersModel.Menues" />
+    <EntitySet Name="WebPages" EntityType="UsersModel.WebPages" />
+    <EntitySet Name="WebPageSectionMenues" EntityType="UsersModel.WebPageSectionMenues" />
+    <EntitySet Name="WebPageSections" EntityType="UsersModel.WebPageSections" />
+    <EntitySet Name="WebSections" EntityType="UsersModel.WebSections" />
+    <AssociationSet Name="FK_WebPages_Applications" Association="UsersModel.FK_WebPages_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="WebPages" EntitySet="WebPages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WebPageSectionMenues_Menues" Association="UsersModel.FK_WebPageSectionMenues_Menues">
+      <End Role="Menues" EntitySet="Menues" />
+      <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WebPageSections_WebPages1" Association="UsersModel.FK_WebPageSections_WebPages1">
+      <End Role="WebPages" EntitySet="WebPages" />
+      <End Role="WebPageSections" EntitySet="WebPageSections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WebPageSectionMenues_WebPageSections" Association="UsersModel.FK_WebPageSectionMenues_WebPageSections">
+      <End Role="WebPageSections" EntitySet="WebPageSections" />
+      <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WebPageSections_WebSections" Association="UsersModel.FK_WebPageSections_WebSections">
+      <End Role="WebSections" EntitySet="WebSections" />
+      <End Role="WebPageSections" EntitySet="WebPageSections" />
+    </AssociationSet>
+    <EntitySet Name="RolMenues" EntityType="UsersModel.RolMenues" />
+    <AssociationSet Name="WebPageSectionMenuesRolMenues" Association="UsersModel.WebPageSectionMenuesRolMenues">
+      <End Role="WebPageSectionMenues" EntitySet="WebPageSectionMenues" />
+      <End Role="RolMenues" EntitySet="RolMenues" />
+    </AssociationSet>
+    <AssociationSet Name="RolesRolMenues" Association="UsersModel.RolesRolMenues">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="RolMenues" EntitySet="RolMenues" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserCountries">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="UsersModel.UsersUserCountries" FromRole="UserCountries" ToRole="Users" />
+    <NavigationProperty Name="Countries" Relationship="UsersModel.CountriesUserCountries" FromRole="UserCountries" ToRole="Countries" />
+  </EntityType>
+  <Association Name="UsersUserCountries">
+    <End Type="UsersModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="UsersModel.UserCountries" Role="UserCountries" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserCountries">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CountriesUserCountries">
+    <End Type="UsersModel.CountriesUser" Role="Countries" Multiplicity="1" />
+    <End Type="UsersModel.UserCountries" Role="UserCountries" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="UserCountries">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Menues">
+    <Key>
+      <PropertyRef Name="MenuId" />
+    </Key>
+    <Property Name="MenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="MenuName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="WebPageSectionMenues" Relationship="UsersModel.FK_WebPageSectionMenues_Menues" FromRole="Menues" ToRole="WebPageSectionMenues" />
+  </EntityType>
+  <EntityType Name="WebPages">
+    <Key>
+      <PropertyRef Name="WebPageId" />
+    </Key>
+    <Property Name="WebPageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="PageDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Applications" Relationship="UsersModel.FK_WebPages_Applications" FromRole="WebPages" ToRole="Applications" />
+    <NavigationProperty Name="WebPageSections" Relationship="UsersModel.FK_WebPageSections_WebPages1" FromRole="WebPages" ToRole="WebPageSections" />
+  </EntityType>
+  <EntityType Name="WebPageSectionMenues">
+    <Key>
+      <PropertyRef Name="WebPageId" />
+      <PropertyRef Name="WebSectionId" />
+      <PropertyRef Name="MenuId" />
+    </Key>
+    <Property Name="WebPageId" Type="Int32" Nullable="false" />
+    <Property Name="WebSectionId" Type="Byte" Nullable="false" />
+    <Property Name="MenuId" Type="Int32" Nullable="false" />
+    <Property Name="Url" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ImageName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="MenuOrder" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Menues" Relationship="UsersModel.FK_WebPageSectionMenues_Menues" FromRole="WebPageSectionMenues" ToRole="Menues" />
+    <NavigationProperty Name="WebPageSections" Relationship="UsersModel.FK_WebPageSectionMenues_WebPageSections" FromRole="WebPageSectionMenues" ToRole="WebPageSections" />
+    <NavigationProperty Name="RolMenues" Relationship="UsersModel.WebPageSectionMenuesRolMenues" FromRole="WebPageSectionMenues" ToRole="RolMenues" />
+  </EntityType>
+  <EntityType Name="WebPageSections">
+    <Key>
+      <PropertyRef Name="WebPageId" />
+      <PropertyRef Name="WebSectionId" />
+    </Key>
+    <Property Name="WebPageId" Type="Int32" Nullable="false" />
+    <Property Name="WebSectionId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="WebPages" Relationship="UsersModel.FK_WebPageSections_WebPages1" FromRole="WebPageSections" ToRole="WebPages" />
+    <NavigationProperty Name="WebPageSectionMenues" Relationship="UsersModel.FK_WebPageSectionMenues_WebPageSections" FromRole="WebPageSections" ToRole="WebPageSectionMenues" />
+    <NavigationProperty Name="WebSections" Relationship="UsersModel.FK_WebPageSections_WebSections" FromRole="WebPageSections" ToRole="WebSections" />
+  </EntityType>
+  <EntityType Name="WebSections">
+    <Key>
+      <PropertyRef Name="WebSectionId" />
+    </Key>
+    <Property Name="WebSectionId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Byte" />
+    <Property Name="SectionName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="WebPageSections" Relationship="UsersModel.FK_WebPageSections_WebSections" FromRole="WebSections" ToRole="WebPageSections" />
+  </EntityType>
+  <Association Name="FK_WebPages_Applications">
+    <End Type="UsersModel.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="UsersModel.WebPages" Role="WebPages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="WebPages">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WebPageSectionMenues_Menues">
+    <End Type="UsersModel.Menues" Role="Menues" Multiplicity="1" />
+    <End Type="UsersModel.WebPageSectionMenues" Role="WebPageSectionMenues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Menues">
+        <PropertyRef Name="MenuId" />
+      </Principal>
+      <Dependent Role="WebPageSectionMenues">
+        <PropertyRef Name="MenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WebPageSections_WebPages1">
+    <End Type="UsersModel.WebPages" Role="WebPages" Multiplicity="1" />
+    <End Type="UsersModel.WebPageSections" Role="WebPageSections" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebPages">
+        <PropertyRef Name="WebPageId" />
+      </Principal>
+      <Dependent Role="WebPageSections">
+        <PropertyRef Name="WebPageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WebPageSectionMenues_WebPageSections">
+    <End Type="UsersModel.WebPageSections" Role="WebPageSections" Multiplicity="1" />
+    <End Type="UsersModel.WebPageSectionMenues" Role="WebPageSectionMenues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebPageSections">
+        <PropertyRef Name="WebPageId" />
+        <PropertyRef Name="WebSectionId" />
+      </Principal>
+      <Dependent Role="WebPageSectionMenues">
+        <PropertyRef Name="WebPageId" />
+        <PropertyRef Name="WebSectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WebPageSections_WebSections">
+    <End Type="UsersModel.WebSections" Role="WebSections" Multiplicity="1" />
+    <End Type="UsersModel.WebPageSections" Role="WebPageSections" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebSections">
+        <PropertyRef Name="WebSectionId" />
+      </Principal>
+      <Dependent Role="WebPageSections">
+        <PropertyRef Name="WebSectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="RolMenues">
+    <Key>
+      <PropertyRef Name="WebPageId" />
+      <PropertyRef Name="WebSectionId" />
+      <PropertyRef Name="MenuId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="WebPageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Name="WebSectionId" Type="Byte" Nullable="false" />
+    <Property Name="MenuId" Type="Int32" Nullable="false" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="WebPageSectionMenues" Relationship="UsersModel.WebPageSectionMenuesRolMenues" FromRole="RolMenues" ToRole="WebPageSectionMenues" />
+    <NavigationProperty Name="Roles" Relationship="UsersModel.RolesRolMenues" FromRole="RolMenues" ToRole="Roles" />
+  </EntityType>
+  <Association Name="WebPageSectionMenuesRolMenues">
+    <End Type="UsersModel.WebPageSectionMenues" Role="WebPageSectionMenues" Multiplicity="1" />
+    <End Type="UsersModel.RolMenues" Role="RolMenues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebPageSectionMenues">
+        <PropertyRef Name="WebPageId" />
+        <PropertyRef Name="WebSectionId" />
+        <PropertyRef Name="MenuId" />
+      </Principal>
+      <Dependent Role="RolMenues">
+        <PropertyRef Name="WebPageId" />
+        <PropertyRef Name="WebSectionId" />
+        <PropertyRef Name="MenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RolesRolMenues">
+    <End Type="UsersModel.Roles" Role="Roles" Multiplicity="1" />
+    <End Type="UsersModel.RolMenues" Role="RolMenues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="RolMenues">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

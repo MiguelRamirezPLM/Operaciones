@@ -1,0 +1,185 @@
+﻿@model IEnumerable<GuiaNet.Models.joinclientproductshots>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "images";
+    WebGrid _datagrid = new WebGrid(Model);
+    Guia db = new Guia();
+}
+<html>
+<head>
+    <title>
+
+    </title>
+    <script>
+        $(function () {
+            $(".upload").change(function () {
+                var tr = $(this).parents("tr:first");
+
+                var uplbtn = tr.find("#uploadBtn").val();
+                var ufile = tr.find("#uploadFile").val(uplbtn);
+            })
+        });
+    </script>
+
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script>
+        $(function () {
+            $("#insertimage").click(function () {
+                var dsize = $("#selectf").val();
+                var prodid = $("#ProductId").val();
+                var img = $("#uploadFile").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (dsize == "0") {
+                    var message = "Para insertar, Debe seleccionar un tamaño de Imagen";
+                    d += "<p> </p>"
+                    d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    if (!img.trim() == true) {
+                        var message = "Para insertar, Debe seleccionar una Imagen";
+                        d += "<p> </p>"
+                        d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        $("#sendimages").ajaxSubmit({
+                            type: "POST",
+                            url: "../Production/newimages/",
+                            data: { size: dsize, Product: prodid },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                else if (data == "El archivo se ha Modificado Exitosamente") {
+                                    d += "<p> </p>"
+                                    d += "<li style='text-align:justify;color:#05606d;font-style:italic'>" + data + "</li>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $(".edit-mode").hide();
+                                    $(".display-mode").show();
+                                    $("#bloqueo").hide();
+                                }
+                            },
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualProd", "Help", new { module = "PROD" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/Production/Index">Producción</a></li>
+        <li><a href="/Production/Index">Productos Participantes</a></li>
+        <li class="active">ProductShots</li>
+    </ol>
+    <style>
+    </style>
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width:20%"></td>
+            <td style="width:20%;">
+                <label class="labels">Seleccionar Tamaño</label>
+            </td>
+            <td style="width: 40%;">
+                <select class="form-control1" id="selectf">
+                    <option value="0">Seleccione...</option>
+                    @{
+                        var ims = (from images in db.ImagesSizes
+                                   orderby images.ImageSize ascending
+                                   select images);
+                        foreach (ImagesSizes _ims in ims)
+                        {
+                            <option value="@_ims.ImageSizeId">@_ims.ImageSize</option>
+                        }
+
+                    }
+
+                </select>
+            </td>
+            <td rowspan="4" style="text-align:right">
+                <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return" onclick="location.href = '@Url.Action("Index", "Production")'; return false;"><br />
+                <label>Regresar...</label>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:15px"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><label class="labels">Seleccionar Imagen</label></td>
+            <td>
+                <input type="text" style="height:35px;display:none" id="text" />
+                <form enctype="multipart/form-data" method="post" id="sendimages">
+                    <input id="uploadFile" placeholder="Seleccione Archivo..." style="width:500px" disabled="disabled" class="form-focus" accept="image/png" />
+                    <div class="fileUpload btn btn-info buton" style="text-align:center">
+                        <span>
+                            Seleccione...
+                        </span>
+                        <input id="uploadBtn" type="file" class="upload" accept="image/png" name="file" />
+                    </div><br />
+                    <div style="text-align:center">
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="text-align: center; height: 40px"><button class="btn btn-info" id="insertimage">Insertar</button> </td>
+        </tr>
+    </table>
+    <br />
+    <label class="labels"> Nombre del Producto:</label>
+    <label> @ViewData["ProductName"]</label>
+    <input type="text" value="@ViewData["ProductId"]" style="display:none" id="ProductId" />
+    <br />
+    <br />
+
+    <div style="width:100%">
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Imagen", format: @<text>
+                                @{
+                                    <span class=""> <label id="lblName" style="width:180px">@item.EditionClientProductShots.ProductShot</label> </span>
+                                }
+                        </text>),
+            _datagrid.Column("", header: "Tamaño", format: @<text>
+            @{
+                <span class=""> <label id="lblName" style="width:180px">@item.ImagesSizes.ImageSize</label> </span>
+            }
+            </text>,style:"buton"),
+         _datagrid.Column("", header: "Imagen", format: @<text>
+            @{
+                <img src="@Url.Action("showimages", "Production", new { image = @item.EditionClientProductShots.ProductShot, EditionClientProductShotId = @item.EditionClientProductShots.EditionClientProductShotId, size = @item.ImagesSizes.ImageSizeId })" style="color: #333; width: 50px;height:50px" />
+            }
+        </text>,style:"buton"),
+  })
+    </div>
+</body>
+</html>

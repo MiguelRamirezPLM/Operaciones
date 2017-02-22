@@ -1,0 +1,794 @@
+﻿@model List<GuiaNet.Models.HTMLProductsAttributes>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "segmentallproducts";
+    Guia db = new Guia();
+    sessionsegmentallproducts sessionsegmentallproducts = (sessionsegmentallproducts)Session["sessionsegmentallproducts"];
+    WebGrid _datagrid = new WebGrid(Model);
+}
+
+<html>
+<head>
+    <title></title>
+    <link href="@Url.Content("~/Content/jquery.dataTables.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabbl').DataTable();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+    @*CHARGE DIVISIONS BY COUNTRY*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#division").hide();
+            $("#pais").change(function () {
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var coun = idcountry;
+                document.getElementById("CountryId").value = coun;
+                if (idcountry != nulls) {
+                    coun = (idcountry);
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#lblbook1").show();
+
+                }
+                else if (idcountry == nulls) {
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#division").hide();
+                    $("#lblclient").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Production/books/",
+                    traditional: true,
+                    data: { country: idcountry },
+                    success: function (data) {
+                        $('#bookn').empty();
+                        $('#bookn')
+                           .append($("<option></option>")
+                           .attr("value", 0)
+                           .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#bookn')
+                            .append($("<option></option>")
+                            .attr("value", val.BookId)
+                            .text(val.BookName));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+
+    @*CHARGE EDITION BY BOOK*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#InsertProducts").hide();
+            $("#bookn").change(function () {
+                var idbook = $(this).val();
+                var idcountry = $("#pais").val();
+                var nulls = $(".null").val();
+                var book = $("#bookn").val();
+
+                var coun = idbook;
+                document.getElementById("BookId").value = coun;
+                if (idcountry != nulls) {
+                    $("#Edition").show();
+                    $("#lblEdition").show();
+                    $("#lblEdition1").show();
+                    $("#InsertProducts").hide();
+                }
+                else if (idcountry == nulls) {
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Production/editions/",
+                    traditional: true,
+                    data: { country: idcountry, bookid: book },
+                    success: function (data) {
+                        $('#Edition').empty();
+                        $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", 0)
+                            .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", val.EditionId)
+                            .text(val.NumberEdition));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+
+    @*SHOW FORM WHEN CHANGE DIVISION*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Edition").change(function () {
+                var coun = $("#Edition").val();
+                document.getElementById("EditionId").value = coun;
+                $('#InsertParam').trigger('click');
+                $("#bloqueo").show();
+            })
+            $("#bloqueo").hide();
+        })
+    </script>
+    @*END*@
+
+    <script>
+        $(document).ready(function () {
+            var session = sessionStorage.divallprods;
+            if (session != undefined) {
+                if (session == "resume") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#resume").addClass("labelin");
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#targets").removeClass("labelin");
+                    $("#targets").addClass("labelout");
+                    $("#html").hide();
+                    $("#results").show();
+                    $("#asociate").hide();
+                    $("#gettargets").hide();
+                }
+                if (session == "charge") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#charge").addClass("labelin");
+                    $("#targets").removeClass("labelin");
+                    $("#targets").addClass("labelout");
+                    $("#resume").removeClass("labelin");
+                    $("#resume").addClass("labelout");
+                    $("#html").show();
+                    $("#results").hide();
+                    $("#asociate").hide();
+                    $("#gettargets").hide();
+                }
+                if (session == "targets") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#targets").addClass("labelin");
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#resume").removeClass("labelin");
+                    $("#resume").addClass("labelout");
+                    $("#html").hide();
+                    $("#results").hide();
+                    $("#asociate").hide();
+                    $("#gettargets").show();
+                }
+                if (session == "asociatehtml") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#asociatehtml").addClass("labelin");
+                    $("#targets").removeClass("labelin");
+                    $("#targets").addClass("labelout");
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#resume").removeClass("labelin");
+                    $("#resume").addClass("labelout");
+                    $("#html").hide();
+                    $("#results").hide();
+                    $("#gettargets").hide();
+                    $("#asociate").show();
+                }
+            }
+        })
+    </script>
+
+
+    <script>
+        $(function () {
+            $("#resume").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divallprods = divid;
+                $("#resume").removeClass("labelin");
+                $("#resume").addClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#targets").removeClass("labelin");
+                $("#targets").addClass("labelout");
+                $("#asociatehtml").removeClass("labelin");
+                $("#asociatehtml").addClass("labelout");
+                $("#html").hide();
+                $("#results").show();
+                $("#gettargets").hide();
+                $("#asociate").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#charge").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divallprods = divid;
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelin");
+                $("#resume").removeClass("labelin");
+                $("#resume").addClass("labelout");
+                $("#targets").removeClass("labelin");
+                $("#targets").addClass("labelout");
+                $("#asociatehtml").removeClass("labelin");
+                $("#asociatehtml").addClass("labelout");
+                $("#gettargets").hide();
+                $("#html").show();
+                $("#results").hide();
+                $("#asociate").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#targets").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divallprods = divid;
+                $("#targets").addClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#resume").removeClass("labelin");
+                $("#resume").addClass("labelout");
+                $("#asociatehtml").removeClass("labelin");
+                $("#asociatehtml").addClass("labelout");
+                $("#gettargets").show();
+                $("#results").hide();
+                $("#html").hide();
+                $("#asociate").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#asociatehtml").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divallprods = divid;
+                $("#asociatehtml").addClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#resume").removeClass("labelin");
+                $("#resume").addClass("labelout");
+                $("#targets").removeClass("labelin");
+                $("#targets").addClass("labelout");
+                $("#gettargets").hide();
+                $("#results").hide();
+                $("#html").hide();
+                $("#asociate").show();
+            })
+        })
+    </script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script>
+        $(function () {
+            $(".sendhtml").click(function () {
+                $("#bloqueo").show();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                var uplfl = $("#uploadBtnhtml").val();
+                if (!uplfl.trim() == false) {
+                    $("#sendhtml").ajaxSubmit({
+                        type: "POST",
+                        dataType:"Json",
+                        url: "../Production/segmentallcontent/",
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+
+                                $("#bloqueo").hide();
+                            }
+                            if (data == false) {
+                                var message = "Las Etiquetas de segmentación NO corresponden a las etiquetas del Archivo";
+                                d += "<p> </p>"
+                                d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                                apprise("" + d + "", { 'animate': true });
+                                $("#bloqueo").hide();
+                            }
+                            if((data != false)&& (data != true)) {
+                                $("#bloqueo").hide();
+                                $(function () {
+                                    $("#xmlresults").trigger("click");
+                                })
+                                $('#tablexmlerror').empty();
+                                $.each(data, function (index, val) {
+                                    $('#tablexmlerror')
+                                    .append($("<div></div>")
+                                    .text(val));
+                                });
+                            }
+                        },
+                    });
+                }
+                else {
+                    var message = "Para Segmentar, debe seleccionar un archivo";
+                    d += "<p> </p>"
+                    d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#xmlresults').click(function () {
+                $('#xmlresult').fadeIn('slow');
+                $('.popup-overlay').fadeIn('slow');
+                $('.popup-overlay').height($(window).height());
+                return false;
+            });
+
+            $('#close').click(function () {
+                $('#xmlresult').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                setTimeout('document.location.reload()');
+                return false;
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".uploadhtml").change(function () {
+                var uplbtn = $("#uploadBtnhtml").val();
+                var ufile = $("#uploadFilehtml").val(uplbtn);
+
+            })
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $("#senddata").click(function () {
+                var product = $("#pname").val();
+                var base = $("#propag").val();
+                var attr = $("#attribute").val();
+                var lab = $("#laboratory").val();
+                product = product.replace("<", "60").trim();
+                product = product.replace(">", "62").trim();
+                base = base.replace("<", "60").trim();
+                base = base.replace(">", "62").trim();
+                attr = attr.replace("><", "> <").trim();
+                attr = attr.replace("<", "60").trim();
+                attr = attr.replace(">", "62").trim();
+                attr = attr.replace("> <", "62 60").trim();
+                attr = attr.replace("<", "60").trim();
+                attr = attr.replace(">", "62").trim();
+                lab = lab.replace("<", "60").trim();
+                lab = lab.replace(">", "62").trim();
+                lab = lab.replace("><", "> <").trim();
+                lab = lab.replace("<", "60").trim();
+                lab = lab.replace(">", "62").trim();
+                lab = lab.replace("> <", "62 60").trim();
+                lab = lab.replace("<", "60").trim();
+                lab = lab.replace(">", "62").trim();
+                console.log(lab);
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Production/gettargets/",
+                    traditional: true,
+                    data: { productname: product, propag: base, Attribute: attr, Laboratory: lab },
+                    success: function (data) {
+                        if (data == true) {
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:18px'>Todo esta correcto !!!</p>"
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic'>El sistema lo llevará al siguiente paso</p>"
+                            apprise("" + d + "", { 'animate': true });
+                            $("#charge").trigger("click");
+                        }
+                    }
+                })
+
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#cancell").click(function () {
+                var ufile = $("#uploadFilehtml").val('');
+
+            })
+        })
+    </script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui.js")"></script>
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css" />
+    <script>
+        $(function () {
+            $(".htmlfile").change(function () {
+                var tr = $(this).parents("tr:first");
+                var file = $(this).val();
+                var Prod = tr.find("#PProductId").val();
+                var Cl = tr.find("#CClientId").val();
+                var Edit = $("#EEditionId").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (file != "0") {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../Production/checkcontent/",
+                        traditional: true,
+                        data: { Product: Prod, Client: Cl, Edition: Edit },
+                        success: function (data) {
+                            if (data == true) {
+                                $(function () {
+                                    $("#dialog").dialog({
+                                        title: "Alerta",
+                                        buttons: [{
+                                            text: "Ok",
+                                            click: function () {
+                                                $("#bloqueo").show();
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: "Json",
+                                                    url: "../Production/asociateContent/",
+                                                    traditional: true,
+                                                    data: { Product: Prod, Client: Cl, FileName: file, Edition: Edit },
+                                                    success: function (data) {
+                                                        if (data == "_error") {
+                                                            $("#bloqueo").hide();
+                                                            var message = "El Archivo XML, No se ha creado Correctamente, Revise las Etiquetas de Segmentación y vuelva a Intentarlo.";
+                                                            d += "<p> </p>"
+                                                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                                                            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                                                            apprise("" + d + "", { 'animate': true });
+                                                        }
+                                                        if (data == true) {
+                                                            setTimeout('document.location.reload()');
+                                                        }
+                                                    }
+                                                })
+                                            }
+                                        }]
+                                    })
+                                })
+                            }
+                            else
+                            {
+                                $("#bloqueo").show();
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "Json",
+                                    url: "../Production/asociateContent/",
+                                    traditional: true,
+                                    data: { Product: Prod, Client: Cl, FileName: file, Edition: Edit },
+                                    success: function (data) {
+                                        if (data == "_error") {
+                                            $("#bloqueo").hide();
+                                            var message = "El Archivo XML, No se ha creado Correctamente, Revise las Etiquetas de Segmentación y vuelva a Intentarlo.";
+                                            d += "<p> </p>"
+                                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                                            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                                            apprise("" + d + "", { 'animate': true });
+                                        }
+                                        if (data == true) {
+                                            setTimeout('document.location.reload()');
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })
+
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <div id="dialog" style="display:none">
+        <p>El Producto ya tiene Contenido, ¿Desea Reemplazarlo?</p>
+    </div>
+    <button id="xmlresults" style="display:none">xmlresults</button>
+    <div id="xmlresult" style="display: none; height: 200px;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="close"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Archivos Generados Incorrectamente</h2>
+                <br />
+                <div class="scrollbar32" style="width:100%; text-align: justify" id="tablexmlerror"></div>
+            </div>
+        </div>
+    </div>
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualProd", "Help", new { module = "PROD" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/Production/Index">Producción</a></li>
+        <li class="active">Segmentar Productos</li>
+    </ol>
+    @using (Html.BeginForm())
+    {
+        <div style="text-align:right;display:none">
+            <p>
+                <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+
+            </p>
+        </div>
+    }
+
+    <div style="width: 50%; float: left">
+        <table style="width:100%" border="0">
+
+            <tr>
+                <td width="100px">
+                    <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                </td>
+                <td style="line-height: 40px;width:15px"></td>
+                <td style="line-height: 40px;">
+                    <div style="text-align:left;">
+                        @using (Html.BeginForm())
+                        {
+                            <select name="pais" id="pais" class="country form-focus" style="text-align:left; width:800px; font-size:16px;height:35px;">
+                                <option class="null">Seleccione...</option>
+                                @{
+                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                            if (Session["CountriesUsers"] == null)
+                            {
+                                Session.Abandon();
+                                Response.Redirect(Url.Action("Logout", "Login"));
+                                Response.End();
+
+                            }
+                            else if (p != null)
+                            {
+                                List<string> d = p.var;
+                                foreach (string f in d)
+                                {
+                                    var countries = (from country in db.Countries
+                                                     where country.ID == f
+                                                     select country);
+                                    foreach (Countries w in countries)
+                                    {
+                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                    }
+                                }
+                            }
+                                }
+                            </select>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="line-height: 40px;">
+                    <label for="bookname" id="lblbook" style="display:none">Obra:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblbook1">*</label>
+
+                </td>
+                <td style="line-height: 40px;width:15px"></td>
+                <td style="line-height: 40px;">
+                    <select name="book" id="bookn" class="insert form-focus" style="text-align:left;display:none; width:600px;font-size:16px;height:35px"></select>
+                </td>
+            </tr>
+            <tr>
+                <td style="line-height: 40px;">
+                    <label for="Edition" id="lblEdition" style="display:none">Edición:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblEdition1">*</label>
+                </td>
+                <td style="line-height: 40px;width:15px"></td>
+                <td style="line-height: 40px;">
+                    <select name="Edition" id="Edition" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select><br />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <br />
+    @{
+        var data = Convert.ToBoolean(ViewData["segment"]);
+        if (sessionsegmentallproducts != null)
+        {
+            <div>
+                <table style="width: 100%" border="0">
+                    <tr>
+                        <td style="width: 7%">
+                            <label class="labels">País:</label>
+                        </td>
+                        <td>
+                            <label>@sessionsegmentallproducts.CountryName</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Obra:</label>
+                        </td>
+                        <td>
+                            <label>@sessionsegmentallproducts.BookName</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Edición:</label>
+                        </td>
+                        <td>
+                            <label>@sessionsegmentallproducts.NumberEdition</label>
+                            <input type="text" value="@sessionsegmentallproducts.EId" id="EEditionId" style="display:none" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <br />
+            <div style="height:100%;width:100%; border-bottom:none">
+                <div style="width:100%;height:100%"></div>
+                @*<label id="targets" class="labelin" style="display:normal">Cargar Etiquetas</label>*@
+                <label id="charge" class="labelin">Cargar HTML</label>
+                <label id="resume" class="labelout">Resumen</label>
+                <label id="asociatehtml" class="labelout">Asociar Archivo HTML a Producto</label>
+            </div>
+
+            <div style="width: 100%; height: 100%; display: normal; text-align: center; border-top: 1px solid #ddd;" id="html">
+                <br />
+                <br />
+                <div style="display:normal" id="divcontainerhtml">
+                    <form enctype="multipart/form-data" method="post" id="sendhtml">
+                        <input id="uploadFilehtml" placeholder="Seleccione Archivo..." style="width:500px" disabled="disabled" class="form-focus" accept="application/html" />
+                        <div class="fileUploadhtml btn btn-info">
+                            <span>
+                                Seleccione...
+                            </span>
+                            <input id="uploadBtnhtml" type="file" class="uploadhtml" accept=".html" name="file" />
+                        </div><br />
+                        <div style="text-align:center">
+                        </div>
+                    </form>
+                </div><br />
+                <p style="text-align:center;display:normal" class="">
+                    <button style="display:normal;color:#333" id="" class="btn btn-info sendhtml">Insertar</button>
+                    <button style="display:normal;color: #333" class="btn btn-info " id="cancell">Cancelar</button>
+                </p>
+            </div>
+
+            <div style="width: 100%; height: 100%; display: none; text-align: center; border-top: 1px solid #ddd;" id="results">
+                <br />
+                <br />
+                <table border="0" style="width:100%" class="table table-hover">
+                    <thead>
+                        <tr>
+                            @{
+            int CountP = 0;
+            int CountR = 0;
+            foreach (HTMLProductsAttributes item in Model)
+            {
+                CountP = CountP + 1;
+                CountR = CountR + item.QuantityOfAttributes;
+            }
+            <th style="text-align: center; width:33.33%"><label class="labels">Productos (@CountP)</label></th>
+                                <th style="text-align: center; width:33.33%"><label class="labels">Cantidad de Rubros (@CountR)</label></th>
+                            }
+                        </tr>
+                    </thead>
+                    @{
+            foreach (HTMLProductsAttributes item in Model)
+            {
+
+                <tr>
+                    <td style="text-align:left">
+
+                        <label>@item.HTMLName</label><br />
+                    </td>
+                    <td><label>@item.QuantityOfAttributes</label></td>
+                </tr>
+            }
+                    }
+                </table>
+            </div>
+
+            <div style="width: 100%; height: 100%; display: none; text-align: center; border-top: 1px solid #ddd;" id="asociate">
+                <br />
+                <br />
+                <table border="0" style="width:100%;" class="table table-hover" id="tabbl">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center; width: 23.33%"><label class="labels">Productos</label></th>
+                            <th style="text-align: center; width: 15%"><label class="labels">Contenido HTML</label></th>
+                            <th style="text-align: center; width: 15%"><label class="labels">Contenido asociado<br /> por Atributos</label></th>
+                            <th style="text-align: center; width: 23.33%"><label class="labels">Cliente</label></th>
+                            <th style="text-align: center; width: 23.33%"><label class="labels">HTML de Productos</label></th>
+                        </tr>
+                    </thead>
+                    @{
+            int EditionId = sessionsegmentallproducts.EId;
+            var pp = (from _pp in db.ParticipantProducts
+                      join cp in db.ClientProducts
+                      on _pp.ClientId equals cp.ClientId
+                      where _pp.ProductId == cp.ProductId
+                      join p in db.Products
+                      on _pp.ProductId equals p.ProductId
+                      join c in db.Clients
+                      on cp.ClientId equals c.ClientId
+                      where _pp.EditionId == EditionId
+                      select new joinClientProducts { Clients = c, Products = p }).OrderBy(x => x.Products.ProductName).ToList();
+            foreach (joinClientProducts item in pp)
+            {
+                <tr>
+                    <td style="text-align:left">
+                        <label>@item.Products.ProductName</label><br />
+                        <input type="text" value="@item.Products.ProductId" id="PProductId" style="display:none" />
+                    </td>
+                    <td>
+                        @{
+                var ppc = (from _pp in db.ParticipantProducts
+                           where _pp.EditionId == EditionId
+                           && _pp.ClientId == item.Clients.ClientId
+                           && _pp.ProductId == item.Products.ProductId
+                           && _pp.HTMLContent != null
+                           select _pp).ToList();
+                if (ppc.LongCount() > 0)
+                {
+                    <img src="@Url.Content("~/Images/content.png")" style="height:25px;width:25px;">
+                }
+                        }
+                    </td>
+                    <td>
+                        @{
+                var pc = (from _pp in db.ProductContents
+                          where _pp.EditionId == EditionId
+                          && _pp.ClientId == item.Clients.ClientId
+                          && _pp.ProductId == item.Products.ProductId
+                          select _pp).ToList();
+                if (pc.LongCount() > 0)
+                {
+                    <img src="@Url.Content("~/Images/content.png")" style="height:25px;width:25px;">
+                }
+                        }
+                    </td>
+                    <td style="text-align:left">
+                        <label>@item.Clients.CompanyName</label><br />
+                        <input type="text" value="@item.Clients.ClientId" id="CClientId" style="display:none" />
+                    </td>
+
+                    <td style="text-align:center">
+
+                        <select class="form-control1 htmlfile">
+                            <option value="0">Seleccione...</option>
+                            @{
+                foreach (HTMLProductsAttributes items in Model)
+                {
+                    <option value="@items.HTMLName">@items.HTMLName</option>
+                }
+                            }
+                        </select>
+                    </td>
+                </tr>
+            }
+                    }
+                </table>
+            </div>
+        }
+    }
+</body>
+</html>

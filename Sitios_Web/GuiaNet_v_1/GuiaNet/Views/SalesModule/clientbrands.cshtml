@@ -1,0 +1,1048 @@
+﻿@model IEnumerable<GuiaNet.Models.ClientBrandsCls>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "clientbrands";
+    Guia db = new Guia();
+    sessiongetnumbetofbrandsasociate sessiongetnumbetofbrandsasociate = (sessiongetnumbetofbrandsasociate)Session["sessiongetnumbetofbrandsasociate"];
+    WebGrid _datagrid;
+    if (sessiongetnumbetofbrandsasociate != null)
+    {
+        string num = sessiongetnumbetofbrandsasociate.Values;
+
+        int count;
+
+        if (num == "all")
+        {
+            count = Convert.ToInt32(Model.LongCount());
+        }
+        else
+        {
+            count = int.Parse(sessiongetnumbetofbrandsasociate.Values);
+        }
+
+        _datagrid = new WebGrid(Model, rowsPerPage: count);
+    }
+    else
+    {
+        int num = 10;
+
+        _datagrid = new WebGrid(Model, rowsPerPage: num);
+    }
+    sessionclientbrands ind = (sessionclientbrands)Session["sessionclientbrands"];
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+
+
+<html>
+<head>
+    <title></title>
+
+    <link href="@Url.Content("~/Content/jquery.dataTables.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            (function ($) {
+
+                $('#filtrar').keyup(function () {
+
+
+                    var a = $(this).val();
+
+                    var rex = new RegExp($(this).val(), 'i');
+
+                    $('.buscar tr').hide();
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/searchpp/",
+                        traditional: true,
+                        data: { term: a },
+                        success: function (data) {
+                        }
+                    })
+                })
+
+            }(jQuery));
+
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('#brand').keyup(function () {
+                var min = 2;
+                var br = $(this).val();
+
+                var longs = parseInt(br.length);
+
+                if (longs >= min) {
+                    $(function () {
+                        $("#searchbrand").trigger("click");
+                    })
+                }
+                if (longs == 0) {
+                    $(function () {
+                        $("#searchbrand").trigger("click");
+                    })
+                }
+            })
+        })
+    </script>
+
+    @*<script>
+        $(function () {
+            $('#brandcat').keyup(function () {
+                var min = 2;
+                var br = $(this).val();
+
+                var longs = parseInt(br.length);
+
+                if (longs >= min) {
+                    $(function () {
+                        $("#searchbrandcat").trigger("click");
+                    })
+                }
+                if (longs == 0) {
+                    $(function () {
+                        $("#searchbrandcat").trigger("click");
+                    })
+                }
+            })
+        })
+    </script>*@
+    <script>
+        $(function () {
+            $("#rowsperpage").change(function () {
+                var value = $(this).val();
+                if (value != "0") {
+                    $("#bloqueo").show();
+                    $.ajax({
+                        Type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/getnumberofbrands/",
+                        traditional: true,
+                        data: { Values: value },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                $("#bloqueo").hide();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#rowsperpageasociate").change(function () {
+                var value = $(this).val();
+                if (value != "0") {
+                    $("#bloqueo").show();
+                    $.ajax({
+                        Type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/getnumberofbrandsasocaite/",
+                        traditional: true,
+                        data: { Values: value },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else
+                            {
+                                $("#bloqueo").hide();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(".distributor").click(function () {
+                var tr = $(this).parents("tr:first");
+                if (tr.find(".distributor").is(':checked')) {
+                    var brand = tr.find("#BrandId").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    var App = 0;
+                    var User = 0;
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/insertclientbrandtype/",
+                        traditional: true,
+                        data: { brandid: brand, clientid: client, editionid: edition },
+                        success: function (data) {
+                        }
+                    });
+                }
+                else if (tr.find(".distributor").is(":not(:checked)")) {
+
+                    var brand = tr.find("#BrandId").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/deleteclientbrandtype/",
+                        traditional: true,
+                        data: { brandid: brand, clientid: client, editionid: edition },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    });
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(".Representative").click(function () {
+                var tr = $(this).parents("tr:first");
+                if (tr.find(".Representative").is(':checked')) {
+                    var brand = tr.find("#BrandId").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    var App = 0;
+                    var User = 0;
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/insertclientbrandtypeRep/",
+                        traditional: true,
+                        data: { brandid: brand, clientid: client, editionid: edition },
+                        success: function (data) {
+                        }
+                    });
+                }
+                else if (tr.find(".Representative").is(":not(:checked)")) {
+
+                    var brand = tr.find("#BrandId").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/deleteclientbrandtype/",
+                        traditional: true,
+                        data: { brandid: brand, clientid: client, editionid: edition },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    });
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(".distributor").click(function () {
+                var tr = $(this).parents("tr:first");
+                if ($(this).is(':checked')) {
+                    tr.find('.Representative').removeAttr('checked')
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".Representative").click(function () {
+                var tr = $(this).parents("tr:first");
+                if ($(this).is(':checked')) {
+                    tr.find('.distributor').removeAttr('checked')
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <table border="0" style="width:100%; height:100%">
+        <tr>
+            <td colspan="4">
+                <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("Index", "Help", new { module = "SM" })';return false;">Ayuda</button>
+                <ol class="breadcrumb">
+                    <li><a href="/SalesModule/Index">Ventas</a></li>
+                    <li class="active">Marcas</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @using (Html.BeginForm())
+                {
+                    <div style="text-align:right;display:none">
+                        <p>
+                            @{
+                    if (ind != null)
+                    {
+
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CId">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BId">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EId">
+                                <label>client</label><input id="ClientId" name="ClientId" type="text" value="@ind.ClId">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+
+                    }
+                    else
+                    {
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                                <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                    }
+                            }
+                        </p>
+                    </div>
+                }
+                @{
+                    if (ind == null)
+                    {
+                        <div style="width: 100%; float: left">
+                            <table style="width:100%" border="0">
+                                <tr>
+                                    <td width="100px">
+                                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <div style="text-align:left;">
+                                            @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = w.CountryId;
+                                                            <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                        }
+                                                    }
+                                                }
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="DivisionName" id="lblclient" style="display: normal">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="width: 100%;">
+                            <table style="width:100%" border="0">
+                                <tr>
+                                    <td width="100px">
+                                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <div style="text-align:left;">
+                                            @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = ind.CId;
+                                                            if (w.CountryId == CountryId)
+                                                            {
+                                                                <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td rowspan="4"></td>
+                                    <td rowspan="4">
+                                        <a target="_blank" href="@Url.Action("GetReportBrandsByClient", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfbrandsbyclient.png")" style="height: 85px; width: 85px; "></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px; height: 30px">
+                                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int BookId = ind.BId;
+
+                                            var bk = (from book in db.Books
+                                                      where book.BookId == BookId
+                                                      select book).ToList();
+                                            foreach (Books _book in bk)
+                                            {
+                                                if (_book.BookId == BookId)
+                                                {
+                                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_book.BookId">@_book.BookName</option>
+                                                }
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int EditionId = ind.EId;
+                                            int CountryIds = ind.CId;
+                                            var ed = (from _ed in db.Editions
+                                                      where _ed.CountryId == CountryIds
+                                                      select _ed).ToList();
+
+                                            foreach (Editions _ed in ed)
+                                            {
+                                                if (_ed.EditionId == EditionId)
+                                                {
+                                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                                }
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="DivisionName" id="lblclient" style="display: normal">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            byte clienttypeid = 0;
+                                            var ct = (from clientt in db.ClientTypes
+                                                      where clientt.TypeName == "ANUNCIANTE"
+                                                      select clientt).ToList();
+                                            foreach (ClientTypes _ct in ct)
+                                            {
+                                                clienttypeid = _ct.ClientTypeId;
+                                            }
+
+                                            var _clients = (from c in db.Clients
+                                                            join ec in db.EditionClients
+                                                            on c.ClientId equals ec.ClientId
+                                                            where ec.ClientTypeId == clienttypeid
+                                                            && c.CountryId == CountryIdss
+                                                            orderby c.CompanyName ascending
+                                                            select c).Distinct().OrderBy(x => x.CompanyName).ToList();
+                                            foreach (Clients c in _clients)
+                                            {
+                                                <option value="@c.ClientId">@c.CompanyName</option>
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        @{
+            if (ind != null)
+            {
+                <tr>
+                    <td style="width: 10%;"><label class="labels">País:</label></td>
+                    <td style="width: 1%;"></td>
+                    <td>
+                        @{
+                var cts = (from _ct in db.Countries
+                           where _ct.CountryId == CountryIdss
+                           select _ct).ToList();
+                foreach (Countries _ct in cts)
+                {
+                    <label>@_ct.CountryName</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Libro:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                var bks = (from _bk in db.Books
+                           where _bk.BookId == BookIds
+                           select _bk).ToList();
+                foreach (Books _bks in bks)
+                {
+                    <label>@_bks.BookName</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Edición:</label></td>
+                    <td></td>
+                    <td>
+                        @{
+                var eds = (from _ed in db.Editions
+                           where _ed.EditionId == EditionIds
+                           select _ed).ToList();
+                foreach (Editions _eds in eds)
+                {
+                    <label>@_eds.NumberEdition</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Cliente:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                var cl = (from _cl in db.Clients
+                          where _cl.ClientId == ClientIdss
+                          select _cl).ToList();
+                foreach (Clients _cl in cl)
+                {
+                    <label>@_cl.CompanyName</label>
+                }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="3">
+                @*@{
+                        if (ind != null)
+                        {
+                            <div style="float:right; border:none; width:30%">
+                                @using (Html.BeginForm("searchproduct", "SalesModule"))
+                                {
+                                    <label>Buscar:</label> @Html.TextBox("ProductName", "", new { @class = "form-control1" })
+                                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                            </div>
+                        }
+                    }*@
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div style="text-align: center; width: 100%; height: 100%; ">
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center; line-height: 40px;">
+
+                @*@{
+                        var count = ViewData["Count"];
+                        var countprod = ViewData["Countresults"];
+                        if ((count == null) && (countprod != null))
+                        {
+                            <label class="labels">Se han encontrado: @ViewData["Countresults"] resultados</label>
+                        }
+                        else if ((countprod == null) && (count == null))
+                        {
+                            <label id="result" style="display:normal; color:red">No se Han Encontrado Productos en esta Edición para el Cliente</label>
+                        }
+                    }*@
+            </td>
+        </tr>
+    </table>
+    <br />
+    @{
+        if (ind != null)
+        {
+            <table style="width:100%" border="0">
+                <tr>
+                    <td style="text-align:center">
+                        @using (Html.BeginForm("searchbrandcat", "SalesModule"))
+                        {
+                            sessionsearchbrand searchbrand = (sessionsearchbrand)Session["sessionsearchbrand"];
+                            if (searchbrand != null)
+                            {
+                                <label>Buscar Marcas:&nbsp;</label>  @Html.TextBox("BrandName", searchbrand.BrandName, new { @class = "form-focus", id = "brandcat" })
+                                <button type="submit" id="searchbrandcat" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px; display: normal"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            }
+                            else
+                            {
+                                <label>Buscar Marcas:&nbsp;</label>  @Html.TextBox("BrandName", "", new { @class = "form-focus", id = "brandcat" })
+                                <button type="submit" id="searchbrandcat" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:normal"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            }
+                        }
+                    </td>
+                    <td></td>
+                    <td style="text-align:center">
+                        @using (Html.BeginForm("searchpp", "SalesModule"))
+                        {
+                            <label>Buscar Marcas Asociadas:&nbsp;</label>  @Html.TextBox("BrandName", "", new { @class = "form-focus", id = "brand" })
+                            <button type="submit" id="searchbrand" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                        }
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        <label>Resultados:&nbsp;</label>
+                        <select id="rowsperpage" class="form-control1" style="width:120px">
+                            <option value="0">Seleccione...</option>
+                            @{
+                        sessiongetnumbersofbrands sessiongetnumbersofbrands = (sessiongetnumbersofbrands)Session["sessiongetnumbersofbrands"];
+                        if (sessiongetnumbersofbrands != null)
+                        {
+                            if (sessiongetnumbersofbrands.Values == "10")
+                            {
+                                <option value="10" selected>10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">Ilimitado</option>
+                            }
+                            if (sessiongetnumbersofbrands.Values == "50")
+                            {
+                                <option value="10">10</option>
+                                <option value="50" selected>50</option>
+                                <option value="100">100</option>
+                                <option value="all">Ilimitado</option>
+                            }
+                            if (sessiongetnumbersofbrands.Values == "100")
+                            {
+                                <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100" selected>100</option>
+                                <option value="all">Ilimitado</option>
+                            }
+                            if (sessiongetnumbersofbrands.Values == "all")
+                            {
+                                <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all" selected>Ilimitado</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">Ilimitado</option>
+                        }
+                            }
+
+                        </select>
+                    </td>
+                    <td></td>
+                    <td style="text-align:right">
+                        <label>Resultados:&nbsp;</label>
+                        <select id="rowsperpageasociate" class="form-control1" style="width:120px">
+                            <option value="0">Seleccione...</option>
+                            @{
+            if (sessiongetnumbetofbrandsasociate != null)
+            {
+                if (sessiongetnumbetofbrandsasociate.Values == "10")
+                {
+                    <option value="10" selected>10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">Ilimitado</option>
+                }
+                if (sessiongetnumbetofbrandsasociate.Values == "50")
+                {
+                    <option value="10">10</option>
+                                <option value="50" selected>50</option>
+                                <option value="100">100</option>
+                                <option value="all">Ilimitado</option>
+                }
+                if (sessiongetnumbetofbrandsasociate.Values == "100")
+                {
+                    <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100" selected>100</option>
+                                <option value="all">Ilimitado</option>
+                }
+                if (sessiongetnumbetofbrandsasociate.Values == "all")
+                {
+                    <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all" selected>Ilimitado</option>
+                }
+            }
+            else
+            {
+                <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">Ilimitado</option>
+            }
+                            }
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">
+                        <label class="labels">Marcas</label>
+
+                    </td>
+                    <td></td>
+                    <td style="text-align:center"><label class="labels">Marcas Asociadas</label></td>
+                </tr>
+                <tr>
+                    <td style="width: 45%; vertical-align: top">
+                        <br>
+                        @{
+                            <div style="width:100%;float:left">
+
+                                @{
+            int EditionIdss = ind.EId;
+            int ClientIds = ind.ClId;
+            List<Brands> brands = new List<Brands>();
+            WebGrid _datagrids;
+            sessionsearchbrand sessionsearchbrand = (sessionsearchbrand)Session["sessionsearchbrand"];
+            if (sessionsearchbrand != null)
+            {
+                String BrandName = sessionsearchbrand.BrandName;
+                int len = BrandName.Length;
+                if(len <= 3)
+                {
+                    brands = db.Database.SqlQuery<Brands>("plm_spGetClientBrandsClasification @clientId=" + ClientIds + ", @editionId=" + EditionIdss + "").Where(x => x.BrandName.ToUpper().StartsWith(BrandName.ToUpper())).ToList();    
+                }
+                else if(len > 3)
+                {
+                    brands = db.Database.SqlQuery<Brands>("plm_spGetClientBrandsClasification @clientId=" + ClientIds + ", @editionId=" + EditionIdss + "").Where(x => x.BrandName.ToUpper().Contains(BrandName.ToUpper())).ToList();    
+                }
+                
+
+                if (sessiongetnumbersofbrands != null)
+                {
+                    string num = sessiongetnumbersofbrands.Values;
+
+                    int count;
+
+                    if (num == "all")
+                    {
+                        count = Convert.ToInt32(brands.LongCount());
+                    }
+                    else
+                    {
+                        count = int.Parse(sessiongetnumbersofbrands.Values);
+                    }
+
+                    _datagrids = new WebGrid(brands, rowsPerPage: count);
+                }
+                else
+                {
+                    int num = 10;
+
+                    _datagrids = new WebGrid(brands, rowsPerPage: num);
+                }
+
+
+            }
+            else
+            {
+                brands = db.Database.SqlQuery<Brands>("plm_spGetClientBrandsClasification @clientId=" + ClientIds + ", @editionId=" + EditionIds + "").ToList();
+
+                if (sessiongetnumbersofbrands != null)
+                {
+                    string num = sessiongetnumbersofbrands.Values;
+
+                    int count;
+
+                    if (num == "all")
+                    {
+                        count = Convert.ToInt32(brands.LongCount());
+                    }
+                    else
+                    {
+                        count = int.Parse(sessiongetnumbersofbrands.Values);
+                    }
+
+                    _datagrids = new WebGrid(brands, rowsPerPage: count);
+                }
+                else
+                {
+                    int num = 10;
+
+                    _datagrids = new WebGrid(brands, rowsPerPage: num);
+                }
+            }
+
+            @_datagrids.GetHtml(
+                          headerStyle: "webgrid-header1",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style ",
+                          tableStyle: "webgrid-table",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrids.Column("", header: "Nombre de Marcas", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblName" class="buscar" style="width:180px">@item.BrandName</label> </span>
+                                }
+                        </text>),
+                            _datagrids.Column("",header:"Agregar", format: @<text>
+                <button class="btn btn-default deletebrand" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("insertclientbrands", "SalesModule", new { BrandId = item.BrandId })';return false;"><img src="@Url.Content("~/Images/expand.png")" style="height:20px;width:20px"></button>
+                            </text>,style:"buton")
+                    })
+                                }
+
+                            </div>
+                        }
+                    </td>
+                    <td style="width:50px"></td>
+                    <td style="width: 45%; vertical-align: top; ">
+                        <br>
+                        <div style="width:100%;float:left;">
+                            @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header1",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style ",
+                          tableStyle: "webgrid-table buscar",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Marcas", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblName" class="buscar" style="width:180px">@item.BrandName</label> </span>
+                                    <input type="text" value="@item.BrandId" id="BrandId" style="display:none" />
+                                }
+                        </text>),
+                         _datagrid.Column("", header: "Participante", format: @<text>
+                                @{
+                                        byte ClientTypeId = 0;
+
+                                        var ct = (from clientt in db.ClientTypes
+                                                  where clientt.TypeName == "ANUNCIANTE"
+                                                  select clientt).ToList();
+
+                                        foreach (ClientTypes _ct in ct)
+                                        {
+                                            ClientTypeId = _ct.ClientTypeId;
+                                        }
+                                        int BrandId = item.BrandId;
+                                        int EditionIdV = ind.EId;
+                                        int ClientIdV = ind.ClId;
+
+                                        var ecea = db.ClientBrands.Where(x => x.BrandId == BrandId && x.ClientId == ClientIdV && x.EditionId == EditionIdV && x.ClientTypeId == ClientTypeId).ToList();
+
+                                        bool pp = false;
+                                        if(ecea.LongCount()>0)
+                                        {
+                                            pp = true;
+                                        }
+                                        <input type="checkbox" checked="@pp" onclick="insert_clientbrandsne($(this))" class="clbrands" />
+                                }
+                                                        </text>,style:"buton"),
+                            _datagrid.Column("",header:"Distribuidor", format: @<text>
+                                @{
+                                int ClientId = ind.ClId;
+                                int EditionId = ind.EId;
+                                int BrandId = item.BrandId;
+
+                               String Description = "Distribuidor autorizado";
+                               var cbt = (from _cbt in db.ClientBrandTypes
+                               where _cbt.Description.ToUpper().Equals(Description.ToUpper())
+                               select _cbt).ToList();
+                               if(cbt.LongCount()>0)
+                               {
+                                   foreach(ClientBrandTypes _cbt in cbt)
+                                   {
+                                            var ct = (from _ct in db.ClientBrands
+                                              where _ct.BrandId == BrandId
+                                              && _ct.ClientId == ClientId
+                                              && _ct.EditionId == EditionId
+                                              && _ct.ClientBrandTypeId == _cbt.ClientBrandTypeId
+                                              select _ct).ToList();
+                                    bool distributor = false;
+
+                                    foreach(ClientBrands _ct in ct)
+                                    {
+                                        distributor = true;
+                                    }
+                                    <input type="checkbox" class="distributor" checked="@distributor" />
+                                   }
+                               }
+
+                                }
+
+                            </text>,style:"buton"),
+                            _datagrid.Column("",header:"Representante", format: @<text>
+                                @{
+                                int ClientId = ind.ClId;
+                                int EditionId = ind.EId;
+                                int BrandId = item.BrandId;
+
+                                String Description = "Representante exclusivo";
+                               var cbt = (from _cbt in db.ClientBrandTypes
+                               where _cbt.Description.ToUpper().Equals(Description.ToUpper())
+                               select _cbt).ToList();
+                               if(cbt.LongCount()>0)
+                               {
+                                   foreach(ClientBrandTypes _cbt in cbt)
+                                   {
+                                            var ct = (from _ct in db.ClientBrands
+                                              where _ct.BrandId == BrandId
+                                              && _ct.ClientId == ClientId
+                                              && _ct.EditionId == EditionId
+                                              && _ct.ClientBrandTypeId == _cbt.ClientBrandTypeId
+                                                      select _ct).ToList();
+                                            bool Representative = false;
+
+                                    foreach(ClientBrands _ct in ct)
+                                    {
+                                        Representative = true;
+                                    }
+                                    <input type="checkbox" class="Representative" checked="@Representative" />
+                                   }
+                               }
+
+                                }
+
+                            </text>,style:"buton"),
+                            _datagrid.Column("", header: "Expiración", format: @<text>
+                                @{
+                                    <label id="lblExpireDescription" class="buscar" ondblclick="edt_expdescript($(this))" style="width:100%;height:80%;vertical-align:middle">@item.ExpireDescription</label>
+                                    <textarea style="display:none;color:red; font-size: 12px;" maxlength="100" id="edtExpireDescription" class="edit-mode form-control" ondblclick="close_edt_expdescript($(this))">@item.ExpireDescription</textarea>
+                                }
+                        </text>,style:"columntable"),
+                            _datagrid.Column("",header:"Eliminar", format: @<text>
+                                <button class="btn btn-default deletebrand" id="btndeletebrand" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteclientbrands", "SalesModule", new { BrandId = item.BrandId })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                            </text>,style:"buton")
+                    })
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    }
+</body>
+
+</html>

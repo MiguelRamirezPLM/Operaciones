@@ -1,0 +1,1104 @@
+﻿@model List<GuiaNet.Models.Categories>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "categories";
+    Guia db = new Guia();
+    flaghetcat flaghetcat = (flaghetcat)Session["flaghetcat"];
+
+    indexclasification ind = (indexclasification)Session["indexclasification"];
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (ind != null)
+    {
+        ClientIdss = ind.ClId;
+        EditionIds = ind.EId;
+        BookIds = ind.BId;
+        CountryIdss = ind.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+
+<html>
+<head>
+    <title>
+
+    </title>
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css.map")" rel="stylesheet" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".treeview li>ul").css('display', 'none');
+            $(".collapsible").click(function (e) {
+                e.preventDefault();
+                $(this).toggleClass("collapse1 expand1");
+                $(this).closest('li').children('ul').slideToggle();
+            });
+        });
+    </script>
+
+    @*INSERT CATEGORY*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script>
+        $(function () {
+            $(".deletecategory").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#searchc").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".insertau").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".searchoproducts").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var session = sessionStorage.div;
+            console.log(session);
+            if (session != undefined) {
+                if (session == "hetcats") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    var het = document.getElementById("heterogeneous");
+                    $(het).show();
+                    var hom = document.getElementById("homogeneous");
+                    $(hom).css("display", "none");
+                    var rephet = document.getElementById("hetcatsrep");
+                    $(rephet).css("display", "block");
+                    var rephom = document.getElementById("homcatsrep");
+                    $(rephom).css("display", "none");
+                    $("#hetcats").addClass("labelin");
+                    $("#homogcats").removeClass("labelin");
+                    $("#homogcats").addClass("labelout");
+                }
+                if (session == "homogcats") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    var hom = document.getElementById("homogeneous");
+                    $(hom).show();
+                    var het = document.getElementById("heterogeneous");
+                    $(het).css("display", "none");
+                    var rephom = document.getElementById("homcatsrep");
+                    $(rephom).css("display", "block");
+                    var rephet = document.getElementById("hetcatsrep");
+                    $(rephet).css("display", "none");
+                    $("#homogcats").addClass("labelin");
+                    $("#hetcats").removeClass("labelin");
+                }
+                if (session == "cats") {
+                    //console.log("cats");
+
+                    //cats();
+                    //var divid = $(this).attr("Id");
+                    //sessionStorage.div = divid;
+                    $("#cats").addClass("labelin");
+                    $("#hetcats").removeClass("labelin");
+                    $("#hetcats").addClass("labelout");
+                    $("#homogcats").removeClass("labelin");
+                    $("#homogcats").addClass("labelout");
+                    $("#homogeneous").hide();
+                    $("#heterogeneous").hide();
+                    $("#homcatsrep").hide();
+                    $("#hetcatsrep").hide();
+                    $("#DivCats").show();
+                }
+            }
+        })
+    </script>
+    <script>
+        $(function () {
+            $("#homogcats").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.div = divid;
+                $("#homogcats").addClass("labelin");
+                $("#hetcats").removeClass("labelin");
+                $("#heterogeneous").hide();
+                $("#homogeneous").show();
+                $("#homcatsrep").show();
+                $("#hetcatsrep").hide();
+                $("#cats").removeClass("labelin");
+                $("#cats").addClass("labelout");
+                $("#DivCats").hide();
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+            $("#hetcats").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.div = divid;
+                $("#hetcats").addClass("labelin");
+                $("#homogcats").removeClass("labelin");
+                $("#homogcats").addClass("labelout");
+                $("#homogeneous").hide();
+                $("#heterogeneous").show();
+                $("#homcatsrep").hide();
+                $("#hetcatsrep").show();
+                $("#cats").removeClass("labelin");
+                $("#cats").addClass("labelout");
+                $("#DivCats").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#cats").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.div = divid;
+                $("#cats").addClass("labelin");
+                $("#hetcats").removeClass("labelin");
+                $("#hetcats").addClass("labelout");
+                $("#homogcats").removeClass("labelin");
+                $("#homogcats").addClass("labelout");
+                $("#homogeneous").hide();
+                $("#heterogeneous").hide();
+                $("#homcatsrep").hide();
+                $("#hetcatsrep").hide();
+                $("#DivCats").show();
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    @{
+
+        var ext = ViewData["errorcat"];
+        if (ext != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["errorcat"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+        }
+
+        var err = ViewData["exist"];
+        if (err != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["exist"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+        }
+
+        if (ViewData["parent"] != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["parent"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+        }
+
+        if (ViewData["subcat"] != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["subcat"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+        }
+    }
+    <table border="0" style="width:100%; height:100%">
+        <tr>
+            <td colspan="4">
+                <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("Index", "Help", new { module = "SM" })';return false;">Ayuda</button>
+                <ol class="breadcrumb">
+                    <li><a href="/SalesModule/Index">Ventas</a></li>
+                    <li class="active">Categorías</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @using (Html.BeginForm())
+                {
+                <div style="text-align:right;display:none">
+                    <p>
+                        @{
+                                if (ind != null)
+                                {
+
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CId">
+                            <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BId">
+                            <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EId">
+                            <label>client</label><input id="ClientId" name="ClientId" type="text" value="@ind.ClId">
+                            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+
+                                }
+                                else
+                                {
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                            <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                            <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                            <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                                }
+                        }
+                    </p>
+                </div>
+                }
+                @{
+                    if (ind == null)
+                    {
+                <div style="width: 100%; float: left">
+                    <table style="width:100%" border="0">
+                        <tr>
+                            <td width="100px">
+                                <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <div style="text-align:left;">
+                                    @using (Html.BeginForm())
+                                            {
+                                            <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                <option class="null">Seleccione...</option>
+                                                @{
+                                                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                        if (Session["CountriesUsers"] == null)
+                                                        {
+                                                            Session.Abandon();
+                                                            Response.Redirect(Url.Action("Logout", "Login"));
+                                                            Response.End();
+                                                        }
+                                                        else if (p != null)
+                                                        {
+                                                            List<string> d = p.var;
+                                                            foreach (var f in d)
+                                                            {
+                                                                var countries = (from country in db.Countries
+                                                                                 where country.ID == f
+                                                                                 select country);
+                                                                foreach (Countries w in countries)
+                                                                {
+                                                                    int CountryId = w.CountryId;
+                                                    <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                                }
+                                                            }
+                                                        }
+                                                }
+                                            </select>
+                                            }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="DivisionName" id="lblclient" style="display: normal">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                    }
+                    else
+                    {
+                <div style="width: 100%;">
+                    <table style="width:100%" border="0">
+                        <tr>
+                            <td width="100px">
+                                <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <div style="text-align:left;">
+                                    @using (Html.BeginForm())
+                                            {
+                                            <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                <option class="null">Seleccione...</option>
+                                                @{
+                                                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                        if (Session["CountriesUsers"] == null)
+                                                        {
+                                                            Session.Abandon();
+                                                            Response.Redirect(Url.Action("Logout", "Login"));
+                                                            Response.End();
+                                                        }
+                                                        else if (p != null)
+                                                        {
+                                                            List<string> d = p.var;
+                                                            foreach (var f in d)
+                                                            {
+                                                                var countries = (from country in db.Countries
+                                                                                 where country.ID == f
+                                                                                 select country);
+                                                                foreach (Countries w in countries)
+                                                                {
+                                                                    int CountryId = ind.CId;
+                                                                    if (w.CountryId == CountryId)
+                                                                    {
+                                                    <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                    <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                }
+                                            </select>
+                                            }
+                                </div>
+                            </td>
+                            <td rowspan="4"></td>
+                            <td rowspan="4">
+                                <a target="_blank" href="@Url.Action("GetReportCategoriesbyClient", "GetReports", new { id = "PDF" })" id="homcatsrep"><img src="@Url.Content("~/Images/pdfcategoriesbyclient.png")" style="height: 85px; width: 85px;"></a>
+                                <a target="_blank" href="@Url.Action("GetReportHeterogeneousCategoriesbyClient", "GetReports", new { id = "PDF" })" id="hetcatsrep" style="display:none"><img src="@Url.Content("~/Images/pdfhetcategoriesbyclient.png")" style="height: 85px; width: 85px;"></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px; height: 30px">
+                                <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                    <option>Seleccione...</option>
+                                    @{
+                                            int BookId = ind.BId;
+
+                                            var bk = (from book in db.Books
+                                                      where book.BookId == BookId
+                                                      select book).ToList();
+                                            foreach (Books _book in bk)
+                                            {
+                                                if (_book.BookId == BookId)
+                                                {
+                                            <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                                }
+                                                else
+                                                {
+                                            <option value="@_book.BookId">@_book.BookName</option>
+                                                }
+                                            }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                    <option>Seleccione...</option>
+                                    @{
+                                            int EditionId = ind.EId;
+                                            int CountryIds = ind.CId;
+                                            var ed = (from _ed in db.Editions
+                                                      where _ed.CountryId == CountryIds
+                                                      select _ed).ToList();
+
+                                            foreach (Editions _ed in ed)
+                                            {
+                                                if (_ed.EditionId == EditionId)
+                                                {
+                                            <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                                }
+                                                else
+                                                {
+                                            <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                                }
+                                            }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="DivisionName" id="lblclient" style="display: normal">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                                    <option>Seleccione...</option>
+                                    @{
+                                            byte clienttypeid = 0;
+                                            var ct = (from clientt in db.ClientTypes
+                                                      where clientt.TypeName == "ANUNCIANTE"
+                                                      select clientt).ToList();
+                                            foreach (ClientTypes _ct in ct)
+                                            {
+                                                clienttypeid = _ct.ClientTypeId;
+                                            }
+
+                                            var _clients = (from c in db.Clients
+                                                            join ec in db.EditionClients
+                                                            on c.ClientId equals ec.ClientId
+                                                            where ec.ClientTypeId == clienttypeid
+                                                            && c.CountryId == CountryIdss
+                                                            orderby c.CompanyName ascending
+                                                            select c).Distinct().OrderBy(x => x.CompanyName).ToList();
+                                            foreach (Clients c in _clients)
+                                            {
+                                            <option value="@c.ClientId">@c.CompanyName</option>
+                                            }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        @{
+            if (ind != null)
+            {
+        <tr>
+            <td style="width: 10%;"><label class="labels">País:</label></td>
+            <td style="width: 1%;"></td>
+            <td>
+                @{
+                var cts = (from _ct in db.Countries
+                           where _ct.CountryId == CountryIdss
+                           select _ct).ToList();
+                foreach (Countries _ct in cts)
+                {
+                        <label>@_ct.CountryName</label>
+                }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Libro:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                var bks = (from _bk in db.Books
+                           where _bk.BookId == BookIds
+                           select _bk).ToList();
+                foreach (Books _bks in bks)
+                {
+                        <label>@_bks.BookName</label>
+                }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Edición:</label></td>
+            <td></td>
+            <td>
+                @{
+                var eds = (from _ed in db.Editions
+                           where _ed.EditionId == EditionIds
+                           select _ed).ToList();
+                foreach (Editions _eds in eds)
+                {
+                        <label>@_eds.NumberEdition</label>
+                }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Cliente:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                var cl = (from _cl in db.Clients
+                          where _cl.ClientId == ClientIdss
+                          select _cl).ToList();
+                foreach (Clients _cl in cl)
+                {
+                        <label>@_cl.CompanyName</label>
+                }
+                }
+            </td>
+        </tr>
+            }
+        }
+        <tr>
+            <td colspan="3">
+                @*@{
+                        if (ind != null)
+                        {
+                            <div style="float:right; border:none; width:30%">
+                                @using (Html.BeginForm("searchproduct", "SalesModule"))
+                                {
+                                    <label>Buscar:</label> @Html.TextBox("ProductName", "", new { @class = "form-control1" })
+                                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                            </div>
+                        }
+                    }*@
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div style="text-align: center; width: 100%; height: 100%; ">
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center; line-height: 40px;">
+
+                @*@{
+                        var count = ViewData["Count"];
+                        var countprod = ViewData["Countresults"];
+                        if ((count == null) && (countprod != null))
+                        {
+                            <label class="labels">Se han encontrado: @ViewData["Countresults"] resultados</label>
+                        }
+                        else if ((countprod == null) && (count == null))
+                        {
+                            <label id="result" style="display:normal; color:red">No se Han Encontrado Productos en esta Edición para el Cliente</label>
+                        }
+                    }*@
+            </td>
+        </tr>
+    </table>
+
+    <br />
+
+    @{
+        if (ind != null)
+        {
+            <div style="height:100%;width:100%; border-bottom:none">
+                <div style="width:100%;height:100%"></div>
+                <br />
+                <label id="homogcats" class="labelin">Categorías Homogéneas</label>
+                <label id="hetcats" class="labelout">Categorías Heterogéneas</label>
+                <label id="cats" class="labelout">Categorías</label>
+            </div>
+
+            <div style="width: 100%; height: 100%; display: normal; border-top: 1px solid #ddd; " id="homogeneous">
+                <br />
+                <div style="float:left;width:50%">
+                    @{
+            using (Html.BeginForm("categories", "SalesModule"))
+                        {
+                    <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                        }
+                    }
+                </div>
+                <div style=" float: right; width: 50%;text-align:right">
+                    @{
+                        if (ind != null)
+                        {
+                            using (Html.BeginForm("searchasociatecategories", "SalesModule"))
+                            {
+                                indexclasification seachcat = (indexclasification)Session["indexclasification"];
+                                if (seachcat != null)
+                                {
+                    <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", seachcat.param, new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                                else
+                                {
+                    <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <table border="0">
+                    <tr>
+                        <td></td>
+                        @{
+                            if (ind != null)
+                            {
+                        <td style="text-align:center">
+                            <br />
+                            <label class="labels">Categorías</label><br />
+                        </td>
+                            }
+                        }
+                        <td></td>
+                        @{
+                            if (ind != null)
+                            {
+                        <td style="text-align:center"><label class="labels">Categorías Asociadas al Cliente</label></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td style="width:50px"></td>
+                        <td>
+                            <div class="treeview scrollbar1" id="scrollbar">
+                                @{
+                                    if (ind != null)
+                                    {
+                                        if (Model != null && Model.Count() > 0)
+                                        {
+                                <ul>
+                                    @TreeviewCategories.GetTreeView(Model, Model.FirstOrDefault().ParentId)
+                                </ul>
+                                        }
+                                        else
+                                        {
+                                            var _response = db.Database.SqlQuery<Categories>("plm_spGetCategoriestree @param='" + "" + "'").OrderBy(x => x.ParentId).ToList();
+
+                                <ul>
+                                    @TreeviewCategories.GetTreeView(_response, _response.FirstOrDefault().ParentId)
+                                </ul>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </td>
+                        <td style="width:150px"></td>
+                        <td style="width: 50%; vertical-align: top; ">
+                            @{
+                                if (ind != null)
+                                {
+                                    int _clientid = ind.ClId;
+                                    int _editionid = ind.EId;
+
+                                    WebGrid _datagridcc = new WebGrid();
+                                    var cc = db.Database.SqlQuery<plm_vwCategoryByClients>("plm_spGetCategoryByClients @clientId='" + _clientid + "'").ToList();
+                                    bool flag = ind.flag;
+                                    if (flag == true)
+                                    {
+                                        string param = ind.param;
+                                        var cats = db.Database.SqlQuery<plm_vwCategoryByClients>("plm_spGetCategoryByClientsSearch  @editionId =" + _editionid + ",  @clientId=" + _clientid + ", @param='" + param + "'").ToList();
+                                        _datagridcc = new WebGrid(cats, rowsPerPage: 14);
+                                    }
+                                    else
+                                    {
+                                        _datagridcc = new WebGrid(cc, rowsPerPage: 14);
+                                    }
+
+                            @_datagridcc.GetHtml(
+                                                    headerStyle: "webgrid-header1",
+                                                footerStyle: "webgrid-footer",
+                                                alternatingRowStyle: "webgrid-alternating-row",
+                                                selectedRowStyle: "webgrid-selected-row",
+                                                rowStyle: "webgrid-row-style",
+                                                tableStyle: "webgrid-table ",
+                                                mode: WebGridPagerModes.All,
+                                                columns: new[] {
+                                                            _datagridcc.Column("",header:"Categoría Nivel 1", format: @<text>
+                                <label>@item.Description</label>
+                                <input type="text" style="display:none" class="categoryid" value="@item.CategoryId" />
+                                                            </text>),
+                                                            _datagridcc.Column("",header:"Categoría Nivel 2", format: @<text>
+                                <label>@item.DescriptionNodo1</label>
+                                <input type="text" style="display:none" class="categoryid" value="@item.CategoryIdNodo1" />
+                                                            </text>),
+                                                            _datagridcc.Column("",header:"Categoría Nivel 3", format: @<text>
+                                <label>@item.DescriptionNodo2</label>
+                                <input type="text" style="display:none" class="categoryid" value="@item.CategoryIdNodo2" />
+                                                            </text>),
+                                                            _datagridcc.Column("",header:"Categoría Nivel 4", format: @<text>
+                                <label>@item.DescriptionNodo3</label>
+                                <input type="text" style="display:none" class="categoryid" id="CategoryIdNodo3" value="@item.CategoryIdNodo3" />
+                                                            </text>),
+                                                                _datagridcc.Column("",header:"Participante", format: @<text>
+                                @{
+                                                                        int CategoryId = Convert.ToInt32(item.CategoryIdNodo3);
+                                                                        var ecc = db.EditionClientCategories.Where(x => x.CategoryId == CategoryId && x.ClientId == ClientIdss).ToList();
+
+                                                                        bool pp = false;
+
+                                                                        if(ecc.LongCount()>0)
+                                                                        {
+                                                                            pp = true;
+                                                                        }
+                                }
+                                <input type="checkbox" checked="@pp" class="categorieshom" onclick="insert_editionclientcategories($(this))" />
+                                                                </text>,style:"buton"),
+                                                                _datagridcc.Column("",header:"Eliminar", format: @<text>
+                                <button class="btn btn-default deletecategory" id="btndeletecategory" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteclientcategories", "SalesModule", new { categoryid = item.CategoryId, categoryidnodo = item.CategoryIdNodo3 })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                                                                </text>,style:"buton")
+                                                                })
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
+    }
+
+    @{
+        if (ind != null)
+        {
+            <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd; " id="heterogeneous">
+                <br />
+                <div style="float:left;width:50%">
+                    @{
+            if (ind != null)
+                        {
+                            using (Html.BeginForm("getheterogeneouscategories", "SalesModule"))
+                            {
+                    <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            }
+                        }
+                    }
+                </div>
+                <div style=" float: right; width: 50%;text-align:right">
+                    @{
+                        if (ind != null)
+                        {
+                            using (Html.BeginForm("searchhetcatasociate", "SalesModule"))
+                            {
+                                indexclasification seachcat = (indexclasification)Session["indexclasification"];
+                                if (seachcat != null)
+                                {
+                    <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", seachcat.param, new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                                else
+                                {
+                    <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <table border="0">
+                    <tr>
+                        <td></td>
+                        @{
+                            if (ind != null)
+                            {
+                        <td style="text-align:center">
+                            <br />
+                            <label class="labels">Categorías Heterogéneas</label><br />
+                        </td>
+                            }
+                        }
+                        <td></td>
+                        @{
+                            if (ind != null)
+                            {
+                        <td style="text-align:center"><label class="labels">Categorías Heterogéneas Asociadas al Cliente</label></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td style="width:50px"></td>
+                        <td>
+                            <div class="treeview scrollbar1" id="scrollbar">
+                                @{
+                                    if (ind != null)
+                                    {
+                                        seachheterogeneouscategories seachcat = (seachheterogeneouscategories)Session["seachheterogeneouscategories"];
+                                        if (seachcat != null)
+                                        {
+                                            string Description = seachcat.Description;
+                                            if (!string.IsNullOrEmpty(Description))
+                                            {
+
+                                                var _categories = db.Database.SqlQuery<HeterogeneousCategories>("plm_spGetHeterogeneousCategoriesallforSalesModule  @param='" + Description + "'").OrderBy(x => x.ParentId).ToList();
+
+                                                if (_categories != null && _categories.Count() > 0)
+                                                {
+                                <ul>
+                                    @TreeviewHeterogeneousCategoriesClassification.GetTreeView(_categories, _categories.FirstOrDefault().ParentId)
+                                </ul>
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </td>
+                        <td style="width:150px"></td>
+                        <td style="width: 50%; vertical-align: top; ">
+                            @{
+                                if (flaghetcat != null)
+                                {
+                                    int _clientid = ind.ClId;
+                                    int _editionid = ind.EId;
+
+                                    WebGrid _datagridcc = new WebGrid();
+                                    var cc = db.Database.SqlQuery<plm_vwHeterogeneousCategories>("plm_spGetEditionHeterogeneousCategoryByClients  @editionId =" + _editionid + ",  @clientId='" + _clientid + "', @type=" + 1 + "").ToList();
+                                    bool flag = flaghetcat.flag;
+                                    if (flag == true)
+                                    {
+                                        string param = flaghetcat.param;
+                                        var cats = db.Database.SqlQuery<plm_vwHeterogeneousCategories>("plm_spGetHeterogeneousCategoryByClientsSearch  @editionId =" + _editionid + ",  @clientId=" + _clientid + ", @param='" + param + "'").ToList();
+                                        _datagridcc = new WebGrid(cats, rowsPerPage: 14);
+                                    }
+                                    else
+                                    {
+                                        _datagridcc = new WebGrid(cc, rowsPerPage: 14);
+                                    }
+
+                            @_datagridcc.GetHtml(
+                                                  headerStyle: "webgrid-header1",
+                                              footerStyle: "webgrid-footer",
+                                              alternatingRowStyle: "webgrid-alternating-row",
+                                              selectedRowStyle: "webgrid-selected-row",
+                                              rowStyle: "webgrid-row-style",
+                                              tableStyle: "webgrid-table ",
+                                              mode: WebGridPagerModes.All,
+                                              columns: new[] {
+                                                  _datagridcc.Column("",header:"Categoría", format: @<text>
+                                <label>@item.Description</label>
+                                <input type="text" style="display:none" class="categoryid" id="HeterogeneousCategoryId" value="@item.HeterogeneousCategoryId" />
+                                                </text>),
+                                                _datagridcc.Column("",header:"SubCategoría", format: @<text>
+                                <label>@item.DescriptionNodo</label>
+                                <input type="text" style="display:none" class="categoryid" id="HeterogeneousCategoryIdNodo" value="@item.HeterogeneousCategoryIdNodo" />
+                                                </text>),
+                                                _datagridcc.Column("",header:"Participante", format: @<text>
+                                @{
+                                                    int HeterogeneousCategoryId = Convert.ToInt32(item.HeterogeneousCategoryIdNodo);
+                                                    var ecc = db.EditionClientHeterogeneousCategories.Where(x => x.HeterogeneousCategoryId == HeterogeneousCategoryId && x.ClientId == ClientIdss && x.EditionId == EditionIds).ToList();
+
+                                                    bool pp = false;
+
+                                                    if(ecc.LongCount()  >   0)
+                                                    {
+                                                        pp = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        int HeterogeneousCategoryId1 = Convert.ToInt32(item.HeterogeneousCategoryId);
+
+                                                        var ecc1 = db.EditionClientHeterogeneousCategories.Where(x => x.HeterogeneousCategoryId == HeterogeneousCategoryId1 && x.ClientId == ClientIdss && x.EditionId == EditionIds).ToList();
+
+                                                        if (ecc1.LongCount() > 0)
+                                                        {
+                                                            pp = true;
+                                                        }
+                                                    }
+                                }
+                                <input type="checkbox" checked="@pp" class="categorieshet" onclick="insert_editionclientheterogeneouscategories($(this))" />
+                                                </text>,style:"buton"),
+                                              _datagridcc.Column("",header:"Eliminar", format: @<text>
+                                <button class="btn btn-default deletecategory" id="btndeletecategoryhet" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteeditionclientheterogeneouscategories", "SalesModule", new { HeterogeneousCategoryId = item.HeterogeneousCategoryId, HeterogeneousCategoryIdNodo = item.HeterogeneousCategoryIdNodo })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                                            </text>,style:"buton")
+                                              })
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd; " id="DivCats">
+                <br />
+                @*<div style="float:left;width:50%">
+                    @{
+                                if (ind != null)
+                        {
+                            using (Html.BeginForm("getheterogeneouscategories", "SalesModule"))
+                            {
+                    <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            }
+                        }
+                    }
+                </div>
+                <div style=" float: right; width: 50%;text-align:right">
+                    @{
+                        if (ind != null)
+                        {
+                            using (Html.BeginForm("searchhetcatasociate", "SalesModule"))
+                            {
+                                indexclasification seachcat = (indexclasification)Session["indexclasification"];
+                                if (seachcat != null)
+                                {
+                    <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", seachcat.param, new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                                else
+                                {
+                    <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus", style = "width:70%" })
+                    <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                            }
+                        }
+                    }
+                </div>*@
+                @*<table border="0">
+                    <tr>
+                        <td></td>
+                        @{
+                            if (ind != null)
+                            {
+                        <td style="text-align:center">
+                            <br />
+                            <label class="labels">Categorías</label><br />
+                        </td>
+                            }
+                        }
+                        <td></td>
+                        @{
+                            if (ind != null)
+                            {
+                        <td style="text-align:center"><label class="labels">Categorías Asociadas al Cliente</label></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td style="width:50px"></td>
+                        <td style="border:groove">
+                            @*<div>
+                                <button style="float:right" class="btn btn-danger" onclick="saveCategoriesSM()">
+                                    <span class="glyphicon glyphicon-forward"></span>
+                                    <span>&nbsp; Asociar</span>
+                                </button>
+                                <div class="treeview scrollbar1">
+                                    @{
+                                        if (SearchCategorySM != null)
+                                        {
+                                            Cats = db.Database.SqlQuery<GetHomogeneousCategories>("plm_spGetHomogeneousCategories @HomogeneousCategoryId= 0, @TextSearch='" + SearchCategorySM.CategoryName + "'").ToList();
+                                        }
+                                        else
+                                        {
+                                            Cats = db.Database.SqlQuery<GetHomogeneousCategories>("plm_spGetHomogeneousCategories @HomogeneousCategoryId= 0").ToList();
+                                        }
+                                        <ul>
+                                            @foreach (GetHomogeneousCategories _cat in Cats)
+                                            {
+                                                <li>
+                                                    <img src="@Url.Content("~/Images/ui-icons_454545_256x240.png")" id="Expand_@_cat.HomogeneousCategoryId" onclick="getlevel4SM(@_cat.HomogeneousCategoryId)" />
+                                                    <img src="@Url.Content("~/Images/ui-icons_454545_256x2401.png")" style="display:none" id="Collapse_@_cat.HomogeneousCategoryId" onclick="collapselevel4(@_cat.HomogeneousCategoryId)" />
+                                                    <label style="font-weight:100">@_cat.HomogeneousCategory</label>
+                                                    <ul id="ListL2_@_cat.HomogeneousCategoryId"></ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width:150px"></td>
+                        @*<td style="width: 50%; vertical-align: top; ">
+                            @{
+                            if (flaghetcat != null)
+                                {
+                                    int _clientid = ind.ClId;
+                                    int _editionid = ind.EId;
+
+                                    WebGrid _datagridcc = new WebGrid();
+                                    var cc = db.Database.SqlQuery<plm_vwHeterogeneousCategories>("plm_spGetEditionHeterogeneousCategoryByClients  @editionId =" + _editionid + ",  @clientId='" + _clientid + "', @type=" + 1 + "").ToList();
+                                    bool flag = flaghetcat.flag;
+                                    if (flag == true)
+                                    {
+                                        string param = flaghetcat.param;
+                                        var cats = db.Database.SqlQuery<plm_vwHeterogeneousCategories>("plm_spGetHeterogeneousCategoryByClientsSearch  @editionId =" + _editionid + ",  @clientId=" + _clientid + ", @param='" + param + "'").ToList();
+                                        _datagridcc = new WebGrid(cats, rowsPerPage: 14);
+                                    }
+                                    else
+                                    {
+                                        _datagridcc = new WebGrid(cc, rowsPerPage: 14);
+                                    }
+
+                            @_datagridcc.GetHtml(
+                                                  headerStyle: "webgrid-header1",
+                                              footerStyle: "webgrid-footer",
+                                              alternatingRowStyle: "webgrid-alternating-row",
+                                              selectedRowStyle: "webgrid-selected-row",
+                                              rowStyle: "webgrid-row-style",
+                                              tableStyle: "webgrid-table ",
+                                              mode: WebGridPagerModes.All,
+                                              columns: new[] {
+                                                  _datagridcc.Column("",header:"Categoría", format: @<text>
+                                <label>@item.Description</label>
+                                <input type="text" style="display:none" class="categoryid" id="HeterogeneousCategoryId" value="@item.HeterogeneousCategoryId" />
+                                                </text>),
+                                                _datagridcc.Column("",header:"SubCategoría", format: @<text>
+                                <label>@item.DescriptionNodo</label>
+                                <input type="text" style="display:none" class="categoryid" id="HeterogeneousCategoryIdNodo" value="@item.HeterogeneousCategoryIdNodo" />
+                                                </text>),
+                                                _datagridcc.Column("",header:"Participante", format: @<text>
+                                @{
+                                                    int HeterogeneousCategoryId = Convert.ToInt32(item.HeterogeneousCategoryIdNodo);
+                                                    var ecc = db.EditionClientHeterogeneousCategories.Where(x => x.HeterogeneousCategoryId == HeterogeneousCategoryId && x.ClientId == ClientIdss && x.EditionId == EditionIds).ToList();
+
+                                                    bool pp = false;
+
+                                                    if(ecc.LongCount()  >   0)
+                                                    {
+                                                        pp = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        int HeterogeneousCategoryId1 = Convert.ToInt32(item.HeterogeneousCategoryId);
+
+                                                        var ecc1 = db.EditionClientHeterogeneousCategories.Where(x => x.HeterogeneousCategoryId == HeterogeneousCategoryId1 && x.ClientId == ClientIdss && x.EditionId == EditionIds).ToList();
+
+                                                        if (ecc1.LongCount() > 0)
+                                                        {
+                                                            pp = true;
+                                                        }
+                                                    }
+                                }
+                                <input type="checkbox" checked="@pp" class="categorieshet" onclick="insert_editionclientheterogeneouscategories($(this))" />
+                                                </text>,style:"buton"),
+                                              _datagridcc.Column("",header:"Eliminar", format: @<text>
+                                <button class="btn btn-default deletecategory" id="btndeletecategoryhet" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteeditionclientheterogeneouscategories", "SalesModule", new { HeterogeneousCategoryId = item.HeterogeneousCategoryId, HeterogeneousCategoryIdNodo = item.HeterogeneousCategoryIdNodo })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                                            </text>,style:"buton")
+                                              })
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>*@
+            </div>
+        }
+    }
+</body>
+</html>

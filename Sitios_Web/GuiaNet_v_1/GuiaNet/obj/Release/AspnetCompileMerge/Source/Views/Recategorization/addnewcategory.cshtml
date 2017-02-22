@@ -1,0 +1,561 @@
+﻿@model List<GuiaNet.Models.Categories>
+    @using GuiaNet.Models;
+    @{
+        ViewBag.Title = "addnewcategory";
+        Guia db = new Guia();
+    }
+
+    <html>
+    <head>
+        <title></title>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".treeviewc li>ul").css('display', 'none');
+                $(".collapsible").click(function (e) {
+                    e.preventDefault();
+                    $(this).toggleClass("expand1 collapse1");
+                    $(this).closest('li').children('ul').slideToggle();
+                });
+            });
+        </script>
+
+        <script>
+        $(function () {
+            $("#level1").change(function () {
+                var level1 = $(this).val();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Recategorization/getlevel2/",
+                    traditional: true,
+                    data: { lev1: level1 },
+                    success: function (data) {
+                        $('#level2').empty();
+                        $('#level2')
+                           .append($("<option></option>")
+                           .attr("value", 0)
+                           .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#level2')
+                            .append($("<option></option>")
+                            .attr("value", val.CategoryId)
+                            .text(val.Description));
+                        });
+                    }
+                })
+
+            })
+        })
+        </script>
+
+        <script>
+        $(function () {
+            $("#level2").change(function () {
+                var level2 = $(this).val();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Recategorization/getlevel3/",
+                    traditional: true,
+                    data: { lev2: level2 },
+                    success: function (data) {
+                        $('#level3').empty();
+                        $('#level3')
+                           .append($("<option></option>")
+                           .attr("value", 0)
+                           .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#level3')
+                            .append($("<option></option>")
+                            .attr("value", val.CategoryId)
+                            .text(val.Description));
+                        });
+                    }
+                })
+
+            })
+        })
+        </script>
+
+        <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+        <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+        <script>
+            $(function () {
+                $("#insertcategory").click(function () {
+                    $("#bloqueo").show();
+                    var level1 = $("#level1").val();
+                    var level2 = $("#level2").val();
+                    var level3 = $("#level3").val();
+                    var level4 = $("#level4").val();
+                    var nulls = $(".nulls").val();
+
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                    if ((level1 != nulls) && (level2 != 0) && (level3 != 0) && (!level4.trim() == false)) {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Recategorization/insertcategory/",
+                            traditional: true,
+                            data: { lev1: level1, lev2: level2, lev3: level3, lev4: level4 },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                else {
+                                    $("#bloqueo").hide();
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe en Nivel 4 para la Categoría Nivel 3, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                }
+                            }
+                        })
+                    }
+                    else {
+                        $("#bloqueo").hide();
+                        if (level1 == nulls) {
+                            d += "<li>El Campo Nivel 1 no puede quedar vacío</li>";
+                        }
+                        if ((level2 == 0) || (level2 == null)) {
+
+                            d += "<li>El Campo Nivel 2 no puede quedar vacío</li>";
+                        }
+                        if ((level3 == 0) || (level3 == null)) {
+                            d += "<li>El Campo Nivel 3 no puede quedar vacío</li>";
+                        }
+                        if (!level4.trim() == true) {
+                            d += "<li>El Campo Nivel 4 no puede quedar vacío</li>";
+                        }
+                        apprise("" + d + "", { 'animate': true });
+                    }
+                })
+            })
+        </script>
+
+        <script>
+            $(function () {
+                $("#level1").change(function () {
+                    var nulls = $(".nulls").val();
+                    if ($(this).val() == nulls) {
+                        $("#level2").val(null);
+                        $("#level3").val(null);
+                        $("#level4").val('');
+                    }
+                })
+            })
+        </script>
+
+        <script>
+            $(function () {
+                $("#level1").change(function () {
+                    var level1 = $(this).val();
+                    var nulls = $(".nulls").val();
+                    if (level1 != nulls) {
+                        $("#addlevel2").show();
+                    }
+                    else if (level1 == nulls) {
+                        $("#addlevel2").hide();
+                        $("#addlevel3").hide();
+                        $("#cancellevel1").hide();
+                        $("#cancellevel2").hide();
+                        $("#cancellevel3").hide();
+                        $("#insertlevel3").hide();
+                        $("#insertlevel2").hide();
+                    }
+                })
+            })
+        </script>
+
+        <script>
+            $(function () {
+                $("#level2").change(function () {
+                    var level2 = $(this).val();
+                    if ((level2 != 0) || (level2 != null)) {
+                        $("#addlevel3").show();
+                    }
+                    if ((level2 == 0) || (level2 == null)) {
+                        $("#addlevel3").hide();
+                        $("#insertlevel3").hide();
+                        $("#cancellevel3").hide();
+                    }
+                })
+            })
+        </script>
+
+        <script>
+            $(function () {
+                $("#addlevel1").click(function () {
+                    $("#insertlevel1").show();
+                    $("#addlevel1").hide();
+                    $("#cancellevel1").show();
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#cancellevel1").click(function () {
+                    $("#insertlevel1").hide();
+                    $("#addlevel1").show();
+                    $("#cancellevel1").hide();
+                    $("#insertlevelvalue1").val('');
+                });
+            });
+        </script>
+
+        <script>
+            $(function () {
+                $("#addlevel2").click(function () {
+                    $("#insertlevel2").show();
+                    $("#addlevel2").hide();
+                    $("#cancellevel2").show();
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#cancellevel2").click(function () {
+                    $("#insertlevel2").hide();
+                    $("#addlevel2").show();
+                    $("#cancellevel2").hide();
+                    $("#insertlevelvalue1").val('');
+                });
+            });
+        </script>
+
+        <script>
+            $(function () {
+                $("#addlevel3").click(function () {
+                    $("#insertlevel3").show();
+                    $("#addlevel3").hide();
+                    $("#cancellevel3").show();
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#cancellevel3").click(function () {
+                    $("#insertlevel3").hide();
+                    $("#addlevel3").show();
+                    $("#cancellevel3").hide();
+                    $("#insertlevelvalue1").val('');
+                });
+            });
+        </script>
+
+        <script>
+            $(function () {
+                $("#btnlevel1").click(function () {
+                    var value1 = $("#insertlevelvalue1").val();
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                    if (!value1.trim() == true) {
+                        d += "<li>El Campo no puede quedar vacío</li>";
+                        apprise("" + d + "", { 'animate': true });
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Recategorization/insertlevel1/",
+                            traditional: true,
+                            data: { valuelevel: value1 },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                else {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+        </script>
+
+        <script>
+            $(function () {
+                $("#btnlevel2").click(function () {
+                    var value2 = $("#insertlevelvalue2").val();
+                    var catid = $("#level1").val();
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                    if (!value2.trim() == true) {
+                        d += "<li>El Campo no puede quedar vacío</li>";
+                        apprise("" + d + "", { 'animate': true });
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Recategorization/insertlevel2/",
+                            traditional: true,
+                            data: { valuelevel: value2, CategoryId: catid },
+                            success: function (data) {
+                                if (data == true) {
+                                    var level1 = $("#level1").val();
+
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: "../Recategorization/getlevel2/",
+                                        traditional: true,
+                                        data: { lev1: level1 },
+                                        success: function (data) {
+                                            $('#level2').empty();
+                                            $('#level2')
+                                               .append($("<option></option>")
+                                               .attr("value", 0)
+                                               .text("Seleccione..."));
+                                            $.each(data, function (index, val) {
+                                                $('#level2')
+                                                .append($("<option></option>")
+                                                .attr("value", val.CategoryId)
+                                                .text(val.Description));
+                                            });
+                                        }
+                                    })
+
+                                    $("#insertlevel2").css('display','none');
+                                    $("#cancellevel2").hide();
+                                    $("#addlevel2").show();
+                                }
+                                else {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe en Nivel 2 para la Categoría Nivel 1, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+        </script>
+
+        <script>
+            $(function () {
+                $("#btnlevel3").click(function () {
+                    var value3 = $("#insertlevelvalue3").val();
+                    var catid = $("#level2").val();
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                    if (!value3.trim() == true) {
+                        d += "<li>El Campo no puede quedar vacío</li>";
+                        apprise("" + d + "", { 'animate': true });
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Recategorization/insertlevel3/",
+                            traditional: true,
+                            data: { valuelevel: value3, CategoryId: catid },
+                            success: function (data) {
+                                var value3 = $("#insertlevelvalue2").val(0);
+                                if (data == true) {
+
+                                    var level2 = $("#level2").val();
+
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: "../Recategorization/getlevel3/",
+                                        traditional: true,
+                                        data: { lev2: level2 },
+                                        success: function (data) {
+                                            $('#level3').empty();
+                                            $('#level3')
+                                               .append($("<option></option>")
+                                               .attr("value", 0)
+                                               .text("Seleccione..."));
+                                            $.each(data, function (index, val) {
+                                                $('#level3')
+                                                .append($("<option></option>")
+                                                .attr("value", val.CategoryId)
+                                                .text(val.Description));
+                                            });
+                                        }
+                                    })
+
+                                    $("#insertlevel3").css('display', 'none');
+                                    $("#cancellevel3").hide();
+                                    $("#addlevel3").show();
+                                }
+                                else {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe en Nivel 3 para la Categoría Nivel 2, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+        </script>
+        @*btnlevel3*@
+    </head>
+    <body>
+        <br />
+        <ol class="breadcrumb">
+            <li><a href="/InformationLaboratory/Index">Laboratorio de Información</a></li>
+            <li class="active">Agregar Categoría</li>
+        </ol>
+
+        <table border="0" style="width:100%">
+            <tr style="height:20px">
+                <td style="width:50%;text-align:center"><label class="labels" style="font-size:20px">Árbol de Categorías</label></td>
+                <td style="width: 50%; text-align: center"><label class="labels" style="font-size:20px">Agregar Categorías</label></td>
+            </tr>
+            <tr style="height:20px">
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="height:20px">
+                <td>
+                    @{
+                        using (Html.BeginForm("searchcategory", "Recategorization"))
+                        {
+                            <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus" })
+                            <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+
+                        }
+                    }
+
+                </td>
+                <td></td>
+            </tr>
+            <tr style="height:20px">
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="height:20px">
+                <td>
+                    <div class="treeviewc scrollbar1" id="scrollbar" style="width:100%">
+                        @{
+                            if (Model != null && Model.Count() > 0)
+                            {
+                                <ul>
+                                    @TreeviewCategoriesreference.GetTreeView(Model, Model.FirstOrDefault().ParentId)
+                                </ul>
+                            }
+                        }
+                    </div>
+                </td>
+                <td style="vertical-align:top">
+                    <div style="height:100%;width:100%;">
+                        <table border="0" style="width:100%">
+                            <tr>
+                                <td style="width: 20%; line-height: 40px;text-align:center"><label class="labels">Nivel 1</label></td>
+                                <td style="width: 30%; line-height: 40px">
+                                    <select class="form-control" id="level1">
+                                        <option class="nulls">Seleccione...</option>
+                                        @{
+                                            int categoryid = 0;
+                                            var level1 = (from l1 in db.Categories
+                                                          where l1.ParentId == null
+                                                          select l1).OrderBy(x => x.Description).ToList();
+                                            foreach (Categories c in level1)
+                                            {
+                                                categoryid = c.CategoryId;
+                                                <option value="@c.CategoryId">@c.Description</option>
+                                            }
+                                        }
+                                    </select>
+
+                                </td>
+                                <td style="width: 5%; line-height: 40px;text-align:center">
+                                    <img src="@Url.Content("~/Images/expand.png")" style="height:30px;width:30px" id="addlevel1">
+                                    <img src="@Url.Content("~/Images/contract.png")" style="height:30px;width:30px;display:none" id="cancellevel1">
+                                </td>
+                            </tr>
+                            <tr style="display: none; line-height: 40px; height: 20px" id="insertlevel1">
+                                <td colspan="4" style="text-align:center">
+                                    <label style="height: 35px;border-radius:10px; width: 100%; background-color: #2e4a4f;color:white">Agregar Nivel 1</label><br />
+                                    <input type="text" class="form-controln1" style="width: 100%;text-transform:uppercase" id="insertlevelvalue1" />
+                                    <p style="text-align:center;height:25px">
+                                        <button type="submit" id="btnlevel1" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                            <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;">
+                                        </button>
+                                    </p><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; line-height: 40px; text-align: center"><label class="labels">Nivel 2</label></td>
+                                <td style="width: 30%; line-height: 40px">
+                                    <select class="form-control" id="level2"></select>
+                                </td>
+                                <td style="width: 5%; line-height: 40px;text-align:center">
+                                    <img src="@Url.Content("~/Images/expand.png")" style="height: 30px; width: 30px; display: none" id="addlevel2">
+                                    <img src="@Url.Content("~/Images/contract.png")" style="height:30px;width:30px;display:none" id="cancellevel2">
+                                </td>
+                            </tr>
+                            <tr style="display: none; line-height: 40px; height: 20px" id="insertlevel2">
+                                <td colspan="4" style="text-align:center">
+                                    <label style="height: 35px;border-radius:10px; width: 100%; background-color: #2e4a4f;color:white">Agregar Nivel 2</label><br />
+                                    <input type="text" class="form-controln1" style="width: 100%; text-transform: uppercase " id="insertlevelvalue2" />
+                                    <p style="text-align:center;height:25px">
+                                        <button type="submit" id="btnlevel2" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                            <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;">
+                                        </button>
+                                    </p><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; line-height: 40px; text-align: center"><label class="labels">Nivel 3</label></td>
+                                <td style="width: 30%; line-height: 40px">
+                                    <select class="form-control" id="level3"></select>
+                                </td>
+                                <td style="width: 5%; line-height: 40px;text-align:center">
+                                    <img src="@Url.Content("~/Images/expand.png")" style="height: 30px; width: 30px; display: none; " id="addlevel3">
+                                    <img src="@Url.Content("~/Images/contract.png")" style="height:30px;width:30px;display:none" id="cancellevel3">
+                                </td>
+                            </tr>
+                            <tr style="display: none; line-height: 40px; height: 20px" id="insertlevel3">
+                                <td colspan="4" style="text-align:center">
+                                    <label style="height: 35px;border-radius:10px; width: 100%; background-color: #2e4a4f;color:white">Agregar Nivel 3</label><br />
+                                    <input type="text" class="form-controln1" style="width: 100%; text-transform: uppercase" id="insertlevelvalue3" />
+                                    <p style="text-align:center;height:25px">
+                                        <button type="submit" id="btnlevel3" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                            <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;">
+                                        </button>
+                                    </p><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; line-height: 40px; text-align: center"><label class="labels">Nivel 4</label></td>
+                                <td style="width: 30%; line-height: 40px">
+                                    <input type="text" class="form-control" style="width: 100%; text-transform: uppercase" id="level4" />
+                                </td>
+                                <td style="width: 5%; line-height: 40px;text-align:center"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height:20px"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:center">
+                                    <button class="btn btn-info" id="insertcategory">Insertar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

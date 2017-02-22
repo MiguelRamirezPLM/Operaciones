@@ -1,0 +1,515 @@
+﻿@model IEnumerable<GuiaNet.Models.JoinClientsEditionClients>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "clientsbyedition";
+    Guia db = new Guia();
+    sessionClientsbyEdition ind = (sessionClientsbyEdition)Session["sessionClientsbyEdition"];
+    WebGrid _datagrid;
+    sessiongetnumberofclients rpp = (sessiongetnumberofclients)Session["sessiongetnumberofclients"];
+    if(rpp != null)
+    {
+        string num = rpp.Values;
+
+        int count;
+
+        if (num == "all")
+        {
+            count = Convert.ToInt32(Model.LongCount());
+            _datagrid = new WebGrid(Model, rowsPerPage: count);
+        }
+        else
+        {
+            count = int.Parse(rpp.Values);
+            _datagrid = new WebGrid(Model, rowsPerPage: count);
+        }
+    }
+    else
+    {
+        int num = 10;
+        
+        _datagrid = new WebGrid(Model, rowsPerPage: num);
+    }
+
+}
+<html>
+<head>
+    <title></title>
+    @*CHARGE DIVISIONS BY COUNTRY*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#division").hide();
+            $("#pais").change(function () {
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var coun = idcountry;
+                document.getElementById("CountryId").value = coun;
+                if (idcountry != nulls) {
+                    coun = (idcountry);
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#lblbook1").show();
+
+                }
+                else if (idcountry == nulls) {
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#division").hide();
+                    $("#lblclient").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Production/books/",
+                    traditional: true,
+                    data: { country: idcountry },
+                    success: function (data) {
+                        $('#bookn').empty();
+                        $('#bookn')
+                           .append($("<option></option>")
+                           .attr("value", 0)
+                           .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#bookn')
+                            .append($("<option></option>")
+                            .attr("value", val.BookId)
+                            .text(val.BookName));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+
+    @*CHARGE EDITION BY BOOK*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#InsertProducts").hide();
+            $("#bookn").change(function () {
+                var idbook = $(this).val();
+                var idcountry = $("#pais").val();
+                var nulls = $(".null").val();
+                var book = $("#bookn").val();
+
+                var coun = idbook;
+                document.getElementById("BookId").value = coun;
+                if (idcountry != nulls) {
+                    $("#Edition").show();
+                    $("#lblEdition").show();
+                    $("#lblEdition1").show();
+                    $("#InsertProducts").hide();
+                }
+                else if (idcountry == nulls) {
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Production/editions/",
+                    traditional: true,
+                    data: { country: idcountry, bookid: book },
+                    success: function (data) {
+                        $('#Edition').empty();
+                        $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", 0)
+                            .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", val.EditionId)
+                            .text(val.NumberEdition));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+
+    @*SHOW FORM WHEN CHANGE DIVISION*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Edition").change(function () {
+                var coun = $("#Edition").val();
+                document.getElementById("EditionId").value = coun;
+                $('#InsertParam').trigger('click');
+                $("#bloqueo").show();
+            })
+            $("#bloqueo").hide();
+        })
+    </script>
+    @*END*@
+
+    <script>
+        $(function () {
+            $("#rowsperpages").change(function () {
+                var value = $(this).val();
+                if (value != "0") {
+                    $("#bloqueo").show();
+                    $.ajax({
+                        Type: "POST",
+                        dataType: "Json",
+                        url: "../Production/getnumberofclients/",
+                        traditional: true,
+                        data: { Values: value },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                $("#bloqueo").hide();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $('#searchcl').keyup(function () {
+                var min = 3;
+                var br = $(this).val();
+
+                var longs = parseInt(br.length);
+
+                if (longs >= min) {
+                    $("#bloqueo").show();
+                    $(function () {
+                        $("#searchclient").trigger("click");
+                    })
+                }
+                if (longs == 0) {
+                    $(function () {
+                        $("#bloqueo").show();
+                        $("#searchclient").trigger("click");
+                    })
+                }
+            })
+        })
+    </script>
+
+    @*PAGES*@
+    <script>
+        $(document).ready(function () {
+            $(".Pages").focus(function () {
+                var tr = $(this).parents("tr:first");
+                var clientId = tr.find("#lblClientId").val();
+                var edition = $("#editionid").val();
+                var pages1 = tr.find(".Pages").val();
+                var ct = tr.find("#ClientTypeId").val();
+                tr.find(".Pages").blur(function () {
+                    var pages = tr.find(".Pages").val();
+                        var page = tr.find(".Pages").val();
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Production/UpdatePages/",
+                            traditional: true,
+                            data: { Client: clientId, Edition: edition, Page: page, ClientType: ct },
+                            success: function (data) {
+                                if (data == false) {
+                                    tr.find(".Pages").val('');
+                                }
+                            }
+                        });
+                });
+
+            });
+        });
+    </script>
+    @*END*@
+
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var name = tr.find("#CompanyName").val();
+                var ID = tr.find("#lblClientId").val();
+                var short = tr.find("#ShortName").val();
+                tr.find("#lblName").text(name);
+
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if ((!name.trim() == true)||(!short.trim() == true)) {
+                    apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "Ningun campo puede quedar vacío", { 'animate': true });
+                }
+                else {
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../ReferencesReport/editclients/",
+                        traditional: true,
+                        data: { CompanyName: name, ClientId: ID, ShortName: short },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+</head>
+<body>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualProd", "Help", new { module = "PROD" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/Production/Index">Producción</a></li>
+        <li class="active">Páginar Clientes</li>
+    </ol>
+    @using (Html.BeginForm())
+    {
+        <div style="text-align:right;display:none">
+            <p>
+                <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+
+            </p>
+        </div>
+    }
+    <div style="width: 50%; float: left">
+        <table style="width:100%" border="0">
+
+            <tr>
+                <td width="100px">
+                    <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                </td>
+                <td style="line-height: 40px;width:15px"></td>
+                <td style="line-height: 40px;">
+                    <div style="text-align:left;">
+                        @using (Html.BeginForm())
+                        {
+                            <select name="pais" id="pais" class="country form-focus" style="text-align:left; width:800px; font-size:16px;height:35px;">
+                                <option class="null">Seleccione...</option>
+                                @{
+                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                            if (Session["CountriesUsers"] == null)
+                            {
+                                Session.Abandon();
+                                Response.Redirect(Url.Action("Logout", "Login"));
+                                Response.End();
+
+                            }
+                            else if (p != null)
+                            {
+                                List<string> d = p.var;
+                                foreach (string f in d)
+                                {
+                                    var countries = (from country in db.Countries
+                                                     where country.ID == f
+                                                     select country);
+                                    foreach (Countries w in countries)
+                                    {
+                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                    }
+                                }
+                            }
+                                }
+                            </select>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="line-height: 40px;">
+                    <label for="bookname" id="lblbook" style="display:none">Obra:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblbook1">*</label>
+
+                </td>
+                <td style="line-height: 40px;width:15px"></td>
+                <td style="line-height: 40px;">
+                    <select name="book" id="bookn" class="insert form-focus" style="text-align:left;display:none; width:600px;font-size:16px;height:35px"></select>
+                </td>
+            </tr>
+            <tr>
+                <td style="line-height: 40px;">
+                    <label for="Edition" id="lblEdition" style="display:none">Edición:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblEdition1">*</label>
+                </td>
+                <td style="line-height: 40px;width:15px"></td>
+                <td style="line-height: 40px;">
+                    <select name="Edition" id="Edition" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select><br />
+                </td>
+            </tr>
+        </table>
+    </div>
+    @{
+        if (ind != null)
+        {
+
+
+         <div>
+             <table style="width:100%" border="0">
+                 <tr>
+                     <td style="width: 7%"><label class="labels">País:</label></td>
+                     <td>
+                         @{
+                            int countryid = ind.CId;
+                            var countr = from countries in db.Countries
+                                         where countries.CountryId == countryid
+                                         select countries;
+                            foreach (Countries c in countr)
+                            {
+                             <label>@c.CountryName</label><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+                            }
+                         }
+                     </td>
+                     <td rowspan="4" style="text-align:center;width:30%">
+                         @{
+            if (ind != null)
+            {
+                using (Html.BeginForm("searchclient", "Production"))
+                {
+                 <label>Buscar Cliente:&nbsp;</label>  @Html.TextBox("CompanyName", "", new { @class = "form-focus", id = "searchcl" })
+                             <button type="submit" id="searchclient" value="searchprod" class="btn btn-info searchoproducts" style="display:none;color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                }
+            }
+                         }
+                     </td>
+                     <td rowspan="4" style="text-align: center; width: 5%">
+                         <div style="float:right">
+                             <label>Resultados:&nbsp;</label>
+                             <select id="rowsperpages" class="form-control1" style="width:120px">
+                                 <option value="0">Seleccione...</option>
+                                 @{
+                                    sessiongetnumberofclients sessiongetnumberofclients = (sessiongetnumberofclients)Session["sessiongetnumberofclients"];
+                                    if (sessiongetnumberofclients != null)
+                                    {
+                                        if (sessiongetnumberofclients.Values == "10")
+                                        {
+                                             <option value="10" selected>10</option>
+                                                             <option value="50">50</option>
+                                                             <option value="100">100</option>
+                                                             <option value="all">Ilimitado</option>
+                                        }
+                                        if (sessiongetnumberofclients.Values == "50")
+                                        {
+                                             <option value="10">10</option>
+                                                             <option value="50" selected>50</option>
+                                                             <option value="100">100</option>
+                                                             <option value="all">Ilimitado</option>
+                                        }
+                                        if (sessiongetnumberofclients.Values == "100")
+                                        {
+                                             <option value="10">10</option>
+                                                             <option value="50">50</option>
+                                                             <option value="100" selected>100</option>
+                                                             <option value="all">Ilimitado</option>
+                                        }
+                                        if (sessiongetnumberofclients.Values == "all")
+                                        {
+                                             <option value="10">10</option>
+                                                             <option value="50">50</option>
+                                                             <option value="100">100</option>
+                                                             <option value="all" selected>Ilimitado</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                             <option value="10">10</option>
+                                                             <option value="50">50</option>
+                                                             <option value="100">100</option>
+                                                             <option value="all">Ilimitado</option>
+                                    }
+                                 }
+
+                             </select>
+                         </div>
+
+                     </td>
+                 </tr>
+                 <tr>
+                     <td><label style="font-size: 16px; font-style: italic; color: #065869; ">Obra:</label></td>
+                     <td>
+                         @{
+                            int bookid = ind.BId;
+                            var books = from book in db.Books
+                                        where book.BookId == bookid
+                                        select book;
+                            foreach (Books b in books)
+                            {
+                             <label>@b.BookName</label><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+                            }
+                         }
+                     </td>
+                 </tr>
+                 <tr>
+                     <td><label class="labels">Edición:</label></td>
+                     <td>
+                         @{
+                            int edition = ind.EId;
+                            var _edition = from editions in db.Editions
+                                           where editions.EditionId == edition
+                                           select editions;
+                            foreach (Editions e in _edition)
+                            {
+                             <label>@e.NumberEdition</label><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+                            }
+                         }
+                     </td>
+                 </tr>
+             </table>
+    </div>         
+        }
+    }
+    <br />
+    <br />
+    <div style="border-radius:10px;width:100%">
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Cliente", format: @<text>
+                                @{
+    <span class="display-mode"> <label id="lblName" style="width:180px">@item.Clients.CompanyName</label> </span>
+    <textarea class="edit-mode form-control" style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="CompanyName">@item.Clients.CompanyName</textarea>
+    <input id="lblClientId" style="visibility: visible;display:none; width:20px" value="@item.Clients.ClientId" />
+}
+                        </text>),
+        _datagrid.Column("", header: "Nombre Corto de Cliente", format: @<text>
+                                @{
+    <span class="display-mode"> <label id="lblShortName" style="width:180px">@item.Clients.ShortName</label> </span>
+    <textarea class="edit-mode form-control" style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="ShortName">@item.Clients.ShortName</textarea>
+}
+                        </text>),
+         _datagrid.Column("", header: "Página", format: @<text>
+                                @{
+                                    <span class=""> <input type="text" class="Pages form-control1" style="width:150px" value="@item.EditionClients.Page" /> </span>
+    <input type="text" value="@item.EditionClients.ClientTypeId" id="ClientTypeId" style="display:none" />
+}
+                        </text>, style:"buton"),
+         _datagrid.Column("", header: "Editar Cliente", format: @<text>
+            @{
+                <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-info"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+            }
+        </text>, style:"buton columntable")
+        })
+    </div>
+</body>
+</html>

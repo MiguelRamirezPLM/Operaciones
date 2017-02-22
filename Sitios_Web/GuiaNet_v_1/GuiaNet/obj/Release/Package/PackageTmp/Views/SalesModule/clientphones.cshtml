@@ -1,0 +1,341 @@
+﻿@model IEnumerable<GuiaNet.Models.JoinPhoneTypes>
+           @using GuiaNet.Models;
+@{
+    ViewBag.Title = "clientphones";
+    sessionclientbranch ind = (sessionclientbranch)Session["sessionclientbranch"];
+    Guia db = new Guia();
+    WebGrid _datagrids = new WebGrid(Model);
+}
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#addphone').click(function () {
+                $('#insertphones').fadeIn('slow');
+                $('.popup-overlay').fadeIn('slow');
+                $('.popup-overlay').height($(window).height());
+                return false;
+            });
+
+            $('#close').click(function () {
+                $('#insertphones').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                $("#insertnumber").val('');
+                return false;
+            });
+        });
+    </script>
+
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var name = tr.find("#Number").val();
+                var ld = tr.find("#Lada").val();
+                var ID = tr.find("#lblClientPhoneId").val();
+                var CountryId = $("#countryid").val();
+                var client = $("#clientid").val();
+                var addr = $("#VDAddressId").val();
+                var pt = tr.find("#PhoneTypeId").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if ((!name.trim() == true)) {                    
+                    d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                    d += "<p></p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'> > El campo Teléfono NO puede quedar vacío</p>"
+                    apprise("" + d + "", { 'animate': true });
+                }
+                else {
+
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/editphones/",
+                        traditional: true,
+                        data: { Number: name, Lada: ld, ClientPhone: ID, Country: CountryId, Client: client, Address: addr, PhoneType: pt },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+    <script>
+        $(function () {
+            $("#insertphonebtn").click(function () {
+                var number = $("#insertnumber").val();
+                var lada = $("#insertlada").val();
+                var type = $("#inserttype").val();
+                var client = $("#clientid").val();
+                var addr = $("#VDAddressId").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+                if((!number.trim() == false)&& (type != "0"))
+                {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/insertphone/",
+                        traditional: true,
+                        data: { Number: number, Lada: lada, Client: client, Address: addr, TypeId: type },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    })                  
+                }
+                else
+                {
+                    if(!number.trim() == true)
+                    {
+                        //d += "<div><li> Falta Número</div>";
+                        d += "<p style='width:300px;text-align:Center;color:#05606d;font-size:20px;font-style:italic'>Faltan algunos campos!!! </p>"
+                        d += "<p></p>"
+                        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>-> Falta Escribir un Número Telefónico </p>"
+                    }
+                    if(type == "0")
+                    {
+                        //d += "<div><li> Debe seleccionar un tipo de Teléfono</div>";
+                        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>-> Debe seleccionar un tipo de Teléfono </p>"
+                    }
+                    apprise("" + d + "", { 'animate': true });
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("Index", "Help", new { module = "SM" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/SalesModule/Index">Ventas</a></li>
+        <li><a href="/SalesModule/clientbranch">Sucursales</a></li>
+        <li><a href="/SalesModule/informationbyclient/@ViewData["ClientIdP"]">Información de Cliente</a></li>
+        <li class="active">Teléfonos</li>
+    </ol>
+
+    @{
+
+        if (ind != null)
+        {
+            <table style="width:100%" border="0">
+                <tr>
+                    <td style="width:15%"><label class="labels">País: </label> </td>
+                    <td>
+                        @{
+            int countryid = ind.CId;
+            var countr = from countries in db.Countries
+                         where countries.CountryId == countryid
+                         select countries;
+            foreach (Countries c in countr)
+            {
+                <label>@c.CountryName</label><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+            }
+                        }
+                    </td>
+                    <td rowspan="4">
+                        <button id="addphone" class="btn btn-info">Agregar Teléfono</button>
+                    </td>
+                    <td rowspan="5" style="width:10%;text-align:center">
+                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return" onclick="location.href = '@Url.Action("informationbyclient", "SalesModule", new { Id = Convert.ToInt32(ViewData["ClientIdP"]) })'; return false;"><br />
+                        <label>Regresar...</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Obra:</label></td>
+                    <td>
+                        @{
+            int bookid = ind.BId;
+            var books = from book in db.Books
+                        where book.BookId == bookid
+                        select book;
+            foreach (Books b in books)
+            {
+                <label>@b.BookName</label><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Edición:</label></td>
+                    <td>
+                        @{
+            int edition = ind.EId;
+            var _edition = from editions in db.Editions
+                           where editions.EditionId == edition
+                           select editions;
+            foreach (Editions e in _edition)
+            {
+                <label>@e.NumberEdition</label><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Cliente:</label></td>
+                    <td>
+                        @{
+                             int ClientId = ind.ClId;
+            var cl = (from _cl in db.Clients
+                      where _cl.ClientId == ClientId
+                      select _cl).ToList();
+                      foreach(Clients _cl in cl)
+                      {
+                            <label>@_cl.CompanyName</label><input type="text" style="display:none" id="clientidd" value="@_cl.ClientId" />
+}
+}
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Sucursal:</label></td>
+                    <td>
+                        @{
+                            <label>@ViewData["CompanyNameP"]</label><input type="text" style="display:none" id="clientid" value="@ViewData["ClientIdP"]" />
+                            <input type="text" value="@ViewData["AddressId"]" id="VDAddressId" style="display:none" />
+                        }
+                    </td>
+                </tr>
+            </table>
+
+        }
+    }
+    <div id="insertphones" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="close"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Agregar Teléfono</h2>
+                <br />
+                <br />
+                <table border="0" style="width:100%;height:100%">
+                    <tr>
+                        <td>
+                            <label class="labels">Tipo de Teléfono:</label>
+                        </td>
+                        <td>
+                            <label style="font-size:16px;color:red">*</label>
+                        </td>
+                        <td>
+                            <select class="form-control1" id="inserttype">
+                                <option value="0">Seleccione...</option>
+                                @{
+                                    var pt = (from _pt in db.PhoneTypes
+                                              orderby _pt.Description ascending
+                                              select _pt).ToList();
+                                    foreach (PhoneTypes _pt in pt)
+                                    {
+                                        <option value="@_pt.PhoneTypeId">@_pt.Description</option>
+                                    }
+                                }
+                            </select>
+
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td>
+                            <label class="labels">Lada:</label>
+                        </td>
+                        <td></td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlada" maxlength="10" />
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td>
+                            <label class="labels">Número:</label>
+                        </td>
+                        <td>
+                            <label style="font-size:16px;color:red">*</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertnumber" />
+                        </td>
+                    </tr>              
+                    <tr>
+                        <td style="height:15px" colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align:center">
+                            <button type="submit" id="insertphonebtn" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;" />
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div style="width:100%;float:left">
+        @_datagrids.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+             _datagrids.Column("", header: "Tipo", format: @<text>
+            @{
+                <span> <label id="lblShortName" style="width:150px">@item.PhoneTypes.Description</label> </span>
+    <input type="text" value="@item.PhoneTypes.PhoneTypeId" id="PhoneTypeId" style="display:none" />
+}
+                        </text>),
+         _datagrids.Column("", header: "Lada", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblLada" style="width:180px">@item.ClientPhones.Lada</label> </span>
+    <textarea style="display:none; width:180px; color:red; font-size: 12px;" maxlength="10" id="Lada" class="edit-mode edprod form-control">@item.ClientPhones.Lada</textarea>
+}
+                        </text>),
+                                  _datagrids.Column("", header: "Teléfono", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblNumber" style="width:180px">@item.ClientPhones.Number</label> </span>
+    <textarea style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="Number" class="edit-mode edprod form-control">@item.ClientPhones.Number</textarea>
+    <input id="lblClientPhoneId" style="visibility: visible;display:none; width:20px" value="@item.ClientPhones.ClientPhoneId" />
+}
+                        </text>),
+         _datagrids.Column("", header: "Editar", format: @<text>
+            @{
+                <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-info"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+            }
+                                        </text>,style:"buton columntable")
+        @*_datagrids.Column("", header: "Eliminar", format: @<text>
+            @{
+                <button class="btn btn-default deletebrand" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteclientphone", "SalesModule", new { ClientPhoneId = item.ClientPhones.ClientPhoneId })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+            }
+                                        </text>,style:"buton columntable")*@
+                    })
+    </div>
+</body>
+</html>
+

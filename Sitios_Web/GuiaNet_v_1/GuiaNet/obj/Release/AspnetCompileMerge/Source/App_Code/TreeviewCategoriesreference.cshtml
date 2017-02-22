@@ -1,0 +1,27 @@
+﻿@helper GetTreeView(List<GuiaNet.Models.Categories> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId == (ParentId)))
+    {
+        <li>
+            @{var subitem = tree.Where(a => a.ParentId == (i.CategoryId)).Count();}
+
+            @if (subitem > 0)
+{
+    <span class="expand1 collapsible" id="@i.CategoryId">&nbsp;</span>
+}
+else
+{
+                <span style="display:inline-block">&nbsp;</span>
+                }
+                <span>
+                    <label class="recategory" id="@i.CategoryId" style="color:black">@i.Description.ToUpper()</label>
+                </span>
+                @if (subitem > 0)
+            {
+                    <ul>
+                        @TreeviewCategoriesreference.GetTreeView(tree, i.CategoryId)
+                    </ul>
+            }
+            </li>
+            }
+            }

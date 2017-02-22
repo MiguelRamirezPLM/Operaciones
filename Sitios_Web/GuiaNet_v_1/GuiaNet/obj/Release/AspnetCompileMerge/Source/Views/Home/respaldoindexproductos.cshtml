@@ -1,0 +1,614 @@
+﻿@model IEnumerable<GuiaNet.Models.Products>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "Index";
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 25);
+    Guia db = new Guia();
+}
+
+<html>
+<head>
+    <title></title>
+    <script src="@Url.Content("~/Scripts/jquery-1.3.2.min.js")"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+    @*CHARGE DIVISIONS BY COUNTRY*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#division").hide();
+            $("#pais").change(function () {
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var coun = idcountry;
+                document.getElementById("CountryId").value = coun;
+                if (idcountry != nulls) {
+                    coun = (idcountry);
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#lblbook1").show();
+
+                }
+                else if (idcountry == nulls) {
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#division").hide();
+                    $("#lblclient").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../SalesModule/books/",
+                    traditional: true,
+                    data: { country: idcountry },
+                    success: function (data) {
+                        $('#bookn').empty();
+                        $('#bookn')
+                           .append($("<option></option>")
+                           .attr("value", 0)
+                           .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#bookn')
+                            .append($("<option></option>")
+                            .attr("value", val.BookId)
+                            .text(val.BookName));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+
+    @*CHARGE EDITION BY BOOK*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#InsertProducts").hide();
+            $("#bookn").change(function () {
+                var idbook = $(this).val();
+                var idcountry = $("#pais").val();
+                var nulls = $(".null").val();
+                var book = $("#bookn").val();
+
+                var coun = idbook;
+                document.getElementById("BookId").value = coun;
+                if (idcountry != nulls) {
+                    $("#Edition").show();
+                    $("#lblEdition").show();
+                    $("#lblEdition1").show();
+                    $("#InsertProducts").hide();
+                }
+                else if (idcountry == nulls) {
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../SalesModule/editions/",
+                    traditional: true,
+                    data: { country: idcountry, bookid: book },
+                    success: function (data) {
+                        $('#Edition').empty();
+                        $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", 0)
+                            .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", val.EditionId)
+                            .text(val.NumberEdition));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+    @*CHARGE DIVISION BY BOOK*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#InsertProducts").hide();
+            $("#Edition").change(function () {
+                var idedition = $(this).val();
+                var idcountry = $("#pais").val();
+                var nulls = $(".null").val();
+                var book = $("#bookn").val();
+
+                var coun = idedition;
+                document.getElementById("EditionId").value = coun;
+
+                console.log(book);
+
+                if (idcountry != nulls) {
+                    $("#clients").show();
+                    $("#lblclient").show();
+                    $("#lblclient1").show();
+                    $("#lblEdition").show();
+                    $("#InsertProducts").hide();
+                    $("#InsertProducts").hide();
+                }
+                else if (idcountry == nulls) {
+                    $("#clients").hide();
+                    $("#lblclient").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../SalesModule/getclients/",
+                    traditional: true,
+                    data: { country: idcountry },
+                    success: function (data) {
+                        $('#clients').empty();
+                        $('#clients')
+                            .append($("<option></option>")
+                            .attr("value", 0)
+                            .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#clients')
+                            .append($("<option></option>")
+                            .attr("value", val.ClientId)
+                            .text(val.CompanyName));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+
+    @*SHOW FORM WHEN CHANGE DIVISION*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#clients").change(function () {
+                var coun = $("#clients").val();
+                document.getElementById("ClientId").value = coun;
+                $('#InsertParam').trigger('click');
+                $("#bloqueo").show();
+            })
+            $("#bloqueo").hide();
+        })
+    </script>
+    @*END*@
+
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var name = tr.find("#Name").val();
+                var descript = tr.find("#Description").val();
+                var register = tr.find("#Register").val();
+                var ID = tr.find("#lblProductid").val();
+                var Country = $("#CountryIdN").val();
+                var Div = $("#DivisionIdN").val();
+                tr.find("#lblName").text(name);
+                tr.find("#lblDescription").text(descript);
+                tr.find("#lblRegister").text(register);
+                if (name == '') {
+                    apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "El nombre del Producto NO puede quedar vacío", { 'animate': true });
+                }
+                else {
+                    tr.find(".edit-mode, .display-mode").toggle();
+                    var ProductName = (name);
+                    var Description = (descript);
+                    var RegisterP = (register);
+                    var ProdID = (ID);
+                    var CID = (Country);
+                    var Division = (Div);
+                    var App = 0;
+                    var User = 0;
+
+                    $("#bloqueo").show();
+                    $.ajax({
+                        url: "../SalesModule/editproducts/",
+                        type: "POST",
+                        dataType: "json",
+                        data: { PName: ProductName, ProductId: ProdID },
+                        success: function (data) {
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+    @*INSERT NEW PRODUCT*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script type="text/javascript">
+        $(function () {
+            $(".submit").click(function () {
+                var prodname = $("#productname").val();
+                var country = $("#countryid").val();
+                var client = $("#clientid").val();
+                var edition = $("#editionid").val();
+                console.log(country);
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (country == null) {
+                    apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "Falta seleccionar País,Laboratorio y Edición", { 'animate': true });
+                }
+                else {
+                    if (!prodname.trim()) {
+                        apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "El campo Nombre de Producto NO puede quedar vacío", { 'animate': true });
+                    }
+                    else {
+                        $.ajax({
+                            url: "../SalesModule/createnewproduct/",
+                            type: "POST",
+                            dataType: "json",
+                            data: { ProductN: prodname, clientid: client, editionid: edition },
+                            success: function (data) {
+
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                if (data == false) {
+                                    d += "<li>El Producto Ya Existe!!!</li>"
+                                    apprise("" + d + "", { 'animate': true });
+                                }
+                                console.log(data);
+                            },
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+    @*END*@
+    @**INSERT INTO PARTICIPANTPRODUCTS*@
+    <script>
+        $(document).ready(function () {
+            $(".Participant").click(function () {
+                var tr = $(this).parents("tr:first");
+                if (tr.find(".Participant").is(':checked')) {
+                    var prodId = tr.find("#lblProductid").val();
+                    var client = $("#clientid").val();
+                    var edition = $("#editionid").val();
+                    tr.find("#lblProductid").text(prodId);
+                    var App = 0;
+                    var User = 0;
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/insertparticipantproducts/",
+                        traditional: true,
+                        data: { productid: prodId, clientid: client, editionid: edition },
+                        success: function (data) {
+                        }
+                    });
+                }
+                else if (tr.find(".Participant").is(":not(:checked)")) {
+
+                    var prodId = tr.find("#lblProductid").val();
+                    var client = $("#clientid").val();
+                    var edition = $("#editionid").val();
+                    tr.find("#lblProductid").text(prodId);
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/deleteparticipantproducts/",
+                        traditional: true,
+                        data: { ProductId: prodId, clientid: client, editionid: edition },
+                        success: function (data) {
+                        }
+                    });
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+    @*PREDICTIVE*@
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div style="text-align:right;display:none">
+            <p>
+                <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+
+            </p>
+        </div>
+    }
+    <br />
+    <br />
+    <nav class="navbar navbar-inverse" style="background-color:white;border:none" data-spy="affix" data-offset-top="197">
+        <ol class="breadcrumb">
+            <li><a href="/SalesModule/Index">Ventas</a></li>
+            <li class="active">Productos</li>
+        </ol>
+        <div style="width: 50%; float: left">
+            <table style="width:100%" border="0">
+
+                <tr>
+                    <td width="100px">
+                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                    </td>
+                    <td style="line-height: 40px;width:15px"></td>
+                    <td style="line-height: 40px;">
+                        <div style="text-align:left;">
+                            @using (Html.BeginForm())
+                            {
+                                <select name="pais" id="pais" class="country form-focus" style="text-align:left; width:800px; font-size:16px;height:35px">
+                                    <option class="null">Seleccione...</option>
+                                    @{
+                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                if (Session["CountriesUsers"] == null)
+                                {
+                                    Session.Abandon();
+                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                    Response.End();
+
+                                }
+                                else if (p != null)
+                                {
+                                    List<string> d = p.var;
+                                    foreach (string f in d)
+                                    {
+                                        var countries = (from country in db.Countries
+                                                         where country.ID == f
+                                                         select country);
+                                        foreach (Countries w in countries)
+                                        {
+                                            <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                        }
+                                    }
+                                }
+                                    }
+
+                                </select>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 40px;">
+                        <label for="bookname" id="lblbook" style="display:none">Obra:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblbook1">*</label>
+
+                    </td>
+                    <td style="line-height: 40px;width:15px"></td>
+                    <td style="line-height: 40px;">
+                        <select name="book" id="bookn" class="insert form-focus" style="text-align:left;display:none; width:600px;font-size:16px;height:35px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 40px;">
+                        <label for="Edition" id="lblEdition" style="display:none">Edición:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblEdition1">*</label>
+                    </td>
+                    <td style="line-height: 40px;width:15px"></td>
+                    <td style="line-height: 40px;">
+                        <select name="Edition" id="Edition" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 40px;">
+                        <label for="DivisionName" id="lblclient" style="display:none">Cliente:</label><label style="color:red;float:right;font-size:20px;display:none" id="lblclient1">*</label>
+                    </td>
+                    <td style="line-height: 40px;width:15px"></td>
+                    <td style="line-height: 40px;">
+                        <select name="clients" id="clients" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 50%;float:right">
+            <table style="width:100%" border="0">
+                <tr style="line-height: 40px;">
+                    <td colspan="3" style="text-align:center; font-size:16px;font-style:italic"><label class="label-warning" style="height: 35px; width: 100%; border-radius: 10px; background-color: #2e4a4f; color: white; ">AGREGAR NUEVO PRODUCTO</label></td>
+                </tr>
+                <tr style="line-height: 40px;">
+                    <td style="height:20px"></td>
+                </tr>
+                <tr style="line-height: 40px;">
+                    <td style="width:35%; font-size:16px;text-align:right"><label class="labels">Nombre de Producto:</label></td>
+                    <td style="width:30px"></td>
+                    <td><input type="text" class="form-control" id="productname" /></td>
+                </tr>
+                <tr style="line-height: 40px;">
+                    <td style="height:20px"></td>
+                </tr>
+                <tr style="line-height: 40px;">
+                    <td style="height:20px;text-align:center" colspan="3">
+                        <p style="text-align:center "> <button type="submit" id="Insert" value="Insertar" class="submit btn btn-info" style="color: #333; font-size: 17px; width: 85px; height: 35px">Insertar</button></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#productname").autocomplete({
+                    source: "/SalesModule/searchpredictive",
+                    minLength: 3
+                });
+            });
+        </script>
+        <br />
+        @{
+            indexsalesmodule ind = (indexsalesmodule)Session["indexsalesmodule"];
+            if (ind != null)
+            {
+                <table style="width:100%" border="0">
+                    <tr>
+                        <td style="width:15%"><label class="labels">País: </label> </td>
+                        <td>
+                            @{
+                int countryid = ind.CId;
+                var countr = from countries in db.Countries
+                             where countries.CountryId == countryid
+                             select countries;
+                foreach (Countries c in countr)
+                {
+                    <label>@c.CountryName</label><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+                }
+
+                            }
+                        </td>
+                        <td rowspan="4" style="text-align:center;width:30%">
+                            @{
+                if (ind != null)
+                {
+                    using (Html.BeginForm("searchproduct", "SalesModule"))
+                    {
+                        <label>Buscar Producto:&nbsp;</label>  @Html.TextBox("ProductName", "", new { @class = "form-focus" })
+                                <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                    }
+                }
+                            }
+                        </td>
+
+                        <td rowspan="4" style="text-align:center;width:5%">
+                            <a target="_blank" href="@Url.Action("GetReport","GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdf.png")" style="height: 85px; width: 85px; "></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="labels">Obra:</label></td>
+                        <td>
+                            @{
+                int bookid = ind.BId;
+                var books = from book in db.Books
+                            where book.BookId == bookid
+                            select book;
+                foreach (Books b in books)
+                {
+                    <label>@b.BookName</label><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="labels">Edición:</label></td>
+                        <td>
+                            @{
+                int edition = ind.EId;
+                var _edition = from editions in db.Editions
+                               where editions.EditionId == edition
+                               select editions;
+                foreach (Editions e in _edition)
+                {
+                    <label>@e.NumberEdition</label><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+                }
+
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="labels">Cliente:</label></td>
+                        <td>
+                            @{
+                int client = ind.ClId;
+                var clients = from _clients in db.Clients
+                              where _clients.ClientId == client
+                              select _clients;
+                foreach (Clients c in clients)
+                {
+                    <label>@c.CompanyName</label><input type="text" style="display:none" id="clientid" value="@c.ClientId" />
+                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: center; line-height: 40px;">
+
+                            @{
+                var count = ViewData["Count"];
+                var countprod = ViewData["Countresults"];
+                if ((count == null) && (countprod != null))
+                {
+                    <label class="labels">Se han encontrado: @ViewData["Countresults"] resultados</label>
+                }
+                else if ((countprod == null) && (count == null))
+                {
+                    <label id="result" style="display:normal; color:red">No se Han Encontrado Productos en esta Edición para el Cliente</label>
+                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+
+            }
+        }
+        <div>
+            <table style="width:100%">
+                <tr style="height: 50px">
+                    <td style="background-color: #05606d; border-radius: 10px; text-align: center;height:30px;font-size:15px; width: 57.5%; "><label style="color:white;">Nombre de Producto</label></td>
+                    <td style="background-color: #05606d; border-radius: 10px; text-align: center; height: 30px; font-size: 15px; width: 20%; "><label style="color:white;">Participante</label></td>
+                    <td style="background-color: #05606d; border-radius: 10px; text-align: center; height: 30px; font-size: 15px; width: 17%; "><label style="color:white;">Editar Nombre de Producto</label></td>
+                </tr>
+            </table>
+        </div>
+    </nav>
+    <div>
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header1",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblName" style="width:180px">@item.ProductName</label> </span>
+                                    <textarea style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="Name" class="edit-mode edprod">@item.ProductName</textarea>
+                                    <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.ProductId" />
+                                }
+                        </text>,style:"column1"),
+         _datagrid.Column("",  format: @<text>
+            @{
+                indexsalesmodule index = (indexsalesmodule)Session["indexsalesmodule"];
+                int editionid = index.EId;
+                var pp = (from ParticipantP in db.ParticipantProducts
+                          where ParticipantP.EditionId == editionid
+                         select ParticipantP).ToList();
+                         bool participant = false;
+                         foreach(ParticipantProducts p in pp)
+                         {
+                             if(@item.ProductId == p.ProductId)
+                             {
+                                 participant = true;
+                             }
+                         }
+                        <input type="checkbox" class="Participant" checked="@participant" />
+            }
+        </text>,style:"buton column2"),
+                                  _datagrid.Column("",format: @<text>
+            @{
+                <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-info"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning" value="@item.ProductName"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+            }
+                                </text>,style:"buton column3")
+        })
+    </div>
+</body>
+</html>

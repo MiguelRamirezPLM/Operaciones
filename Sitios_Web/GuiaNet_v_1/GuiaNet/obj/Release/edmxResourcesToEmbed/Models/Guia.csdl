@@ -1,0 +1,2869 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GuiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryCode" Type="Byte" />
+    <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Addresses" Relationship="GuiaModel.R_46" FromRole="Countries" ToRole="Addresses" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_21" FromRole="Countries" ToRole="Editions" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.R_124" FromRole="Countries" ToRole="Clients" />
+    <NavigationProperty Name="States" Relationship="GuiaModel.R_16" FromRole="Countries" ToRole="States" />
+  </EntityType>
+  <EntityContainer Name="Guia" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Countries" EntityType="Self.Countries" />
+    <EntitySet Name="Addresses" EntityType="GuiaModel.Addresses" />
+    <EntitySet Name="Books" EntityType="GuiaModel.Books" />
+    <EntitySet Name="Clients" EntityType="GuiaModel.Clients" />
+    <EntitySet Name="Editions" EntityType="GuiaModel.Editions" />
+    <AssociationSet Name="R_46" Association="GuiaModel.R_46">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="GuiaModel.R_23">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="GuiaModel.R_24">
+      <End EntitySet="Clients" Role="Clients" />
+      <End EntitySet="Clients" Role="Clients1" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="GuiaModel.R_21">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_33" Association="GuiaModel.R_33">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_124" Association="GuiaModel.R_124">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <EntitySet Name="ClientCategories" EntityType="GuiaModel.ClientCategories" />
+    <AssociationSet Name="R_108" Association="GuiaModel.R_108">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <FunctionImport Name="PRUEBAARBOL" ReturnType="Collection(GuiaModel.PRUEBAARBOL_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="ActiveSubstances" EntityType="GuiaModel.ActiveSubstances" />
+    <EntitySet Name="Alphabet" EntityType="GuiaModel.Alphabet" />
+    <EntitySet Name="AttributeGroup" EntityType="GuiaModel.AttributeGroup" />
+    <EntitySet Name="Attributes" EntityType="GuiaModel.Attributes" />
+    <EntitySet Name="Brands" EntityType="GuiaModel.Brands" />
+    <EntitySet Name="ClientBrandTypes" EntityType="GuiaModel.ClientBrandTypes" />
+    <EntitySet Name="ClientProductCategories" EntityType="GuiaModel.ClientProductCategories" />
+    <EntitySet Name="ClientProducts" EntityType="GuiaModel.ClientProducts" />
+    <EntitySet Name="ClientTypes" EntityType="GuiaModel.ClientTypes" />
+    <EntitySet Name="EditionAttributeGroup" EntityType="GuiaModel.EditionAttributeGroup" />
+    <EntitySet Name="EditionAttributes" EntityType="GuiaModel.EditionAttributes" />
+    <EntitySet Name="EditionClientCategories" EntityType="GuiaModel.EditionClientCategories" />
+    <EntitySet Name="EditionClientProducts" EntityType="GuiaModel.EditionClientProducts" />
+    <EntitySet Name="EditionClientProductShots" EntityType="GuiaModel.EditionClientProductShots" />
+    <EntitySet Name="EditionClients" EntityType="GuiaModel.EditionClients" />
+    <EntitySet Name="EditionClientSpecialities" EntityType="GuiaModel.EditionClientSpecialities" />
+    <EntitySet Name="ParticipantProducts" EntityType="GuiaModel.ParticipantProducts" />
+    <EntitySet Name="PharmaceuticalForms" EntityType="GuiaModel.PharmaceuticalForms" />
+    <EntitySet Name="PhoneTypes" EntityType="GuiaModel.PhoneTypes" />
+    <EntitySet Name="Presentations" EntityType="GuiaModel.Presentations" />
+    <EntitySet Name="ProductContents" EntityType="GuiaModel.ProductContents" />
+    <EntitySet Name="ProductPharmaForms" EntityType="GuiaModel.ProductPharmaForms" />
+    <EntitySet Name="Products" EntityType="GuiaModel.Products" />
+    <EntitySet Name="ProductSubstances" EntityType="GuiaModel.ProductSubstances" />
+    <EntitySet Name="ProductTypes" EntityType="GuiaModel.ProductTypes" />
+    <EntitySet Name="Specialities" EntityType="GuiaModel.Specialities" />
+    <EntitySet Name="States" EntityType="GuiaModel.States" />
+    <AssociationSet Name="R_76" Association="GuiaModel.R_76">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_69" Association="GuiaModel.R_69">
+      <End Role="States" EntitySet="States" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_91" Association="GuiaModel.R_91">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Brands" EntitySet="Brands" />
+    </AssociationSet>
+    <AssociationSet Name="R_92" Association="GuiaModel.R_92">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_93" Association="GuiaModel.R_93">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_118" Association="GuiaModel.R_118">
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_121" Association="GuiaModel.R_121">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_56" Association="GuiaModel.R_56">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_89" Association="GuiaModel.R_89">
+      <End Role="ClientTypes" EntitySet="ClientTypes" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_16" Association="GuiaModel.R_16">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_100" Association="GuiaModel.R_100">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_119" Association="GuiaModel.R_119">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_123" Association="GuiaModel.R_123">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="EditionClientProductShots" EntitySet="EditionClientProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_55" Association="GuiaModel.R_55">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_59" Association="GuiaModel.R_59">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+    </AssociationSet>
+    <AssociationSet Name="R_60" Association="GuiaModel.R_60">
+      <End Role="Specialities" EntitySet="Specialities" />
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+    </AssociationSet>
+    <AssociationSet Name="R_122" Association="GuiaModel.R_122">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_99" Association="GuiaModel.R_99">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_74" Association="GuiaModel.R_74">
+      <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_78" Association="GuiaModel.R_78">
+      <End Role="Presentations" EntitySet="Presentations" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_73" Association="GuiaModel.R_73">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_75" Association="GuiaModel.R_75">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_29" Association="GuiaModel.R_29">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Products1" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_72" Association="GuiaModel.R_72">
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <FunctionImport Name="GETPRODUCTS" ReturnType="Collection(GuiaModel.GETPRODUCTS_Result)">
+      <Parameter Name="clientid" Mode="In" Type="Int32" />
+      <Parameter Name="editionid" Mode="In" Type="Int32" />
+      <Parameter Name="countryid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="EditionClientMedicalProducts" EntityType="GuiaModel.EditionClientMedicalProducts" />
+    <AssociationSet Name="EditionsEditionClientMedicalProducts" Association="GuiaModel.EditionsEditionClientMedicalProducts">
+      <End EntitySet="Editions" Role="Editions" />
+      <End EntitySet="EditionClientMedicalProducts" Role="EditionClientMedicalProducts" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetCategoriestree" ReturnType="Collection(GuiaModel.plm_spGetCategoriestree_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="plm_vwMedicalProductsByClient" EntityType="GuiaModel.plm_vwMedicalProductsByClient" />
+    <FunctionImport Name="plm_spGetCategoryByClients" ReturnType="Collection(GuiaModel.plm_spGetCategoryByClients_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetCategoryByClientsSearch" ReturnType="Collection(GuiaModel.plm_spGetCategoryByClientsSearch_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="ClientProductSubstances" EntityType="GuiaModel.ClientProductSubstances" />
+    <AssociationSet Name="R_126" Association="GuiaModel.R_126">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_125" Association="GuiaModel.R_125">
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="ClientProductSubstancesEditionClientMedicalProducts" Association="GuiaModel.ClientProductSubstancesEditionClientMedicalProducts">
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+      <End Role="EditionClientMedicalProducts" EntitySet="EditionClientMedicalProducts" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetProductCategoriesByClient" ReturnType="Collection(GuiaModel.plm_spGetProductCategoriesByClient_Result)">
+      <Parameter Name="productid" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="editionid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetProductCategoriesByClientSearch" ReturnType="Collection(GuiaModel.plm_spGetProductCategoriesByClientSearch_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="productid" Mode="In" Type="Int32" />
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <AssociationSet Name="R_116" Association="GuiaModel.R_116">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+    </AssociationSet>
+    <EntitySet Name="Categories" EntityType="GuiaModel.Categories" />
+    <AssociationSet Name="R_109" Association="GuiaModel.R_109">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_117" Association="GuiaModel.R_117">
+      <End EntitySet="Categories" Role="Categories" />
+      <End EntitySet="ClientProductCategories" Role="ClientProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_50" Association="GuiaModel.R_50">
+      <End EntitySet="Categories" Role="Categories" />
+      <End EntitySet="Categories" Role="Categories1" />
+    </AssociationSet>
+    <AssociationSet Name="ClientCategoriesEditionClientCategories" Association="GuiaModel.ClientCategoriesEditionClientCategories">
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+      <End Role="EditionClientCategories" EntitySet="EditionClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="EditionsEditionClientCategories" Association="GuiaModel.EditionsEditionClientCategories">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientCategories" EntitySet="EditionClientCategories" />
+    </AssociationSet>
+    <EntitySet Name="HeterogeneousCategories" EntityType="GuiaModel.HeterogeneousCategories" />
+    <EntitySet Name="MatchCategories" EntityType="GuiaModel.MatchCategories" />
+    <AssociationSet Name="R_135" Association="GuiaModel.R_135">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="MatchCategories" EntitySet="MatchCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_133" Association="GuiaModel.R_133">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="MatchCategories" EntitySet="MatchCategories" />
+    </AssociationSet>
+    <EntitySet Name="plm_vwReportProductsByClient" EntityType="GuiaModel.plm_vwReportProductsByClient" />
+    <EntitySet Name="plm_vwProductsByClient" EntityType="GuiaModel.plm_vwProductsByClient" />
+    <FunctionImport Name="plm_spGetCategoriestreeClasification" ReturnType="Collection(GuiaModel.plm_spGetCategoriestreeClasification_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetHeterogeneousCategories" ReturnType="Collection(GuiaModel.plm_spGetHeterogeneousCategories_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetNewCategories" ReturnType="Collection(GuiaModel.plm_spGetNewCategories_Result)">
+      <Parameter Name="Param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="ClientProductHeterogeneousCategories" EntityType="GuiaModel.ClientProductHeterogeneousCategories" />
+    <AssociationSet Name="HeterogeneousCategoriesClientProductHeterogeneousCategories" Association="GuiaModel.HeterogeneousCategoriesClientProductHeterogeneousCategories">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="ClientProductHeterogeneousCategories" EntitySet="ClientProductHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="ClientProductsClientProductHeterogeneousCategories" Association="GuiaModel.ClientProductsClientProductHeterogeneousCategories">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductHeterogeneousCategories" EntitySet="ClientProductHeterogeneousCategories" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetHeterogeneousCategoriesDetails" ReturnType="Collection(GuiaModel.plm_spGetHeterogeneousCategoriesDetails_Result)">
+      <Parameter Name="param" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <AssociationSet Name="R_1001" Association="GuiaModel.R_1001">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <EntitySet Name="plm_vwProductCategoryByClients" EntityType="GuiaModel.plm_vwProductCategoryByClients" />
+    <EntitySet Name="plm_vwHeterogeneousCategories" EntityType="GuiaModel.plm_vwHeterogeneousCategories" />
+    <EntitySet Name="EditionClientHeterogeneousCategories" EntityType="GuiaModel.EditionClientHeterogeneousCategories" />
+    <AssociationSet Name="EditionsEditionClientHeterogeneousCategories" Association="GuiaModel.EditionsEditionClientHeterogeneousCategories">
+      <End EntitySet="Editions" Role="Editions" />
+      <End EntitySet="EditionClientHeterogeneousCategories" Role="EditionClientHeterogeneousCategories" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetEditionHeterogeneousCategoryByClients" ReturnType="Collection(GuiaModel.plm_spGetEditionHeterogeneousCategoryByClients_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="type" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetHeterogeneousCategoryByClientsSearch" ReturnType="Collection(GuiaModel.plm_spGetHeterogeneousCategoryByClientsSearch_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="plm_vwHeterogeneousCategoryByClients" EntityType="GuiaModel.plm_vwHeterogeneousCategoryByClients" />
+    <EntitySet Name="ClientHeterogeneousCategories" EntityType="GuiaModel.ClientHeterogeneousCategories" />
+    <AssociationSet Name="R_94" Association="GuiaModel.R_94">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="R_129" Association="GuiaModel.R_129">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="ClientHeterogeneousCategories" EntitySet="ClientHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_130" Association="GuiaModel.R_130">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientHeterogeneousCategories" EntitySet="ClientHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_136" Association="GuiaModel.R_136">
+      <End Role="ClientHeterogeneousCategories" EntitySet="ClientHeterogeneousCategories" />
+      <End Role="EditionClientHeterogeneousCategories" EntitySet="EditionClientHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_138" Association="GuiaModel.R_138">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ClientHeterogeneousCategories" EntitySet="ClientHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_114" Association="GuiaModel.R_114">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_98" Association="GuiaModel.R_98">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="R_96" Association="GuiaModel.R_96">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <EntitySet Name="ImagesSizes" EntityType="GuiaModel.ImagesSizes" />
+    <EntitySet Name="EditionProductShotSizes" EntityType="GuiaModel.EditionProductShotSizes" />
+    <AssociationSet Name="ImagesSizesEditionProductShotSizes" Association="GuiaModel.ImagesSizesEditionProductShotSizes">
+      <End Role="ImagesSizes" EntitySet="ImagesSizes" />
+      <End Role="EditionProductShotSizes" EntitySet="EditionProductShotSizes" />
+    </AssociationSet>
+    <AssociationSet Name="EditionClientProductShotsEditionProductShotSizes" Association="GuiaModel.EditionClientProductShotsEditionProductShotSizes">
+      <End Role="EditionClientProductShots" EntitySet="EditionClientProductShots" />
+      <End Role="EditionProductShotSizes" EntitySet="EditionProductShotSizes" />
+    </AssociationSet>
+    <EntitySet Name="BarCodes" EntityType="GuiaModel.BarCodes" />
+    <EntitySet Name="ClientProductBarCodes" EntityType="GuiaModel.ClientProductBarCodes" />
+    <EntitySet Name="ProductPrices" EntityType="GuiaModel.ProductPrices" />
+    <AssociationSet Name="R_140" Association="GuiaModel.R_140">
+      <End Role="BarCodes" EntitySet="BarCodes" />
+      <End Role="ClientProductBarCodes" EntitySet="ClientProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_139" Association="GuiaModel.R_139">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductBarCodes" EntitySet="ClientProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_141" Association="GuiaModel.R_141">
+      <End Role="ClientProductBarCodes" EntitySet="ClientProductBarCodes" />
+      <End Role="ProductPrices" EntitySet="ProductPrices" />
+    </AssociationSet>
+    <EntitySet Name="SourcePrices" EntityType="GuiaModel.SourcePrices" />
+    <AssociationSet Name="R_142" Association="GuiaModel.R_142">
+      <End Role="SourcePrices" EntitySet="SourcePrices" />
+      <End Role="ProductPrices" EntitySet="ProductPrices" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetProductsByClients" ReturnType="Collection(GuiaModel.plm_spGetProductsByClients_Result)">
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="typeid" Mode="In" Type="Int32" />
+      <Parameter Name="EditionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetMedicalProductsByClients" ReturnType="Collection(GuiaModel.plm_spGetMedicalProductsByClients_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="plm_vwProductsByClientRegisterandBarcode" EntityType="GuiaModel.plm_vwProductsByClientRegisterandBarcode" />
+    <FunctionImport Name="plm_spGetAttributesByFormation" ReturnType="Collection(GuiaModel.plm_spGetAttributesByFormation_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetClientSpecialities" ReturnType="Collection(GuiaModel.plm_spGetClientSpecialities_Result)">
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetClientBrandsClasification" ReturnType="Collection(GuiaModel.plm_spGetClientBrandsClasification_Result)">
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetCategoryByProducts" ReturnType="Collection(GuiaModel.plm_spGetCategoryByProducts_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="ClientAddresses" EntityType="GuiaModel.ClientAddresses" />
+    <AssociationSet Name="ClientsClientAddresses" Association="GuiaModel.ClientsClientAddresses">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="AddressesClientAddresses" Association="GuiaModel.AddressesClientAddresses">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+    </AssociationSet>
+    <EntitySet Name="ClientPhones" EntityType="GuiaModel.ClientPhones" />
+    <AssociationSet Name="R_104" Association="GuiaModel.R_104">
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+      <End Role="ClientPhones" EntitySet="ClientPhones" />
+    </AssociationSet>
+    <AssociationSet Name="R_31" Association="GuiaModel.R_31">
+      <End Role="PhoneTypes" EntitySet="PhoneTypes" />
+      <End Role="ClientPhones" EntitySet="ClientPhones" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetHeterogeneousCategoriesallforSalesModule" ReturnType="Collection(GuiaModel.plm_spGetHeterogeneousCategoriesallforSalesModule_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="BrandImageSizes" EntityType="GuiaModel.BrandImageSizes" />
+    <AssociationSet Name="R_152" Association="GuiaModel.R_152">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="BrandImageSizes" EntitySet="BrandImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="R_153" Association="GuiaModel.R_153">
+      <End Role="ImagesSizes" EntitySet="ImagesSizes" />
+      <End Role="BrandImageSizes" EntitySet="BrandImageSizes" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetProductsByEdition" ReturnType="Collection(GuiaModel.plm_spGetProductsByEdition_Result)">
+      <Parameter Name="EditionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetSpecialitiesByClient" ReturnType="Collection(GuiaModel.plm_spGetSpecialitiesByClient_Result)">
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="countryId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetBrandsByClient" ReturnType="Collection(GuiaModel.plm_spGetBrandsByClient_Result)">
+      <Parameter Name="clientId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="Advertisements" EntityType="GuiaModel.Advertisements" />
+    <EntitySet Name="AdvertTypes" EntityType="GuiaModel.AdvertTypes" />
+    <AssociationSet Name="R_85" Association="GuiaModel.R_85">
+      <End Role="AdvertTypes" EntitySet="AdvertTypes" />
+      <End Role="Advertisements" EntitySet="Advertisements" />
+    </AssociationSet>
+    <EntitySet Name="EditionSpecialityClientAdvers" EntityType="GuiaModel.EditionSpecialityClientAdvers" />
+    <AssociationSet Name="R_65" Association="GuiaModel.R_65">
+      <End Role="Advertisements" EntitySet="Advertisements" />
+      <End Role="EditionSpecialityClientAdvers" EntitySet="EditionSpecialityClientAdvers" />
+    </AssociationSet>
+    <AssociationSet Name="R_64" Association="GuiaModel.R_64">
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+      <End Role="EditionSpecialityClientAdvers" EntitySet="EditionSpecialityClientAdvers" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetParticipantProductsToClasification" ReturnType="Collection(GuiaModel.plm_spGetParticipantProductsToClasification_Result)">
+      <Parameter Name="ClientId" Mode="In" Type="Int32" />
+      <Parameter Name="EditionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="HomogeneousCategories" EntityType="GuiaModel.HomogeneousCategories" />
+    <AssociationSet Name="R_151" Association="GuiaModel.R_151">
+      <End Role="HomogeneousCategories" EntitySet="HomogeneousCategories" />
+      <End Role="HomogeneousCategories1" EntitySet="HomogeneousCategories" />
+    </AssociationSet>
+    <EntitySet Name="LeafCategories" EntityType="GuiaModel.LeafCategories" />
+    <EntitySet Name="LeafHomogeneousCategories" EntityType="GuiaModel.LeafHomogeneousCategories" />
+    <AssociationSet Name="LeafCategoriesLeafHomogeneousCategories" Association="GuiaModel.LeafCategoriesLeafHomogeneousCategories">
+      <End Role="LeafCategories" EntitySet="LeafCategories" />
+      <End Role="LeafHomogeneousCategories" EntitySet="LeafHomogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="HomogeneousCategoriesLeafHomogeneousCategories" Association="GuiaModel.HomogeneousCategoriesLeafHomogeneousCategories">
+      <End Role="HomogeneousCategories" EntitySet="HomogeneousCategories" />
+      <End Role="LeafHomogeneousCategories" EntitySet="LeafHomogeneousCategories" />
+    </AssociationSet>
+    <EntitySet Name="ClientProductLeafCategories" EntityType="GuiaModel.ClientProductLeafCategories" />
+    <AssociationSet Name="LeafHomogeneousCategoriesClientProductLeafCategories" Association="GuiaModel.LeafHomogeneousCategoriesClientProductLeafCategories">
+      <End Role="LeafHomogeneousCategories" EntitySet="LeafHomogeneousCategories" />
+      <End Role="ClientProductLeafCategories" EntitySet="ClientProductLeafCategories" />
+    </AssociationSet>
+    <AssociationSet Name="ClientProductsClientProductLeafCategories" Association="GuiaModel.ClientProductsClientProductLeafCategories">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductLeafCategories" EntitySet="ClientProductLeafCategories" />
+    </AssociationSet>
+    <EntitySet Name="plm_vwCategoryByClients" EntityType="GuiaModel.plm_vwCategoryByClients" />
+    <EntitySet Name="ClientBrands" EntityType="GuiaModel.ClientBrands" />
+    <AssociationSet Name="R_82" Association="GuiaModel.R_82">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_3" Association="GuiaModel.R_3">
+      <End Role="ClientBrandTypes" EntitySet="ClientBrandTypes" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_81" Association="GuiaModel.R_81">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <EntitySet Name="Status" EntityType="GuiaModel.Status" />
+    <EntitySet Name="ProductStatus" EntityType="GuiaModel.ProductStatus" />
+    <AssociationSet Name="StatusProductStatus" Association="GuiaModel.StatusProductStatus">
+      <End EntitySet="Status" Role="Status" />
+      <End EntitySet="ProductStatus" Role="ProductStatus" />
+    </AssociationSet>
+    <AssociationSet Name="ClientProductsProductStatus" Association="GuiaModel.ClientProductsProductStatus">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ProductStatus" EntitySet="ProductStatus" />
+    </AssociationSet>
+    <EntitySet Name="ClientMedicalProductsBarCode" EntityType="GuiaModel.ClientMedicalProductsBarCode" />
+    <AssociationSet Name="R_1551" Association="GuiaModel.R_1551">
+      <End Role="BarCodes" EntitySet="BarCodes" />
+      <End Role="ClientMedicalProductsBarCode" EntitySet="ClientMedicalProductsBarCode" />
+    </AssociationSet>
+    <AssociationSet Name="R_1541" Association="GuiaModel.R_1541">
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+      <End Role="ClientMedicalProductsBarCode" EntitySet="ClientMedicalProductsBarCode" />
+    </AssociationSet>
+    <EntitySet Name="MentionatedProducts" EntityType="GuiaModel.MentionatedProducts" />
+    <AssociationSet Name="ClientProductsMentionatedProducts" Association="GuiaModel.ClientProductsMentionatedProducts">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+    </AssociationSet>
+    <AssociationSet Name="EditionsMentionatedProducts" Association="GuiaModel.EditionsMentionatedProducts">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="AddressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Suburb" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="StateId" Type="Int32" />
+    <NavigationProperty Name="Countries" Relationship="GuiaModel.R_46" FromRole="Addresses" ToRole="Countries" />
+    <NavigationProperty Name="States" Relationship="GuiaModel.R_69" FromRole="Addresses" ToRole="States" />
+    <NavigationProperty Name="ClientAddresses" Relationship="GuiaModel.AddressesClientAddresses" FromRole="Addresses" ToRole="ClientAddresses" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_23" FromRole="Books" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="ClientCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <Property Name="ANUNCIANTEID" Type="Int32" />
+    <NavigationProperty Name="Clients1" Relationship="GuiaModel.R_24" FromRole="Clients" ToRole="Clients1" />
+    <NavigationProperty Name="Clients2" Relationship="GuiaModel.R_24" FromRole="Clients1" ToRole="Clients" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="GuiaModel.R_124" FromRole="Clients" ToRole="Countries" />
+    <NavigationProperty Name="ClientCategories" Relationship="GuiaModel.R_108" FromRole="Clients" ToRole="ClientCategories" />
+    <NavigationProperty Name="Alphabet" Relationship="GuiaModel.R_92" FromRole="Clients" ToRole="Alphabet" />
+    <NavigationProperty Name="EditionClients" Relationship="GuiaModel.R_56" FromRole="Clients" ToRole="EditionClients" />
+    <NavigationProperty Name="ClientHeterogeneousCategories" Relationship="GuiaModel.R_130" FromRole="Clients" ToRole="ClientHeterogeneousCategories" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.R_114" FromRole="Clients" ToRole="ClientProducts" />
+    <NavigationProperty Name="ClientAddresses" Relationship="GuiaModel.ClientsClientAddresses" FromRole="Clients" ToRole="ClientAddresses" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="EditionCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Books" Relationship="GuiaModel.R_23" FromRole="Editions" ToRole="Books" />
+    <NavigationProperty Name="Countries" Relationship="GuiaModel.R_21" FromRole="Editions" ToRole="Countries" />
+    <NavigationProperty Name="Editions1" Relationship="GuiaModel.R_33" FromRole="Editions" ToRole="Editions1" />
+    <NavigationProperty Name="Editions2" Relationship="GuiaModel.R_33" FromRole="Editions1" ToRole="Editions" />
+    <NavigationProperty Name="EditionClientProducts" Relationship="GuiaModel.R_119" FromRole="Editions" ToRole="EditionClientProducts" />
+    <NavigationProperty Name="EditionClients" Relationship="GuiaModel.R_55" FromRole="Editions" ToRole="EditionClients" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="GuiaModel.R_122" FromRole="Editions" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="EditionClientMedicalProducts" Relationship="GuiaModel.EditionsEditionClientMedicalProducts" FromRole="Editions" ToRole="EditionClientMedicalProducts" />
+    <NavigationProperty Name="EditionClientCategories" Relationship="GuiaModel.EditionsEditionClientCategories" FromRole="Editions" ToRole="EditionClientCategories" />
+    <NavigationProperty Name="EditionClientHeterogeneousCategories" Relationship="GuiaModel.EditionsEditionClientHeterogeneousCategories" FromRole="Editions" ToRole="EditionClientHeterogeneousCategories" />
+    <NavigationProperty Name="ClientHeterogeneousCategories" Relationship="GuiaModel.R_138" FromRole="Editions" ToRole="ClientHeterogeneousCategories" />
+    <NavigationProperty Name="EditionAttributes" Relationship="GuiaModel.R_96" FromRole="Editions" ToRole="EditionAttributes" />
+    <NavigationProperty Name="MentionatedProducts" Relationship="GuiaModel.EditionsMentionatedProducts" FromRole="Editions" ToRole="MentionatedProducts" />
+  </EntityType>
+  <Association Name="R_46">
+    <End Type="GuiaModel.Countries" Role="Countries" Multiplicity="1" />
+    <End Type="GuiaModel.Addresses" Role="Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Type="GuiaModel.Books" Role="Books" Multiplicity="1" />
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Type="GuiaModel.Clients" Multiplicity="1" Role="Clients" />
+    <End Type="GuiaModel.Clients" Multiplicity="0..1" Role="Clients1" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="Clients1">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Type="GuiaModel.Countries" Role="Countries" Multiplicity="1" />
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_33">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.Editions" Role="Editions1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_124">
+    <End Type="GuiaModel.Countries" Role="Countries" Multiplicity="1" />
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ClientCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.R_108" FromRole="ClientCategories" ToRole="Clients" />
+    <NavigationProperty Name="Categories" Relationship="GuiaModel.R_109" FromRole="ClientCategories" ToRole="Categories" />
+    <NavigationProperty Name="EditionClientCategories" Relationship="GuiaModel.ClientCategoriesEditionClientCategories" FromRole="ClientCategories" ToRole="EditionClientCategories" />
+  </EntityType>
+  <Association Name="R_108">
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="1" />
+    <End Type="GuiaModel.ClientCategories" Role="ClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientCategories">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="PRUEBAARBOL_Result">
+    <Property Type="Int32" Name="CategoryId" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="255" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActiveSubstance" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductSubstances" Relationship="GuiaModel.R_76" FromRole="ActiveSubstances" ToRole="ProductSubstances" />
+  </EntityType>
+  <EntityType Name="Alphabet">
+    <Key>
+      <PropertyRef Name="AlphabetId" />
+    </Key>
+    <Property Name="AlphabetId" Type="Byte" Nullable="false" />
+    <Property Name="Letter" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Brands" Relationship="GuiaModel.R_91" FromRole="Alphabet" ToRole="Brands" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.R_92" FromRole="Alphabet" ToRole="Clients" />
+    <NavigationProperty Name="Products" Relationship="GuiaModel.R_93" FromRole="Alphabet" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AttributeGroupOrder" Type="Int32" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductContents" Relationship="GuiaModel.R_1001" FromRole="Attributes" ToRole="ProductContents" />
+    <NavigationProperty Name="EditionAttributes" Relationship="GuiaModel.R_94" FromRole="Attributes" ToRole="EditionAttributes" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BrandName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Logo" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <NavigationProperty Name="Alphabet" Relationship="GuiaModel.R_91" FromRole="Brands" ToRole="Alphabet" />
+    <NavigationProperty Name="BrandImageSizes" Relationship="GuiaModel.R_152" FromRole="Brands" ToRole="BrandImageSizes" />
+    <NavigationProperty Name="ClientBrands" Relationship="GuiaModel.R_82" FromRole="Brands" ToRole="ClientBrands" />
+  </EntityType>
+  <EntityType Name="ClientBrandTypes">
+    <Key>
+      <PropertyRef Name="ClientBrandTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ClientBrands" Relationship="GuiaModel.R_3" FromRole="ClientBrandTypes" ToRole="ClientBrands" />
+  </EntityType>
+  <EntityType Name="ClientProductCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EditionClientProducts" Relationship="GuiaModel.R_118" FromRole="ClientProductCategories" ToRole="EditionClientProducts" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.R_116" FromRole="ClientProductCategories" ToRole="ClientProducts" />
+    <NavigationProperty Name="Categories" Relationship="GuiaModel.R_117" FromRole="ClientProductCategories" ToRole="Categories" />
+  </EntityType>
+  <EntityType Name="ClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="GuiaModel.R_121" FromRole="ClientProducts" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="GuiaModel.R_126" FromRole="ClientProducts" ToRole="ClientProductSubstances" />
+    <NavigationProperty Name="ClientProductCategories" Relationship="GuiaModel.R_116" FromRole="ClientProducts" ToRole="ClientProductCategories" />
+    <NavigationProperty Name="ClientProductHeterogeneousCategories" Relationship="GuiaModel.ClientProductsClientProductHeterogeneousCategories" FromRole="ClientProducts" ToRole="ClientProductHeterogeneousCategories" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.R_114" FromRole="ClientProducts" ToRole="Clients" />
+    <Property Name="RegisterSanitary" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ClientProductBarCodes" Relationship="GuiaModel.R_139" FromRole="ClientProducts" ToRole="ClientProductBarCodes" />
+    <NavigationProperty Name="ClientProductLeafCategories" Relationship="GuiaModel.ClientProductsClientProductLeafCategories" FromRole="ClientProducts" ToRole="ClientProductLeafCategories" />
+    <NavigationProperty Name="ProductStatus" Relationship="GuiaModel.ClientProductsProductStatus" FromRole="ClientProducts" ToRole="ProductStatus" />
+    <NavigationProperty Name="MentionatedProducts" Relationship="GuiaModel.ClientProductsMentionatedProducts" FromRole="ClientProducts" ToRole="MentionatedProducts" />
+  </EntityType>
+  <EntityType Name="ClientTypes">
+    <Key>
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <Property Name="TypeName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionClients" Relationship="GuiaModel.R_89" FromRole="ClientTypes" ToRole="EditionClients" />
+  </EntityType>
+  <EntityType Name="EditionAttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionAttributes" Relationship="GuiaModel.R_98" FromRole="EditionAttributeGroup" ToRole="EditionAttributes" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductContents" Relationship="GuiaModel.R_100" FromRole="EditionAttributes" ToRole="ProductContents" />
+    <NavigationProperty Name="Attributes" Relationship="GuiaModel.R_94" FromRole="EditionAttributes" ToRole="Attributes" />
+    <NavigationProperty Name="EditionAttributeGroup" Relationship="GuiaModel.R_98" FromRole="EditionAttributes" ToRole="EditionAttributeGroup" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_96" FromRole="EditionAttributes" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionClientCategories">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientCategories" Relationship="GuiaModel.ClientCategoriesEditionClientCategories" FromRole="EditionClientCategories" ToRole="ClientCategories" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.EditionsEditionClientCategories" FromRole="EditionClientCategories" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ClientProductCategories" Relationship="GuiaModel.R_118" FromRole="EditionClientProducts" ToRole="ClientProductCategories" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_119" FromRole="EditionClientProducts" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionClientProductShots">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ProductShot" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="GuiaModel.R_123" FromRole="EditionClientProductShots" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="EditionProductShotSizes" Relationship="GuiaModel.EditionClientProductShotsEditionProductShotSizes" FromRole="EditionClientProductShots" ToRole="EditionProductShotSizes" />
+  </EntityType>
+  <EntityType Name="EditionClients">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.R_56" FromRole="EditionClients" ToRole="Clients" />
+    <NavigationProperty Name="ClientTypes" Relationship="GuiaModel.R_89" FromRole="EditionClients" ToRole="ClientTypes" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_55" FromRole="EditionClients" ToRole="Editions" />
+    <NavigationProperty Name="EditionClientSpecialities" Relationship="GuiaModel.R_59" FromRole="EditionClients" ToRole="EditionClientSpecialities" />
+    <NavigationProperty Name="ClientBrands" Relationship="GuiaModel.R_81" FromRole="EditionClients" ToRole="ClientBrands" />
+  </EntityType>
+  <EntityType Name="EditionClientSpecialities">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="SpecialityId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="SpecialityId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="EditionClients" Relationship="GuiaModel.R_59" FromRole="EditionClientSpecialities" ToRole="EditionClients" />
+    <NavigationProperty Name="Specialities" Relationship="GuiaModel.R_60" FromRole="EditionClientSpecialities" ToRole="Specialities" />
+    <Property Name="AdversDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Quantity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="EditionSpecialityClientAdvers" Relationship="GuiaModel.R_64" FromRole="EditionClientSpecialities" ToRole="EditionSpecialityClientAdvers" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.R_121" FromRole="ParticipantProducts" ToRole="ClientProducts" />
+    <NavigationProperty Name="EditionClientProductShots" Relationship="GuiaModel.R_123" FromRole="ParticipantProducts" ToRole="EditionClientProductShots" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_122" FromRole="ParticipantProducts" ToRole="Editions" />
+    <NavigationProperty Name="ProductContents" Relationship="GuiaModel.R_99" FromRole="ParticipantProducts" ToRole="ProductContents" />
+    <Property Name="Active" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="PharmaceuticalForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="GuiaModel.R_74" FromRole="PharmaceuticalForms" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <EntityType Name="PhoneTypes">
+    <Key>
+      <PropertyRef Name="PhoneTypeId" />
+    </Key>
+    <Property Name="PhoneTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ClientPhones" Relationship="GuiaModel.R_31" FromRole="PhoneTypes" ToRole="ClientPhones" />
+  </EntityType>
+  <EntityType Name="Presentations">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="PresentationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductSubstances" Relationship="GuiaModel.R_78" FromRole="Presentations" ToRole="ProductSubstances" />
+  </EntityType>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="PlainContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="HtmlContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EditionAttributes" Relationship="GuiaModel.R_100" FromRole="ProductContents" ToRole="EditionAttributes" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="GuiaModel.R_99" FromRole="ProductContents" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="Attributes" Relationship="GuiaModel.R_1001" FromRole="ProductContents" ToRole="Attributes" />
+  </EntityType>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PharmaceuticalForms" Relationship="GuiaModel.R_74" FromRole="ProductPharmaForms" ToRole="PharmaceuticalForms" />
+    <NavigationProperty Name="Products" Relationship="GuiaModel.R_73" FromRole="ProductPharmaForms" ToRole="Products" />
+    <NavigationProperty Name="ProductSubstances" Relationship="GuiaModel.R_75" FromRole="ProductPharmaForms" ToRole="ProductSubstances" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <Property Name="ProductId_Anterior" Type="Int32" />
+    <NavigationProperty Name="Alphabet" Relationship="GuiaModel.R_93" FromRole="Products" ToRole="Alphabet" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="GuiaModel.R_73" FromRole="Products" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="Products1" Relationship="GuiaModel.R_29" FromRole="Products" ToRole="Products1" />
+    <NavigationProperty Name="Products2" Relationship="GuiaModel.R_29" FromRole="Products1" ToRole="Products" />
+    <NavigationProperty Name="ProductTypes" Relationship="GuiaModel.R_72" FromRole="Products" ToRole="ProductTypes" />
+  </EntityType>
+  <EntityType Name="ProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="GuiaModel.R_76" FromRole="ProductSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="Presentations" Relationship="GuiaModel.R_78" FromRole="ProductSubstances" ToRole="Presentations" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="GuiaModel.R_75" FromRole="ProductSubstances" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="GuiaModel.R_125" FromRole="ProductSubstances" ToRole="ClientProductSubstances" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="TypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="GuiaModel.R_72" FromRole="ProductTypes" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Specialities">
+    <Key>
+      <PropertyRef Name="SpecialityId" />
+    </Key>
+    <Property Name="SpecialityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionClientSpecialities" Relationship="GuiaModel.R_60" FromRole="Specialities" ToRole="EditionClientSpecialities" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Addresses" Relationship="GuiaModel.R_69" FromRole="States" ToRole="Addresses" />
+    <NavigationProperty Name="Countries" Relationship="GuiaModel.R_16" FromRole="States" ToRole="Countries" />
+  </EntityType>
+  <Association Name="R_76">
+    <End Type="GuiaModel.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="GuiaModel.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_69">
+    <End Type="GuiaModel.States" Role="States" Multiplicity="0..1" />
+    <End Type="GuiaModel.Addresses" Role="Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_91">
+    <End Type="GuiaModel.Alphabet" Role="Alphabet" Multiplicity="0..1" />
+    <End Type="GuiaModel.Brands" Role="Brands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Brands">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_92">
+    <End Type="GuiaModel.Alphabet" Role="Alphabet" Multiplicity="0..1" />
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_93">
+    <End Type="GuiaModel.Alphabet" Role="Alphabet" Multiplicity="0..1" />
+    <End Type="GuiaModel.Products" Role="Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_118">
+    <End Type="GuiaModel.ClientProductCategories" Role="ClientProductCategories" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientProducts" Role="EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_121">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_56">
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClients" Role="EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_89">
+    <End Type="GuiaModel.ClientTypes" Role="ClientTypes" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClients" Role="EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientTypes">
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_16">
+    <End Type="GuiaModel.Countries" Role="Countries" Multiplicity="1" />
+    <End Type="GuiaModel.States" Role="States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_100">
+    <End Type="GuiaModel.EditionAttributes" Role="EditionAttributes" Multiplicity="1" />
+    <End Type="GuiaModel.ProductContents" Role="ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_119">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientProducts" Role="EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_123">
+    <End Type="GuiaModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientProductShots" Role="EditionClientProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionClientProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_55">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClients" Role="EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_59">
+    <End Type="GuiaModel.EditionClients" Role="EditionClients" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientSpecialities" Role="EditionClientSpecialities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClientSpecialities">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_60">
+    <End Type="GuiaModel.Specialities" Role="Specialities" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientSpecialities" Role="EditionClientSpecialities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialities">
+        <PropertyRef Name="SpecialityId" />
+      </Principal>
+      <Dependent Role="EditionClientSpecialities">
+        <PropertyRef Name="SpecialityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_122">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_99">
+    <End Type="GuiaModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ProductContents" Role="ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_74">
+    <End Type="GuiaModel.PharmaceuticalForms" Role="PharmaceuticalForms" Multiplicity="1" />
+    <End Type="GuiaModel.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaceuticalForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_78">
+    <End Type="GuiaModel.Presentations" Role="Presentations" Multiplicity="1" />
+    <End Type="GuiaModel.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Presentations">
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_73">
+    <End Type="GuiaModel.Products" Role="Products" Multiplicity="1" />
+    <End Type="GuiaModel.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_75">
+    <End Type="GuiaModel.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="1" />
+    <End Type="GuiaModel.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_29">
+    <End Type="GuiaModel.Products" Role="Products" Multiplicity="1" />
+    <End Type="GuiaModel.Products" Role="Products1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Products1">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_72">
+    <End Type="GuiaModel.ProductTypes" Role="ProductTypes" Multiplicity="0..1" />
+    <End Type="GuiaModel.Products" Role="Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTypes">
+        <PropertyRef Name="TypeId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="GETPRODUCTS_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="Int32" Name="PharmaFormId" Nullable="true" />
+    <Property Type="String" Name="PharmaForm" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <EntityType Name="EditionClientMedicalProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="EditionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+    <Property Name="ClientId" Nullable="false" Type="Int32" />
+    <Property Name="ProductId" Nullable="false" Type="Int32" />
+    <Property Name="PharmaFormId" Nullable="false" Type="Int32" />
+    <Property Name="ActiveSubstanceId" Nullable="false" Type="Int32" />
+    <Property Name="PresentationId" Nullable="false" Type="Int32" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.EditionsEditionClientMedicalProducts" FromRole="EditionClientMedicalProducts" ToRole="Editions" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="GuiaModel.ClientProductSubstancesEditionClientMedicalProducts" FromRole="EditionClientMedicalProducts" ToRole="ClientProductSubstances" />
+  </EntityType>
+  <Association Name="EditionsEditionClientMedicalProducts">
+    <End Type="GuiaModel.Editions" Multiplicity="1" Role="Editions" />
+    <End Type="GuiaModel.EditionClientMedicalProducts" Multiplicity="*" Role="EditionClientMedicalProducts" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientMedicalProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetCategoriestree_Result">
+    <Property Type="Int32" Name="CategoryId" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="255" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="plm_vwMedicalProductsByClient">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CompanyName" />
+      <PropertyRef Name="CountryId" />
+      <PropertyRef Name="CountryName" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="NumberEdition" />
+      <PropertyRef Name="BookId" />
+      <PropertyRef Name="BookName" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="PharmaFormId" Type="Int32" />
+    <Property Name="PharmaForm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" />
+    <Property Name="ActiveSubstance" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PresentationId" Type="Int32" />
+    <Property Name="Presentation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <ComplexType Name="plm_spGetCategoryByClients_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="CategoryIdNodo" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetCategoryByClientsSearch_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="CategoryIdNodo" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="ClientProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.R_126" FromRole="ClientProductSubstances" ToRole="ClientProducts" />
+    <NavigationProperty Name="ProductSubstances" Relationship="GuiaModel.R_125" FromRole="ClientProductSubstances" ToRole="ProductSubstances" />
+    <NavigationProperty Name="EditionClientMedicalProducts" Relationship="GuiaModel.ClientProductSubstancesEditionClientMedicalProducts" FromRole="ClientProductSubstances" ToRole="EditionClientMedicalProducts" />
+    <Property Name="RegisterSanitary" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ClientMedicalProductsBarCode" Relationship="GuiaModel.R_1541" FromRole="ClientProductSubstances" ToRole="ClientMedicalProductsBarCode" />
+  </EntityType>
+  <Association Name="R_126">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductSubstances" Role="ClientProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductSubstances">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_125">
+    <End Type="GuiaModel.ProductSubstances" Role="ProductSubstances" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductSubstances" Role="ClientProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ClientProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientProductSubstancesEditionClientMedicalProducts">
+    <End Type="GuiaModel.ClientProductSubstances" Role="ClientProductSubstances" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientMedicalProducts" Role="EditionClientMedicalProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClientMedicalProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetProductCategoriesByClient_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="CategoryIdNodo" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="true" MaxLength="255" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetProductCategoriesByClientSearch_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="CategoryIdNodo" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="true" />
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+  </ComplexType>
+  <Association Name="R_116">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductCategories" Role="ClientProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <Property Name="IdArbol" Type="Int32" />
+    <NavigationProperty Name="ClientCategories" Relationship="GuiaModel.R_109" FromRole="Categories" ToRole="ClientCategories" />
+    <NavigationProperty Name="ClientProductCategories" Relationship="GuiaModel.R_117" FromRole="Categories" ToRole="ClientProductCategories" />
+    <NavigationProperty Name="Categories1" Relationship="GuiaModel.R_50" FromRole="Categories" ToRole="Categories1" />
+    <NavigationProperty Name="Categories2" Relationship="GuiaModel.R_50" FromRole="Categories1" ToRole="Categories" />
+    <NavigationProperty Name="MatchCategories" Relationship="GuiaModel.R_135" FromRole="Categories" ToRole="MatchCategories" />
+  </EntityType>
+  <Association Name="R_109">
+    <End Type="GuiaModel.Categories" Role="Categories" Multiplicity="1" />
+    <End Type="GuiaModel.ClientCategories" Role="ClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ClientCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_117">
+    <End Type="GuiaModel.Categories" Multiplicity="1" Role="Categories" />
+    <End Type="GuiaModel.ClientProductCategories" Multiplicity="*" Role="ClientProductCategories" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ClientProductCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_50">
+    <End Type="GuiaModel.Categories" Multiplicity="1" Role="Categories" />
+    <End Type="GuiaModel.Categories" Multiplicity="0..1" Role="Categories1" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="Categories1">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientCategoriesEditionClientCategories">
+    <End Type="GuiaModel.ClientCategories" Role="ClientCategories" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientCategories" Role="EditionClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionClientCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionsEditionClientCategories">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientCategories" Role="EditionClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientCategories">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="HeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Tratamiento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="MatchCategories" Relationship="GuiaModel.R_133" FromRole="HeterogeneousCategories" ToRole="MatchCategories" />
+    <NavigationProperty Name="ClientProductHeterogeneousCategories" Relationship="GuiaModel.HeterogeneousCategoriesClientProductHeterogeneousCategories" FromRole="HeterogeneousCategories" ToRole="ClientProductHeterogeneousCategories" />
+    <NavigationProperty Name="ClientHeterogeneousCategories" Relationship="GuiaModel.R_129" FromRole="HeterogeneousCategories" ToRole="ClientHeterogeneousCategories" />
+  </EntityType>
+  <EntityType Name="MatchCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Categories" Relationship="GuiaModel.R_135" FromRole="MatchCategories" ToRole="Categories" />
+    <NavigationProperty Name="HeterogeneousCategories" Relationship="GuiaModel.R_133" FromRole="MatchCategories" ToRole="HeterogeneousCategories" />
+  </EntityType>
+  <Association Name="R_135">
+    <End Type="GuiaModel.Categories" Role="Categories" Multiplicity="1" />
+    <End Type="GuiaModel.MatchCategories" Role="MatchCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="MatchCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_133">
+    <End Type="GuiaModel.HeterogeneousCategories" Role="HeterogeneousCategories" Multiplicity="1" />
+    <End Type="GuiaModel.MatchCategories" Role="MatchCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="MatchCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="plm_vwReportProductsByClient">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CompanyName" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ParentIdP" Type="Int32" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="Paticipante" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" />
+    <Property Name="BookId" Type="Int32" />
+    <Property Name="BookName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="plm_vwProductsByClient">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CompanyName" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="CategoryIdNodo" />
+      <PropertyRef Name="DescriptionNodo" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ParentIdP" Type="Int32" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="ParentIdC" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo" Type="Int32" Nullable="false" />
+    <Property Name="ParentIdNodo" Type="Int32" />
+    <Property Name="DescriptionNodo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Paticipante" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" />
+    <Property Name="BookId" Type="Int32" />
+    <Property Name="BookName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <ComplexType Name="plm_spGetCategoriestreeClasification_Result">
+    <Property Type="Int32" Name="CategoryId" Nullable="false" />
+    <Property Type="Byte" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="100" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Int32" Name="Level" Nullable="false" />
+    <Property Type="Int32" Name="IdArbol" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetHeterogeneousCategories_Result">
+    <Property Type="Int32" Name="HeterogeneousCategoryId" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="255" />
+    <Property Type="Int32" Name="Level" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="String" Name="Tratamiento" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetNewCategories_Result">
+    <Property Type="Int32" Name="CategoryId" Nullable="false" />
+    <Property Type="Byte" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="100" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Int32" Name="Level" Nullable="false" />
+    <Property Type="Int32" Name="IdArbol" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="ClientProductHeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="HeterogeneousCategories" Relationship="GuiaModel.HeterogeneousCategoriesClientProductHeterogeneousCategories" FromRole="ClientProductHeterogeneousCategories" ToRole="HeterogeneousCategories" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.ClientProductsClientProductHeterogeneousCategories" FromRole="ClientProductHeterogeneousCategories" ToRole="ClientProducts" />
+  </EntityType>
+  <Association Name="HeterogeneousCategoriesClientProductHeterogeneousCategories">
+    <End Type="GuiaModel.HeterogeneousCategories" Role="HeterogeneousCategories" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductHeterogeneousCategories" Role="ClientProductHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="ClientProductHeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientProductsClientProductHeterogeneousCategories">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductHeterogeneousCategories" Role="ClientProductHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductHeterogeneousCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetHeterogeneousCategoriesDetails_Result">
+    <Property Type="Int32" Name="HeterogeneousCategoryId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="255" />
+    <Property Type="Int32" Name="HeterogeneousCategoryIdNodo" Nullable="false" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="false" MaxLength="255" />
+  </ComplexType>
+  <Association Name="R_1001">
+    <End Type="GuiaModel.Attributes" Role="Attributes" Multiplicity="1" />
+    <End Type="GuiaModel.ProductContents" Role="ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="plm_vwProductCategoryByClients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CompanyName" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo1" Type="Int32" />
+    <Property Name="ParentIdNodo1" Type="Int32" />
+    <Property Name="DescriptionNodo1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo2" Type="Int32" />
+    <Property Name="ParentIdNodo2" Type="Int32" />
+    <Property Name="DescriptionNodo2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo3" Type="Int32" />
+    <Property Name="ParentIdNodo3" Type="Int32" />
+    <Property Name="DescriptionNodo3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" />
+  </EntityType>
+  <EntityType Name="plm_vwHeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Match" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HeterogeneousCategoryIdNodo" Type="Int32" />
+    <Property Name="DescriptionNodo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Match" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientHeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+    <Property Name="ClientId" Nullable="false" Type="Int32" />
+    <Property Name="EditionId" Nullable="false" Type="Int32" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.EditionsEditionClientHeterogeneousCategories" FromRole="EditionClientHeterogeneousCategories" ToRole="Editions" />
+    <NavigationProperty Name="ClientHeterogeneousCategories" Relationship="GuiaModel.R_136" FromRole="EditionClientHeterogeneousCategories" ToRole="ClientHeterogeneousCategories" />
+  </EntityType>
+  <Association Name="EditionsEditionClientHeterogeneousCategories">
+    <End Type="GuiaModel.Editions" Multiplicity="1" Role="Editions" />
+    <End Type="GuiaModel.EditionClientHeterogeneousCategories" Multiplicity="*" Role="EditionClientHeterogeneousCategories" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientHeterogeneousCategories">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetEditionHeterogeneousCategoryByClients_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="CategoryIdNodo" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetHeterogeneousCategoryByClientsSearch_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="CategoryIdNodo" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="plm_vwHeterogeneousCategoryByClients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CompanyName" />
+      <PropertyRef Name="ActiveNodo" />
+      <PropertyRef Name="Counts" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="HeterogeneousCategoryId" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="HeterogeneousCategoryIdNodo" Type="Int32" />
+    <Property Name="ParentIdNodo" Type="Int32" />
+    <Property Name="DescriptionNodo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="ActiveNodo" Type="Int32" Nullable="false" />
+    <Property Name="Counts" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientHeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="HeterogeneousCategories" Relationship="GuiaModel.R_129" FromRole="ClientHeterogeneousCategories" ToRole="HeterogeneousCategories" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.R_130" FromRole="ClientHeterogeneousCategories" ToRole="Clients" />
+    <NavigationProperty Name="EditionClientHeterogeneousCategories" Relationship="GuiaModel.R_136" FromRole="ClientHeterogeneousCategories" ToRole="EditionClientHeterogeneousCategories" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.R_138" FromRole="ClientHeterogeneousCategories" ToRole="Editions" />
+  </EntityType>
+  <Association Name="R_94">
+    <End Type="GuiaModel.Attributes" Role="Attributes" Multiplicity="1" />
+    <End Type="GuiaModel.EditionAttributes" Role="EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_129">
+    <End Type="GuiaModel.HeterogeneousCategories" Role="HeterogeneousCategories" Multiplicity="1" />
+    <End Type="GuiaModel.ClientHeterogeneousCategories" Role="ClientHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="ClientHeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_130">
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="1" />
+    <End Type="GuiaModel.ClientHeterogeneousCategories" Role="ClientHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientHeterogeneousCategories">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_136">
+    <End Type="GuiaModel.ClientHeterogeneousCategories" Role="ClientHeterogeneousCategories" Multiplicity="1" />
+    <End Type="GuiaModel.EditionClientHeterogeneousCategories" Role="EditionClientHeterogeneousCategories" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="ClientHeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientHeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_138">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.ClientHeterogeneousCategories" Role="ClientHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ClientHeterogeneousCategories">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_114">
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_98">
+    <End Type="GuiaModel.EditionAttributes" Role="EditionAttributes" Multiplicity="1" />
+    <End Type="GuiaModel.EditionAttributeGroup" Role="EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_96">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.EditionAttributes" Role="EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ImagesSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <Property Name="ImageSize" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionProductShotSizes" Relationship="GuiaModel.ImagesSizesEditionProductShotSizes" FromRole="ImagesSizes" ToRole="EditionProductShotSizes" />
+    <NavigationProperty Name="BrandImageSizes" Relationship="GuiaModel.R_153" FromRole="ImagesSizes" ToRole="BrandImageSizes" />
+  </EntityType>
+  <EntityType Name="EditionProductShotSizes">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="ImagesSizes" Relationship="GuiaModel.ImagesSizesEditionProductShotSizes" FromRole="EditionProductShotSizes" ToRole="ImagesSizes" />
+    <NavigationProperty Name="EditionClientProductShots" Relationship="GuiaModel.EditionClientProductShotsEditionProductShotSizes" FromRole="EditionProductShotSizes" ToRole="EditionClientProductShots" />
+  </EntityType>
+  <Association Name="ImagesSizesEditionProductShotSizes">
+    <End Type="GuiaModel.ImagesSizes" Role="ImagesSizes" Multiplicity="1" />
+    <End Type="GuiaModel.EditionProductShotSizes" Role="EditionProductShotSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImagesSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="EditionProductShotSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionClientProductShotsEditionProductShotSizes">
+    <End Type="GuiaModel.EditionClientProductShots" Role="EditionClientProductShots" Multiplicity="1" />
+    <End Type="GuiaModel.EditionProductShotSizes" Role="EditionProductShotSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClientProductShots">
+        <PropertyRef Name="EditionClientProductShotId" />
+      </Principal>
+      <Dependent Role="EditionProductShotSizes">
+        <PropertyRef Name="EditionClientProductShotId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BarCodes">
+    <Key>
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BarCode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ClientProductBarCodes" Relationship="GuiaModel.R_140" FromRole="BarCodes" ToRole="ClientProductBarCodes" />
+    <NavigationProperty Name="ClientMedicalProductsBarCode" Relationship="GuiaModel.R_1551" FromRole="BarCodes" ToRole="ClientMedicalProductsBarCode" />
+  </EntityType>
+  <EntityType Name="ClientProductBarCodes">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+    <Property Name="AveragePrice" Type="Double" />
+    <NavigationProperty Name="BarCodes" Relationship="GuiaModel.R_140" FromRole="ClientProductBarCodes" ToRole="BarCodes" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.R_139" FromRole="ClientProductBarCodes" ToRole="ClientProducts" />
+    <NavigationProperty Name="ProductPrices" Relationship="GuiaModel.R_141" FromRole="ClientProductBarCodes" ToRole="ProductPrices" />
+  </EntityType>
+  <EntityType Name="ProductPrices">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="BarCodeId" />
+      <PropertyRef Name="SourcePriceId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+    <Property Name="SourcePriceId" Type="Byte" Nullable="false" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <NavigationProperty Name="ClientProductBarCodes" Relationship="GuiaModel.R_141" FromRole="ProductPrices" ToRole="ClientProductBarCodes" />
+    <NavigationProperty Name="SourcePrices" Relationship="GuiaModel.R_142" FromRole="ProductPrices" ToRole="SourcePrices" />
+  </EntityType>
+  <Association Name="R_140">
+    <End Type="GuiaModel.BarCodes" Role="BarCodes" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductBarCodes" Role="ClientProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ClientProductBarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_139">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductBarCodes" Role="ClientProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductBarCodes">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_141">
+    <End Type="GuiaModel.ClientProductBarCodes" Role="ClientProductBarCodes" Multiplicity="1" />
+    <End Type="GuiaModel.ProductPrices" Role="ProductPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductBarCodes">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ProductPrices">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="SourcePrices">
+    <Key>
+      <PropertyRef Name="SourcePriceId" />
+    </Key>
+    <Property Name="SourcePriceId" Type="Byte" Nullable="false" />
+    <Property Name="SourceName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="SourceShortName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPrices" Relationship="GuiaModel.R_142" FromRole="SourcePrices" ToRole="ProductPrices" />
+  </EntityType>
+  <Association Name="R_142">
+    <End Type="GuiaModel.SourcePrices" Role="SourcePrices" Multiplicity="1" />
+    <End Type="GuiaModel.ProductPrices" Role="ProductPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SourcePrices">
+        <PropertyRef Name="SourcePriceId" />
+      </Principal>
+      <Dependent Role="ProductPrices">
+        <PropertyRef Name="SourcePriceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetProductsByClients_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="Byte" Name="TypeId" Nullable="true" />
+    <Property Type="Byte" Name="AlphabetId" Nullable="true" />
+    <Property Type="Int32" Name="ProductId_Anterior" Nullable="true" />
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ProductId1" Nullable="false" />
+    <Property Type="String" Name="RegisterSanitary" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="ClientId1" Nullable="true" />
+    <Property Type="Int32" Name="ProductId2" Nullable="true" />
+    <Property Type="Int32" Name="BarCodeId" Nullable="true" />
+    <Property Type="Double" Name="AveragePrice" Nullable="true" />
+    <Property Type="Int32" Name="BarCodeId1" Nullable="true" />
+    <Property Type="String" Name="BarCode" Nullable="true" MaxLength="150" />
+    <Property Type="Boolean" Name="Active1" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetMedicalProductsByClients_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Byte" Name="CountryId" Nullable="false" />
+    <Property Type="String" Name="CountryName" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="Byte" Name="TypeId" Nullable="true" />
+    <Property Type="Int32" Name="PharmaFormId" Nullable="false" />
+    <Property Type="String" Name="PharmaForm" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="ActiveSubstanceId" Nullable="false" />
+    <Property Type="String" Name="ActiveSubstance" Nullable="false" MaxLength="255" />
+    <Property Type="Int32" Name="PresentationId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" />
+    <Property Type="Int32" Name="EditionId" Nullable="false" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="false" />
+    <Property Type="Int32" Name="BookId" Nullable="false" />
+    <Property Type="String" Name="BookName" Nullable="false" MaxLength="200" />
+  </ComplexType>
+  <EntityType Name="plm_vwProductsByClientRegisterandBarcode">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="PP" />
+      <PropertyRef Name="MP" />
+      <PropertyRef Name="SIDEF" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="RegisterSanitary" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="BarCodeId" Type="Int32" />
+    <Property Name="BarCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="PharmaFormId" Type="Int32" />
+    <Property Name="PharmaForm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" />
+    <Property Name="ActiveSubstance" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="PresentationId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PP" Type="Int32" Nullable="false" />
+    <Property Name="MP" Type="Int32" Nullable="false" />
+    <Property Name="SIDEF" Type="Int32" Nullable="false" />
+  </EntityType>
+  <ComplexType Name="plm_spGetAttributesByFormation_Result">
+    <Property Type="Int32" Name="AttributeId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetClientSpecialities_Result">
+    <Property Type="Int32" Name="SpecialityId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetClientBrandsClasification_Result">
+    <Property Type="Int32" Name="BrandId" Nullable="false" />
+    <Property Type="String" Name="BrandName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Logo" Nullable="true" MaxLength="60" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="String" Name="BaseURL" Nullable="true" MaxLength="100" />
+    <Property Type="Byte" Name="AlphabetId" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetCategoryByProducts_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="CategoryId" Nullable="true" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="CategoryIdNodo1" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo1" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo1" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="CategoryIdNodo2" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo2" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo2" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="CategoryIdNodo3" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNodo3" Nullable="true" />
+    <Property Type="String" Name="DescriptionNodo3" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="true" />
+    <Property Type="Int32" Name="MatchId" Nullable="false" />
+    <Property Type="Int32" Name="MatchHet" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="ClientAddresses">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AddressId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Clients" Relationship="GuiaModel.ClientsClientAddresses" FromRole="ClientAddresses" ToRole="Clients" />
+    <NavigationProperty Name="Addresses" Relationship="GuiaModel.AddressesClientAddresses" FromRole="ClientAddresses" ToRole="Addresses" />
+    <NavigationProperty Name="ClientPhones" Relationship="GuiaModel.R_104" FromRole="ClientAddresses" ToRole="ClientPhones" />
+  </EntityType>
+  <Association Name="ClientsClientAddresses">
+    <End Type="GuiaModel.Clients" Role="Clients" Multiplicity="1" />
+    <End Type="GuiaModel.ClientAddresses" Role="ClientAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientAddresses">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AddressesClientAddresses">
+    <End Type="GuiaModel.Addresses" Role="Addresses" Multiplicity="1" />
+    <End Type="GuiaModel.ClientAddresses" Role="ClientAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="AddressId" />
+      </Principal>
+      <Dependent Role="ClientAddresses">
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ClientPhones">
+    <Key>
+      <PropertyRef Name="ClientPhoneId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Number" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Lada" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ClientPhoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PhoneTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="AddressId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientAddresses" Relationship="GuiaModel.R_104" FromRole="ClientPhones" ToRole="ClientAddresses" />
+    <NavigationProperty Name="PhoneTypes" Relationship="GuiaModel.R_31" FromRole="ClientPhones" ToRole="PhoneTypes" />
+  </EntityType>
+  <Association Name="R_104">
+    <End Type="GuiaModel.ClientAddresses" Role="ClientAddresses" Multiplicity="1" />
+    <End Type="GuiaModel.ClientPhones" Role="ClientPhones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientAddresses">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="AddressId" />
+      </Principal>
+      <Dependent Role="ClientPhones">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_31">
+    <End Type="GuiaModel.PhoneTypes" Role="PhoneTypes" Multiplicity="1" />
+    <End Type="GuiaModel.ClientPhones" Role="ClientPhones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneTypes">
+        <PropertyRef Name="PhoneTypeId" />
+      </Principal>
+      <Dependent Role="ClientPhones">
+        <PropertyRef Name="PhoneTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetHeterogeneousCategoriesallforSalesModule_Result">
+    <Property Type="Int32" Name="HeterogeneousCategoryId" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="255" />
+    <Property Type="Int32" Name="Level" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="String" Name="Tratamiento" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <EntityType Name="BrandImageSizes">
+    <Key>
+      <PropertyRef Name="BrandId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="BrandId" Type="Int32" Nullable="false" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <Property Name="Logo" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Brands" Relationship="GuiaModel.R_152" FromRole="BrandImageSizes" ToRole="Brands" />
+    <NavigationProperty Name="ImagesSizes" Relationship="GuiaModel.R_153" FromRole="BrandImageSizes" ToRole="ImagesSizes" />
+  </EntityType>
+  <Association Name="R_152">
+    <End Type="GuiaModel.Brands" Role="Brands" Multiplicity="1" />
+    <End Type="GuiaModel.BrandImageSizes" Role="BrandImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="BrandImageSizes">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_153">
+    <End Type="GuiaModel.ImagesSizes" Role="ImagesSizes" Multiplicity="1" />
+    <End Type="GuiaModel.BrandImageSizes" Role="BrandImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImagesSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="BrandImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetProductsByEdition_Result">
+    <Property Type="Int32" Name="EditionId" Nullable="false" />
+    <Property Type="Int32" Name="NumberEdition" Nullable="false" />
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Int32" Name="ClientIdParent" Nullable="true" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="Byte" Name="TypeId" Nullable="true" />
+    <Property Type="Int32" Name="QuantityOfProducts" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetSpecialitiesByClient_Result">
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="String" Name="CompanyName" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="SpecialityId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetBrandsByClient_Result">
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="String" Name="Page" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="ExpireDescription" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="ClientId" Nullable="false" />
+    <Property Type="Byte" Name="ClientTypeId" Nullable="false" />
+    <Property Type="Int32" Name="BrandId" Nullable="false" />
+    <Property Type="String" Name="BrandName" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdvertId" />
+    </Key>
+    <Property Name="AdvertId" Type="Int32" Nullable="false" />
+    <Property Name="Order" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AdvertName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BaseUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="AdvertTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="AdvertTypes" Relationship="GuiaModel.R_85" FromRole="Advertisements" ToRole="AdvertTypes" />
+    <NavigationProperty Name="EditionSpecialityClientAdvers" Relationship="GuiaModel.R_65" FromRole="Advertisements" ToRole="EditionSpecialityClientAdvers" />
+  </EntityType>
+  <EntityType Name="AdvertTypes">
+    <Key>
+      <PropertyRef Name="AdvertTypeId" />
+    </Key>
+    <Property Name="AdvertTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Advertisements" Relationship="GuiaModel.R_85" FromRole="AdvertTypes" ToRole="Advertisements" />
+  </EntityType>
+  <Association Name="R_85">
+    <End Type="GuiaModel.AdvertTypes" Role="AdvertTypes" Multiplicity="1" />
+    <End Type="GuiaModel.Advertisements" Role="Advertisements" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdvertTypes">
+        <PropertyRef Name="AdvertTypeId" />
+      </Principal>
+      <Dependent Role="Advertisements">
+        <PropertyRef Name="AdvertTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="EditionSpecialityClientAdvers">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="SpecialityId" />
+      <PropertyRef Name="AdvertId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="SpecialityId" Type="Int32" Nullable="false" />
+    <Property Name="AdvertId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Byte" />
+    <NavigationProperty Name="Advertisements" Relationship="GuiaModel.R_65" FromRole="EditionSpecialityClientAdvers" ToRole="Advertisements" />
+    <NavigationProperty Name="EditionClientSpecialities" Relationship="GuiaModel.R_64" FromRole="EditionSpecialityClientAdvers" ToRole="EditionClientSpecialities" />
+  </EntityType>
+  <Association Name="R_65">
+    <End Type="GuiaModel.Advertisements" Role="Advertisements" Multiplicity="1" />
+    <End Type="GuiaModel.EditionSpecialityClientAdvers" Role="EditionSpecialityClientAdvers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Advertisements">
+        <PropertyRef Name="AdvertId" />
+      </Principal>
+      <Dependent Role="EditionSpecialityClientAdvers">
+        <PropertyRef Name="AdvertId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_64">
+    <End Type="GuiaModel.EditionClientSpecialities" Role="EditionClientSpecialities" Multiplicity="1" />
+    <End Type="GuiaModel.EditionSpecialityClientAdvers" Role="EditionSpecialityClientAdvers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClientSpecialities">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="SpecialityId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionSpecialityClientAdvers">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="SpecialityId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetParticipantProductsToClasification_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="Int32" Name="Qtty" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="HomogeneousCategories">
+    <Key>
+      <PropertyRef Name="HomogeneousCategoryId" />
+    </Key>
+    <Property Name="HomogeneousCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HomogeneousCategory" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Level" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="HomogeneousCategories1" Relationship="GuiaModel.R_151" FromRole="HomogeneousCategories" ToRole="HomogeneousCategories1" />
+    <NavigationProperty Name="HomogeneousCategories2" Relationship="GuiaModel.R_151" FromRole="HomogeneousCategories1" ToRole="HomogeneousCategories" />
+    <NavigationProperty Name="LeafHomogeneousCategories" Relationship="GuiaModel.HomogeneousCategoriesLeafHomogeneousCategories" FromRole="HomogeneousCategories" ToRole="LeafHomogeneousCategories" />
+  </EntityType>
+  <Association Name="R_151">
+    <End Type="GuiaModel.HomogeneousCategories" Role="HomogeneousCategories" Multiplicity="0..1" />
+    <End Type="GuiaModel.HomogeneousCategories" Role="HomogeneousCategories1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HomogeneousCategories">
+        <PropertyRef Name="HomogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="HomogeneousCategories1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="LeafCategories">
+    <Key>
+      <PropertyRef Name="LeafCategoryId" />
+    </Key>
+    <Property Name="LeafCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LeafCategory" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Level" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="LeafHomogeneousCategories" Relationship="GuiaModel.LeafCategoriesLeafHomogeneousCategories" FromRole="LeafCategories" ToRole="LeafHomogeneousCategories" />
+  </EntityType>
+  <EntityType Name="LeafHomogeneousCategories">
+    <Key>
+      <PropertyRef Name="HomogeneousCategoryId" />
+      <PropertyRef Name="LeafCategoryId" />
+    </Key>
+    <Property Name="HomogeneousCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LeafCategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="LeafCategories" Relationship="GuiaModel.LeafCategoriesLeafHomogeneousCategories" FromRole="LeafHomogeneousCategories" ToRole="LeafCategories" />
+    <NavigationProperty Name="HomogeneousCategories" Relationship="GuiaModel.HomogeneousCategoriesLeafHomogeneousCategories" FromRole="LeafHomogeneousCategories" ToRole="HomogeneousCategories" />
+    <NavigationProperty Name="ClientProductLeafCategories" Relationship="GuiaModel.LeafHomogeneousCategoriesClientProductLeafCategories" FromRole="LeafHomogeneousCategories" ToRole="ClientProductLeafCategories" />
+  </EntityType>
+  <Association Name="LeafCategoriesLeafHomogeneousCategories">
+    <End Type="GuiaModel.LeafCategories" Role="LeafCategories" Multiplicity="1" />
+    <End Type="GuiaModel.LeafHomogeneousCategories" Role="LeafHomogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LeafCategories">
+        <PropertyRef Name="LeafCategoryId" />
+      </Principal>
+      <Dependent Role="LeafHomogeneousCategories">
+        <PropertyRef Name="LeafCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="HomogeneousCategoriesLeafHomogeneousCategories">
+    <End Type="GuiaModel.HomogeneousCategories" Role="HomogeneousCategories" Multiplicity="1" />
+    <End Type="GuiaModel.LeafHomogeneousCategories" Role="LeafHomogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HomogeneousCategories">
+        <PropertyRef Name="HomogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="LeafHomogeneousCategories">
+        <PropertyRef Name="HomogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ClientProductLeafCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="HomogeneousCategoryId" />
+      <PropertyRef Name="LeafCategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="HomogeneousCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="LeafCategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="LeafHomogeneousCategories" Relationship="GuiaModel.LeafHomogeneousCategoriesClientProductLeafCategories" FromRole="ClientProductLeafCategories" ToRole="LeafHomogeneousCategories" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.ClientProductsClientProductLeafCategories" FromRole="ClientProductLeafCategories" ToRole="ClientProducts" />
+  </EntityType>
+  <Association Name="LeafHomogeneousCategoriesClientProductLeafCategories">
+    <End Type="GuiaModel.LeafHomogeneousCategories" Role="LeafHomogeneousCategories" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductLeafCategories" Role="ClientProductLeafCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LeafHomogeneousCategories">
+        <PropertyRef Name="HomogeneousCategoryId" />
+        <PropertyRef Name="LeafCategoryId" />
+      </Principal>
+      <Dependent Role="ClientProductLeafCategories">
+        <PropertyRef Name="HomogeneousCategoryId" />
+        <PropertyRef Name="LeafCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientProductsClientProductLeafCategories">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ClientProductLeafCategories" Role="ClientProductLeafCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductLeafCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="plm_vwCategoryByClients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CompanyName" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo1" Type="Int32" />
+    <Property Name="ParentIdNodo1" Type="Int32" />
+    <Property Name="DescriptionNodo1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo2" Type="Int32" />
+    <Property Name="ParentIdNodo2" Type="Int32" />
+    <Property Name="DescriptionNodo2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryIdNodo3" Type="Int32" />
+    <Property Name="ParentIdNodo3" Type="Int32" />
+    <Property Name="DescriptionNodo3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ClientBrands">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="BrandId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="Byte" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ExpireDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="BrandId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Brands" Relationship="GuiaModel.R_82" FromRole="ClientBrands" ToRole="Brands" />
+    <NavigationProperty Name="ClientBrandTypes" Relationship="GuiaModel.R_3" FromRole="ClientBrands" ToRole="ClientBrandTypes" />
+    <NavigationProperty Name="EditionClients" Relationship="GuiaModel.R_81" FromRole="ClientBrands" ToRole="EditionClients" />
+  </EntityType>
+  <Association Name="R_82">
+    <End Type="GuiaModel.Brands" Role="Brands" Multiplicity="1" />
+    <End Type="GuiaModel.ClientBrands" Role="ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_3">
+    <End Type="GuiaModel.ClientBrandTypes" Role="ClientBrandTypes" Multiplicity="0..1" />
+    <End Type="GuiaModel.ClientBrands" Role="ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientBrandTypes">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_81">
+    <End Type="GuiaModel.EditionClients" Role="EditionClients" Multiplicity="1" />
+    <End Type="GuiaModel.ClientBrands" Role="ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="StatusId" Nullable="false" Type="Int32" />
+    <Property Name="StatusName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+    <Property Name="Active" Nullable="false" Type="Boolean" />
+    <NavigationProperty Name="ProductStatus" Relationship="GuiaModel.StatusProductStatus" FromRole="Status" ToRole="ProductStatus" />
+  </EntityType>
+  <EntityType Name="ProductStatus">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Status" Relationship="GuiaModel.StatusProductStatus" FromRole="ProductStatus" ToRole="Status" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.ClientProductsProductStatus" FromRole="ProductStatus" ToRole="ClientProducts" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="StatusProductStatus">
+    <End Type="GuiaModel.Status" Multiplicity="1" Role="Status" />
+    <End Type="GuiaModel.ProductStatus" Multiplicity="*" Role="ProductStatus" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="ProductStatus">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientProductsProductStatus">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.ProductStatus" Role="ProductStatus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductStatus">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ClientMedicalProductsBarCode">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+    <Property Name="AveragePrice" Type="Double" />
+    <NavigationProperty Name="BarCodes" Relationship="GuiaModel.R_1551" FromRole="ClientMedicalProductsBarCode" ToRole="BarCodes" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="GuiaModel.R_1541" FromRole="ClientMedicalProductsBarCode" ToRole="ClientProductSubstances" />
+  </EntityType>
+  <Association Name="R_1551">
+    <End Type="GuiaModel.BarCodes" Role="BarCodes" Multiplicity="1" />
+    <End Type="GuiaModel.ClientMedicalProductsBarCode" Role="ClientMedicalProductsBarCode" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ClientMedicalProductsBarCode">
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_1541">
+    <End Type="GuiaModel.ClientProductSubstances" Role="ClientProductSubstances" Multiplicity="1" />
+    <End Type="GuiaModel.ClientMedicalProductsBarCode" Role="ClientMedicalProductsBarCode" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientMedicalProductsBarCode">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="MentionatedProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientProducts" Relationship="GuiaModel.ClientProductsMentionatedProducts" FromRole="MentionatedProducts" ToRole="ClientProducts" />
+    <NavigationProperty Name="Editions" Relationship="GuiaModel.EditionsMentionatedProducts" FromRole="MentionatedProducts" ToRole="Editions" />
+  </EntityType>
+  <Association Name="ClientProductsMentionatedProducts">
+    <End Type="GuiaModel.ClientProducts" Role="ClientProducts" Multiplicity="1" />
+    <End Type="GuiaModel.MentionatedProducts" Role="MentionatedProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="MentionatedProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionsMentionatedProducts">
+    <End Type="GuiaModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="GuiaModel.MentionatedProducts" Role="MentionatedProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="MentionatedProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

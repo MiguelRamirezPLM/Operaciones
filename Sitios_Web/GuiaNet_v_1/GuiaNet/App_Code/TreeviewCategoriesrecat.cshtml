@@ -1,0 +1,36 @@
+﻿@helper GetTreeView(List<GuiaNet.Models.Categories> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId == (ParentId)))
+    {
+        <li>
+            @{var subitem = tree.Where(a => a.ParentId == (i.CategoryId)).Count();}
+
+            @if (subitem > 0)
+            {
+                <span class="expand1 collapsible idnt" id="@i.CategoryId">&nbsp;</span>
+                <button style="width: 5PX; height: 20px;text-align:right; background-image: url(/Images/expand.png);background-size:cover;background-position:center " value="@i.CategoryId" id="inscat" class="btn insertcategory"></button>
+            }
+            else
+            {
+                if (i.Level == 4)
+                {
+                    <span style="display:inline-block">&nbsp;</span>
+                }
+                else
+                {
+                    <span style="display:inline-block">&nbsp;</span>
+                    <button style="width: 5PX; height: 20px;text-align:left; background-image: url(/Images/expand.png);background-size:cover;background-position:center " value="@i.CategoryId" id="inscat" class="btn insertcategory"></button>
+                }
+            }
+            <span>
+                <label class="recategory" id="@i.CategoryId" style="color:black;font-size:11px">@i.Description.ToUpper()</label>
+            </span>
+            @if (subitem > 0)
+            {
+                <ul>
+                    @TreeviewCategoriesrecat.GetTreeView(tree, i.CategoryId)
+                </ul>
+            }
+        </li>
+    }
+}

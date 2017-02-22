@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+    $(function () {
+        $("#senddata").click(function () {
+            $("#bloqueo").show();
+            var product = $("#pname").val();
+            product = replace(product);
+            var propag = $("#propag").val();
+            propag = replace(propag);
+            var attr = $("#attribute").val();
+            attr = replace(attr);
+            var lab = $("#laboratory").val();
+            lab = replace(lab);
+            var prf = $("#lblpf").val();
+            prf = replace(prf);
+            var img = $("#lblimg").val();
+            img = replace(img);
+            var tbl = $("#lbltable").val();
+            tbl = replace(tbl);
+            var tr = $("#lbltr").val();
+            tr = replace(tr);
+            var td = $("#lbltd").val();
+            td = replace(td);
+            var reg = $("#lblreg").val();
+            reg = replace(reg);
+            var blt = $("#lblbullet").val();
+            blt = replace(blt);
+            var blt1 = $("#lblbullet1").val();
+            blt1 = replace(blt1);
+            var blt2 = $("#lblbullet2").val();
+            blt2 = replace(blt2);
+            var blt3 = $("#lblbullet3").val();
+            blt3 = replace(blt3);
+            var lg = $("#lbllogo").val();
+            lg = replace(lg);
+            var bld = $("#lblbold").val();
+            bld = replace(bld);
+            var ref = $("#lblreference").val();
+            ref = replace(ref);
+            var supind = $("#lblsuperindice").val();
+            supind = replace(supind);
+            var dat = $("#lbldata").val();
+            dat = replace(dat);
+            var cont = $("#lblcontainer").val();
+            cont = replace(cont);
+            var bdy = $("#lblbody").val();
+            bdy = replace(bdy);
+            $.ajax({
+                type: "POST",
+                dataType: "Json",
+                url: "../Targets/gettargets/",
+                traditional: true,
+                data: {
+                    pname: product, propaganda: propag, attribute: attr, laboratory: lab, paragraph: prf, image: img, table: tbl, row: tr, column: td,
+                    register: reg, bullet: blt, bullet1: blt1, bullet2: blt2, bullet3: blt3, log: lg, bold: bld, reference: ref, superindice: supind,
+                    _data: dat, container: cont, body: bdy
+                },
+                success: function (data) {
+                    if(data == true)
+                    {
+                        setTimeout('document.location.reload()');
+                    }
+                }
+            })
+        });
+
+        function replace(_string) {
+
+            _string = _string.replace("<", "60");
+            _string = _string.replace(">", "62");
+
+            _string = _string.replace("62<", "6260");
+
+            return _string;
+        }
+
+
+    })
+</script>
+
+<br />
+<ol class="breadcrumb">
+    <li><a href="/Production/Index">Producción</a></li>
+    <li class="active">Modificar Etiquetas</li>
+</ol>
+
+<div style="width: 100%; height: 100%; display: normal; text-align: center; border-top: 1px solid #ddd;" id="gettargets">
+    <br />
+    <table border="0" style="width:100%">
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Nombre de Producto:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="pname" value="@ViewData["pnametargets"]" /></td>
+            <td rowspan="4" style="width: 15%;"><button class=" btn btn-info" id="senddata">Envíar Datos</button></td>
+            <td rowspan="4"></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Base de Propaganda:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="propag" value="@ViewData["Bproptargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Atributos:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="attribute" value="@ViewData["attrtargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Laboratorio:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="laboratory" value="@ViewData["labnametargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Parrafo:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblpf" value="@ViewData["paragrapgtargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Imagen:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblimg" value="@ViewData["Imagetargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Tabla:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lbltable" value="@ViewData["Tabletargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Fila:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lbltr" value="@ViewData["Rowtargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Columna:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lbltd" value="@ViewData["Columntargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Registro:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblreg" value="@ViewData["Registertargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Viñetas:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblbullet" value="@ViewData["Bulletstargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Viñetas 1:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblbullet1" value="@ViewData["Bullets1targets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Viñetas 2:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblbullet2" value="@ViewData["Bullets3targets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Viñetas 3:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblbullet3" value="@ViewData["Bullets3targets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Logo:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lbllogo" value="@ViewData["Logotargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Negrita:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblbold" value="@ViewData["Boldtargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Referencias:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblreference" value="@ViewData["Referencetargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Superíndice:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblsuperindice" value="@ViewData["SupIndtargets"]" /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Datos de Laboratorio:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lbldata" value="@ViewData["Datatargets"]" /></ /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Contenedor:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblcontainer" value="@ViewData["Containertargets"]" /></ /></td>
+        </tr>
+        <tr>
+            <td style="width: 25%; line-height: 40px;text-align:left"><label class="labels">Etiqueta Cuerpo de Página:</label></td>
+            <td style="width: 30%; text-align: left; line-height: 40px;"><input type="text" class="form-focus" id="lblbody" value="@ViewData["Bodytargets"]" /></ /></td>
+        </tr>
+    </table>
+</div>

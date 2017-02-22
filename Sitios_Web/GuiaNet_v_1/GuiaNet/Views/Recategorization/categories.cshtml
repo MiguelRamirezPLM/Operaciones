@@ -1,0 +1,891 @@
+﻿@model List<GuiaNet.Models.Categories>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "Index";
+    Guia db = new Guia();
+    sessionrecatid sessionrecatid = (sessionrecatid)Session["sessionrecatid"];
+}
+
+<html>
+<head>
+    <title></title>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    @Styles.Render("~/Content/Site.css")
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                var level1 = sessionStorage.level1;
+                var level2 = sessionStorage.level2;
+                var level3 = sessionStorage.level3;
+                if ((level1 != null) && (level2 != null) && (level3 != null))
+                {
+                    var element1 = document.getElementById(level1);
+                    var element2 = document.getElementById(level2);
+                    var element3 = document.getElementById(level3);
+
+                    $(function () {
+                        $(element1).trigger('click');
+                        $(element2).trigger('click');
+                        $(element3).trigger('click');
+                    });
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".treeview li>ul").css('display', 'none');
+            $(".collapsible").click(function (e) {
+                e.preventDefault();
+                $(this).toggleClass("expand1 collapse1 ");
+                $(this).closest('li').children('ul').slideToggle();
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".insertcategory").click(function () {
+                $("#newcategory").show();
+
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $(".recategory").click(function () {
+                var tr = $(this).attr("id");
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                var sds = sessionStorage.prueba = tr;
+                var sdsa = document.getElementById(sds);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Recategorization/recat/",
+                    traditional: true,
+                    data: { cat: tr },
+                    success: function (data) {
+                        if (data == "_error") {
+                            $(sdsa).css("color", "#000000");
+                            d += "<p></p>"
+                            d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                            d += "<p></p>"
+                            d += "<p style='width:250px;text-align:center;color:#05606d;font-style:italic'> Para recategorizar debes seleccionar Categoría Nivel 4 </p>"
+                            apprise("" + d + "", { 'animate': true });
+                        }
+                        else {
+                            var catid = sds;
+                            if (catid != null) {
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "../Recategorization/getheterogeneouscat/",
+                                    traditional: true,
+                                    data: { categid: catid },
+                                    success: function (data) {
+                                        if (data == true) {
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: "../Recategorization/getparentbycategoryrecat/",
+                                                traditional: true,
+                                                data: { categid: catid },
+                                                success: function (data) {
+                                                    if (data != null) {
+                                                        var level1 = sessionStorage.level1 = data.level1;
+                                                        var level2 = sessionStorage.level2 = data.level2;
+                                                        var level3 = sessionStorage.level3 = data.level3;
+                                                        if ((level1 != null) && (level2 != null) && (level3 != null)) {
+                                                            setTimeout('document.location.reload()');
+                                                        }
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var sd = sessionStorage.prueba;
+            if (sd != null) {
+                var sdsa = document.getElementById(sd);
+                $(sdsa).css("color", "#01DF01");
+            }
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var session = sessionStorage.divrecat;
+            if (session != undefined) {
+                if (session == "asccat") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    var cat = document.getElementById("catrecat");
+                    $(cat).show();
+                    var recat = document.getElementById("recategorization");
+                    $(recat).css("display", "none");
+                    $("#asccat").addClass("labelin");
+                    $("#recat").addClass("labelout");
+                    $("#recat").removeClass("labelin");
+                }
+                if (session == "recat") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    var recat = document.getElementById("recategorization");
+                    $(recat).show();
+                    var cat = document.getElementById("catrecat");
+                    $(cat).css("display", "none");
+                    $("#recat").addClass("labelin");
+                    $("#asccat").removeClass("labelin");
+                }
+
+            }
+        })
+    </script>
+
+
+    <script>
+        $(function () {
+            $("#recat").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divrecat = divid;
+                $("#recat").addClass("labelin");
+                $("#asccat").removeClass("labelin");
+                $("#catrecat").hide();
+                $("#recategorization").show();
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+            $("#asccat").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divrecat = divid;
+                $("#asccat").addClass("labelin");
+                $("#recat").removeClass("labelin");
+                $("#recat").addClass("labelout");
+                $("#recategorization").hide();
+                $("#catrecat").show();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $('.insertcategory').click(function () {
+                var catid = sessionStorage.catid = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Recategorization/getlevelbyshowform/",
+                    traditional: true,
+                    data: { Catid: catid },
+                    success: function (data) {
+                        if (data == 1) {
+                            $('#forminsertcatl2').hide();
+                            $('#forminsertcatl3').hide();
+                            $('#forminsertcat').fadeIn('slow');
+                            $('.popup-overlay').fadeIn('slow');
+                            $('.popup-overlay').height($(window).height());
+                            return false;
+                        }
+                        if (data == 2) {
+                            $('#forminsertcat').hide();
+                            $('#forminsertcatl3').hide();
+                            $('#forminsertcatl2').fadeIn('slow');
+                            $('.popup-overlay').fadeIn('slow');
+                            $('.popup-overlay').height($(window).height());
+                            return false;
+                        }
+                        if (data == 3) {
+                            $('#forminsertcat').hide();
+                            $('#forminsertcatl2').hide();
+                            $('#forminsertcatl3').fadeIn('slow');
+                            $('.popup-overlay').fadeIn('slow');
+                            $('.popup-overlay').height($(window).height());
+                            return false;
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#close').click(function () {
+                $('#forminsertcat').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                $("#insertlevelvaluen2").val('');
+                $("#insertlevelvaluen3").val('');
+                $("#insertlevelvaluen4").val('');
+                return false;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#closel2').click(function () {
+                $('#forminsertcatl2').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                $("#insertlevelvaluel2n3").val('');
+                $("#insertlevelvaluel2n4").val('');
+                return false;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#closel3').click(function () {
+                $('#forminsertcatl3').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                $("#insertlevelvaluel3n4").val('');
+                return false;
+            });
+        });
+    </script>
+
+    @*btnlevel*@
+    <script>
+        $(function () {
+            $("#btnlevel").click(function () {
+                var value2 = $("#insertlevelvaluen2").val();
+                var value3 = $("#insertlevelvaluen3").val();
+                var value4 = $("#insertlevelvaluen4").val();
+                var catid = sessionStorage.catid;
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                if ((!value2.trim() == true) || (!value4.trim() == true) || (!value3.trim() == true)) {
+                    d += "<li>Ningun Campo no puede quedar vacío</li>";
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../Recategorization/insertlevel2/",
+                        traditional: true,
+                        data: { valuelevel2: value2, CategoryId: catid, valuelevel3: value3, valuelevel4: value4 },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe Asociada a esta Categoría, el Nombre es: </p>"
+                                d += "<p></p>"
+                                d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                apprise("" + d + "", { 'animate': true });
+                                $("#bloqueo").hide();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    @*LEVEL 3 AND 4*@
+    <script>
+        $(function () {
+            $("#btnlevell2").click(function () {
+                var value3 = $("#insertlevelvaluel2n3").val();
+                var value4 = $("#insertlevelvaluel2n4").val();
+                var catid = sessionStorage.catid;
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                if ((!value3.trim() == true) || (!value4.trim() == true)) {
+                    d += "<li>Ningun Campo no puede quedar vacío</li>";
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../Recategorization/insertlevel3/",
+                        traditional: true,
+                        data: { CategoryId: catid, valuelevel3: value3, valuelevel4: value4 },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe Asociada a esta Categoría, el Nombre es: </p>"
+                                d += "<p></p>"
+                                d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                apprise("" + d + "", { 'animate': true });
+                                $("#bloqueo").hide();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    @*LEVEL 4*@
+    <script>
+        $(function () {
+            $("#btnlevell3n4").click(function () {
+                var value4 = $("#insertlevelvaluel3n4").val();
+                var catid = sessionStorage.catid;
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                if (!value4.trim() == true) {
+                    d += "<li>El Campo no puede quedar vacío</li>";
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../Recategorization/insertlevel4/",
+                        traditional: true,
+                        data: { CategoryId: catid, valuelevel4: value4 },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría ya existe Asociada a esta Categoría, el Nombre es: </p>"
+                                d += "<p></p>"
+                                d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data + "</li></p>"
+                                apprise("" + d + "", { 'animate': true });
+                                $("#bloqueo").hide();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#inslev1').click(function () {
+                $('#insertcatlevel1').fadeIn('slow');
+                $('.popup-overlay').fadeIn('slow');
+                $('.popup-overlay').height($(window).height());
+                return false;
+            });
+
+            $('#closediv').click(function () {
+                $('#insertcatlevel1').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                $("#insertlevel1value").val('');
+                $("#insertlevelvalue2").val('');
+                $("#insertlevelvalue3").val('');
+                $("#insertlevelvalue4").val('');
+                return false;
+            });
+        });
+    </script>
+
+    @*INSERT CATEGORIES SINCE LEVEL 1*@
+    <script>
+        $(function () {
+            $("#btnlevel1").click(function () {
+                $("#bloqueo").show();
+                var value1 = $("#insertlevel1value").val();
+                var value2 = $("#insertlevelvalue2").val();
+                var value3 = $("#insertlevelvalue3").val();
+                var value4 = $("#insertlevelvalue4").val();
+                var catid = sessionStorage.prueba;
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                d += "<div style='text-align:center;color:#05606d;font-style:italic;font-size:30px'> Error !!! </div>"
+                if ((!value1.trim() == true) || (!value2.trim() == true) || (!value3.trim() == true) || (!value4.trim() == true)) {
+                    d += "<li>Ningun Campo puede quedar vacío</li>";
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../Recategorization/insertlevel1/",
+                        traditional: true,
+                        data: { valuelevel: value1, valuelevel2: value2, valuelevel3: value3, valuelevel4: value4 },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                if (data.Level == 1) {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría a Nivel " + data.Level + " ya existe, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data.Category + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                                if (data.Level == 2) {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría a Nivel " + data.Level + " ya existe, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data.Category + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                                if (data.Level == 3) {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría a Nivel " + data.Level + " ya existe, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data.Category + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                                if (data.Level == 4) {
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d'> La Categoría a Nivel " + data.Level + " ya existe, el Nombre es: </p>"
+                                    d += "<p></p>"
+                                    d += "<li><p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + data.Category + "</li></p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+    @*<script>
+        $(function () {
+            $(".btnds").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#closeresume').click(function () {
+                $('#resumecats').fadeOut('slow');
+                $('.popup-overlay').fadeOut('slow');
+                return false;
+            });
+        });
+    </script>
+
+</head>
+<body>
+    @{
+        var err = ViewData["hetcat"];
+        if (err != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["hetcat"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+
+            err = null;
+        }
+    }
+    <div id="forminsertcat" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="close"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Insertar Categoría</h2>
+                <br />
+                <br />
+                <table border="0" style="width:100%;height:100%">
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 2:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvaluen2" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 3:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvaluen3" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 4:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvaluen4" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:15px" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button type="submit" id="btnlevel" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;" />
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="forminsertcatl2" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="closel2"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Insertar Categoría</h2>
+                <br />
+                <br />
+                <table border="0" style="width:100%;height:100%">
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 3:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvaluel2n3" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 4:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvaluel2n4" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:15px" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button type="submit" id="btnlevell2" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;" />
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="forminsertcatl3" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="closel3"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Insertar Categoría</h2>
+                <br />
+                <br />
+                <table border="0" style="width:100%;height:100%">
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 4:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvaluel3n4" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:15px" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button type="submit" id="btnlevell3n4" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="insertcatlevel1" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="closediv"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Insertar Categoría Nivel 1</h2>
+                <br />
+                <br />
+                <table border="0" style="width:100%;height:100%">
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 1:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevel1value" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 2:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvalue2" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 3:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvalue3" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="labels">Nombre Categoría Nivel 4:</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control1" id="insertlevelvalue4" style="text-transform: uppercase" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:15px" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button type="submit" id="btnlevel1" value="Insertar" class="btnds btn btn-info" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualLI", "Help", new { module = "LI" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/Recategorization/categories">Laboratorio de Información</a></li>
+        <li class="active">Re Categorización</li>
+    </ol>
+    <div style="height:100%;width:100%; border-bottom:none">
+        <div style="width:100%;height:100%"></div>
+        <br />
+        <label id="recat" class="labelin" style="display:normal">Re Categorizar</label>
+        <label id="asccat" class="labelout">Categorías con asociaciones</label>
+    </div>
+    <div style="width: 100%; height: 100%; display: normal; text-align: justify; border-top: 1px solid #ddd;" id="recategorization">
+        <br />
+
+        <table border="0" style="width:100%">
+            <tr>
+                <td colspan="4" style="height:20px"></td>
+            </tr>
+            <tr>
+                <td style="width:0px"></td>
+                @{
+                    <td style="text-align:center">
+                        <div style="float:left;width:100%">
+                            @{
+                                using (Html.BeginForm("categories", "Recategorization"))
+                                {
+                                    <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus" })
+                                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                            }
+                        </div>
+                    </td>
+                }
+                <td></td>
+                @{
+                    <td style="text-align:center">
+                        <div style="float:right;width:100%">
+                            @{
+                                if (sessionrecatid != null)
+                                {
+                                    using (Html.BeginForm("hcategories", "Recategorization"))
+                                    {
+                                        <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus" })
+                                        <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                    }
+                                }
+                            }
+                        </div>
+
+                    </td>
+                }
+            </tr>
+            <tr>
+                <td style="width:0px">
+                    <img src="@Url.Content("~/Images/expand.png")" style="height: 50px; width: 55px; display: normal" id="inslev1" class="btn">
+                </td>
+                <td style="text-align:center">
+                    <br />
+                    <label class="labels">Nuevo Árbol de Categorías</label>
+                </td>
+                <td></td>
+                <td style="text-align:center">
+                    <br />
+                    @{
+                        if (sessionrecatid != null)
+                        {
+                            <label class="labels">Categorías Heterogéneas</label>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td style="width:50px"></td>
+                <td style="vertical-align:top; width:50%">
+                    <div class="treeview scrollbar1" id="recat" style="width:100%">
+                        @{
+                            seachcategory seachcats = (seachcategory)Session["seachcategory"];
+                            searchhcategory seachcatss = (searchhcategory)Session["searchhcategory"];
+                            if (seachcats != null)
+                            {
+                                var desc = seachcats.Description;
+                                var _response = db.Database.SqlQuery<Categories>("plm_spGetCategoriestree @param='" + desc + "'").OrderBy(x => x.ParentId).ToList();
+
+                                if (_response != null && _response.Count() > 0)
+                                {
+                                    <ul>
+                                        @TreeviewCategoriesrecat.GetTreeView(_response, _response.FirstOrDefault().ParentId)
+                                    </ul>
+                                }
+                            }
+                            else
+                            {
+                                var desc = "";
+                                var _response = db.Database.SqlQuery<Categories>("plm_spGetCategoriestree @param='" + desc + "'").OrderBy(x => x.ParentId).ToList();
+
+                                if (_response != null && _response.Count() > 0)
+                                {
+                                    <ul>
+                                        @TreeviewCategoriesrecat.GetTreeView(_response, _response.FirstOrDefault().ParentId)
+                                    </ul>
+                                }
+                            }
+                        }
+                    </div>
+                </td>
+                <td style="width:0px"></td>
+                <td style="width: 50%; vertical-align: top; ">
+                    <div class="treeview scrollbar1" id="scrollbar">
+                        @{
+                            sessionrecategorization _sbool = (sessionrecategorization)Session["sessionrecategorization"];
+                            if (_sbool != null)
+                            {
+                                bool flag = _sbool._flag;
+                                if (flag == true)
+                                {
+                                    searchhcategory seachcat = (searchhcategory)Session["searchhcategory"];
+                                    string Description = seachcat.Description;
+
+                                    var _categories = db.Database.SqlQuery<HeterogeneousCategories>("plm_spGetHeterogeneousCategories  @param='" + Description + "'").OrderBy(x => x.ParentId).ToList();
+
+                                    if (_categories != null && _categories.Count() > 0)
+                                    {
+                                        <ul>
+                                            @TreeviewHeterogeneousCategories.GetTreeView(_categories, _categories.FirstOrDefault().ParentId)
+                                        </ul>
+                                    }
+                                }
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd; " id="catrecat">
+        <br />
+        <br />
+        @{
+    if (sessionrecatid != null)
+    {
+        int Id = sessionrecatid.CategoryId;
+        var ca = (from _ca in db.Categories
+                  where _ca.CategoryId == Id
+                  select _ca).ToList();
+
+        foreach (Categories _ca in ca)
+        {
+            <label class="labels">Categoría: </label> <label>@_ca.Description</label>
+                }
+            }
+        }
+        <br />
+        <br />
+        <table border="0" style="width:100%;height:100%">
+            <tr>
+                <td style="height:15px" colspan="2">
+                    @{
+                        sessionclassif sessionclassif = (sessionclassif)Session["sessionclassif"];
+                        if (sessionclassif != null)
+                        {
+                            WebGrid _datagrid = new WebGrid();
+                            try
+                            {
+                                int CategoryId = sessionclassif.Categoryid;
+                                var cats = db.Database.SqlQuery<plm_vwHeterogeneousCategories>("plm_spGetHeterogeneousCategoriesDetails  @param =" + CategoryId + "").ToList();
+                                _datagrid = new WebGrid(cats);
+
+                                <div style="width:100%;height:100%">
+                                    @_datagrid.GetHtml(
+                                                  headerStyle: "webgrid-header",
+                                                  footerStyle: "webgrid-footer",
+                                                  alternatingRowStyle: "webgrid-alternating-row",
+                                                  selectedRowStyle: "webgrid-selected-row",
+                                                  rowStyle: "webgrid-row-style",
+                                                  tableStyle: "webgrid-table ",
+                                                  mode: WebGridPagerModes.All,
+                                                  columns: new[] {
+                                                  _datagrid.Column("", header: "Categoría", format: @<text>
+                                                        @{
+                                                            <span class="display-mode"> <label id="lblName" style="width:180px">@item.DescriptionNodo</label> </span>
+                                                            <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.HeterogeneousCategoryIdNodo" />
+                                                        }
+                                                </text>),
+                                                        _datagrid.Column("", header: "SubCategoría", format: @<text>
+                                        @{
+                                            <span class="display-mode"> <label id="lblName" style="width:180px">@item.Description</label> </span>
+                                            <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.HeterogeneousCategoryId" />
+                                        }
+                                                        </text>),
+                                                        _datagrid.Column("",header:"Eliminar", format:@<text>
+                                        <button class="btn btn-default deletecategory" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deletematch", "Recategorization", new { HeterogeneousCategoryId = item.HeterogeneousCategoryId, HeterogeneousCategoryIdNodo = item.HeterogeneousCategoryIdNodo })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                                                        </text>,style:"buton")
+                                                    })
+                                </div>
+                            }
+                            catch (Exception ex)
+                            {
+                                string car = Convert.ToString(ex.Message);
+                            }
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

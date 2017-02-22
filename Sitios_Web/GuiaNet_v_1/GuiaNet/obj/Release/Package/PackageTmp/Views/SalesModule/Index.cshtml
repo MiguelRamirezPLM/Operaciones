@@ -1,0 +1,907 @@
+﻿@model IEnumerable<GuiaNet.Models.plm_vwProductsByClientRegisterandBarcode>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "Index";
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 20);
+    Guia db = new Guia();
+    indexsalesmodule indexsalesmodule = (indexsalesmodule)Session["indexsalesmodule"];
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (indexsalesmodule != null)
+    {
+        ClientIdss = indexsalesmodule.ClId;
+        EditionIds = indexsalesmodule.EId;
+        BookIds = indexsalesmodule.BId;
+        CountryIdss = indexsalesmodule.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+
+<html>
+<head>
+    <title></title>
+    <script src="@Url.Content("~/Scripts/jquery-1.3.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.js")"></script>
+
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var name = tr.find("#Name").val();
+                var descript = tr.find("#Description").val();
+                var register = tr.find("#Register").val();
+                var barc = tr.find("#barcode").val();
+                var barcid = tr.find("#lblBarCodeId").val();
+                var ID = tr.find("#lblProductid").val();
+                var Country = $("#CountryId").val();
+                var client = $("#ClientId").val();
+                tr.find("#lblName").text(name);
+                tr.find("#lblDescription").text(descript);
+                tr.find("#lblregister").text(register);
+
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if ((!name.trim() == true)) {
+                    apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "Ningun campo puede quedar vacío", { 'animate': true });
+                }
+                else {
+
+                    var ProductName = (name);
+                    var Description = (descript);
+                    var RegisterP = (register);
+                    var ProdID = (ID);
+                    var CID = (Country);
+                    var Client = (client);
+                    var App = 0;
+                    var User = 0;
+
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/editproducts/",
+                        traditional: true,
+                        data: { PName: ProductName, ProductId: ProdID, regist: RegisterP, Clientid: Client, BarCode: barc, BarCodeId: barcid },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else if (data == "pexist") {
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>El nombre de Producto Ya Existe!!!</p>"
+                                apprise("" + d + "", { 'animate': true });
+                            }
+                            else {
+                                d += "<li>Verificar El Código de Barras, Ya Existe!!!</li>"
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>El Código es: " + data + " </p>"
+                                apprise("" + d + "", { 'animate': true });
+                            }
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+    @*INSERT NEW PRODUCT*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script type="text/javascript">
+        $(function () {
+            $(".submit").click(function () {
+                $("#bloqueo").show();
+                var prodname = $("#productname").val();
+                var register = $("#register").val();
+                var barcod = $("#barcode").val();
+                var country = $("#CountryId").val();
+                var client = $("#ClientId").val();
+                var edition = $("#EditionId").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (country == null) {
+                    apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "Falta seleccionar País,Laboratorio y Edición", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    if (!prodname.trim()) {
+                        apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "El campo Nombre de Producto NO puede quedar vacío", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        $.ajax({
+                            url: "../SalesModule/createnewproduct/",
+                            type: "POST",
+                            dataType: "json",
+                            data: { ProductN: prodname, clientid: client, editionid: edition, registers: register, barcode: barcod },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                if (data == false) {
+                                    d += "<li>El Producto Ya Existe para este Cliente!!!</li>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                                if ((data != true) && (data != false)) {
+                                    d += "<label style='width:300px;text-align:justify;font-style:italic'> El Producto No se puede insertar con este Código de Barras, El Código Ya Existe!!!</label>"
+                                    d += "<p></p>"
+                                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>-> El Código es: " + data + " </p>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                            },
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+    @*END*@
+    @**INSERT INTO PARTICIPANTPRODUCTS*@
+    <script>
+        $(document).ready(function () {
+            $(".Participant").click(function () {
+                var tr = $(this).parents("tr:first");
+                if (tr.find(".Participant").is(':checked')) {
+                    var prodId = tr.find("#lblProductid").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    tr.find("#lblProductid").text(prodId);
+                    var App = 0;
+                    var User = 0;
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/insertparticipantproducts/",
+                        traditional: true,
+                        data: { productid: prodId, clientid: client, editionid: edition },
+                        success: function (data) {
+                            tr.find(".Mentionated").prop("checked", false);
+
+                            tr.find("#clasifbtn").show();
+                        }
+                    });
+                }
+                else if (tr.find(".Participant").is(":not(:checked)")) {
+
+                    var prodId = tr.find("#lblProductid").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    tr.find("#lblProductid").text(prodId);
+
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/deleteparticipantproducts/",
+                        traditional: true,
+                        data: { ProductId: prodId, clientid: client, editionid: edition },
+                        success: function (data) {
+                            if (data == true) {
+                                //setTimeout('document.location.reload()');
+                                tr.find("#clasifbtn").hide();
+                            }
+                            if (data == "_errorpc") {
+                                d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Operación Invalida!!!</label>"
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; El Producto tiene Contenido. Contactar al Administrador!!!</p>"
+                                apprise("" + d + "", { 'animate': true });
+
+                                tr.find(".Participant").prop("checked", true);
+                            }
+                            if (data == "_existContent") {
+                                d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Operación Invalida!!!</label>"
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; El Producto tiene Contenido. Contactar al Administrador!!!</p>"
+                                apprise("" + d + "", { 'animate': true });
+
+                                tr.find(".Participant").prop("checked", true);
+                            }
+                        }
+                    });
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+    @*PREDICTIVE*@
+    @*<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+            <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>*@
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")"></script>
+    <script>
+        $(function () {
+            var Country = $("#CountryId").val();
+            $("#productname").autocomplete({
+                appendTo: $("#productname").parent(),
+                source: function (request, response) {
+                    $.ajax({
+                        url: "../SalesModule/searchpredictive/",
+                        type: "POST",
+                        dataType: "json",
+                        data: { term: request.term, country: Country },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item, value: item };
+                            }))
+                        }
+                    })
+                },
+                minLength: 3
+            });
+        });
+    </script>
+    @*END*@
+
+    <script>
+        $(document).ready(function () {
+            $(".request").click(function () {
+                var tr = $(this).parents("tr:first");
+                if (tr.find(".request").is(':checked')) {
+                    var prodId = tr.find("#lblProductid").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    tr.find("#lblProductid").text(prodId);
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    var App = 0;
+                    var User = 0;
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/insertreferencesidef/",
+                        traditional: true,
+                        data: { productid: prodId, clientid: client, editionid: edition },
+                        success: function (data) {
+                            if (data == false) {
+                                tr.find(".request").removeAttr('checked')
+                                d += "<label style='width:300px;text-align:justify;color:#05606d;font-style:italic'>Operación Invalida!!!</label>"
+                                d += "<p></p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>-> Para poder Marcar el Producto para insertar ProductShot, debe de marcarlo primero como Participante!!! </p>"
+                                apprise("" + d + "", { 'animate': true });
+                            }
+                        }
+                    });
+                }
+                else if (tr.find(".request").is(":not(:checked)")) {
+
+                    var prodId = tr.find("#lblProductid").val();
+                    var client = $("#ClientId").val();
+                    var edition = $("#EditionId").val();
+                    tr.find("#lblProductid").text(prodId);
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../SalesModule/deletereferencesidef/",
+                        traditional: true,
+                        data: { ProductId: prodId, clientid: client, editionid: edition },
+                        success: function (data) {
+                        }
+                    });
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <div id="insertproducts" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="close" onclick="close_popup_createproduct();"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Agregar Producto</h2>
+                <br />
+                <table style="width:100%" border="0">
+                    <tr style="line-height: 40px;">
+                        <td style="width:35%; font-size:16px;text-align:left"><label class="labels">Nombre de Producto:</label></td>
+                        <td style="width:30px;text-align:center">
+                            <label style="font-size:25px;color:red">*</label>
+                        </td>
+                        <td><input type="text" class="form-control" id="productname" /></td>
+                    </tr>
+                    <tr style="line-height: 40px;">
+                        <td style="width: 35%; font-size: 16px; text-align: left"><label class="labels">Registro Sanitario:</label></td>
+                        <td style="width:30px"></td>
+                        <td><input type="text" class="form-control" id="register" /></td>
+                    </tr>
+                    <tr style="line-height: 40px;">
+                        <td style="width: 35%; font-size: 16px; text-align: left"><label class="labels">Código de Barras:</label></td>
+                        <td style="width:30px"></td>
+                        <td><input type="text" class="form-control" id="barcode" /></td>
+                    </tr>
+                    <tr style="line-height: 40px;">
+                        <td style="height:20px"></td>
+                    </tr>
+                    <tr style="line-height: 40px;">
+                        <td style="height:20px;text-align:center" colspan="3">
+                            <p style="text-align:center "> <button type="submit" id="Insert" value="Insertar" class="submit btn btn-info" style="font-size: 17px; width: 85px; height: 35px">Insertar</button></p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <table border="0" style="width:100%; height:100%">
+        <tr>
+            <td colspan="4">
+                <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("Index", "Help", new { module = "SM" })';return false;">Ayuda</button>
+                <ol class="breadcrumb">
+                    <li><a href="/SalesModule/Index">Ventas</a></li>
+                    <li class="active">Productos</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @using (Html.BeginForm())
+                {
+                    <div style="text-align:right;display:none">
+                        <p>
+                            @{
+                    if (indexsalesmodule != null)
+                    {
+
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="@indexsalesmodule.CId">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="@indexsalesmodule.BId">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@indexsalesmodule.EId">
+                                <label>client</label><input id="ClientId" name="ClientId" type="text" value="@indexsalesmodule.ClId">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+
+                    }
+                    else
+                    {
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                                <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                    }
+                            }
+                        </p>
+                    </div>
+                }
+                @{
+                    if (indexsalesmodule == null)
+                    {
+                        <div style="width: 100%; float: left">
+                            <table style="width:100%" border="0">
+                                <tr>
+                                    <td width="100px">
+                                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <div style="text-align:left;">
+                                            @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = w.CountryId;
+                                                            <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                        }
+                                                    }
+                                                }
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="DivisionName" id="lblclient" style="display: normal">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="width: 100%;">
+                            <table style="width:100%" border="0">
+                                <tr>
+                                    <td width="100px">
+                                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <div style="text-align:left;">
+                                            @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = indexsalesmodule.CId;
+                                                            if (w.CountryId == CountryId)
+                                                            {
+                                                                <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td rowspan="4" style="text-align:center">
+                                        <button class="btn btn-info" onclick="open_popup_createproduct();">Agregar Producto</button>
+                                    </td>
+                                    <td rowspan="4" style="text-align:center">
+                                        <a target="_blank" href="@Url.Action("GetReport", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfproductsbyclient.png")" style="height:75px;width:60px"></a>
+                                    </td>
+                                    <td rowspan="4" style="text-align:center">
+                                        <a target="_blank" href="@Url.Action("GetReportProductsByEdition", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfproductsbyedition.png")" style="height:75px;width:60px"></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px; height: 30px">
+                                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int BookId = indexsalesmodule.BId;
+
+                                            var bk = (from book in db.Books
+                                                      where book.BookId == BookId
+                                                      select book).ToList();
+                                            foreach (Books _book in bk)
+                                            {
+                                                if (_book.BookId == BookId)
+                                                {
+                                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_book.BookId">@_book.BookName</option>
+                                                }
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int EditionId = indexsalesmodule.EId;
+                                            int CountryIds = indexsalesmodule.CId;
+                                            var ed = (from _ed in db.Editions
+                                                      where _ed.CountryId == CountryIds
+                                                      select _ed).ToList();
+
+                                            foreach (Editions _ed in ed)
+                                            {
+                                                if (_ed.EditionId == EditionId)
+                                                {
+                                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                                }
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="DivisionName" id="lblclient" style="display: normal">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            byte clienttypeid = 0;
+                                            var ct = (from clientt in db.ClientTypes
+                                                      where clientt.TypeName == "ANUNCIANTE"
+                                                      select clientt).ToList();
+                                            foreach (ClientTypes _ct in ct)
+                                            {
+                                                clienttypeid = _ct.ClientTypeId;
+                                            }
+
+                                            var _clients = (from c in db.Clients
+                                                            join ec in db.EditionClients
+                                                            on c.ClientId equals ec.ClientId
+                                                            where ec.ClientTypeId == clienttypeid
+                                                            && c.CountryId == CountryIdss
+                                                            orderby c.CompanyName ascending
+                                                            select c).Distinct().OrderBy(x => x.CompanyName).ToList();
+                                            foreach (Clients c in _clients)
+                                            {
+                                                <option value="@c.ClientId">@c.CompanyName</option>
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        @{
+            if (indexsalesmodule != null)
+            {
+                <tr>
+                    <td style="width: 10%;"><label class="labels">País:</label></td>
+                    <td style="width: 1%;"></td>
+                    <td>
+                        @{
+                var cts = (from _ct in db.Countries
+                           where _ct.CountryId == CountryIdss
+                           select _ct).ToList();
+                foreach (Countries _ct in cts)
+                {
+                    <label>@_ct.CountryName</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Libro:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                var bks = (from _bk in db.Books
+                           where _bk.BookId == BookIds
+                           select _bk).ToList();
+                foreach (Books _bks in bks)
+                {
+                    <label>@_bks.BookName</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Edición:</label></td>
+                    <td></td>
+                    <td>
+                        @{
+                var eds = (from _ed in db.Editions
+                           where _ed.EditionId == EditionIds
+                           select _ed).ToList();
+                foreach (Editions _eds in eds)
+                {
+                    <label>@_eds.NumberEdition</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Cliente:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                var cl = (from _cl in db.Clients
+                          where _cl.ClientId == ClientIdss
+                          select _cl).ToList();
+                foreach (Clients _cl in cl)
+                {
+                    <label>@_cl.CompanyName</label>
+                }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="3">
+                @{
+                    if (indexsalesmodule != null)
+                    {
+                        <div style="float:right; border:none; width:30%">
+                            @using (Html.BeginForm("searchproduct", "SalesModule"))
+                            {
+                                <label>Buscar:</label> @Html.TextBox("ProductName", "", new { @class = "form-control1", style = "width:70%" })
+                                <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            }
+                        </div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div style="text-align: center; width: 100%; height: 100%; ">
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center; line-height: 40px;">
+
+                @{
+                    var count = ViewData["Count"];
+                    var countprod = ViewData["Countresults"];
+                    if ((count == null) && (countprod != null))
+                    {
+                        <label class="labels">Se han encontrado: @ViewData["Countresults"] resultados</label>
+                    }
+                    else if ((countprod == null) && (count == null))
+                    {
+                        <label id="result" style="display:normal; color:red">No se Han Encontrado Productos en esta Edición para el Cliente</label>
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+
+    <div style="width:100%">
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header1",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Producto", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblName">@item.ProductName</label> </span>
+                                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="Name" class="edit-mode edprod form-control">@item.ProductName</textarea>
+                                    <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.ProductId" />
+                                }
+                        </text>, style:"column23"),
+                         _datagrid.Column("", header: "Registro Sanitario", format: @<text>
+                            @{
+                                <span class="display-mode"> <label id="lblregister">@item.RegisterSanitary</label> </span>
+                                <textarea style="display:none;color:red; font-size: 12px;" maxlength="200" id="Register" class="edit-mode edreg form-control">@item.RegisterSanitary</textarea>
+                                <input id="lblProductid" style="display:none; width:20px" value="@item.ProductId" />
+                            }
+                        </text>, style:"column23"),
+                         _datagrid.Column("", header: "Código de Barras", format: @<text>
+                            @{
+                                <span class="display-mode"> <label id="lblbarcode">@item.BarCode</label> </span>
+                                <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="barcode" class="edit-mode barcode form-control">@item.BarCode</textarea>
+                                <input id="lblBarCodeId" style="display:none; width:20px" value="@item.BarCodeId" />
+                            }
+                        </text>, style:"column23"),
+
+                        _datagrid.Column("", header: "Correcciones", format: @<text>
+                            @{
+                                <button class="btn btn-primary" onclick="getproductstatusSM($(this))" value="@item.ProductId">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                            }
+                        </text>,style:"buton column5"),
+        
+                        _datagrid.Column("", header: "Status", format: @<text>
+                            @{
+                                <button class="btn btn-primary" onclick="getproductstatusSM($(this))" value="@item.ProductId">
+                                    <span class="glyphicon glyphicon-stats"></span>
+                                </button>
+                            }
+                        </text>,style:"buton column5"),
+
+                        _datagrid.Column("", header: "SIDEF", format: @<text>
+                            @{
+                                int SIDEF = item.SIDEF;
+
+                                if(SIDEF != 0)
+                                {
+                                    <input type="checkbox" class="request" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="request" />
+                                }
+
+                            }
+                        </text>,style:"buton column5"),
+                         _datagrid.Column("", header: "Participante", format: @<text>
+                            @{
+                                int PP = item.PP;
+                                if(PP != 0)
+                                {
+                                    <input type="checkbox" class="Participant" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="Participant" />
+                                }
+
+                            }
+                        </text>,style:"buton column5"),
+
+
+                            _datagrid.Column("", header: "Mencionado", format: @<text>
+                            @{
+                                int MP = item.MP;
+                                if (MP != 0)
+                                {
+                                    <input type="checkbox" class="Mentionated" checked="checked" onclick="checkmentionatedProducts($(this))" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" class="Mentionated" onclick="checkmentionatedProducts($(this))" />
+                                }
+                            }
+                            </text>,style:"buton column5"),
+
+                            _datagrid.Column("", header: "Editar", format: @<text>
+                            @{
+                                <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-info"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+                                <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning" value="@item.ProductName"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+                                <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+                            }
+                            </text>,style:"buton column10"),
+                            _datagrid.Column("", header: "Clasificar", format: @<text>
+                            @{
+                                int PP = item.PP;
+                                int MP = item.MP;
+                                if((PP != 0) || (MP != 0))
+                                {
+                                    <img src="@Url.Content("~/Images/clasification.png")" style="height:50px;width:60px;" class="btn" id="clasifbtn" onclick="location.href='@Url.Action("ClasificationProducts", "SalesModule", new { ProductId = item.ProductId })';return false;">
+                                }
+                            }
+                            </text>,style:"buton column5")
+
+        })
+    </div>
+
+    <button id="ProductStatus" data-toggle="modal" data-target="#status" style="display:none"></button>
+    <div class="modal fade" id="status" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title" style="color:white" id="messageerror"><i>Estado del producto.</i></h3>
+                </div>
+                <div class="modal-body" id="contenteditions">
+                    <input type="text" id="inputProductId" style="display:none" />
+                    <label class="labels">Producto: </label> <label id="lblProductName"></label>
+                    <br />
+                    <br />
+                    <div id="results"></div>
+                </div>
+                <div class="modal-footer" id="divbtncloseerror">
+                    <button class="btn btn-primary" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span>&nbsp; Aceptar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button id="ProductStatus" data-toggle="modal" data-target="#corrections" style="display:normal">X</button>
+    <div class="modal fade" id="corrections" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header label-info">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title" style="color:white" id="messageerror"><i></i></h3>
+                </div>
+                <div class="modal-body" id="contenteditions">
+                    <input type="text" id="inputProductId" style="display:none" />
+                    <label class="labels">Producto: </label> <label id="lblProductName"></label>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6" style="border:groove">
+                            Categorías Eliminadas.
+                        </div>
+                        <div class="col-lg-6" style="border:groove">
+                            Categorías Correctas.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="divbtncloseerror">
+                    <button class="btn btn-primary" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span>&nbsp; Aceptar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+﻿@using GuiaNet.Models;
+@{
+    PLMUsers PLMUsers = new PLMUsers();
+    string HashKey = System.Configuration.ConfigurationManager.AppSettings["HashKey"];
+
+    var apps = PLMUsers.Applications.Where(x => x.HashKey == HashKey).ToList();
+
+    int ApplicationId = apps[0].ApplicationId;
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - GuiaNet</title>
+    @*@Styles.Render("~/Content/css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Site.css")
+
+    <script src="~/Scripts/Filters.js"></script>
+    <script src="~/Scripts/ScriptsSalesModule.js"></script>
+    <script src="~/Scripts/UserManual.js"></script>
+    
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/style.css" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/estilos.css")" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")"></script>
+
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+
+    <link href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
+
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <link href="@Url.Content("~/Content/jquery-ui.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/jquery-ui.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+
+    <script>
+        $(function () {
+            $(".menul").click(function () {
+                $("#bloqueo").show();
+            });
+        });
+    </script>
+
+    <script>
+        block();
+
+        function block() {
+            $("#bloqueo").hide();
+        }
+    </script>
+
+    <script>
+        $(function () {
+            $(".insertbrand").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".deletebrand").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".insertspeciality").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".deletespeciality").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+
+</head>
+<body>
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador">
+            <img src="~/Images/477.GIF" style="">
+        </div>
+    </div>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-image: url(../../Images/TopBar.png);">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="~/Images/GuiaNet1.png" style="float:left; width:200px; height:60px;" />
+                @{
+                    string version = System.Configuration.ConfigurationManager.AppSettings["Version"];
+
+                    <label style="color: white;font-size:12px; font-style: italic;">@version</label>
+                }
+            </div>
+
+            <div class="navbar-collapse collapse" style="color:white;text-align:center">
+                @{
+                    if (Request.IsAuthenticated)
+                    {
+                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                        if (p != null)
+                        {
+                            var user = p.userId;
+                            var app = p.ApplicationId;
+                            var userid = (from UR in PLMUsers.ApplicationUsers
+                                          where UR.UserId == user
+                                          && UR.ApplicationId == app
+                                          join rol in PLMUsers.Roles
+                                          on UR.RoleId equals rol.RoleId
+                                          select rol).ToList();
+                            foreach (GuiaNet.Models.Roles a in userid)
+                            {
+                                if (a.Description == "Administrador")
+                                {
+                                    <div class="btn-group" style="width: 50%; text-align: center; border: none; ">
+                                        <div class="btn-group" style="width: 20%; border: none; ">
+                                            <br />
+                                            <button id="SMB" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="vertical-align:middle;border-radius:10px;font-style:italic">
+                                                VENTAS <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu" role="menu" style="text-align: left; border-radius: 15px;" id="SMM">
+                                                @*@{
+
+                                                        var ws = PLMUsers.WebPages.Where(x => x.ApplicationId == ApplicationId).ToList();
+
+                                                        if (ws.LongCount() > 0)
+                                                        {
+                                                            foreach (WebPages _ws in ws)
+                                                            {
+                                                                var rm = PLMUsers.RolMenues.Where(x => x.WebPageId == _ws.WebPageId && x.RoleId == a.RoleId).ToList();
+
+                                                                if (rm.LongCount() > 0)
+                                                                {
+                                                                    foreach (RolMenues _rm in rm)
+                                                                    {
+                                                                        var m = PLMUsers.Menues.Where(x => x.MenuId == _rm.MenuId).ToList();
+                                                                        if (m.LongCount() > 0)
+                                                                        {
+                                                                            foreach(Menues _m in m)
+                                                                            {
+                                                                                if (_ws.PageDescription == "Página principal de Productos Hospitalarios")
+                                                                                {
+                                                                                    <li class="menul"><a href="../MedicalProducts/@_ws.Url">@_m.MenuName</a> </li>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li class="menul"><a href="../SalesModule/@_ws.Url">@_m.MenuName</a> </li>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }*@
+
+                                                <li class="menul">@Html.ActionLink("Categorías", "categories", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Especialidades", "clientspecialities", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Marcas", "clientbrands", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Productos", "Index", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Productos Hospitalarios", "Index", "MedicalProducts")</li>
+                                                <li class="menul">@Html.ActionLink("Sucursales", "clientbranch", "SalesModule")</li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group" style="width: 51%; border: none; ">
+                                            <br />
+                                            <button id="LIB" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="vertical-align:middle;border-radius:10px;font-style:italic">
+                                                LABORATORIO DE INFORMACIÓN <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu" role="menu" style="text-align: left; border-radius: 15px;" id="LIM">
+                                                <li class="menul">@Html.ActionLink("Clasificación", "ClasificationHC", "InformationLaboratory")</li>
+                                                <li class="menul">@Html.ActionLink("Productos", "Index", "InformationLaboratory")</li>
+                                                <li class="menul">@Html.ActionLink("Re Categorización", "categories", "Recategorization")</li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group" style="width: 26%; border: none; ">
+                                            <br />
+                                            <button id="PDB" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="vertical-align:middle;border-radius:10px;font-style:italic">
+                                                PRODUCCIÓN <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu" role="menu" style="text-align: left; border-radius: 15px;" id="PDM">
+                                                <li class="menul">@Html.ActionLink("Categorías", "Index", "ReferencesReport")</li>
+                                                <li class="menul">@Html.ActionLink("Especialidades", "clientspecialities", "ReferencesReport")</li>
+                                                <li class="menul">@Html.ActionLink("Etiquetas", "Index", "Targets")</li>
+                                                <li class="menul">@Html.ActionLink("Marcas", "brandimages", "ReferencesReport")</li>
+                                                <li class="menul">@Html.ActionLink("Páginar Clientes", "clientsbyedition", "Production")</li>
+                                                <li class="menul">@Html.ActionLink("Productos", "Index", "Production")</li>
+                                                <li class="menul">@Html.ActionLink("Segmentar Productos", "segmentallproducts", "Production")</li>
+                                                <li class="menul">@Html.ActionLink("Sucursales", "clientbranch", "Production")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (a.Description == "Vendedor")
+                                {
+                                    <div class="btn-group" style="width: 50%; text-align: center; border: none; ">
+                                        <div class="btn-group" style="width: 20%; border: none; ">
+                                            <br />
+                                            <button id="SMB" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="vertical-align:middle;border-radius:10px;font-style:italic">
+                                                VENTAS <span class="caret"></span>
+                                            </button>
+                                            
+                                            <ul class="dropdown-menu" role="menu" style="text-align: left; border-radius: 15px;" id="SMM">
+                                                <li class="menul">@Html.ActionLink("Categorías", "categories", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Especialidades", "clientspecialities", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Marcas", "clientbrands", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Productos", "Index", "SalesModule")</li>
+                                                <li class="menul">@Html.ActionLink("Productos Hospitalarios", "Index", "MedicalProducts")</li>
+                                                <li class="menul">@Html.ActionLink("Sucursales", "clientbranch", "SalesModule")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                                if (a.Description == "Laboratorio de Información")
+                                {
+                                    <div class="btn-group" style="width: 50%; text-align: center; border: none; ">
+                                        <div class="btn-group" style="width: 51%; border: none; ">
+                                            <br />
+                                            <button id="LIB" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="vertical-align:middle;border-radius:10px;font-style:italic">
+                                                LABORATORIO DE INFORMACIÓN <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu" role="menu" style="text-align: left; border-radius: 15px; " id="LIM">
+                                                <li class="menul">@Html.ActionLink("Clasificación", "ClasificationHC", "InformationLaboratory")</li>
+                                                <li class="menul">@Html.ActionLink("Productos", "Index", "InformationLaboratory")</li>
+                                                <li class="menul">@Html.ActionLink("Re Categorización", "categories", "Recategorization")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                                if (a.Description == "Diagramador")
+                                {
+                                    <div class="btn-group" style="width: 50%; text-align: center; border: none; ">
+                                        <div class="btn-group" style="width: 26%; border: none; ">
+                                            <br />
+                                            <button id="PDB" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" style="vertical-align:middle;border-radius:10px;font-style:italic">
+                                                PRODUCCIÓN <span class="caret"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu" role="menu" style="text-align: left; border-radius: 15px;" id="PDM">
+                                                <li class="menul">@Html.ActionLink("Categorías", "Index", "ReferencesReport")</li>
+                                                @{
+                                string file = System.Configuration.ConfigurationManager.AppSettings["targets"];
+                                var usr = (from _usr in PLMUsers.Users
+                                           where _usr.UserId == user
+                                           select _usr).ToList();
+                                foreach (Users _usr in usr)
+                                {
+                                    if (file.Contains(_usr.NickName))
+                                    {
+                                            <li class="menul">@Html.ActionLink("Etiquetas", "Index", "Targets")</li>
+                                    }
+                                }
+                                                }
+                                                <li class="menul">@Html.ActionLink("Especialidades", "clientspecialities", "ReferencesReport")</li>
+                                                <li class="menul">@Html.ActionLink("Marcas", "brandimages", "ReferencesReport")</li>
+                                                <li class="menul">@Html.ActionLink("Páginar Clientes", "clientsbyedition", "Production")</li>
+                                                <li class="menul">@Html.ActionLink("Productos", "Index", "Production")</li>
+                                                <li class="menul">@Html.ActionLink("Segmentar Productos", "segmentallproducts", "Production")</li>
+                                                <li class="menul">@Html.ActionLink("Sucursales", "clientbranch", "Production")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                }
+                @if (Request.IsAuthenticated)
+                {
+                    @Html.Partial("_LoginPartial")
+                }
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+   @* @if (Request.IsAuthenticated)
+    {
+        <div style="float:right; position:fixed; top:70px; width:98%; border:none; text-align:right">
+                <button class="btn btn-warning" style="width:5%" id="chat" onclick="open_popup_chat();">CHAT</button>
+                <button class="btn btn-warning" style="width:5%" id="chat" onclick="location.href='@Url.Action("insimgs", "ReferencesReport")';return false;">Imagenes</button>
+            </div>
+
+            <div id="chatform" style="display: none;">
+                <div class="content-popup">
+                    <div class="close"><a href="#" id="close" onclick="close_popup_chat();"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+                    <div>
+                        <h2 class="classh2" style="color: #345869">Chat</h2>
+                        <br />
+                        <table style="width:100%" border="0">
+                            <tr style="line-height: 40px;">
+                                <td style="width:35%; font-size:16px;text-align:left;vertical-align:top"><label class="labels">Mensaje:</label></td>
+                                <td>
+                                    <textarea class="form-control" id="textemail" rows="5" style="width:100%;height:100%"></textarea>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 40px;">
+                                <td style="height:20px;text-align:center" colspan="3">
+                                    <p style="text-align:center;"> <button type="submit" id="butonmsn" value="Insertar" class="btn btn-info" style="font-size: 17px; width: 85px; height: 35px; vertical-align: bottom" onclick="send_email();">Envíar</button></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    }*@
+</body>
+</html>

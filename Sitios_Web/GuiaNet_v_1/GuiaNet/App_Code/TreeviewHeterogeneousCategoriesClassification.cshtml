@@ -1,0 +1,27 @@
+﻿@helper GetTreeView(List<GuiaNet.Models.HeterogeneousCategories> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId.Equals(ParentId)))
+    {
+        <li>
+            @{var subitem = tree.Where(a => a.ParentId.Equals(i.HeterogeneousCategoryId)).Count();}
+
+            @if (subitem > 0)
+            {
+                <span class="expand1 collapsible">&nbsp;</span>
+            }
+            else
+            {
+                <span style="display:inline-block">&nbsp;</span>
+            }
+            <span>
+                <a href="/SalesModule/clasificationhetcat/@i.HeterogeneousCategoryId" class="htccat" style="color:black">@i.Description.ToUpper()</a>
+            </span>
+            @if (subitem > 0)
+            {
+                <ul>
+                    @TreeviewHeterogeneousCategoriesClassification.GetTreeView(tree, i.HeterogeneousCategoryId)
+                </ul>
+            }
+        </li>
+    }
+}

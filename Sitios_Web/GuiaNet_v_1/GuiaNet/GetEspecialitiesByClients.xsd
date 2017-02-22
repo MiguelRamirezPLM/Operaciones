@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="GetEspecialitiesByClients" targetNamespace="http://tempuri.org/GetEspecialitiesByClients.xsd" xmlns:mstns="http://tempuri.org/GetEspecialitiesByClients.xsd" xmlns="http://tempuri.org/GetEspecialitiesByClients.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="Guia_nuevaConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Guia_nuevaConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.Guia_nuevaConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GetSpecialitiesbyClientTableAdapter" GeneratorDataComponentClassName="GetSpecialitiesbyClientTableAdapter" Name="GetSpecialitiesbyClient" UserDataComponentName="GetSpecialitiesbyClientTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="Guia_nuevaConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetSpecialities" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetSpecialities" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetSpecialities" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>select c.ClientId, c.CompanyName, s.SpecialityId,s.Description, e.EditionId, e.NumberEdition, 0 as Count, null as AdversDescription, null as Quantity, null as CId
+from EditionClientSpecialities ecs
+inner join Clients c on ecs.ClientId = c.ClientId
+inner join Specialities s on ecs.SpecialityId = s.SpecialityId
+inner join Editions e on ecs.EditionId = e.EditionId</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ClientId" DataSetColumn="ClientId" />
+              <Mapping SourceColumn="CompanyName" DataSetColumn="CompanyName" />
+              <Mapping SourceColumn="SpecialityId" DataSetColumn="SpecialityId" />
+              <Mapping SourceColumn="Description" DataSetColumn="Description" />
+              <Mapping SourceColumn="EditionId" DataSetColumn="EditionId" />
+              <Mapping SourceColumn="NumberEdition" DataSetColumn="NumberEdition" />
+              <Mapping SourceColumn="Count" DataSetColumn="Count" />
+              <Mapping SourceColumn="AdversDescription" DataSetColumn="AdversDescription" />
+              <Mapping SourceColumn="Quantity" DataSetColumn="Quantity" />
+              <Mapping SourceColumn="CId" DataSetColumn="CId" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="GetEspecialitiesByClients" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="GetEspecialitiesByClients" msprop:Generator_UserDSName="GetEspecialitiesByClients">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="GetSpecialitiesbyClient" msprop:Generator_TableClassName="GetSpecialitiesbyClientDataTable" msprop:Generator_TableVarName="tableGetSpecialitiesbyClient" msprop:Generator_RowChangedName="GetSpecialitiesbyClientRowChanged" msprop:Generator_TablePropName="GetSpecialitiesbyClient" msprop:Generator_RowDeletingName="GetSpecialitiesbyClientRowDeleting" msprop:Generator_RowChangingName="GetSpecialitiesbyClientRowChanging" msprop:Generator_RowEvHandlerName="GetSpecialitiesbyClientRowChangeEventHandler" msprop:Generator_RowDeletedName="GetSpecialitiesbyClientRowDeleted" msprop:Generator_RowClassName="GetSpecialitiesbyClientRow" msprop:Generator_UserTableName="GetSpecialitiesbyClient" msprop:Generator_RowEvArgName="GetSpecialitiesbyClientRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ClientId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnClientId" msprop:Generator_ColumnPropNameInRow="ClientId" msprop:Generator_ColumnPropNameInTable="ClientIdColumn" msprop:Generator_UserColumnName="ClientId" type="xs:int" />
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SpecialityId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnSpecialityId" msprop:Generator_ColumnPropNameInRow="SpecialityId" msprop:Generator_ColumnPropNameInTable="SpecialityIdColumn" msprop:Generator_UserColumnName="SpecialityId" type="xs:int" />
+              <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="EditionId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnEditionId" msprop:Generator_ColumnPropNameInRow="EditionId" msprop:Generator_ColumnPropNameInTable="EditionIdColumn" msprop:Generator_UserColumnName="EditionId" type="xs:int" />
+              <xs:element name="NumberEdition" msprop:Generator_ColumnVarNameInTable="columnNumberEdition" msprop:Generator_ColumnPropNameInRow="NumberEdition" msprop:Generator_ColumnPropNameInTable="NumberEditionColumn" msprop:Generator_UserColumnName="NumberEdition" type="xs:int" />
+              <xs:element name="Count" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCount" msprop:Generator_ColumnPropNameInRow="Count" msprop:Generator_ColumnPropNameInTable="CountColumn" msprop:Generator_UserColumnName="Count" type="xs:int" minOccurs="0" />
+              <xs:element name="AdversDescription" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnAdversDescription" msprop:Generator_ColumnPropNameInRow="AdversDescription" msprop:Generator_ColumnPropNameInTable="AdversDescriptionColumn" msprop:Generator_UserColumnName="AdversDescription" type="xs:int" minOccurs="0" />
+              <xs:element name="Quantity" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnQuantity" msprop:Generator_ColumnPropNameInRow="Quantity" msprop:Generator_ColumnPropNameInTable="QuantityColumn" msprop:Generator_UserColumnName="Quantity" type="xs:int" minOccurs="0" />
+              <xs:element name="CId" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCId" msprop:Generator_ColumnPropNameInRow="CId" msprop:Generator_ColumnPropNameInTable="CIdColumn" msprop:Generator_UserColumnName="CId" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

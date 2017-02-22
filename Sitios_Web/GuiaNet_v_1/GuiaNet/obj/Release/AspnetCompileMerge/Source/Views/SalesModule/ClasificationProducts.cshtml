@@ -1,0 +1,216 @@
+﻿@model IEnumerable<GuiaNet.Models.HomogeneousCategoriesByClientByProduct>
+@using GuiaNet.Models;
+@{
+    List<GetHomogeneousCategories> Cats = new List<GetHomogeneousCategories>();
+    indexsalesmodule ind = (indexsalesmodule)Session["indexsalesmodule"];
+    ViewBag.Title = "ClasificationProducts";
+    WebGrid _datagridcc = new WebGrid(Model, rowsPerPage:20);
+    Guia db = new Guia();
+    SearchCategorySM SearchCategorySM = (SearchCategorySM)Session["SearchCategorySM"];
+}
+@*<script>
+        $(document).ready(function () {
+
+            var text = $("#TextSearch").val();
+            var len = text.length;
+
+            $("#TextSearch").focus();
+            $("#TextSearch")[0].setSelectionRange(len, len);
+
+        })
+    </script>*@
+
+<script>
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            //alert('You pressed enter!');
+            $("#btnSearchCategories").trigger("click");
+        }
+    });
+</script>
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/SalesModule/Index")">Ventas</a></li>
+    <li><a href="@Url.Content("~/SalesModule/Index")">Productos</a></li>
+    <li class="active">Clasificación</li>
+</ol>
+@{
+    if (ind != null)
+    {
+        <table style="width:100%" border="0">
+            <tr>
+                <td style="width:15%"><label class="labels">País: </label> </td>
+                <td>
+                    @{
+        int countryid = ind.CId;
+        var countr = from countries in db.Countries
+                     where countries.CountryId == countryid
+                     select countries;
+        foreach (Countries c in countr)
+        {
+            <label>@c.CountryName</label><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+        }
+
+                    }
+                </td>
+                <td rowspan="5" style="width:10%;text-align:center">
+                    <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return" onclick="location.href = '@Url.Action("Index", "SalesModule")'; return false;"><br />
+                    <label>Regresar...</label>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labels">Obra:</label></td>
+                <td>
+                    @{
+        int bookid = ind.BId;
+        var books = from book in db.Books
+                    where book.BookId == bookid
+                    select book;
+        foreach (Books b in books)
+        {
+            <label>@b.BookName</label><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labels">Edición:</label></td>
+                <td>
+                    @{
+        int edition = ind.EId;
+        var _edition = from editions in db.Editions
+                       where editions.EditionId == edition
+                       select editions;
+        foreach (Editions e in _edition)
+        {
+            <label>@e.NumberEdition</label><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+        }
+
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labels">Cliente:</label></td>
+                <td>
+                    @{
+        int client = ind.ClId;
+        var clients = from _clients in db.Clients
+                      where _clients.ClientId == client
+                      select _clients;
+        foreach (Clients c in clients)
+        {
+            <label>@c.CompanyName</label><input type="text" style="display:none" id="clientid" value="@c.ClientId" />
+        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="labels">Producto:</label></td>
+                <td>
+                    @{
+        int? productid = ind.PId;
+        var products = from _products in db.Products
+                       where _products.ProductId == productid
+                       select _products;
+        foreach (Products p in products)
+        {
+            <label>@p.ProductName.ToUpper()</label><input type="text" style="display:none" id="ProductId" value="@p.ProductId" />
+        }
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+}
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        @*<input type="text" class="form-control" placeholder="Buscar Categorías..."/>*@
+        <div class="input-group stylish-input-group">
+            @{
+                if (SearchCategorySM != null)
+                {
+                    <input type="text" class="form-control" placeholder="Buscar Categorías..." id="TextSearch" value="@SearchCategorySM.CategoryName">
+                }
+                else
+                {
+                    <input type="text" class="form-control" placeholder="Buscar Categorías..." id="TextSearch">
+                }
+            }
+
+            <span class="input-group-addon" style="width:0" onclick="searchCategoriesSM()" id="btnSearchCategories">
+                <button type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        <div>
+            <button style="float:right" class="btn btn-danger" onclick="saveCategoriesSM()">
+                <span class="glyphicon glyphicon-forward"></span>
+                <span>&nbsp; Asociar</span>
+            </button>
+            <div class="treeview scrollbar1">
+                @{
+                    if (SearchCategorySM != null)
+                    {
+                        Cats = db.Database.SqlQuery<GetHomogeneousCategories>("plm_spGetHomogeneousCategories @HomogeneousCategoryId= 0, @TextSearch='" + SearchCategorySM.CategoryName + "'").ToList();
+                    }
+                    else
+                    {
+                        Cats = db.Database.SqlQuery<GetHomogeneousCategories>("plm_spGetHomogeneousCategories @HomogeneousCategoryId= 0").ToList();
+                    }
+                    <ul>
+                        @foreach (GetHomogeneousCategories _cat in Cats)
+                        {
+                            <li>
+                                <img src="@Url.Content("~/Images/ui-icons_454545_256x240.png")" id="Expand_@_cat.HomogeneousCategoryId" onclick="getlevel4SM(@_cat.HomogeneousCategoryId)" />
+                                <img src="@Url.Content("~/Images/ui-icons_454545_256x2401.png")" style="display:none" id="Collapse_@_cat.HomogeneousCategoryId" onclick="collapselevel4(@_cat.HomogeneousCategoryId)" />
+                                <label style="font-weight:100">@_cat.HomogeneousCategory</label>
+                                <ul id="ListL2_@_cat.HomogeneousCategoryId"></ul>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        @_datagridcc.GetHtml(
+                              headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                            @*_datagridcc.Column("",header:"Categoría Nivel 1", format: @<text>
+                                    <label>@item.CategoryNameL1</label>
+                                    <input type="text" style="display:none" value="@item.CategoryIdL1" />
+                                </text>),
+                                _datagridcc.Column("",header:"Categoría Nivel 2", format: @<text>
+                                    <label>@item.CategoryNameL2</label>
+                                    <input type="text" style="display:none" value="@item.CategoryIdL2" />
+                                </text>),*@
+                          _datagridcc.Column("",header:"Categoría Nivel 3", format: @<text>
+            <label>@item.HomogeneousCategoryL3</label>
+            <input type="text" style="display:none" id="HomogeneousCategoryIdL3" value="@item.HomogeneousCategoryIdL3" />
+                        </text>),
+                         _datagridcc.Column("",header:"Categoría Nivel 4", format: @<text>
+            <label>@item.LeafCategoryL4</label>
+            <input type="text" style="display:none" id="LeafCategoryIdL4" value="@item.LeafCategoryIdL4" />
+                        </text>),
+                          _datagridcc.Column("",header:"Eliminar", format: @<text>
+            <button class="btn btn-default deletecategory" style="color: #333; width: 45px; height: 35px" onclick="deleteProductLeafCategoriesSM($(this))">
+                <img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px">
+            </button>
+                        </text>,style:"buton")
+                          })
+    </div>
+</div>

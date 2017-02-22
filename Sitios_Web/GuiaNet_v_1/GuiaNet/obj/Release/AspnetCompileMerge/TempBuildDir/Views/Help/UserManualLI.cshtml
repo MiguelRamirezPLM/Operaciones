@@ -1,0 +1,74 @@
+﻿@model IEnumerable<String>
+@{
+    ViewBag.Title = "UserManualLI";
+
+    List<string> mdl = Model.ToList();
+
+    string module = Convert.ToString(mdl[0]);
+}
+
+<html>
+<head>
+    <title></title>
+</head>
+<body style="background-color:gray;">
+    <input type="text" value="@module" style="display:none" id="module" />
+    <div style="background-color:#065977">
+        <table border="0" style="width:100%;">
+            <tr style="height:100px">
+                <td style="text-align:center">
+                    <h1 style="color:#ffffff;font-style:italic">&#191;C&oacute;mo te puedo ayudar &#63;</h1>
+                </td>
+            </tr>
+            <tr style="height:50px">
+                <td style="text-align:center">
+                    <input type="text" class="form-focus" placeholder="Busqueda..." style="width:50%" id="textsearchmnl" onkeyup="searchcntLI($(this).val(), $('#module').val())" />
+                </td>
+            </tr>
+            <tr style="height:50px">
+                <td style="text-align:center"></td>
+            </tr>
+        </table>
+    </div>
+    <div style="border: none; width: 30%; float: left; height: auto; left: 0; background-color: #065977;color:white;min-width:100px">
+        <ol style="list-style: none;width:100%">
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg1" class="simg" onclick="getmenues($('#simg1'), $('#himg1'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg1" class="himg" onclick="closemenues($('#simg1'), $('#himg1'));" style="display:none">
+                REPORTES
+                <ul id="level2Id1" style="display: none; width: auto" class="listlevel">
+                    <li id="1ab" onclick='getcontentproductsLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Reporte de Productos con Categoría.</li>
+                    <li id="2ab" onclick='getcontentproductsLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Reporte de Categorías por Cliente.</li>
+                    <li id="3ab" onclick='getcontentproductsLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Reporte de Productos por Cliente.</li>
+                </ul>
+            </li>
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg5" class="simg" onclick="getmenues($('#simg5'), $('#himg5'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg5" class="himg" onclick="closemenues($('#simg5'), $('#himg5'));" style="display:none">
+                CLASIFICACIÓN.
+                <ul id="level2Id5" style="display:none" class="listlevel">
+                    <li id="4ab" onclick='getcontentclasificationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Ventana Clasificación.</li>
+                    <li id="5ab" onclick='getcontentclasificationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Agregar categoría a Producto.</li>
+                    <li id="6ab" onclick='getcontentclasificationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Eliminar categoría asociada a Producto.</li>
+                </ul>
+            </li>
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg6" class="simg" onclick="getmenues($('#simg6'), $('#himg6'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg6" class="himg" onclick="closemenues($('#simg6'), $('#himg6'));" style="display:none">
+                RE CATEGORIZACIÓN.
+                <ul id="level2Id6" style="display: none" class="listlevel">
+                    <li id="7ab" onclick='getcontentrecategorizationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Ventana Recategorización.</li>
+                    <li id="8ab" onclick='getcontentrecategorizationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Proceso de Re Categorización.</li>
+                    <li id="9ab" onclick='getcontentrecategorizationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Eliminar Categoría ya Re Categorizada.</li>
+                    <li id="10ab" onclick='getcontentrecategorizationLI($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Agregar Categorías nuevas.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div style="border: none; width: 70%; float: right; max-height: 500px;">
+        <div class="scrollbarmanual">
+            <div id="divcontentusermanual" style="margin-left: 30px;margin-right:30px; max-height: 500px;border:none"></div>
+        </div>
+    </div>
+</body>
+</html>

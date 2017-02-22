@@ -1,0 +1,1045 @@
+﻿@model List<String>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "segmenthtml";
+    Guia db = new Guia();
+    var s = Model;
+}
+
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/estilos.css" type="text/css" />
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+            $(".sendhtml").click(function () {
+                $("#bloqueo").show();
+                var p = $("#lblProductid").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+                $("#sendhtml").ajaxSubmit({
+                    type: "POST",
+                    url: "../Production/newhtmlfile/",
+                    data: { ProductId: p },
+                    success: function (data) {
+                        if (data == true) {
+                            setTimeout('document.location.reload()');
+                            $("#bloqueo").hide();
+                        }
+                        else if (data == "El archivo se ha Modificado Exitosamente") {
+                            d += "<p> </p>"
+                            d += "<li style='text-align:justify;color:#05606d;font-style:italic'>" + data + "</li>"
+                            apprise("" + d + "", { 'animate': true });
+                            $("#uploadFilehtml").val('');
+                            $(".edit-mode").hide();
+                            $(".display-mode").show();
+                            $("#bloqueo").hide();
+                        }
+                        else if (data == "_error") {
+                            var message = "Vaya, algo ha salido mal, Verifique el archivo HTML y vuelva a Intentarlo.";
+                            d += "<p> </p>"
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                            apprise("" + d + "", { 'animate': true });
+                            $("#bloqueo").hide();
+                        }
+                    },
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".uploadhtml").change(function () {
+                var uplbtn = $("#uploadBtnhtml").val();
+                var ufile = $("#uploadFilehtml").val(uplbtn);
+            })
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".cancell").click(function () {
+                $("#uploadFilehtml").val('');
+            })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var session = sessionStorage.divs;
+            if (session != undefined) {
+                if (session == "charge") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#viewcontenthtml").empty();
+                }
+                if (session == "rub") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#rub").addClass("labelin");
+                    $("#rubros").show();
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#rubm").removeClass("labelin");
+                    $("#rubm").addClass("labelout");
+                    $("#viewhtml").removeClass("labelin");
+                    $("#viewhtml").addClass("labelout");
+                    $("#viewcontenthtml").hide();
+                    $("#html").hide();
+                    $("#progressbar").hide();
+                    $("#divverify").hide();
+                    $("#divcancharge").hide();
+                    $("#viewcontenthtml").empty();
+                }
+                if (session == "rubm") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#rubrosm").show();
+                    $("#rubm").addClass("labelin");
+                    $("#rubros").show();
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#rub").removeClass("labelin");
+                    $("#viewhtml").removeClass("labelin");
+                    $("#viewhtml").addClass("labelout");
+                    $("#rub").addClass("labelout");
+                    $("#html").hide();
+                    $("#viewcontenthtml").hide();
+                    $("#rubros").hide();
+                    $("#divverify").hide();
+                    $("#progressbar").hide();
+                    $("#divcancharge").hide();
+                    $("#viewcontenthtml").empty();
+                }
+                if (session == "pcontent") {
+                    var divid = document.getElementById(session);
+                    $(divid).show();
+                    $("#showcontent").show();
+                    $("#pcontent").addClass("labelin");
+                    $("#rubros").show();
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#rub").removeClass("labelin");
+                    $("#viewhtml").removeClass("labelin");
+                    $("#viewhtml").addClass("labelout");
+                    $("#rub").addClass("labelout");
+                    $("#html").hide();
+                    $("#rubros").hide();
+                    $("#viewcontenthtml").hide();
+                    $("#rubrosm").hide();
+                    $("#divverify").hide();
+                    $("#progressbar").hide();
+                    $("#divcancharge").hide();
+                    $("#viewcontenthtml").empty();
+
+                    $(function () {
+                        $('#pcontent').trigger('click');
+                    })
+
+                }
+                if (session == "viewhtml") {
+                    $("#viewhtml").trigger("click");
+                    $("#viewhtml").addClass("labelin");
+                    $("#charge").removeClass("labelin");
+                    $("#charge").addClass("labelout");
+                    $("#rub").removeClass("labelin");
+                    $("#rub").addClass("labelout");
+                    $("#html").hide();
+                    $("#rubros").hide();
+                    $("#viewcontenthtml").show();
+                    $("#rubrosm").hide();
+                    $("#viewhtml").trigger("click");
+                    $("#divverify").hide();
+                    $("#progressbar").hide();
+                    $("#divcancharge").hide();
+                    $("#viewcontenthtml").empty();
+
+                    $(function () {
+                        $('#viewhtml').trigger('click');
+                    })
+                }
+            }
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#charge").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divs = divid;
+                $("#viewcontenthtml").empty();
+                $("#charge").addClass("labelin");
+                $("#rub").removeClass("labelin");
+                $("#rubm").removeClass("labelin");
+                $("#pcontent").removeClass("labelin");
+                $("#pcontent").addClass("labelout");
+                $("#viewhtml").removeClass("labelin");
+                $("#viewhtml").addClass("labelout");
+                $("#viewxml").removeClass("labelin");
+                $("#viewxml").addClass("labelout");
+                $("#contents").removeClass("labelin");
+                $("#contents").addClass("labelout");
+                $("#html").show();
+                $("#rubros").hide();
+                $("#viewcontenthtml").hide();
+                $("#showcontent").hide();
+                $("#divverify").hide();
+                $("#rubrosm").hide();
+                $("#progressbar").hide();
+                $("#divcancharge").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#rub").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divs = divid;
+                $("#viewcontenthtml").empty();
+                $("#rub").addClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#rubm").removeClass("labelin");
+                $("#rubm").addClass("labelout");
+                $("#pcontent").removeClass("labelin");
+                $("#pcontent").addClass("labelout");
+                $("#viewhtml").removeClass("labelin");
+                $("#viewhtml").addClass("labelout");
+                $("#viewxml").removeClass("labelin");
+                $("#viewxml").addClass("labelout");
+                $("#contents").removeClass("labelin");
+                $("#contents").addClass("labelout");
+                $("#rubros").show();
+                $("#html").hide();
+                $("#showcontent").hide();
+                $("#viewcontenthtml").hide();
+                $("#rubrosm").hide();
+                $("#progressbar").hide();
+                $("#divverify").hide();
+                $("#divcancharge").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#rubm").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divs = divid;
+                $("#viewcontenthtml").empty();
+                $("#rubm").addClass("labelin");
+                $("#rub").removeClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#pcontent").removeClass("labelin");
+                $("#pcontent").addClass("labelout");
+                $("#viewhtml").removeClass("labelin");
+                $("#viewhtml").addClass("labelout");
+                $("#viewxml").removeClass("labelin");
+                $("#viewxml").addClass("labelout");
+                $("#contents").removeClass("labelin");
+                $("#contents").addClass("labelout");
+                $("#html").hide();
+                $("#progressbar").hide();
+                $("#rubros").hide();
+                $("#showcontent").hide();
+                $("#viewcontenthtml").hide();
+                $("#rubrosm").show();
+                $("#divverify").hide();
+                $("#divcancharge").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#pcontent").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divs = divid;
+                $("#viewcontenthtml").empty();
+                $("#pcontent").addClass("labelin");
+                $("#rub").removeClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#rubm").removeClass("labelin");
+                $("#rubm").addClass("labelout");
+                $("#viewhtml").removeClass("labelin");
+                $("#viewhtml").addClass("labelout");
+                $("#viewxml").removeClass("labelin");
+                $("#viewxml").addClass("labelout");
+                $("#contents").removeClass("labelin");
+                $("#contents").addClass("labelout");
+                $("#html").hide();
+                $("#rubros").hide();
+                $("#viewcontenthtml").hide();
+                $("#rubrosm").hide();
+                $("#progressbar").hide();
+                $("#showcontent").show();
+                $("#divverify").hide();
+                $("#divcancharge").hide();
+
+
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#senddata").click(function () {
+                var productn = $("#productname").val();
+                var prop = $("#propag").val();
+                var attr = $("#attrb").val();
+                var lab = $("#laboratoryname").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+                attr = attr.replace("><", "> <");
+                lab = lab.replace("><", "> <");
+                productn = productn.replace("<", "60");
+                productn = productn.replace("</p>", "");
+                productn = productn.replace(">", "62");
+                prop = prop.replace("<", "60");
+                prop = prop.replace(">", "62");
+                attr = attr.replace("<", "60");
+                attr = attr.replace(" <", "60");
+                attr = attr.replace(">", "62");
+                attr = attr.replace("> ", "62");
+                attr = attr.replace(" >", "62");
+                lab = lab.replace("<", "60");
+                lab = lab.replace(">", "62");
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Production/getattr/",
+                    traditional: true,
+                    data: { productname: productn, propag: prop, attrb: attr, laboratoryname: lab },
+                    success: function (data) {
+                        if (data == true) {
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:18px'>Todo esta correcto !!!</p>"
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic'>Ahora puede agregar el archivo</p>"
+                            apprise("" + d + "", { 'animate': true });
+                            $("#divcontainerhtml").show();
+                        }
+                        else {
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic'>Ocurrio un error !!!</p>"
+                            d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic'>Vuelva a cargar las etiquetas</p>"
+                            apprise("" + d + "", { 'animate': true });
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#viewhtml").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divs = divid;
+                $("#viewcontenthtml").empty();
+                $("#viewhtml").addClass("labelin");
+                $("#rub").removeClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#rubm").removeClass("labelin");
+                $("#rubm").addClass("labelout");
+                $("#pcontent").removeClass("labelin");
+                $("#pcontent").addClass("labelout");
+                $("#contents").removeClass("labelin");
+                $("#contents").addClass("labelout");
+                $("#viewxml").removeClass("labelin");
+                $("#viewxml").addClass("labelout");
+                $("#html").hide();
+                $("#rubros").hide();
+                $("#rubrosm").hide();
+                $("#viewcontenthtml").show();
+                $("#showcontent").hide();
+                $("#progressbar").hide();
+                $("#divverify").hide();
+                $("#divcancharge").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#viewxml").click(function () {
+                var divid = $(this).attr("Id");
+                sessionStorage.divs = divid;
+                $("#viewcontenthtml").empty();
+                $("#viewxml").addClass("labelin");
+                $("#contents").removeClass("labelin");
+                $("#contents").addClass("labelout");
+                $("#viewhtml").removeClass("labelin");
+                $("#viewhtml").addClass("labelout");
+                $("#rub").removeClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#rubm").removeClass("labelin");
+                $("#rubm").addClass("labelout");
+                $("#pcontent").removeClass("labelin");
+                $("#pcontent").addClass("labelout");
+                $("#html").hide();
+                $("#rubros").hide();
+                $("#rubrosm").hide();
+                $("#viewcontenthtml").hide();
+                $("#showcontent").hide();
+                $("#progressbar").hide();
+                $("#divverify").hide();
+                $("#divcancharge").hide();
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#newattr").click(function () {
+                var hh = $(".newitems").size();
+                var pid = $("#lblProductid").val();
+                var list = [];
+                $("#bloqueo").show();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+                var count = 0;
+
+                for (var i = 0; i <= hh - 1; i++) {
+                    if ((i != 0) || (i != undefined)) {
+                        var r1 = $(".newitems")[i];
+                        var rd = $(r1).attr("Id");
+
+                        if (rd.startsWith("<img")) {
+                            count = count + 1;
+                        }
+
+                        var obj = {}
+                        obj['Value'] = rd;
+                        list.push(obj);
+                    }
+                }
+
+                if (count > 0) {
+                    d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Verificar Atributos!!!</p>"
+                    d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic'>Etiquetas de Imagen NO pueden ser Atributos.</p>"
+                    apprise("" + d + "", { 'animate': true });
+                }
+                else {
+                    var jsonresponse = JSON.stringify(list);
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../Production/getnewattr/",
+                        traditional: true,
+                        data: { ListItems: jsonresponse, size: hh, ProductId: pid },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $(".attributegroup").change(function () {
+                var tr = $(this).parents("tr:first");
+                var a = $(this).val();
+                var ad = tr.find(".items").val();
+                var eid = $("#lbleditionid").val();
+                $("#bloqueo").show();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (a != "0") {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "../Production/asociateattributegroup/",
+                        traditional: true,
+                        data: { AttributeGoup: a, Attribute: ad, Edition: eid },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else if (data == false) {
+                                var message = "El Atributo Maestro ya esta asociado al Atributo.";
+                                d += "<p> </p>"
+                                d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                                d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                                apprise("" + d + "", { 'animate': true });
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#chargecontent").click(function () {
+                $("#viewcontenthtml").empty();
+                var client = $("#clientid").val();
+                var edition = $("#lbleditionid").val();
+                var product = $("#lblProductid").val();
+                $("#bloqueo").show();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                var attr = $("#verify").val();
+                if (attr == 0) {
+                    $("#divverify").show();
+                    $("#progressbar").hide();
+                    $("#bloqueo").hide();
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../Production/insertproductcontents/",
+                        traditional: true,
+                        data: { ClientId: client, EditionId: edition, ProductId: product },
+                        success: function (data) {
+                            if (data == true) {
+                                $("#bloqueo").hide();
+                                $("#pcontent").trigger("click");
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#contents").click(function () {
+                $(this).addClass("labelin");
+                $("#viewcontenthtml").empty();
+                $("#pcontent").removeClass("labelin");
+                $("#pcontent").addClass("labelout");
+                $("#rub").removeClass("labelin");
+                $("#charge").removeClass("labelin");
+                $("#charge").addClass("labelout");
+                $("#rubm").removeClass("labelin");
+                $("#rubm").addClass("labelout");
+                $("#viewhtml").removeClass("labelin");
+                $("#viewhtml").addClass("labelout");
+                $("#viewxml").removeClass("labelin");
+                $("#viewxml").addClass("labelout");
+
+                var client = $("#clientid").val();
+                var edition = $("#lbleditionid").val();
+                var product = $("#lblProductid").val();
+                $("#html").hide();
+                $("#rubros").hide();
+                $("#rubrosm").hide();
+                $("#viewcontenthtml").hide();
+                $("#showcontent").hide();
+                $("#divcancharge").show();
+
+                var attr = $("#verify").val();
+                if (attr == 0) {
+                    $("#divverify").show();
+                    $("#progressbar").hide();
+                    $("#bloqueo").hide();
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#pcontent").click(function () {
+                $("#viewcontenthtml").empty();
+                var pid = $("#lblProductid").val();
+                var Product = parseInt(pid);
+                $.ajax({
+                    type: "POST",
+                    dataType: "Json",
+                    url: "../Production/getcontent/",
+                    traditional: true,
+                    data: { Id: Product },
+                    success: function (data) {
+                        if (data != false) {
+                            $("#messagecontentnull").hide();
+                            $("#messagecontent").show();
+                            $('#tablecontent').empty();
+                            $('#tablecontent')
+                                .append($("<tr></tr>")
+                                    .append($("<td style='text-align:center; font-size:16px' class='labels'></td>")
+                                    .text("ATRIBUTO"))
+                                     .append($("<td style='text-align:center; font-size:16px' class='labels'></td>")
+                                .text("CONTENIDO")));
+                            $.each(data, function (index, val) {
+                                if (val.Content.includes("<table")) {
+                                    $('#tablecontent')
+                                    .append($("<tr></tr>")
+                                        .append($("<td style='text-align:left; font-size:14px' class='labels'></td>")
+                                            .text(val.AttributeName))
+                                                .append($("<td></td>").append($.parseHTML(val.Content))));
+                                }
+
+                                else if (val.Content.includes("<img")) {
+                                    $('#tablecontent')
+                                    .append($("<tr></tr>")
+                                        .append($("<td style='text-align:left; font-size:14px' class='labels'></td>")
+                                            .text(val.AttributeName))
+                                                .append($("<td></td>").append($.parseHTML(val.Content))));
+                                }
+                                else {
+                                    $('#tablecontent')
+                                    .append($("<tr></tr>")
+                                        .append($("<td style='text-align:left; font-size:14px' class='labels'></td>")
+                                            .text(val.AttributeName))
+                                                .append($("<td></td>").append($.parseHTML(val.Content))));
+                                }
+                            });
+                        }
+                        else {
+                            $("#messagecontentnull").show();
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#viewhtml").click(function () {
+                $("#viewcontenthtml").empty();
+                var p = $("#lblProductid").val();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "Json",
+                    url: "../Production/gethtmlview/",
+                    traditional: true,
+                    data: { id: p },
+                    success: function (data) {
+                        $('#viewcontenthtml').append($.parseHTML(data));
+                    }
+                })
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $("#contentext").click(function () {
+                $("#pcontent").trigger("click");
+            })
+        })
+    </script>
+
+</head>
+<body>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualProd", "Help", new { module = "PROD" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/Production/Index">Producción</a></li>
+        <li><a href="/Production/Index">Productos Participantes</a></li>
+        <li class="active">Asociar HTML</li>
+    </ol>
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width: 8%"><label class="labels">País: </label></td>
+            <td><label>@ViewData["CountryName"]</label></td>
+
+            <td rowspan="5" style="width:10%;text-align:center">
+                <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return" onclick="location.href = '@Url.Action("Index", "Production")'; return false;"><br />
+                <label>Regresar...</label>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 8%"><label class="labels">Obra: </label></td>
+            <td><label>@ViewData["BookName"]</label></td>
+        </tr>
+        <tr>
+            <td><label class="labels">Edición: </label></td>
+            <td>
+                <label>@ViewData["NumberEdition"]</label>
+                <input type="text" id="lbleditionid" style="display:none" value="@ViewData["EditionId"]" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="labels">Cliente: </label>
+            </td>
+            <td>
+                <label>@ViewData["CompanyName"]</label>
+                <input type="text" id="clientid" value="@ViewData["ClientId"]" style="display:none" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="labels">Producto: </label>
+            </td>
+            <td>
+                <label>@ViewData["ProductName"]</label>
+                @{
+                    <input type="text" id="lblProductid" style="display:none" value="@ViewData["ProductId"]" />
+                }
+            </td>
+
+        </tr>
+    </table>
+    <br />
+    @{
+        var Product = @ViewData["ProductId"];
+        var client = @ViewData["ProductId"];
+    }
+    <br />
+    <div style="height:100%;width:100%; border-bottom:none;">
+        <div style="width:100%;height:100%"></div>
+        <label id="charge" class="labelin" style="display:normal">Cargar HTML</label>
+        <label id="rub" class="labelout">Atributos de HTML</label>
+        <label id="rubm" class="labelout">Asociar a <br />Atributos Maestros</label>
+        <label class="labelout" id="contents">Insertar Contenidos<br /> por Atributos</label>
+        <label class="labelout" id="viewhtml">Ver HTML</label>
+        <a href="/Production/getxml/@Product" target="_blank" id="viewxml" class="labelout" style="color: #bbb; text-decoration: none; ">Ver XML</a>
+        <label id="pcontent" class="labelout">Ver Contenido<br /> por Atributos</label>
+    </div>
+
+    <div style="width: 100%; height: 100%; display: normal; text-align: center; border-top: 1px solid #ddd;" id="html">
+        <br />
+        <br />
+        <div style="display:normal" id="divcontainerhtml">
+            <form enctype="multipart/form-data" method="post" id="sendhtml">
+                <input id="uploadFilehtml" placeholder="Seleccione Archivo..." style="width:500px" disabled="disabled" class="form-focus" accept="application/html" />
+                <div class="fileUploadhtml btn btn-info">
+                    <span>
+                        Seleccione...
+                    </span>
+                    <input id="uploadBtnhtml" type="file" class="uploadhtml" accept=".html" name="file" />
+                </div><br />
+                <div style="text-align:center">
+                </div>
+            </form>
+        </div><br />
+        <p style="text-align:center;display:normal" class="">
+            <button style="display:normal;color:#333" id="" class="btn btn-info sendhtml">Insertar</button>
+            <button style="display:normal;color: #333" class="btn btn-info cancell">Cancelar</button>
+        </p>
+        <br />
+        <br />
+        @{
+            int ProductId = Convert.ToInt32(ViewData["ProductId"]);
+            int ClientId = Convert.ToInt32(ViewData["ClientId"]);
+            int EditionIdd = Convert.ToInt32(ViewData["EditionId"]);
+            var pp = (from _pp in db.ParticipantProducts
+                      where _pp.EditionId == EditionIdd
+                      && _pp.ClientId == ClientId
+                      && _pp.ProductId == ProductId
+                      && _pp.HTMLContent != null
+                      && _pp.XMLContent != null
+                      select _pp).ToList();
+            if (pp.LongCount() > 0)
+            {
+                <label class="labels" style="float:left">El Producto ya tiene Contenido &nbsp;</label><img src="@Url.Content("~/Images/content.png")" style="height:25px;width:25px;float:left" id="">
+            }
+            <br />
+            <br />
+            var pc = (from _pp in db.ProductContents
+                      where _pp.EditionId == EditionIdd
+                      && _pp.ClientId == ClientId
+                      && _pp.ProductId == ProductId
+                      select _pp).ToList();
+            if (pc.LongCount() > 0)
+            {
+                <label class="labels" style="float:left">El Producto ya tiene Contenido segmentado por Atributos &nbsp;</label><img src="@Url.Content("~/Images/content.png")" style="height:25px;width:25px;float:left" id="contentext">
+            }
+        }
+        <br />
+    </div>
+
+    <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd; " id="rubros">
+        <br />
+        <br />
+        <table border="0" style="width:100%" class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="text-align:center"><label class="labels">Atributos Nuevos de Formación</label></th>
+                    <th style="text-align:center"><label class="labels">Existe en BD</label></th>
+                </tr>
+            </thead>
+            @{
+                if (Model.LongCount() > 0)
+                {
+                    int countt = 0;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <label>@item</label><input type="text" style="display:none" value="@item" class="newitems" id="@item" />
+                            </td>
+                            @{
+                        var ats = (from _at in db.Attributes
+                                   where _at.Description == item
+                                   select _at).ToList();
+                        if (ats.LongCount() > 0)
+                        {
+                            countt = countt + 1;
+                            <td style="text-align:center"><img src="@Url.Content("~/Images/content.png")" style="height:25px;width:25px;"></td>
+                        }
+                        else
+                        {
+                            <td style="text-align:center"></td>
+                        }
+                            }
+                        </tr>
+                    }
+                    <tr>
+                        @{
+                    if (countt != Model.LongCount())
+                    {
+                        <td style="text-align:center" colspan="2">
+                            <button class="btn btn-info" id="newattr">Verificar</button>
+                        </td>
+                    }
+
+                        }
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            <label class="labels">Actualmente no hay Atributos Nuevos en la Formación</label>
+                            @*<p></p><label class="labels">Véa</label><label f>"Asociar Rubros Maestros"</label>*@
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+
+    <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd; " id="rubrosm">
+        <br />
+        <br />
+        <table border="0" style="width:100%" class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="text-align:center; width:33.33%"><label class="labels">Atributos Nuevos de Formación</label></th>
+                    <th style="text-align: center; width: 33.33%"><label class="labels">Atributos Maestros Asociados</label></th>
+                    <th style="text-align: center; width: 33.33%"><label class="labels">Atributos Maestros</label></th>
+                </tr>
+            </thead>
+            @{
+                XMLclass l = (XMLclass)Session["listitems"];
+                List<String> list = l.list;
+
+                if (list.LongCount() > 0)
+                {
+                    foreach (var item in list)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                        var aa = (from _aa in db.Attributes
+                                  where _aa.Description == item
+                                  select _aa).ToList();
+                        foreach (Attributes _aa in aa)
+                        {
+                            <label>@_aa.Description</label><input type="text" style="display:none" value="@_aa.AttributeId" class="items" id="@_aa.AttributeId" />
+                        }
+
+                                }
+
+                            </td>
+                            <td>
+                                @{
+                                    var a = (from _a in db.Attributes
+                                             where _a.Description == item
+                                             select _a).ToList();
+                                    if (a.LongCount() > 0)
+                                    {
+                                        String Edition = ViewData["EditionId"].ToString();
+                                        int EditionId = int.Parse(Edition);
+
+                                        foreach (Attributes _a in a)
+                                        {
+                                            var eag = (from _eag in db.EditionAttributeGroup
+                                                       where _eag.AttributeId == _a.AttributeId
+                                                       && _eag.EditionId == EditionId
+                                                       select _eag).ToList();
+                                            if (eag.LongCount() > 0)
+                                            {
+                                                foreach (EditionAttributeGroup _eag in eag)
+                                                {
+                                                    var ag = (from _ag in db.AttributeGroup
+                                                              where _ag.AttributeGroupId == _eag.AttributeGroupId
+                                                              orderby _ag.Description ascending
+                                                              select _ag).ToList();
+
+                                                    foreach (AttributeGroup _ag in ag)
+                                                    {
+                                                        <label>@_ag.Description</label><button class="btndelete btn btn-info" style="display:none" value="@_ag.AttributeGroupId">Eliminar</button><br />
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:center">
+                                <select class="form-control1 attributegroup" style="vertical-align:middle">
+                                    @{
+                        var aag = (from _ag in db.AttributeGroup
+                                   orderby _ag.Description ascending
+                                   select _ag).ToList();
+
+                                <option value="0">Seleccione...</option>
+
+                        foreach (AttributeGroup _ag in aag)
+                        {
+
+                            <option value="@_ag.AttributeGroupId">@_ag.Description</option>
+
+                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td style="text-align:center" colspan="3">
+                            <label class="labels">Actualmente no hay Atributos Nuevos en la Formación para Asociar Atributos Maestros</label>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </table>
+    </div>
+
+    <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd;text-align:center " id="showcontent">
+        <br />
+        <br />
+        <label class="labels" id="messagecontent" style="display:none">Contenido por Atributos Asociado al Producto</label>
+        <br />
+        <br />
+        <table id="tablecontent" border="0" style="width:100%; text-align: justify" class="table table-hover"></table>
+
+        <div style='width:100%; text-align: justify' class="ifmt"></div>
+
+        <label class="labels" id="messagecontentnull" style="display:none">Actualmente NO hay contenido por Atributos asociado al Producto</label>
+    </div>
+
+    <div id="viewcontenthtml" style="height: 100%; width: 100%; border-top: 1px solid #ddd; display: none;"><br /></div>
+
+    <br />
+    <br />
+    @{
+        XMLclass ls = (XMLclass)Session["listitems"];
+        if (l != null)
+        {
+            int _editionid = Convert.ToInt32(ViewData["EditionId"]);
+
+            List<String> lists = l.list;
+
+            var ad = lists.LongCount();
+
+            int count = 0;
+            int countattr = 0;
+
+            foreach (var item in Model)
+            {
+                var aa = (from _aa in db.Attributes
+                          where _aa.Description == item
+                          select _aa).ToList();
+                if (aa.LongCount() > 0)
+                {
+                    foreach (Attributes _aa in aa)
+                    {
+                        var eag = (from _eag in db.EditionAttributeGroup
+                                   where _eag.EditionId == _editionid
+                                   && _eag.AttributeId == _aa.AttributeId
+                                   select _eag).ToList();
+
+                        if (eag.LongCount() > 0)
+                        {
+                            count = count + 1;
+                        }
+                    }
+                }
+                else
+                {
+                    countattr = countattr + 1;
+                }
+            }
+            if (countattr > 0)
+            {
+                <div style="text-align: center; display: none" id="divverify">
+                    <label class="labels">Para poder insertar Contenidos</label>
+                    <br />
+                    <br />
+                    <label class="labels">Primero debe Insertar todos los atributos. Ver "Atributos de HTML"</label>
+                    <input value="0" id="verify" style="display:none" />
+                </div>
+            }
+            else
+            {
+                if (count == ad)
+                {
+                    if (count == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        <div style="text-align:center; display:none" id="divcancharge">
+                            <label class="labels">Todo esta Listo!!!</label><br />
+                            <label class="labels">Ahora puede Cargar el Contenido</label>
+                            <input value="@count" id="verify" style="display:none" />
+                            <br />
+                            <br />
+                            <button id="chargecontent" class="btn btn-info">Cargar Contenido</button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="progress progress-striped active" style="width: 100%; border: none; border-top: 1px solid #ddd; display: none" id="progressbar">
+                            <div class="progress-bar bar" role="progressbar"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                 style="float: left; width: 0%; " data-percentage="100">
+                            </div>
+                        </div>
+                    }
+                }
+                if (count != ad)
+                {
+                    <div style="text-align:center; display:none" id="divverify">
+                        <label class="labels">Para poder insertar Contenidos</label>
+                        <br />
+                        <br />
+                        <label class="labels">Debe Asociar todos los atributos con Atributos Maestros. Ver "Asociar a Atributos Maestros"</label>
+                        <input value="0" id="verify" style="display:none" />
+                    </div>
+                }
+            }
+        }
+    }
+</body>
+</html>

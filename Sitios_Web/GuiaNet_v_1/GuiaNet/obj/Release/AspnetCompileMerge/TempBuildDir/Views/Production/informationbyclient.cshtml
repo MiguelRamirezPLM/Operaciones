@@ -1,0 +1,253 @@
+﻿@model IEnumerable<GuiaNet.Models.JoinClientAddressesPhones>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "informationbyclient";
+    sessionclientbranchProd ind = (sessionclientbranchProd)Session["sessionclientbranchProd"];
+    Guia db = new Guia();
+    WebGrid _datagrids = new WebGrid(Model);
+}
+
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var addr = tr.find("#Address").val();
+                var sub = tr.find("#Suburb").val();
+
+                var cit = tr.find("#City").val();
+                var zip = tr.find("#ZipCode").val();
+                var mail = tr.find("#Email").val();
+                var wb = tr.find("#Web").val();
+
+                var ID = tr.find("#lblAddressId").val();
+                var CountryId = $("#countryid").val();
+                
+                var stid = tr.find(".statesp").val();
+
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if ((!addr.trim() == true)) {
+                    apprise("<div align='center'><img src='../Images/alerta.png' /> </div>" + "Ningun campo puede quedar vacío", { 'animate': true });
+                }
+                else {
+
+                    $("#bloqueo").show();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "Json",
+                        url: "../Production/editinformation/",
+                        traditional: true,
+                        data: { Address: addr, Suburb: sub, City: cit, ZipC: zip, Email: mail, Web: wb, Country: CountryId, AddressId: ID, State: stid },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualProd", "Help", new { module = "PROD" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/Production/clientbranch">Producción</a></li>
+        <li><a href="/Production/clientbranch">Sucursales</a></li>
+        <li class="active">Información de Cliente</li>
+    </ol>
+
+    @{
+
+        if (ind != null)
+        {
+            <table style="width:100%" border="0">
+                <tr>
+                    <td style="width:15%"><label class="labels">País: </label> </td>
+                    <td>
+                        @{
+                            int countryid = ind.CId;
+                            var countr = from countries in db.Countries
+                                         where countries.CountryId == countryid
+                                         select countries;
+                            foreach (Countries c in countr)
+                            {
+                                        <label>@c.CountryName</label><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+                            }
+                        }
+                    </td>
+                    @*<td rowspan="4">
+                        <button id="addaddress" class="btn btn-info">Agregar Dirección</button>
+                    </td>*@
+                    <td rowspan="5" style="width:10%;text-align:center">
+                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return" onclick="location.href = '@Url.Action("clientbranch", "Production")'; return false;"><br />
+                        <label>Regresar...</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Obra:</label></td>
+                    <td>
+                        @{
+                            int bookid = ind.BId;
+                            var books = from book in db.Books
+                                        where book.BookId == bookid
+                                        select book;
+                            foreach (Books b in books)
+                            {
+                                        <label>@b.BookName</label><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Edición:</label></td>
+                    <td>
+                        @{
+                            int edition = ind.EId;
+                            var _edition = from editions in db.Editions
+                                           where editions.EditionId == edition
+                                           select editions;
+                            foreach (Editions e in _edition)
+                            {
+                                        <label>@e.NumberEdition</label><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Cliente:</label></td>
+                    <td>
+                        @{
+                            int ClientId = ind.ClId;
+                            var cl = (from _cl in db.Clients
+                                      where _cl.ClientId == ClientId
+                                      select _cl).ToList();
+                          foreach(Clients _cl in cl)
+                          {
+                             <label>@_cl.CompanyName</label><input type="text" style="display:none" id="clientidd" value="@_cl.ClientId" /> 
+                          }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Sucursal:</label></td>
+                    <td>
+                        <label>@ViewData["CompanyNameSP"]</label><input type="text" style="display:none" id="clientid" value="@ViewData["ClientIdSP"]" />
+                    </td>
+                </tr>
+            </table>
+
+        }
+    }
+
+  
+    <br />
+    <br />
+    <div style="width:100%;float:left">
+        @_datagrids.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrids.Column("", header: "Calle", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblAddress" style="width:180px">@item.Addresses.Address</label> </span>
+    <textarea style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="Address" class="edit-mode edprod form-control">@item.Addresses.Address</textarea>
+                                    <input id="lblAddressId" style="visibility: visible;display:none; width:20px" value="@item.Addresses.AddressId" />
+                                }
+                        </text>),
+                        _datagrids.Column("", header: "Colonia", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblShortName" style="width:150px">@item.Addresses.Suburb</label> </span>
+    <textarea style="display:none; width:150px; color:red; font-size: 12px;" maxlength="200" id="Suburb" class="edit-mode edprod form-control">@item.Addresses.Suburb</textarea>
+}
+                        </text>),
+           _datagrids.Column("", header: "Ciudad", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblShortName" style="width:130px">@item.Addresses.City</label> </span>
+    <textarea style="display:none; width:130px; color:red; font-size: 12px;" maxlength="200" id="City" class="edit-mode edprod form-control">@item.Addresses.City</textarea>
+}
+        </text>),
+         _datagrids.Column("", header: "Estado", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblShortName" style="width:130px">@item.States.StateName</label> </span>
+                <select class="form-control1 statesp edit-mode">
+                    <option value="0">Seleccione...</option>
+                    @{
+                        if (ind != null)
+                        {
+                            int countryid = ind.CId;
+                            var st = db.States.Where(x => x.CountryId == countryid).OrderBy(x => x.StateName).ToList();
+
+                            foreach (States _st in st)
+                            {
+                                <option value="@_st.StateId">@_st.StateName</option>
+                            }
+                        }
+                    }
+                </select>
+            }
+        </text>),
+        _datagrids.Column("", header: "CP", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblShortName" style="width:80px">@item.Addresses.ZipCode</label> </span>
+    <textarea style="display:none; width:80px; color:red; font-size: 12px;" maxlength="200" id="ZipCode" class="edit-mode edprod form-control">@item.Addresses.ZipCode</textarea>
+}
+        </text>),        _datagrids.Column("", header: "Email", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblShortName" style="width:180px">@item.Addresses.Email</label> </span>
+    <textarea style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="Email" class="edit-mode edprod form-control">@item.Addresses.Email</textarea>
+}
+        </text>),
+                _datagrids.Column("", header: "Web", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblShortName" style="width:180px">@item.Addresses.Web</label> </span>
+    <textarea style="display:none; width:180px; color:red; font-size: 12px;" maxlength="200" id="Web" class="edit-mode edprod form-control">@item.Addresses.Web</textarea>
+}
+                </text>),
+     _datagrids.Column("", header: "Editar", format: @<text>
+            @{
+                <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-info"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning" value="@item.Addresses.Address"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+            }
+    </text>,style:"buton"),
+        
+
+             _datagrids.Column("", header: "Ver/Editar Telefonos", format: @<text>
+            @{
+                <button class="btn btn-info deletebrand" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("clientphones", "Production", new { AddressId = item.Addresses.AddressId, ClientId = item.Clients.ClientId })';return false;"><img src="@Url.Content("~/Images/ver.png")" style="height:20px;width:20px"></button>
+            }
+    </text>,style:"buton")
+                    })
+    </div>
+</body>
+</html>

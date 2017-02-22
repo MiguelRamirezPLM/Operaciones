@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-nav navbar-right" style=" vertical-align:bottom">
+            <li style="vertical-align:bottom">
+                <div class="dropdown" style="border:none;vertical-align:top">
+                    <img src="~/Images/user.png" class="dropbtn" />
+                    <div class="dropdown-content">
+                        <a href="~/Login/Logout/" class="menul">Cerrar sesión</a>
+                    </div>
+                </div>
+                <label class="" style="color:white;vertical-align:bottom; line-height:50px">Bienvenid&#64: <label style="text-transform: uppercase; color: #fff; ">@User.Identity.Name</label> </label>&ensp;
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li style="visibility:hidden">@Html.ActionLink("Iniciar sesión", "Login", "Users", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+

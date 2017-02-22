@@ -1,0 +1,104 @@
+﻿@model IEnumerable<String>
+@{
+    ViewBag.Title = "UserManualProd";
+    
+    List<string> mdl = Model.ToList();
+
+    string module = Convert.ToString(mdl[0]);
+}
+
+<html>
+<head>
+    <title></title>
+</head>
+<body style="background-color:gray;">
+    <input type="text" value="@module" style="display:none" id="module" />
+    <div style="background-color:#065977">
+        <table border="0" style="width:100%;">
+            <tr style="height:100px">
+                <td style="text-align:center">
+                    <h1 style="color:#ffffff;font-style:italic">&#191;C&oacute;mo te puedo ayudar &#63;</h1>
+                </td>
+            </tr>
+            <tr style="height:50px">
+                <td style="text-align:center">
+                    <input type="text" class="form-focus" placeholder="Busqueda..." style="width:50%" id="textsearchmnl" onkeyup="searchcntPROD($(this).val(), $('#module').val())" />
+                </td>
+            </tr>
+            <tr style="height:50px">
+                <td style="text-align:center"></td>
+            </tr>
+        </table>
+    </div>
+    <div style="border: none; width: 30%; float: left; height: auto; left: 0; background-color: #065977;color:white;min-width:100px">
+        <ol style="list-style: none;width:100%">
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg1" class="simg" onclick="getmenues($('#simg1'), $('#himg1'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg1" class="himg" onclick="closemenues($('#simg1'), $('#himg1'));" style="display:none">
+                PRODUCTOS PARTICIPANTES.
+                <ul id="level2Id1" style="display: none; width: auto" class="listlevel">
+                    <li id="1ab" onclick='getcontentproductsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Agregar ProductShot a Producto</li>
+                    <li id="2ab" onclick='getcontentproductsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="($(this).addClass('hovers'))" onmouseout="($(this).removeClass('hovers'))">Agregar archivo PDF a Producto</li>
+                </ul>
+            </li>
+            <li id="3ab" onclick='getcontentproductsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">
+                ASOCIAR HTML A PRODUCTOS.
+            </li>
+            <li id="4ab" onclick='getcontentproductsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">
+                SEGMENTAR PRODUCTOS.
+            </li>
+            <li id="5ab" onclick='getcontentproductsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">
+                PAGINAR CLIENTES
+            </li>
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg5" class="simg" onclick="getmenues($('#simg5'), $('#himg5'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg5" class="himg" onclick="closemenues($('#simg5'), $('#himg5'));" style="display:none">
+                ESPECIALIDADES.
+                <ul id="level2Id5" style="display:none" class="listlevel">
+                    <li id="6ab" onclick='getcontentspecialitiesPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Especialidades asociadas a los Clientes.</li>
+                    <li id="7ab" onclick='getcontentspecialitiesPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Especiales asociadas a las Sucursales.</li>
+                    <li id="8ab" onclick='getcontentspecialitiesPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Reportes de Especialidades asociadas a Clientes o Sucursales.</li>
+                </ul>
+            </li>
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg6" class="simg" onclick="getmenues($('#simg6'), $('#himg6'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg6" class="himg" onclick="closemenues($('#simg6'), $('#himg6'));" style="display:none">
+                MARCAS.
+                <ul id="level2Id6" style="display: none" class="listlevel">
+                    <li id="9ab" onclick='getcontentbrandsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Cambiar cantidad de resultados por Ventana.</li>
+                    <li id="10ab" onclick='getcontentbrandsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Reporte de marcas asociadas al Cliente</li>
+                    <li id="11ab" onclick='getcontentbrandsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Editar nombre de Marca</li>
+                    <li id="12ab" onclick='getcontentbrandsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Agregar imágenes a Marcas</li>
+                    <li id="13ab" onclick='getcontentbrandsPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Eliminar imágenes asociadas a Marcas</li>
+                </ul>
+            </li>
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg7" class="simg" onclick="getmenues($('#simg7'), $('#himg7'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg7" class="himg" onclick="closemenues($('#simg7'), $('#himg7'));" style="display:none">
+                CATEGORÍAS.
+                <ul id="level2Id7" style="display:none" class="listlevel">
+                    <li id="14ab" onclick='getcontentcategoriesPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Categorías asociadas a Clientes o Sucursales.</li>
+                    <li id="15ab" onclick='getcontentcategoriesPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Reportes de Categorías asociadas a Clientes o Sucursales.</li>
+                </ul>
+            </li>
+            <li>
+                <img src="~/Images/ui-icons_454545_256x240.png" id="simg8" class="simg" onclick="getmenues($('#simg8'), $('#himg8'));">
+                <img src="~/Images/ui-icons_454545_256x2401.png" id="himg8" class="himg" onclick="closemenues($('#simg8'), $('#himg8'));" style="display:none">
+                SUCURSALES.
+                <ul id="level2Id8" style="display:none" class="listlevel">
+                    <li id="16ab" onclick='getcontentbranchPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Editar Sucursal</li>
+                    <li id="17ab" onclick='getcontentbranchPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Ver / Editar dirección Matriz</li>
+                    <li id="18ab" onclick='getcontentbranchPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Ver / Editar teléfonos de direccón Matriz</li>
+                    <li id="19ab" onclick='getcontentbranchPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Ver / Editar dirección Sucursal</li>
+                    <li id="20ab" onclick='getcontentbranchPROD($(this).attr("Id"));' class='listyle optns' onmouseover="    ($(this).addClass('hovers'))" onmouseout="    ($(this).removeClass('hovers'))">Ver / Editar teléfonos de direccón Sucursal</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div style="border: none; width: 70%; float: right; max-height: 500px;">
+        <div class="scrollbarmanual">
+            <div id="divcontentusermanual" style="margin-left: 30px;margin-right:30px; max-height: 500px;border:none"></div>
+        </div>
+    </div>
+</body>
+</html>

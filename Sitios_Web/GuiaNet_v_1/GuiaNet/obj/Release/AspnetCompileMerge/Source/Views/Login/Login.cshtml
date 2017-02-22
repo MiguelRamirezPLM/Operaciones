@@ -1,0 +1,62 @@
+﻿@model GuiaNet.Models.Users
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<img src="/Images/PLM-LogotipoAzul.png" style="float:right; width:20%; height:9%;" />
+@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+{
+    <div class="row" style="width:100%;text-align:center">
+        <div class="col-md-8" style="width:100%">
+            <section id="loginForm" style="width:100%">
+                <br />
+                <div class="centerTable1 div" style="width: 100%; border: none">
+                    <div style="width: 30%; height: 20%; background-color: #ffffff; border: groove; border-radius: 17px;" class="centerTable2 div">
+                        <table style="width: 100%; background-color: #ffffff;" border="0" class="centerTable2 table">
+                            <tr>
+                                @{
+                                    string Version = System.Configuration.ConfigurationManager.AppSettings["Version"];
+                                    <td style="font-style: italic;font-size:25px;vertical-align:middle; text-align: center;border:none; background-image: url(@Url.Content("~/Images/fondo.jpg")); color: white;" colspan="3" class="form-control3" height="80px" width="100%">Iniciar sesión@*<label style="float:right; font-size:12px;vertical-align:bottom">@Version</label>*@</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align: center; background-color: #ffffff;">
+                                    <p style="text-align:center">
+                                        @Html.ValidationSummary(true)
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td style="text-align: center; background-color: #ffffff; border: none; width: 100%">
+
+                                    @Html.TextBoxFor(m => m.NickName, new { @class = "form-control1", placeholder = "Usuario" })
+                                    <br />
+                                    <span style="float: left">@Html.ValidationMessageFor(m => m.NickName)</span>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td style="text-align: center; background-color: #ffffff; border: none; ">
+                                    <br />
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control1", placeholder = "Contraseña" })
+                                    <br />
+                                    <span style="float:left">@Html.ValidationMessageFor(m => m.Password)</span>
+                                </td>
+                            </tr>
+                            <tr class="" style="height:50px">
+                                <td colspan="3" style="background-color: #ffffff; text-align: center; border: none; ">
+                                    <br />
+                                    <input type="submit" value="Iniciar sesión" class="btn" style="background-color: #065f7d;color:white" id="login" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

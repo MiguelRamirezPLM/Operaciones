@@ -1,0 +1,214 @@
+﻿@model IEnumerable<GuiaNet.Models.Advertisements>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "Advertisements";
+    SessionAdvers SessionAdvers = (SessionAdvers)Session["SessionAdvers"];
+
+    int SpecialityId = SessionAdvers.SPId;
+    int ClientId = SessionAdvers.CId;
+    int EditionId = SessionAdvers.EId;
+
+    Guia db = new Guia();
+}
+<script src="http://malsup.github.com/jquery.form.js"></script>
+
+<script>
+    function cleanfrm(item) {
+        $("#uploadFileadv").val('');
+    }
+</script>
+
+<script>
+    function saveadver(item) {
+
+        $("#bloqueo").show();
+
+        var f = $("#uploadFileadv").val();
+        var s = $("#SpecialityIdP").val();
+        var c = $("#ClientId").val();
+        var e = $("#EditionId").val();
+
+        if (!f.trim() == true) {
+            apprise("<div align='center'><img src='/Images/alerta.png' /> </div><br>" + "Debe seleccional alguna Imagen", { 'animate': true });
+            $("#bloqueo").hide();
+        }
+        else {
+            $("#sndimgaesP").ajaxSubmit({
+                type: "POST",
+                url: "@Url.Content("~/ReferencesReport/addnewadv/")",
+                data: { Speciality: s, Client: c, Edition: e },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout('document.location.reload()');
+                    }
+                },
+            });
+        }
+    }
+</script>
+
+<script>
+    $(function () {
+        $(".upload").change(function () {
+
+            var uplbtn = $("#uploadBtnadv").val();
+            var ufile = $("#uploadFileadv").val(uplbtn);
+        })
+    });
+</script>
+
+<script>
+    function deleteadv(AdvertId) {
+
+        $("#bloqueo").show();
+
+        var s = $("#SpecialityIdP").val();
+        var c = $("#ClientId").val();
+        var e = $("#EditionId").val();
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "/ReferencesReport/deleteadv",
+            data: { Advert: AdvertId[0], Speciality: s, Client: c, Edition: e },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout('document.location.reload()');
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+    function getimdadversA(item) {
+
+        var tr = $(item).parents("tr:first");
+
+        tr.find("#modaladvers").trigger('click');
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    })
+</script>
+
+
+
+<br />
+<table border="0" style="width:100%; height:100%">
+    <tr>
+        <td colspan="3">
+            <ol class="breadcrumb">
+                <li><a href="/ReferencesReport/clientspecialities">Producción</a></li>
+                <li><a href="/ReferencesReport/clientspecialities">Especialidades</a></li>
+                <li class="active">Imagenes de Anuncios</li>
+            </ol>
+        </td>
+    </tr>
+    <tr>
+        @{
+            var e = db.Editions.Where(x => x.EditionId == EditionId).ToList();
+
+        <td style="width: 10%;"><label class="labels">Edición:</label></td>
+        <td style="width: 1%;"></td>
+        <td>
+            <label>@e[0].NumberEdition</label>
+            <input type="text" id="EditionId" value="@EditionId" style="display:none" />
+        </td>
+        }
+    </tr>
+    <tr>
+        @{
+            var c = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+
+        <td style="width: 10%;"><label class="labels">Cliente:</label></td>
+        <td style="width: 1%;"></td>
+        <td>
+            <label>@c[0].CompanyName</label>
+            <input type="text" value="@ClientId" id="ClientId" style="display:none" />
+        </td>
+        }
+    </tr>
+    <tr>
+        @{
+            var s = db.Specialities.Where(x => x.SpecialityId == SpecialityId).ToList();
+
+        <td style="width: 10%;"><label class="labels">Especialidad:</label></td>
+        <td style="width: 1%;"></td>
+        <td>
+            <label>@s[0].Description</label>
+            <input type="text" value="@SpecialityId" id="SpecialityIdP" style="display:none" />
+        </td>
+        }
+    </tr>
+</table>
+<br />
+<br />
+<div style="border:none;text-align:center">
+    <input type="text" style="height:35px;display:none" id="text" />
+    <form enctype="multipart/form-data" method="post" id="sndimgaesP">
+        <input id="uploadFileadv" placeholder="Seleccione Archivo..." disabled="disabled" class="form-focus" accept="image/png" />
+        <div class="fileUpload btn btn-info buton" style="text-align:center">
+            <span>
+                Seleccione...
+            </span>
+            <input id="uploadBtnadv" type="file" class="upload" accept="image/png" name="file" />
+        </div>
+    </form>
+    <br />
+    <button class="btn btn-primary" onclick="saveadver($(this))"><span class="glyphicon glyphicon-ok"></span></button>
+    <button class="btn btn-danger" onclick="cleanfrm($(this))"><span class="glyphicon glyphicon-remove-circle"></span></button>
+</div>
+<br />
+<br />
+<table border="0" style="width:100%; height:100%">
+    <thead class="webgrid-header">
+        <tr>
+            <th>Nombre de Anuncio</th>
+            <th>Imagen</th>
+            <th>Borrar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (GuiaNet.Models.Advertisements item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.AdvertName
+                    </td>
+                    <td style="text-align:center">
+                        @{
+    <img onclick="getimdadversA($(this))" src="@Url.Action("getimageadvers", "ReferencesReport", new { Id = item.AdvertId, Speciality = SpecialityId })" style="color: #333; width: 80px;height:80px;cursor:pointer" class="imagesins" data-toggle="popover" data-trigger="hover"
+         data-content="Clic para abrir Anuncio en tamaño real" />
+
+                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#@item.AdvertId" id="modaladvers" style="display:none">Open Modal Errors</button>
+                            <div class="modal fade" id="@item.AdvertId" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h3 class="modal-title"><i>Anuncio</i></h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="@Url.Action("getimageadvers", "ReferencesReport", new { Id = item.AdvertId, Speciality = SpecialityId })" style="width:100%;height:100%" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </td>
+                    <td style="text-align:center">
+                        <button class="btn btn-danger" onclick="deleteadv($(@item.AdvertId))"><span class="glyphicon glyphicon-remove"></span> </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

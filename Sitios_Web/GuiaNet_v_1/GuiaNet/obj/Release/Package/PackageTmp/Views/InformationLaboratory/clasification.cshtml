@@ -1,0 +1,301 @@
+﻿@model List<GuiaNet.Models.Categories>
+@using GuiaNet.Models;
+@{
+    ViewBag.Title = "clasification";
+    sessioninformationlaboratoryproducts ind = (sessioninformationlaboratoryproducts)Session["sessioninformationlaboratoryproducts"];
+    Guia db = new Guia();
+}
+
+<html>
+<head>
+    <title>
+    </title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".treeview li>ul").css('display', 'none');
+            $(".collapsible").click(function (e) {
+                e.preventDefault();
+                $(this).toggleClass("collapse1 expand1");
+                $(this).closest('li').children('ul').slideToggle();
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".deletecategory").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".insertau").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <button style="float:right" id="" class="btn btn-info menul" onclick="location.href='@Url.Action("UserManualLI", "Help", new { module = "LI" })';return false;">Ayuda</button>
+    <ol class="breadcrumb">
+        <li><a href="/InformationLaboratory/Index">Laboratorio de Información</a></li>
+        <li><a href="/InformationLaboratory/Index">Productos</a></li>
+        <li class="active">Clasificación</li>
+    </ol>
+    @{
+        var err = ViewData["existcat"];
+        if (err != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["existcat"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+
+            err = null;
+        }
+
+        if (ViewData["parentid"] != null)
+        {
+            <script language="javascript">
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                d += "<li>@ViewData["parentid"]</li>"
+                apprise("" + d + "", { 'animate': true });
+            </script>
+            ViewData["parentid"] = null;
+        }
+    }
+    <br />
+    @{
+        if (ind != null)
+        {
+            <table style="width:100%" border="0">
+                <tr>
+                    <td style="width:15%"><label class="labels">País: </label> </td>
+                    <td>
+                        @{
+            int countryid = ind.CId;
+            var countr = from countries in db.Countries
+                         where countries.CountryId == countryid
+                         select countries;
+            foreach (Countries c in countr)
+            {
+                <label>@c.CountryName</label><input type="text" style="display: none" id="countryid" class="countryid" value="@c.CountryId" />
+            }
+
+                        }
+                    </td>
+                    <td rowspan="5" style="width:10%;text-align:center">
+                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return" onclick="location.href = '@Url.Action("Index", "InformationLaboratory")'; return false;"><br />
+                        <label>Regresar...</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Obra:</label></td>
+                    <td>
+                        @{
+            int bookid = ind.BId;
+            var books = from book in db.Books
+                        where book.BookId == bookid
+                        select book;
+            foreach (Books b in books)
+            {
+                <label>@b.BookName</label><input type="text" style="display:none" id="bookn" value="@b.BookId" />
+            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Edición:</label></td>
+                    <td>
+                        @{
+            int edition = ind.EId;
+            var _edition = from editions in db.Editions
+                           where editions.EditionId == edition
+                           select editions;
+            foreach (Editions e in _edition)
+            {
+                <label>@e.NumberEdition</label><input type="text" style="display:none" id="editionid" value="@e.EditionId" />
+            }
+
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Cliente:</label></td>
+                    <td>
+                        @{
+            int client = ind.ClId;
+            var clients = from _clients in db.Clients
+                          where _clients.ClientId == client
+                          select _clients;
+            foreach (Clients c in clients)
+            {
+                <label>@c.CompanyName</label><input type="text" style="display:none" id="clientid" value="@c.ClientId" />
+            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="labels">Producto:</label></td>
+                    <td>
+                        @{
+            int? productid = ind.PId;
+            var products = from _products in db.Products
+                           where _products.ProductId == productid
+                           select _products;
+            foreach (Products p in products)
+            {
+                <label>@p.ProductName.ToUpper()</label><input type="text" style="display:none" id="clientid" value="@p.ProductId" />
+            }
+                        }
+                    </td>
+                </tr>
+            </table>
+        }
+    }
+    <br />
+    <div style="float:left;width:50%">
+        @{
+            if (ind != null)
+            {
+                using (Html.BeginForm("clasification", "InformationLaboratory"))
+                {
+                    <label>Buscar Categoría:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus" })
+                    <button type="submit" id="searchp" value="searchprod" class="btn btn-info searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                }
+            }
+        }
+    </div>
+    <div style=" float: right; width: 50%;text-align:right">
+        @{
+            if (ind != null)
+            {
+                using (Html.BeginForm("searchasociatecategories", "InformationLaboratory"))
+                {
+                    sessioninformationlaboratoryproducts index = (sessioninformationlaboratoryproducts)Session["sessioninformationlaboratoryproducts"];
+                    if (index != null)
+                    {
+                        <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", index.param, new { @class = "form-focus" })
+                        <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                    }
+                    else
+                    {
+                        <label>Buscar Categoría Asociadas:&nbsp;</label>  @Html.TextBox("Description", "", new { @class = "form-focus" })
+                        <button type="submit" id="searchc" value="searchcat" class="btn btn-info searchocategories" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                    }
+                }
+            }
+        }
+    </div>
+    <br />
+    <br />
+    <br />
+    <table border="0">
+        <tr>
+            <td></td>
+            @{
+                if (ind != null)
+                {
+                    <td style="text-align:center"><label class="labels">Categorías</label></td>
+                }
+            }
+            <td></td>
+            @{
+                if (ind != null)
+                {
+                    <td style="text-align:center"><label class="labels">Categorías Asociadas al Producto</label></td>
+                }
+            }
+        </tr>
+        <tr>
+            <td style="width:50px"></td>
+            <td>
+                <div class="treeview scrollbar1" id="scrollbar">
+                    @{
+                       if (ind != null)
+                        {
+                            if (Model != null && Model.Count() > 0)
+                            {
+                                <ul>
+                                    @TreeviewClientCategories.GetTreeView(Model, Model.FirstOrDefault().ParentId)
+                                </ul>
+                            }
+                        }
+                    }
+                </div>
+            </td>
+            <td style="width:150px"></td>
+            <td style="width:50%;vertical-align:top">
+                @{
+                    if (ind != null)
+                    {
+                        int _clientid = ind.ClId;
+                        int _editionid = ind.EId;
+                        int? _productid = ind.PId;
+
+                        WebGrid _datagridcc = new WebGrid();
+                        var cc = db.Database.SqlQuery<plm_vwProductCategoryByClients>("plm_spGetProductCategoriesByClient  @productid =" + _productid + ",  @clientId= " + _clientid + "").ToList();
+                        bool flag = ind.flag;
+                        if (flag == true)
+                        {
+                            string param = ind.param;
+                            var cats = db.Database.SqlQuery<plm_vwProductCategoryByClients>("plm_spGetProductCategoriesByClientSearch  @clientId=" + _clientid + ", @param='" + param + "',@productid=" + _productid + "").ToList();
+                            _datagridcc = new WebGrid(cats, rowsPerPage: 14);
+                        }
+                        else
+                        {
+                            _datagridcc = new WebGrid(cc, rowsPerPage: 14);
+                        }
+                        @_datagridcc.GetHtml(
+                              headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                               _datagridcc.Column("",header:"Categoría Nivel 1", format: @<text>
+                                <label>@item.Description</label>
+                                <input type="text" style="display:none" class="categoryid" value="@item.CategoryId" />
+                        </text>),
+                         _datagridcc.Column("",header:"Categoría Nivel 2", format: @<text>
+                                <label>@item.DescriptionNodo1</label>
+                                <input type="text" style="display:none" class="categoryid" value="@item.CategoryIdNodo1" />
+                        </text>),
+                          _datagridcc.Column("",header:"Categoría Nivel 3", format: @<text>
+                                <label>@item.DescriptionNodo2</label>
+                                <input type="text" style="display:none" class="categoryid" value="@item.CategoryIdNodo2" />
+                        </text>),
+                                       _datagridcc.Column("",header:"Categoría Nivel 4", format: @<text>
+                            <label>@item.DescriptionNodo3</label>
+                            <input type="text" style="display:none" class="categoryid" value="@item.CategoryIdNodo3" />
+                                    </text>),
+                          _datagridcc.Column("",header:"Eliminar", format: @<text>
+                            <button class="btn btn-default deletecategory" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteproductcategories", "InformationLaboratory", new { categoryid = item.CategoryId, categoryidnodo = item.CategoryIdNodo3 })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                        </text>,style:"buton")
+                          })
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
