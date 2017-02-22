@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://ws.staywell.com/markup" elementFormDefault="qualified" targetNamespace="http://ws.staywell.com/markup" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="body" type="bodyType" />
+  <xs:element name="RegularTitle" type="RestrictedTextMarkupType" />
+  <xs:element name="InvertedTitle" type="RestrictedTextMarkupType" />
+  <xs:element name="AdditionalTitle" type="RestrictedTextMarkupType" />
+  <xs:element name="Blurb">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="p" type="RestrictedTextMarkupType" />
+        <xs:element name="ul" type="RestrictedListType" />
+        <xs:element name="li" type="RestrictedListType" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="bodyType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="paragraphType" />
+      <xs:element name="h1" type="paragraphType" />
+      <xs:element name="h2" type="paragraphType" />
+      <xs:element name="h3" type="paragraphType" />
+      <xs:element name="h4" type="paragraphType" />
+      <xs:element name="h5" type="paragraphType" />
+      <xs:element name="h6" type="paragraphType" />
+      <xs:element name="ul" type="listULType" />
+      <xs:element name="ol" type="listOLType" />
+      <xs:element name="table" type="tableType" />
+      <xs:element name="Section" type="SectionType" />
+      <xs:element name="Page" type="SectionType" />
+      <xs:element name="Box" type="BoxType" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="SectionType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="paragraphType" />
+      <xs:element name="h1" type="paragraphType" />
+      <xs:element name="h2" type="paragraphType" />
+      <xs:element name="h3" type="paragraphType" />
+      <xs:element name="h4" type="paragraphType" />
+      <xs:element name="h5" type="paragraphType" />
+      <xs:element name="h6" type="paragraphType" />
+      <xs:element name="ul" type="listULType" />
+      <xs:element name="ol" type="listOLType" />
+      <xs:element name="table" type="tableType" />
+      <xs:element name="Section" type="SectionType" />
+      <xs:element name="Page" type="SectionType" />
+      <xs:element name="Box" type="BoxType" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="class" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="BoxType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="paragraphType" />
+      <xs:element name="h1" type="paragraphType" />
+      <xs:element name="h2" type="paragraphType" />
+      <xs:element name="h3" type="paragraphType" />
+      <xs:element name="h4" type="paragraphType" />
+      <xs:element name="h5" type="paragraphType" />
+      <xs:element name="h6" type="paragraphType" />
+      <xs:element name="ul" type="listULType" />
+      <xs:element name="ol" type="listOLType" />
+      <xs:element name="table" type="tableType" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="class">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="none" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="width">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9]+%?" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="HTMLBlockType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="paragraphType" />
+      <xs:element name="h1" type="paragraphType" />
+      <xs:element name="h2" type="paragraphType" />
+      <xs:element name="h3" type="paragraphType" />
+      <xs:element name="h4" type="paragraphType" />
+      <xs:element name="h5" type="paragraphType" />
+      <xs:element name="h6" type="paragraphType" />
+      <xs:element name="ul" type="listULType" />
+      <xs:element name="ol" type="listOLType" />
+      <xs:element name="table" type="tableType" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="class" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="MarkupElementWithLinksType" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="img" type="imgType" />
+      <xs:element name="media" type="mediaType" />
+      <xs:element name="i" type="inlineType" />
+      <xs:element name="b" type="inlineType" />
+      <xs:element name="big" type="inlineType" />
+      <xs:element name="small" type="inlineType" />
+      <xs:element name="u" type="inlineType" />
+      <xs:element name="em" type="inlineType" />
+      <xs:element name="strong" type="inlineType" />
+      <xs:element name="sub" type="inlineType" />
+      <xs:element name="sup" type="inlineType" />
+      <xs:element name="a" type="aType" />
+      <xs:element name="Hotfield" type="HotfieldType" />
+      <xs:element name="ContentLink" type="ContentLinkType" />
+      <xs:element name="InternalLink" type="InternalLinkType" />
+      <xs:element name="span" type="inlineType" />
+      <xs:element name="br" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="title" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="inlineType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="MarkupElementWithLinksType">
+        <xs:attribute name="class" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="paragraphType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="MarkupElementWithLinksType">
+        <xs:attribute name="class">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="left" />
+              <xs:enumeration value="center" />
+              <xs:enumeration value="right" />
+              <xs:enumeration value="justify" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ContentLinkType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="MarkupElementType">
+        <xs:attribute name="class" type="xs:string" />
+        <xs:attribute name="ContentId" type="xs:string" use="required" />
+        <xs:attribute name="ContentTypeId" type="xs:int" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InternalLinkType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="MarkupElementType">
+        <xs:attribute name="class" type="xs:string" />
+        <xs:attribute name="href" type="xs:IDREF" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="aType" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="MarkupElementType">
+        <xs:attribute name="class" type="xs:string" />
+        <xs:attribute name="href">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="http://.+" />
+              <xs:pattern value="https://.+" />
+              <xs:pattern value="ftp://.+" />
+              <xs:pattern value="mailto:.+" />
+              <xs:pattern value="/.+" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="MarkupElementType" abstract="true" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="img" type="imgType" />
+      <xs:element name="media" type="mediaType" />
+      <xs:element name="i" type="inlineType" />
+      <xs:element name="b" type="inlineType" />
+      <xs:element name="big" type="inlineType" />
+      <xs:element name="small" type="inlineType" />
+      <xs:element name="u" type="inlineType" />
+      <xs:element name="em" type="inlineType" />
+      <xs:element name="strong" type="inlineType" />
+      <xs:element name="sub" type="inlineType" />
+      <xs:element name="sup" type="inlineType" />
+      <xs:element name="span" type="inlineType" />
+      <xs:element name="br" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="title" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="imgType">
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute default="none" name="class" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="none" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="alt" type="xs:string" use="required" />
+    <xs:attribute name="height" type="xs:positiveInteger" use="required" />
+    <xs:attribute name="width" type="xs:positiveInteger" use="required" />
+    <xs:attribute name="imageid" type="xs:int" use="required" />
+    <xs:attribute name="expandedimageid" type="xs:int" />
+    <xs:attribute name="expimgheight" type="xs:positiveInteger" />
+    <xs:attribute name="expimgwidth" type="xs:positiveInteger" />
+  </xs:complexType>
+  <xs:complexType name="mediaType">
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="height" type="xs:integer" use="required" />
+    <xs:attribute name="width" type="xs:integer" use="required" />
+    <xs:attribute name="mediaid" type="xs:string" use="required" />
+    <xs:attribute name="mimetype" type="xs:string" use="required" />
+    <xs:attribute name="mediaurl" type="xs:string" />
+    <xs:attribute name="flashvars" type="xs:string" />
+    <xs:attribute default="none" name="class" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="center" />
+          <xs:enumeration value="none" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="HotfieldType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="hotfieldid" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="listULType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="li" type="HTMLBlockType" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="class" type="xs:string" />
+    <xs:attribute name="title" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="listOLType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="li" type="HTMLBlockType" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute default="number" name="class">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="number" />
+          <xs:enumeration value="letter" />
+          <xs:enumeration value="roman" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="title" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="tableType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="caption" type="inlineType" />
+      <xs:element minOccurs="0" name="thead" type="tableSectionType" />
+      <xs:element minOccurs="0" name="tfoot" type="tableSectionType" />
+      <xs:choice>
+        <xs:element maxOccurs="unbounded" name="tbody" type="tableSectionType" />
+        <xs:element maxOccurs="unbounded" name="tr" type="trType" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute default="none" name="class" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="none" />
+          <xs:enumeration value="center" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="summary" type="xs:string" />
+    <xs:attribute name="width">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9]+%?" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="standard" name="type">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="row" />
+          <xs:enumeration value="column" />
+          <xs:enumeration value="grid" />
+          <xs:enumeration value="standard" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="tableSectionType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="tr" type="trType" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="class" type="xs:string" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="align">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="center" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="justify" />
+          <xs:enumeration value="char" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="char" type="xs:string" />
+    <xs:attribute name="charoff" type="xs:string" />
+    <xs:attribute name="valign">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="top" />
+          <xs:enumeration value="middle" />
+          <xs:enumeration value="bottom" />
+          <xs:enumeration value="baseline" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="trType">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="th" type="tdType" />
+      <xs:element name="td" type="tdType" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="class" type="xs:string" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="align">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="center" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="justify" />
+          <xs:enumeration value="char" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="char" type="xs:string" />
+    <xs:attribute name="charoff" type="xs:string" />
+    <xs:attribute name="valign">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="top" />
+          <xs:enumeration value="middle" />
+          <xs:enumeration value="bottom" />
+          <xs:enumeration value="baseline" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="tdType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="paragraphType" />
+      <xs:element name="h1" type="paragraphType" />
+      <xs:element name="h2" type="paragraphType" />
+      <xs:element name="h3" type="paragraphType" />
+      <xs:element name="h4" type="paragraphType" />
+      <xs:element name="h5" type="paragraphType" />
+      <xs:element name="h6" type="paragraphType" />
+      <xs:element name="ul" type="listULType" />
+      <xs:element name="ol" type="listOLType" />
+    </xs:choice>
+    <xs:attribute name="id" type="xs:ID" />
+    <xs:attribute name="class" type="xs:string" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="abbr" type="xs:string" />
+    <xs:attribute name="axis" type="xs:string" />
+    <xs:attribute name="width" type="xs:string" />
+    <xs:attribute name="headers" type="xs:IDREFS" />
+    <xs:attribute name="scope">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="row" />
+          <xs:enumeration value="col" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="1" name="rowspan" type="xs:positiveInteger" />
+    <xs:attribute default="1" name="colspan" type="xs:positiveInteger" />
+    <xs:attribute name="align">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="left" />
+          <xs:enumeration value="center" />
+          <xs:enumeration value="right" />
+          <xs:enumeration value="justify" />
+          <xs:enumeration value="char" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="char" type="xs:string" />
+    <xs:attribute name="charoff" type="xs:string" />
+    <xs:attribute name="valign">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="top" />
+          <xs:enumeration value="middle" />
+          <xs:enumeration value="bottom" />
+          <xs:enumeration value="baseline" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="RestrictedTextMarkupType" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="i" type="RestrictedTextMarkupType" />
+      <xs:element name="b" type="RestrictedTextMarkupType" />
+      <xs:element name="big" type="RestrictedTextMarkupType" />
+      <xs:element name="small" type="RestrictedTextMarkupType" />
+      <xs:element name="u" type="RestrictedTextMarkupType" />
+      <xs:element name="em" type="RestrictedTextMarkupType" />
+      <xs:element name="strong" type="RestrictedTextMarkupType" />
+      <xs:element name="sub" type="RestrictedTextMarkupType" />
+      <xs:element name="sup" type="RestrictedTextMarkupType" />
+      <xs:element name="span" type="RestrictedTextMarkupType" />
+      <xs:element name="br" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="RestrictedListType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="li">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="p" type="RestrictedTextMarkupType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

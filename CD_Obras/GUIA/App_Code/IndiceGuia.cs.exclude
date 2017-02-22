@@ -1,0 +1,283 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using System.Collections.Generic;
+using System.Collections;
+using System.Text;
+using System.Data.Common;
+
+
+
+public class IndiceGuia : PLMDataAccessAdapter<object>
+{
+    #region Constructors
+
+    private IndiceGuia()
+    { }
+
+    #endregion
+
+    public DataTable getMarcas(string letra)
+    {
+        StringBuilder sb = new StringBuilder();
+
+
+        //sb.Append("\nselect distinct e.[edición],e.[marca],e.[Hipervínculo marca], e.[nombre del archivo],e. [sin logo],e.[tipo de logo],m.[id] ");
+        //sb.Append("\nfrom dbo.[Ed56 Marcas] e ");
+        //sb.Append("\ninner join marcas m on ( e.marca=m.marca)");
+        //sb.Append("\nwhere edición='56' and e.marca like  ('" + letra + "%') ORDER BY MARCA ");
+
+        sb.Append("SELECT DISTINCT C.EDITIONID, B.BRANDNAME, ");
+        sb.Append("\nB.LOGO, SUBSTRING(LOGO, 1, 1) AS TYPELOGO, B.BRANDID ");
+        sb.Append("\nFROM BRANDS B ");
+        sb.Append("\nINNER JOIN CLIENTBRANDS CB ON B.BRANDID = CB.BRANDID ");
+        sb.Append("\nINNER JOIN CLIENTS C ON CB.CLIENTID = C.CLIENTID ");
+        sb.Append("\nWHERE C.EDITIONID = " + EditionId + " AND B.ACTIVE = 1 AND CB.ACTIVE = 1 AND C.ACTIVE = 1 ");
+        sb.Append("\nAND B.BRANDNAME COLLATE SQL_Latin1_General_CP1_CI_AI LIKE '" + letra + "%' ");
+        sb.Append("\nORDER BY B.BRANDNAME ");
+       // DataSet ds = IndiceGuia.GuiaInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+
+        return ds.Tables[0];
+    }
+
+
+    public DataTable getEmpresas(int marca_id)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        //sb.Append("\nselect cbt.clientbrandtypeId,tmp.companyname,c.page");
+        //sb.Append("\nfrom clients c");
+        //sb.Append("\ninner	 join (");
+        //sb.Append("\nselect distinct   [nombre corto de la empresa]as companyname, [código - cliente]");
+        //sb.Append("\nfrom tmpguia56");
+        //sb.Append("\nwhere [categoría] like 'anunc%' and [nombre corto de la empresa] is not null)tmp on(tmp.[código - cliente]	=c.clientCode )");
+        //sb.Append("\ninner join ClientBrands cb on (c.clientId =cb.clientId)");
+        //sb.Append("\ninner join brands b on(cb.brandId = b.brandid)");
+        //sb.Append("\nleft join clientbrandtypes cbt on (cb.clientbrandtypeId = cbt.clientbrandtypeId)");
+        //sb.Append("\ninner join editions e on (c.editionId = e.editionId)");
+        //sb.Append("\nwhere  b.brandid="+marca_id.ToString()+" and  e.numberEdition=56 and  b.active=1 and cb.active=1 and c.active=1 and e.active=1 order by 2");
+
+
+            sb.Append("SELECT CBT.CLIENTBRANDTYPEID, C.SHORTNAME AS COMPANYNAME, C.PAGE ");
+            sb.Append("\nFROM CLIENTS C ");
+            sb.Append("\nINNER JOIN CLIENTBRANDS CB ON C.CLIENTID = CB.CLIENTID ");
+            sb.Append("\nINNER JOIN BRANDS B ON CB.BRANDID = B.BRANDID ");
+            sb.Append("\nLEFT JOIN CLIENTBRANDTYPES CBT ON CB.CLIENTBRANDTYPEID = CBT.CLIENTBRANDTYPEID ");
+            sb.Append("\nWHERE B.BRANDID = " + marca_id.ToString() + " AND C.EDITIONID = " + EditionId + " ");
+            sb.Append("\nAND C.ACTIVE = 1 AND CB.ACTIVE = 1 AND B.ACTIVE = 1  ");
+            sb.Append("\nORDER BY C.SHORTNAME");
+		
+		 
+        
+        //DataSet ds = IndiceGuia.GuiaInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    }
+
+    public DataTable getLetter()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("\nSELECT *  ");
+        sb.Append("\nFROM Alphabet   where  id>0 and id<13");
+        sb.Append("\n ORDER BY 1 ");
+        DataSet ds = IndiceGuia.GuiaInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        
+        return ds.Tables[0];
+    }
+    public DataTable getLetter(string letras)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("\nSELECT *  ");
+        sb.Append("\nFROM Alphabet   ");
+        sb.Append("\n  where letra in ('a')");
+        sb.Append("\n ORDER BY 1 ");
+        DataSet ds = IndiceGuia.GuiaInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+
+        return ds.Tables[0];
+    }
+    public DataTable getLetterByBrand() 
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("SELECT DISTINCT SUBSTRING(B.BRANDNAME, 1, 1), 0 AS ARCHIVO FROM BRANDS B ");
+        sb.Append("\nINNER JOIN CLIENTBRANDS CB ON B.BRANDID = CB.BRANDID ");
+        sb.Append("\nINNER JOIN CLIENTS C ON CB.CLIENTID = C.CLIENTID ");
+        sb.Append("\nWHERE EDITIONID = " + EditionId + " ");
+        sb.Append("\nAND SUBSTRING(B.BRANDNAME, 1, 1) IN ('T', 'U', 'V', 'W', 'X', 'Y', 'Z') ");
+        sb.Append("\nORDER BY 1");
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+
+        return ds.Tables[0];
+    }
+    
+    
+    
+    public DataTable getState()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("\nselect stateid, countryid, statename, active from States ");
+        sb.Append("\n where countryId in (1) order by 2,3");
+        //sb.Append("\nwhere countryId=1  and stateId<=7  order by 1");
+        //sb.Append("\n where countryId=1  and stateId>7 and stateId<=10  order by 1");
+       // sb.Append("\n where countryId=1  and stateId>10 and stateId<=14  order by 1");
+        //sb.Append("\n where countryId=1  and stateId>14 and stateId<=20  order by 1");
+        //sb.Append("\n where countryId=1  and stateId>20 and stateId<=28  order by 1");
+        //sb.Append("\n  where countryId=1  and stateId>28  order by 1");
+
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    }
+
+
+    public DataTable getCities(int state,int speci)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("\n select distinct  c.[city],c.[stateId],cs.[specialityId]");
+        sb.Append("\n from clientSpecialities cs ");
+        sb.Append("\n inner join clients c on (cs.clientId=c.clientId)");
+        sb.Append("\n inner join States s on (s.StateID = c.stateId)");
+        sb.Append("\n where s.Active =1 and s.StateID="+ state.ToString()+" and cs.SpecialityId="+ speci.ToString() +" and cs.active=1 and c.Active=1  and editionId= "+ EditionId +" order by city");
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    }
+
+    public DataTable getCompany(int state,int speci,string city)
+    {
+        StringBuilder sb = new StringBuilder();
+
+
+   //sb.Append("select distinct  c.[clientId],cs.[specialityId],c.[companyName],c.[address],c.[suburb],c.[postalCode],c.[ClientTypeId],tmp.Phone,tmf.fax,tmtf.PhoneFax,tml.lada,c.[email],c.[web],tmo.Lads");
+  //sb.Append("\n from clientSpecialities cs");
+  //sb.Append("\n inner join clients c on (cs.clientId=c.clientId)");
+  //sb.Append("\n inner join States s on (s.StateID = c.stateId)");
+  //sb.Append("\n left join Telefono tmp  on(c.clientId = tmp.clientId)");
+  //sb.Append("\n left join Fax tmf  on(c.clientId = tmf.clientId)");
+  //sb.Append("\n left join Telfax tmtf  on(c.clientId = tmtf.clientId)");
+  //sb.Append("\n left join lada tml  on(c.clientId = tml.clientId)");
+  //sb.Append("\n left join Oxidom tmo  on(c.clientId = tmo.clientId)");
+
+  //sb.Append("\n where s.Active =1 and s.StateID=" + state.ToString() + " and cs.SpecialityId=" + speci.ToString() + " and cs.active=1 and c.Active=1  and c.[city]='" + city + "' and editionId=5 order by 3  ");
+
+    sb.Append("\n SELECT DISTINCT ");
+    sb.Append("\nC.[ClientId], ");
+	sb.Append("\nCS.[specialityId], ");
+	sb.Append("\nC.[CompanyName], ");
+	sb.Append("\nC.[Address], ");
+	sb.Append("\nC.[Suburb], ");
+	sb.Append("\nC.[PostalCode], ");
+	sb.Append("\nC.[ClientTypeId], ");	
+	sb.Append("\n(SELECT DISTINCT top 1 COALESCE('(' + LADA + ')', '') + ' ' + NUMBER FROM CLIENTPHONES WHERE PHONETYPEID= 1 AND CLIENTPHONES.CLIENTID  = C.CLIENTID ) AS PHONE, ");
+	sb.Append("\n(SELECT DISTINCT top 1 COALESCE('(' + LADA + ')', '') + ' ' + NUMBER FROM CLIENTPHONES WHERE PHONETYPEID= 3 AND CLIENTPHONES.CLIENTID  = C.CLIENTID ) AS FAX, ");
+	sb.Append("\n(SELECT DISTINCT top 1 COALESCE('(' + LADA + ')', '') + ' ' + NUMBER FROM CLIENTPHONES WHERE PHONETYPEID= 2 AND CLIENTPHONES.CLIENTID  = C.CLIENTID ) AS PHONEFAX, ");
+	sb.Append("\n(SELECT DISTINCT top 1 NUMBER FROM CLIENTPHONES WHERE PHONETYPEID= 4 AND CLIENTPHONES.CLIENTID  = C.CLIENTID ) AS LADA, ");
+	sb.Append("\n(SELECT DISTINCT top 1 COALESCE('(' + LADA + ')', '') + ' ' + NUMBER FROM CLIENTPHONES WHERE PHONETYPEID= 5 AND CLIENTPHONES.CLIENTID  = C.CLIENTID ) AS OXIDOM, ");
+	sb.Append("\nC.[Email], ");
+	sb.Append("\nC.[Web] ");
+    sb.Append("\nFROM CLIENTSPECIALITIES CS ");
+    sb.Append("\nINNER JOIN CLIENTS C ON (CS.ClientId = C.ClientId) ");
+    sb.Append("\nINNER JOIN STATES S ON (C.StateId = C.StateId) ");
+    sb.Append("\nLEFT JOIN CLIENTPHONES CP ON C.ClientId = CP.ClientId ");
+    sb.Append("\nLEFT JOIN PHONETYPES PT ON CP.PhoneTypeid = PT.PhoneTypeid ");
+    sb.Append("\nWHERE	S.Active = 1 AND S.StateID = " + state.ToString() + " AND CS.SpecialityId = " + speci.ToString() + " ");
+	sb.Append("\nAND CS.Active=1 AND C.Active=1   ");
+	sb.Append("\nAND C.[City] = '" + city + "' AND EditionId=" + EditionId + " ");
+    sb.Append("\nORDER BY 3 ");
+
+
+
+
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    }
+
+    public DataTable getPhones(int id, int speci)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("\n  select distinct  cp.[specialityId],cp.[number],pt.[description],cp.[lada],ct.[clientTypeId],c.[ClientId]");
+        sb.Append("\n from clients c");
+        sb.Append("\n inner join clientPhones cp on (c.clientId=cp.clientId)");
+        sb.Append("\n inner join Phonetypes pt on (cp.phonetypeId = pt.phonetypeId)");
+        sb.Append("\n  inner join ClientTypes ct on (c.clientTypeId = ct.clientTypeId)");
+        sb.Append("\n where cp.clientId="+ id.ToString()+" and pt.Active=1 and  cp.SpecialityId="+speci.ToString()+" and ct.Active=1");
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    }
+
+
+
+    /// <summary>
+    /// Carpetas
+    /// </summary>
+
+    public DataTable getCompanies()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.Append(" Select	Distinct ");
+		sb.Append("\nc.ClientId, ");
+		sb.Append("\nc.CompanyName, ");
+		sb.Append("\ncount(*) as brands ");
+        sb.Append("\nFrom clients c ");
+        sb.Append("\ninner join clientbrands cb on c.clientid = cb.clientid ");
+        //sb.Append("\n where c.clientid = 36482");
+        sb.Append("\nWhere Editionid = "+EditionId +" and ClientTypeid = 2 ");
+        sb.Append("\nand substring(companyname, 1, 1) in ('Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z') ");
+        sb.Append("\ngroup by c.ClientId, c.CompanyName ");
+        sb.Append("\nOrder by c.CompanyName ");
+        
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    }
+
+    public DataTable getBrandsByCompany(int clientid) 
+    { 
+        StringBuilder sb = new StringBuilder();
+        
+        sb.Append("Select	Distinct ");
+		sb.Append("\nc.clientid, ");
+		sb.Append("\nc.companyname, ");
+		sb.Append("\nb.brandId, ");
+		sb.Append("\nb.brandName, ");
+        sb.Append("\ncoalesce(b.Logo, 'Sin_Logo.jpg') as Logo, ");
+        sb.Append("\ncoalesce(substring(logo, 1, 1), '2') as LogoType, ");
+		sb.Append("\nCASE cb.clientbrandtypeid ");
+		sb.Append("\nWHEN 1	THEN '*' ");
+		sb.Append("\nWHEN 2	THEN '**' ");
+        sb.Append("\nELSE '' END	as distribuidor, ");
+		sb.Append("\ncoalesce(cb.expire, '') as expire ");
+        sb.Append("\nFrom Clients c ");
+        sb.Append("\nInner join ClientBrands cb on c.clientid = cb.clientid ");
+        sb.Append("\nInner join Brands b on cb.brandId = b.brandId ");
+        sb.Append("\nLeft join ClientBrandTypes cbt on cb.clientbrandtypeid = cbt.clientbrandtypeid ");
+        sb.Append("\nwhere editionid = "+EditionId+" and c.clientid = "+ clientid.ToString());
+        //sb.Append("\nwhere editionid = 6 and c.clientid = 36482 "); 
+        sb.Append("\norder by b.brandName ");
+
+        DataSet ds = IndiceGuia.GuiaAliInstanceDatabase.ExecuteDataSet(CommandType.Text, sb.ToString());
+        return ds.Tables[0];
+    
+    }
+
+
+    public static readonly IndiceGuia Instance = new IndiceGuia();    
+    public static String EditionId = "8";
+}
