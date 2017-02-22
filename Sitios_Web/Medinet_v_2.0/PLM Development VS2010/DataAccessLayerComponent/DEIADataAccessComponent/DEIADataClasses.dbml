@@ -1,0 +1,788 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DEIA 22" Class="DEIADataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=MX-DF2K8APP02;Initial Catalog=&quot;DEIA 22&quot;;Persist Security Info=True;User ID=sa" SettingsObjectName="DEIADataAccessComponent.Properties.Settings" SettingsPropertyName="DEIA_22ConnectionString" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.roc_spGetEdition" Method="roc_spGetEdition">
+    <ElementType Name="roc_spGetEditionResult">
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumberEdition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ISBN" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BarCode" Type="System.String" DbType="VarChar(80)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionListByParentId" Method="roc_spGetSectionListByParentId">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSectionListByParentIdResult">
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCityWhitCompaniesByState" Method="roc_spGetCityWhitCompaniesByState">
+    <Parameter Name="stateId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCityWhitCompaniesByStateResult">
+      <Column Name="CityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CityName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetStatesWithCompaniesBySection" Method="roc_spGetStatesWithCompaniesBySection">
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetStatesWithCompaniesBySectionResult">
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCompaniesByCityAndSection" Method="roc_spGetCompaniesByCityAndSection">
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="cityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCompaniesByCityAndSectionResult">
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyShortName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CommercialBusiness" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="CityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ZipCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EmpresaId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProviders" Method="roc_spGetProviders">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="companyTypeId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProvidersResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersByFulltext" Method="roc_spGetProvidersByFulltext">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="companyTypeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetProvidersByFulltextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersByLetter" Method="roc_spGetProvidersByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="companyTypeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetProvidersByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersByText" Method="roc_spGetProvidersByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="companyTypeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetProvidersByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionById" Method="roc_spGetSectionById">
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSectionByIdResult">
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersAndManufactures" Method="roc_spGetProvidersAndManufactures">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProvidersAndManufacturesResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersAndManufacturesByFulltext" Method="roc_spGetProvidersAndManufacturesByFulltext">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetProvidersAndManufacturesByFulltextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersAndManufacturesByLetter" Method="roc_spGetProvidersAndManufacturesByLetter">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetProvidersAndManufacturesByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProvidersAndManufacturesByText" Method="roc_spGetProvidersAndManufacturesByText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetProvidersAndManufacturesByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCity" Method="roc_spGetCity">
+    <Parameter Name="cityId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCityResult">
+      <Column Name="CityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CityName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetPhonesByCompany" Method="roc_spGetPhonesByCompany">
+    <Parameter Name="companyId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetPhonesByCompanyResult">
+      <Column Name="PhoneTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="TypeName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneValue" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetState" Method="roc_spGetState">
+    <Parameter Name="stateId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetStateResult">
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetAdvertisementsByCompanyId" Method="roc_spGetAdvertisementsByCompanyId">
+    <Parameter Name="companyId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetAdvertisementsByCompanyIdResult">
+      <Column Name="AdvId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HiredSpace" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="AdvFile" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetAdvertisementsBySectionId" Method="roc_spGetAdvertisementsBySectionId">
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetAdvertisementsBySectionIdResult">
+      <Column Name="AdvId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HiredSpace" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="AdvFile" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCompaniesBySection" Method="roc_spGetCompaniesBySection">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCompaniesBySectionResult">
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyShortName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CityName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="CommercialBusiness" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCompany" Method="roc_spGetCompany">
+    <Parameter Name="companyId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCompanyResult">
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyShortName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CommercialBusiness" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="CityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ZipCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetEditionProduct" Method="roc_spGetEditionProduct">
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetEditionProductResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetIndexProductsBySection" Method="roc_spGetIndexProductsBySection">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetIndexProductsBySectionResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductDescription" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EPSDescription" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProduct" Method="roc_spGetProduct">
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductDescription" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EPSDescription" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsBySection" Method="roc_spGetProductsBySection">
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsBySectionResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsBySectionAndType" Method="roc_spGetProductsBySectionAndType">
+    <Parameter Name="productTypeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsBySectionAndTypeResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlIndex" Method="roc_spGetQualityControlIndex">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetQualityControlIndexResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByCompanyId" Method="roc_spGetProductsByCompanyId">
+    <Parameter Name="companyId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByCompanyIdResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductDescription" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EPSDescription" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsAndProductsByFullText" Method="roc_spGetSectionsAndProductsByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fulltext" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSectionsAndProductsByFullTextResult">
+      <Column Name="total" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsAndProductsByText" Method="roc_spGetSectionsAndProductsByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSectionsAndProductsByTextResult">
+      <Column Name="total" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsByParentId" Method="roc_spGetSectionsByParentId">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSectionsByParentIdResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsByParentIdByFulltext" Method="roc_spGetSectionsByParentIdByFulltext">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fullText" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetSectionsByParentIdByFulltextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsByParentIdByText" Method="roc_spGetSectionsByParentIdByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetSectionsByParentIdByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsWithCompanies" Method="roc_spGetSectionsWithCompanies">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSectionsWithCompaniesResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsWithCompaniesByFulltext" Method="roc_spGetSectionsWithCompaniesByFulltext">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbyPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fulltext" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetSectionsWithCompaniesByFulltextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsWithCompaniesByLetter" Method="roc_spGetSectionsWithCompaniesByLetter">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbyPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetSectionsWithCompaniesByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsWithCompaniesByText" Method="roc_spGetSectionsWithCompaniesByText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbyPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetSectionsWithCompaniesByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetServicesByCompany" Method="roc_spGetServicesByCompany">
+    <Parameter Name="sectionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetServicesByCompanyResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EdProdId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubRawMaterialsByParentId" Method="roc_spGetSubRawMaterialsByParentId">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSubRawMaterialsByParentIdResult">
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubsection" Method="roc_spGetSubsection">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSubsectionResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubsectionByFulltext" Method="roc_spGetSubsectionByFulltext">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fulltext" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetSubsectionByFulltextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubsectionByLetter" Method="roc_spGetSubsectionByLetter">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetSubsectionByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubsectionByText" Method="roc_spGetSubsectionByText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetSubsectionByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubsectionsBySectionId" Method="roc_spGetSubsectionsBySectionId">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSubsectionsBySectionIdResult">
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSectionsByParentIdByLetter" Method="roc_spGetSectionsByParentIdByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetSectionsByParentIdByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlIndexByFullText" Method="roc_spGetQualityControlIndexByFullText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fullText" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetQualityControlIndexByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlIndexByLetter" Method="roc_spGetQualityControlIndexByLetter">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="roc_spGetQualityControlIndexByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlIndexByText" Method="roc_spGetQualityControlIndexByText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(40)" />
+    <ElementType Name="roc_spGetQualityControlIndexByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControl" Method="roc_spGetQualityControl">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetQualityControlResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlByFullText" Method="roc_spGetQualityControlByFullText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetQualityControlByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlByLetter" Method="roc_spGetQualityControlByLetter">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetQualityControlByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetQualityControlByText" Method="roc_spGetQualityControlByText">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetQualityControlByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SectionName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsIndex" Method="roc_spGetProductsIndex">
+    <Parameter Name="indexId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsIndexResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EdProdId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsIndexByFullText" Method="roc_spGetProductsIndexByFullText">
+    <Parameter Name="indexId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetProductsIndexByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EdProdId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsIndexByLetter" Method="roc_spGetProductsIndexByLetter">
+    <Parameter Name="indexId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetProductsIndexByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EdProdId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsIndexByText" Method="roc_spGetProductsIndexByText">
+    <Parameter Name="indexId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberbypage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetProductsIndexByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EdProdId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="HtmlFile" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="HtmlContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

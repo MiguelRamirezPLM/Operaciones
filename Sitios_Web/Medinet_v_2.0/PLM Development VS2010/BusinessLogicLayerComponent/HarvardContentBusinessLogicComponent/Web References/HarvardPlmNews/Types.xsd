@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:schema xmlns:NS="http://ws.staywell.com" xmlns:markup="http://ws.staywell.com/markup" xmlns="http://ws.staywell.com" elementFormDefault="qualified" targetNamespace="http://ws.staywell.com" xmlns:s="http://www.w3.org/2001/XMLSchema">
+  <s:import schemaLocation="Markup.xsd" namespace="http://ws.staywell.com/markup" />
+  <s:element name="SearchCriteria" nillable="true" type="NS:SearchCriteriaType" />
+  <s:element name="DocumentRequest">
+    <s:complexType>
+      <s:complexContent mixed="false">
+        <s:extension base="NS:DocumentIDType">
+          <s:attribute name="GetOriginalDocument" type="s:boolean" use="required" />
+          <s:attribute name="IncludeBlocked" type="s:boolean" use="required" />
+        </s:extension>
+      </s:complexContent>
+    </s:complexType>
+  </s:element>
+  <s:element name="MasterGreystoneDocumentRequest">
+    <s:complexType>
+      <s:complexContent mixed="false">
+        <s:extension base="NS:DocumentIDType" />
+      </s:complexContent>
+    </s:complexType>
+  </s:element>
+  <s:element name="RelatedDocumentsRequest">
+    <s:complexType>
+      <s:sequence>
+        <s:choice>
+          <s:element name="DocumentID" type="NS:DocumentIDType" />
+          <s:element name="MeSHList" type="NS:MeSHListType" />
+        </s:choice>
+        <s:element minOccurs="0" name="Language">
+          <s:complexType>
+            <s:attribute name="code" type="s:language" use="required" />
+          </s:complexType>
+        </s:element>
+      </s:sequence>
+      <s:attribute default="false" name="IncludeBlocked" type="s:boolean" />
+      <s:attribute default="false" name="IncludeOriginalDocuments" type="s:boolean" />
+    </s:complexType>
+  </s:element>
+  <s:element name="RelatedServicelineDocumentsRequest">
+    <s:complexType>
+      <s:sequence>
+        <s:element name="DocumentID" type="NS:DocumentIDType" />
+      </s:sequence>
+      <s:attribute default="false" name="IncludeBlocked" type="s:boolean" />
+      <s:attribute default="false" name="IncludeOriginalDocuments" type="s:boolean" />
+    </s:complexType>
+  </s:element>
+  <s:element name="CollectionContentsRequest">
+    <s:complexType>
+      <s:attribute name="SubtopicId" type="s:int" use="required" />
+      <s:attribute default="true" name="Recursive" type="s:boolean" />
+      <s:attribute default="false" name="IncludeBlocked" type="s:boolean" />
+      <s:attribute default="false" name="IncludeDocuments" type="s:boolean" />
+    </s:complexType>
+  </s:element>
+  <s:element name="DynamicCollectionContentsRequest">
+    <s:complexType>
+      <s:attribute name="DynamicCollectionId" type="s:int" use="required" />
+      <s:attribute default="false" name="IncludeBlocked" type="s:boolean" />
+    </s:complexType>
+  </s:element>
+  <s:element name="CPTListRequest">
+    <s:complexType>
+      <s:attribute default="false" name="IncludeDocuments" type="s:boolean" use="optional" />
+    </s:complexType>
+  </s:element>
+  <s:element name="ICD9ListRequest">
+    <s:complexType>
+      <s:attribute default="false" name="IncludeDocuments" type="s:boolean" use="optional" />
+    </s:complexType>
+  </s:element>
+  <s:element name="MeSHListRequest">
+    <s:complexType>
+      <s:attribute default="false" name="IncludeDocuments" type="s:boolean" use="optional" />
+      <s:attribute default="false" name="SearchPhrase" type="s:string" use="optional" />
+      <s:attribute default="And" name="LogicalOperator" type="NS:LogicalOperatorType" use="optional" />
+      <s:attribute default="false" name="PartialWord" type="s:boolean" use="optional" />
+    </s:complexType>
+  </s:element>
+  <s:element name="DefaultBlockingStatus">
+    <s:complexType>
+      <s:sequence>
+        <s:element maxOccurs="unbounded" name="ContentType">
+          <s:complexType>
+            <s:complexContent mixed="false">
+              <s:extension base="NS:ContentTypeType">
+                <s:attribute name="DefaultStatus" type="NS:BlockingStatusType" use="required" />
+                <s:attribute name="NewDocumentStatus" type="NS:BlockingStatusType" use="required" />
+                <s:attribute name="RevisedDocumentStatus" type="NS:BlockingStatusType" use="required" />
+              </s:extension>
+            </s:complexContent>
+          </s:complexType>
+        </s:element>
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+  <s:element name="BlockingStatus">
+    <s:complexType>
+      <s:sequence>
+        <s:element name="Document">
+          <s:complexType>
+            <s:complexContent mixed="false">
+              <s:extension base="NS:DocumentIDType">
+                <s:attribute name="Status" type="NS:BlockingStatusType" use="required" />
+              </s:extension>
+            </s:complexContent>
+          </s:complexType>
+        </s:element>
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+  <s:element name="DocumentList" nillable="true" type="NS:DocumentListType" />
+  <s:element name="Document" type="NS:DocumentType" />
+  <s:element name="CollectionList" nillable="true" type="NS:CollectionListType" />
+  <s:element name="DynamicCollectionList" type="NS:DynamicCollectionListType" />
+  <s:element name="Subtopic" type="NS:SubtopicType" />
+  <s:element name="MeSHList">
+    <s:complexType>
+      <s:sequence>
+        <s:element maxOccurs="unbounded" name="MeSH">
+          <s:complexType>
+            <s:complexContent mixed="false">
+              <s:extension base="NS:MeSHType">
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="unbounded" name="Document" type="NS:DocumentIDType" />
+                  <s:element minOccurs="0" maxOccurs="unbounded" name="Term" type="NS:TermType" />
+                </s:sequence>
+              </s:extension>
+            </s:complexContent>
+          </s:complexType>
+        </s:element>
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+  <s:element name="CPTList">
+    <s:complexType>
+      <s:sequence>
+        <s:element maxOccurs="unbounded" name="CPT">
+          <s:complexType>
+            <s:complexContent mixed="false">
+              <s:extension base="NS:CPTType">
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="unbounded" name="Document" type="NS:DocumentIDType" />
+                </s:sequence>
+              </s:extension>
+            </s:complexContent>
+          </s:complexType>
+        </s:element>
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+  <s:element name="ICD9List">
+    <s:complexType>
+      <s:sequence>
+        <s:element maxOccurs="unbounded" name="ICD9">
+          <s:complexType>
+            <s:complexContent mixed="false">
+              <s:extension base="NS:ICD9Type">
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="unbounded" name="Document" type="NS:DocumentIDType" />
+                </s:sequence>
+              </s:extension>
+            </s:complexContent>
+          </s:complexType>
+        </s:element>
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+  <s:element name="Success" />
+  <s:simpleType name="BlockingStatusType">
+    <s:restriction base="s:string">
+      <s:enumeration value="Blocked" />
+      <s:enumeration value="Allowed" />
+    </s:restriction>
+  </s:simpleType>
+  <s:complexType name="SearchCriteriaType">
+    <s:all>
+      <s:element minOccurs="0" name="ContentTypes" type="NS:ContentTypesType" />
+      <s:element minOccurs="0" name="Subtopics">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="Subtopic">
+              <s:complexType>
+                <s:attribute name="RootSubtopicId" type="s:int" use="optional" />
+                <s:attribute name="SubtopicId" type="s:int" use="optional" />
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element minOccurs="0" name="Paging" type="NS:PagingType" />
+      <s:element minOccurs="0" name="ByLetter" type="NS:ByLetterType" />
+      <s:element minOccurs="0" name="AgeGroups" type="NS:AgeGroupsType" />
+      <s:element minOccurs="0" name="MeSHList" type="NS:MeSHListType" />
+      <s:element minOccurs="0" name="ICD9List" type="NS:ICD9ListType" />
+      <s:element minOccurs="0" name="CPTList" type="NS:CPTListType" />
+      <s:element minOccurs="0" name="Servicelines" type="NS:ServicelineListType" />
+      <s:element minOccurs="0" name="FullText" type="NS:FullTextSearchType" />
+      <s:element minOccurs="0" name="Gender" type="NS:GenderType" />
+      <s:element minOccurs="0" name="Language" type="NS:LanguageType" />
+      <s:element minOccurs="0" name="Title" type="NS:TitleType" />
+      <s:element minOccurs="0" name="PostingDate" type="s:date" />
+      <s:element minOccurs="0" name="EndPostingDate" type="s:date" />
+      <s:element minOccurs="0" name="DocumentType" type="s:string" />
+      <s:element minOccurs="0" name="DocumentState" type="s:string" />
+    </s:all>
+    <s:attribute default="false" name="IncludeBlocked" type="s:boolean" />
+    <s:attribute default="false" name="IncludeOriginalDocuments" type="s:boolean" />
+    <s:attribute default="false" name="ReturnAdditionalTitles" type="s:boolean" />
+  </s:complexType>
+  <s:simpleType name="MeSHCodeType">
+    <s:restriction base="s:string">
+      <s:pattern value="D\d{6,}" />
+    </s:restriction>
+  </s:simpleType>
+  <s:complexType name="ICD9ListType">
+    <s:sequence>
+      <s:element maxOccurs="unbounded" name="ICD9" nillable="true" type="NS:ICD9Type" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="CPTListType">
+    <s:sequence>
+      <s:element maxOccurs="unbounded" name="CPT" nillable="true" type="NS:CPTType" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="ServicelineListType">
+    <s:sequence>
+      <s:element maxOccurs="unbounded" name="Serviceline" nillable="true" type="NS:ServicelineType" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="ContentTypesType">
+    <s:sequence>
+      <s:element minOccurs="0" maxOccurs="unbounded" name="ContentType" nillable="true" type="NS:ContentTypeType" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="ContentTypeType">
+    <s:attribute name="ContentTypeId" type="s:int" use="required" />
+  </s:complexType>
+  <s:complexType name="FullTextSearchType">
+    <s:simpleContent>
+      <s:extension base="s:string">
+        <s:attribute name="LogicalOperator" type="NS:LogicalOperatorType" use="required" />
+      </s:extension>
+    </s:simpleContent>
+  </s:complexType>
+  <s:complexType name="TitleType">
+    <s:simpleContent>
+      <s:extension base="s:string">
+        <s:attribute name="IncludeAdditionalTitles" type="s:boolean" use="optional" />
+      </s:extension>
+    </s:simpleContent>
+  </s:complexType>
+  <s:simpleType name="LogicalOperatorType">
+    <s:restriction base="s:string">
+      <s:enumeration value="Or" />
+      <s:enumeration value="And" />
+    </s:restriction>
+  </s:simpleType>
+  <s:complexType name="AgeGroupsType">
+    <s:sequence>
+      <s:element minOccurs="0" maxOccurs="unbounded" name="AgeGroup" type="NS:AgeGroupType" />
+    </s:sequence>
+  </s:complexType>
+  <s:simpleType name="AgeGroupType">
+    <s:restriction base="s:string">
+      <s:enumeration value="Infant (0 - 11 mo)" />
+      <s:enumeration value="Childhood (11 mo - 12 yrs)" />
+      <s:enumeration value="Teen (12 - 18 yrs)" />
+      <s:enumeration value="Adult (18+)" />
+      <s:enumeration value="Senior" />
+    </s:restriction>
+  </s:simpleType>
+  <s:simpleType name="GenderType">
+    <s:restriction base="s:string">
+      <s:enumeration value="Male" />
+      <s:enumeration value="Female" />
+      <s:enumeration value="All" />
+    </s:restriction>
+  </s:simpleType>
+  <s:complexType name="DocumentListType">
+    <s:sequence>
+      <s:element minOccurs="0" name="Paging" type="NS:PagingType" />
+      <s:element minOccurs="0" maxOccurs="unbounded" name="Document">
+        <s:complexType>
+          <s:all>
+            <s:element name="Language" type="NS:LanguageType" />
+            <s:element ref="markup:RegularTitle" />
+            <s:element minOccurs="0" ref="markup:InvertedTitle" />
+            <s:element minOccurs="0" ref="markup:Blurb" />
+            <s:element minOccurs="0" name="PostingDate" nillable="true" type="s:dateTime" />
+            <s:element minOccurs="0" name="Gender" type="NS:GenderType" />
+            <s:element minOccurs="0" name="AdditionalTitles">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="unbounded" ref="markup:AdditionalTitle" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:all>
+          <s:attribute name="ContentTypeId" type="s:int" use="required" />
+          <s:attribute name="ContentId" type="s:string" use="required" />
+          <s:attribute name="IsCustom" type="s:boolean" use="required">
+            <s:annotation>
+              <s:documentation>This attribute is typically ignored when the element is used for requesting documents. Substitution of custom documents will happen by default.</s:documentation>
+            </s:annotation>
+          </s:attribute>
+          <s:attribute name="Rank" type="s:int" use="optional">
+            <s:annotation>
+              <s:documentation>Present only on results from "GetRelatedDocuments". Rank 1 is the most relevant, rank 5 is the least.</s:documentation>
+            </s:annotation>
+          </s:attribute>
+          <s:attribute name="Owner" type="s:string" use="optional" />
+        </s:complexType>
+      </s:element>
+      <s:element minOccurs="0" name="ContentTypeTotals">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="ContentTypeTotal" type="NS:ContentTypeTotalType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="DocumentInfoType">
+    <s:complexContent mixed="false">
+      <s:extension base="NS:DocumentInfoBaseType">
+        <s:sequence />
+      </s:extension>
+    </s:complexContent>
+  </s:complexType>
+  <s:complexType name="DocumentInfoBaseType">
+    <s:complexContent mixed="false">
+      <s:extension base="NS:DocumentIDType">
+        <s:sequence>
+          <s:element name="Language" type="NS:LanguageType" />
+          <s:element ref="markup:RegularTitle" />
+          <s:element minOccurs="0" ref="markup:InvertedTitle" />
+          <s:element minOccurs="0" ref="markup:Blurb" />
+          <s:element minOccurs="0" name="PostingDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" name="Gender" type="NS:GenderType" />
+        </s:sequence>
+        <s:attribute name="Owner" type="s:string" use="optional" />
+      </s:extension>
+    </s:complexContent>
+  </s:complexType>
+  <s:complexType name="LanguageType">
+    <s:simpleContent>
+      <s:extension base="s:string">
+        <s:attribute name="code" type="s:language" use="required" />
+        <s:attribute name="dir" type="NS:DirType" use="optional" />
+      </s:extension>
+    </s:simpleContent>
+  </s:complexType>
+  <s:simpleType name="DirType">
+    <s:restriction base="s:string">
+      <s:enumeration value="ltr" />
+      <s:enumeration value="rtl" />
+    </s:restriction>
+  </s:simpleType>
+  <s:complexType name="DocumentType">
+    <s:complexContent mixed="false">
+      <s:extension base="NS:DocumentInfoBaseType">
+        <s:sequence>
+          <s:element minOccurs="0" name="LastModifiedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" name="CreatedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" name="LastReviewedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" name="PublishedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" name="CopyrightDate" type="s:string" />
+          <s:element minOccurs="0" name="CopyrightStatement" type="s:string" />
+          <s:element minOccurs="0" name="Disclaimer" type="s:string" />
+          <s:element minOccurs="0" name="ReadingLevel" nillable="true" type="NS:ReadingLevelType" />
+          <s:element name="AgeGroups" type="NS:AgeGroupsType" />
+          <s:element name="Authors">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="AuthorName" type="NS:PersonNameType" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="OnlineEditors">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="OnlineEditorName" type="NS:PersonNameType" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="OnlineMedicalReviewers">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="OnlineMedicalReviewerName" type="NS:PersonNameType" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="PrintSources">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="PrintSource">
+                  <s:simpleType>
+                    <s:restriction base="s:string">
+                      <s:maxLength value="255" />
+                    </s:restriction>
+                  </s:simpleType>
+                </s:element>
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="AdditionalTitles">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" ref="markup:AdditionalTitle" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="Servicelines">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="Serviceline" type="NS:ServicelineType" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="OnlineSources">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="OnlineSource">
+                  <s:complexType>
+                    <s:simpleContent>
+                      <s:extension base="s:string">
+                        <s:attribute name="URL" type="s:anyURI" use="required" />
+                      </s:extension>
+                    </s:simpleContent>
+                  </s:complexType>
+                </s:element>
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="RecommendedSites">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="RecommendedSite">
+                  <s:complexType>
+                    <s:simpleContent>
+                      <s:extension base="s:string">
+                        <s:attribute name="URL" type="s:anyURI" use="required" />
+                      </s:extension>
+                    </s:simpleContent>
+                  </s:complexType>
+                </s:element>
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="Indexing">
+            <s:complexType>
+              <s:sequence>
+                <s:element name="MeSHList" type="NS:MeSHListType" />
+                <s:element minOccurs="0" name="CPTList" type="NS:CPTListType" />
+                <s:element minOccurs="0" name="ICD9List" type="NS:ICD9ListType" />
+                <s:element minOccurs="0" name="Keywords">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element maxOccurs="unbounded" name="Keyword" type="s:string" />
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+                <s:element minOccurs="0" name="HDTopics">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element maxOccurs="unbounded" name="HDTopic">
+                        <s:complexType>
+                          <s:simpleContent>
+                            <s:extension base="s:string">
+                              <s:attribute name="code" type="s:string" use="required" />
+                            </s:extension>
+                          </s:simpleContent>
+                        </s:complexType>
+                      </s:element>
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="OtherLanguages">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" name="Document" type="NS:DocumentInfoType" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="Content">
+            <s:complexType>
+              <s:choice>
+                <s:element ref="markup:body" />
+                <s:element name="ExternalURL" type="s:string" />
+                <s:element name="NonValidBody">
+                  <s:complexType>
+                    <s:sequence>
+                      <s:element name="body" />
+                    </s:sequence>
+                  </s:complexType>
+                </s:element>
+              </s:choice>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+        <s:attribute name="VersionId" type="s:long" use="optional" />
+        <s:attribute name="blocked" type="s:boolean" use="optional" />
+      </s:extension>
+    </s:complexContent>
+  </s:complexType>
+  <s:complexType name="DocumentIDType">
+    <s:attribute name="ContentTypeId" type="s:int" use="required" />
+    <s:attribute name="ContentId" type="s:string" use="required" />
+    <s:attribute name="IsCustom" type="s:boolean" use="required">
+      <s:annotation>
+        <s:documentation>This attribute is typically ignored when the element is used for requesting documents. Substitution of custom documents will happen by default.</s:documentation>
+      </s:annotation>
+    </s:attribute>
+  </s:complexType>
+  <s:simpleType name="ReadingLevelType">
+    <s:restriction base="s:string">
+      <s:enumeration value="4-6" />
+      <s:enumeration value="6-7" />
+      <s:enumeration value="8-13" />
+    </s:restriction>
+  </s:simpleType>
+  <s:simpleType name="PersonNameType">
+    <s:restriction base="s:string">
+      <s:maxLength value="80" />
+    </s:restriction>
+  </s:simpleType>
+  <s:complexType name="ContentTypeTotalType">
+    <s:attribute name="ContentTypeId" type="s:int" use="required" />
+    <s:attribute name="Total" type="s:int" use="required" />
+  </s:complexType>
+  <s:complexType name="CollectionListType">
+    <s:sequence>
+      <s:element minOccurs="0" maxOccurs="unbounded" name="Collection" nillable="true" type="NS:CollectionType" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="DynamicCollectionListType">
+    <s:sequence>
+      <s:element minOccurs="0" maxOccurs="unbounded" name="DynamicCollection" type="NS:DynamicCollectionType" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="DynamicCollectionType" mixed="true">
+    <s:attribute name="DynamicCollectionId" type="s:int" use="required" />
+  </s:complexType>
+  <s:complexType name="CollectionType">
+    <s:sequence>
+      <s:element name="RootSubtopicId" type="s:int" />
+      <s:element name="CollectionName" type="s:string" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="SubtopicType">
+    <s:sequence>
+      <s:element name="Name" type="s:string" />
+      <s:element minOccurs="0" name="SubtopicList">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="unbounded" name="Subtopic" type="NS:SubtopicType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element minOccurs="0" name="DocumentList" type="NS:DocumentListType" />
+    </s:sequence>
+    <s:attribute name="SubtopicId" type="s:int" use="required" />
+  </s:complexType>
+  <s:complexType name="MeSHListType">
+    <s:sequence>
+      <s:element minOccurs="0" maxOccurs="unbounded" name="MeSH" type="NS:MeSHType" />
+    </s:sequence>
+  </s:complexType>
+  <s:complexType name="TermType">
+    <s:attribute name="IsPrimary" type="s:boolean" use="optional">
+      <s:annotation>
+        <s:documentation>This attribute will be true for only 1 Term for each MeSH Code</s:documentation>
+      </s:annotation>
+    </s:attribute>
+  </s:complexType>
+  <s:complexType name="MeSHType">
+    <s:attribute name="code" type="NS:MeSHCodeType" use="required" />
+  </s:complexType>
+  <s:complexType name="ICD9Type">
+    <s:attribute name="code" type="s:string" use="required" />
+  </s:complexType>
+  <s:complexType name="CPTType">
+    <s:attribute name="code" type="s:string" use="required" />
+  </s:complexType>
+  <s:complexType name="ServicelineType">
+    <s:attribute name="ServiceLineKeyword" type="s:string" use="optional" />
+    <s:attribute name="PageKeyword" type="s:string" use="optional" />
+    <s:attribute name="Audience" type="s:string" use="optional" />
+  </s:complexType>
+  <s:complexType name="ByLetterType">
+    <s:simpleContent>
+      <s:extension base="s:string">
+        <s:attribute name="IncludeAdditionalTitles" type="s:boolean" use="optional" />
+      </s:extension>
+    </s:simpleContent>
+  </s:complexType>
+  <s:complexType name="PagingType">
+    <s:attribute name="PageSize" type="s:integer" use="optional" />
+    <s:attribute name="PageNumber" type="s:integer" use="optional" />
+    <s:attribute name="TotalDocs" type="s:integer" use="optional" />
+    <s:attribute name="Pages" type="s:integer" use="optional" />
+    <s:attribute name="Page" type="s:integer" use="optional" />
+  </s:complexType>
+</s:schema>

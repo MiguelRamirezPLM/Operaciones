@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E28C2F6A-9FC6-4A7F-9C66-8C02682E322B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DEAQDataAccessComponent</RootNamespace>
+    <AssemblyName>DEAQDataAccessComponent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AgroBussinessEntries">
+      <HintPath>..\..\BusinessEntries\AgroBussinessEntries\bin\Debug\AgroBussinessEntries.dll</HintPath>
+    </Reference>
+    <Reference Include="AgroEntityFramework">
+      <HintPath>..\..\EntityFramework\AgroEntityFramework\bin\Debug\AgroEntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="DEAQBusinessEntries">
+      <HintPath>..\..\BusinessEntries\DEAQBusinessEntries\bin\Debug\DEAQBusinessEntries.dll</HintPath>
+    </Reference>
+    <Reference Include="MedinetBusinessEntries, Version=1.0.46.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BusinessEntries\MedinetBusinessEntries\bin\Debug\MedinetBusinessEntries.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\PLM Development\References\Framework 4.0\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\PLM Development\References\Framework 4.0\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PharmaSearchEngineBusinessEntries, Version=1.0.45.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BusinessEntries\PharmaSearchEngineBusinessEntries\bin\Debug\PharmaSearchEngineBusinessEntries.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActiveSubstancesDALC.cs" />
+    <Compile Include="AgrochemicalUsesDALC.cs" />
+    <Compile Include="AttributesDALC.cs" />
+    <Compile Include="BooksDALC.cs" />
+    <Compile Include="CatalogsDALC.cs" />
+    <Compile Include="CountriesDALC.cs" />
+    <Compile Include="CropsDALC.cs" />
+    <Compile Include="DEAQDataClasses.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DEAQDataClasses.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="DEAQEngineDataAccess.cs" />
+    <Compile Include="DEAQEngineDataAccessAdapter.cs" />
+    <Compile Include="DivisionsDALC.cs" />
+    <Compile Include="EditionsDALC.cs" />
+    <Compile Include="DEAQDataAccess.cs" />
+    <Compile Include="DEAQDataAccessAdapter.cs" />
+    <Compile Include="ProductsDALC.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SeedsDALC.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DEAQDataClasses.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>DEAQDataClasses.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DEAQDataClasses.dbml.layout">
+      <DependentUpon>DEAQDataClasses.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\roc_spGetActiveSubstance.sql" />
+    <Content Include="Scripts\roc_spGetActiveSubstances.sql" />
+    <Content Include="Scripts\roc_spGetActiveSubstancesByFullText.sql" />
+    <Content Include="Scripts\roc_spGetActiveSubstancesByLetter.sql" />
+    <Content Include="Scripts\roc_spGetActiveSubstancesByProduct.sql" />
+    <Content Include="Scripts\roc_spGetActiveSubstancesByText.sql" />
+    <Content Include="Scripts\roc_spGetAdvertisementsByDivision.sql" />
+    <Content Include="Scripts\roc_spGetBook.sql" />
+    <Content Include="Scripts\roc_spGetCategory.sql" />
+    <Content Include="Scripts\roc_spGetCountry.sql" />
+    <Content Include="Scripts\roc_spGetCountryByEdition.sql" />
+    <Content Include="Scripts\roc_spGetCountryById.sql" />
+    <Content Include="Scripts\roc_spGetCrop.sql" />
+    <Content Include="Scripts\roc_spGetCrops.sql" />
+    <Content Include="Scripts\roc_spGetCropsByFullText.sql" />
+    <Content Include="Scripts\roc_spGetCropsByLetter.sql" />
+    <Content Include="Scripts\roc_spGetCropsByProductId.sql" />
+    <Content Include="Scripts\roc_spGetCropsByText.sql" />
+    <Content Include="Scripts\roc_spGetDivision.sql" />
+    <Content Include="Scripts\roc_spGetDivisionByLaboratoryId.sql" />
+    <Content Include="Scripts\roc_spGetDivisionCategories.sql" />
+    <Content Include="Scripts\roc_spGetDivisions.sql" />
+    <Content Include="Scripts\roc_spGetDivisionsByFullText.sql" />
+    <Content Include="Scripts\roc_spGetDivisionsByLaboratoryIdAndParentId.sql" />
+    <Content Include="Scripts\roc_spGetDivisionsByLetter.sql" />
+    <Content Include="Scripts\roc_spGetDivisionsByParentId.sql" />
+    <Content Include="Scripts\roc_spGetDivisionsByText.sql" />
+    <Content Include="Scripts\roc_spGetEdition.sql" />
+    <Content Include="Scripts\roc_spGetLaboratory.sql" />
+    <Content Include="Scripts\roc_spGetMentionatedProduct.sql" />
+    <Content Include="Scripts\roc_spGetParticipantProduct.sql" />
+    <Content Include="Scripts\roc_spGetPharmaForm.sql" />
+    <Content Include="Scripts\roc_spGetPharmaFormsByProductId.sql" />
+    <Content Include="Scripts\roc_spGetProductById.sql" />
+    <Content Include="Scripts\roc_spGetProducts.sql" />
+    <Content Include="Scripts\roc_spGetProductsByActiveSubstance.sql" />
+    <Content Include="Scripts\roc_spGetProductsByCombinedActiveSubstance.sql" />
+    <Content Include="Scripts\roc_spGetProductsByCrop.sql" />
+    <Content Include="Scripts\roc_spGetProductsByDivisionAndCategory.sql" />
+    <Content Include="Scripts\roc_spGetProductsByFullText.sql" />
+    <Content Include="Scripts\roc_spGetProductsByLetter.sql" />
+    <Content Include="Scripts\roc_spGetProductsBySeed.sql" />
+    <Content Include="Scripts\roc_spGetProductsBySeedAndLaboratory.sql" />
+    <Content Include="Scripts\roc_spGetProductsByText.sql" />
+    <Content Include="Scripts\roc_spGetProductsByUseId.sql" />
+    <Content Include="Scripts\roc_spGetSeed.sql" />
+    <Content Include="Scripts\roc_spGetSeeds.sql" />
+    <Content Include="Scripts\roc_spGetSeedsByFullText.sql" />
+    <Content Include="Scripts\roc_spGetSeedsByLetter.sql" />
+    <Content Include="Scripts\roc_spGetSeedsByText.sql" />
+    <Content Include="Scripts\roc_spGetUse.sql" />
+    <Content Include="Scripts\roc_spGetUseByParent.sql" />
+    <Content Include="Scripts\roc_spGetUses.sql" />
+    <Content Include="Scripts\roc_spGetUsesByFullText.sql" />
+    <Content Include="Scripts\roc_spGetUsesByLetter.sql" />
+    <Content Include="Scripts\roc_spGetUsesByText.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

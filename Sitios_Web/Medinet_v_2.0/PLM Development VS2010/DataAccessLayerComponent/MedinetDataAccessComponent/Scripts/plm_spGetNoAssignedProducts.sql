@@ -1,0 +1,55 @@
+IF OBJECT_ID('dbo.plm_spGetNoAssignedProducts') IS NOT NULL
+	DROP PROCEDURE dbo.plm_spGetNoAssignedProducts
+go
+/* 
+	Author:			Ramiro Sánchez
+	Object:			dbo.plm_spGetNoAssignedProducts
+	
+	Description:	Gets all External Packs.
+	Company:		PLM Latina.
+
+	EXECUTE dbo.plm_spGetNoAssignedProducts @editionId = 55, @typeInEdition = 'p'
+
+ */ 
+
+CREATE PROCEDURE [dbo].[plm_spGetNoAssignedProducts]
+(
+	@editionId			int,
+	@typeInEdition		varchar(1)
+)
+AS
+BEGIN
+
+	SELECT DISTINCT V.PRODUCTID
+				   ,V.DIVISIONID
+				   ,V.BRAND
+				   ,V.PRODUCTACTIVE AS ACTIVE
+				   ,V.PHARMAFORM
+				   ,V.PHARMAFORMID
+				   ,V.DIVISIONSHORTNAME
+				   ,V.CATEGORYID
+				   ,V.CATEGORYNAME
+				   ,V.PRODUCTDESCRIPTION
+				   ,CASE WHEN PT.PRODUCTID IS NULL THEN 0
+					ELSE 1 END AS ATC
+				   ,CASE WHEN PS.PRODUCTID IS NULL THEN 0
+					ELSE 1 END AS SUBSTANCE
+				   ,CASE WHEN PIN.PRODUCTID IS NULL THEN 0
+					ELSE 1 END AS INDICATION	
+			FROM PLM_VWPRODUCTSBYEDITION V
+				 LEFT JOIN PRODUCTSUBSTANCES PS ON(V.PRODUCTID = PS.PRODUCTID)
+				 LEFT JOIN PRODUCTTHERAPEUTICS PT ON(V.PRODUCTID = PT.PRODUCTID AND
+													 V.PHARMAFORMID = PT.PHARMAFORMID)
+				 LEFT JOIN PRODUCTINDICATIONS PIN ON(V.PRODUCTID = PIN.PRODUCTID)
+			WHERE V.PRODUCTACTIVE = 1 AND
+				  V.PHARMAACTIVE = 1 AND
+				  V.EDITIONID = @editionId AND
+				  V.TYPEINEDITION = @typeInEdition
+			 ORDER BY 3,5,7	
+
+		RETURN @@ROWCOUNT
+
+END
+
+GO
+

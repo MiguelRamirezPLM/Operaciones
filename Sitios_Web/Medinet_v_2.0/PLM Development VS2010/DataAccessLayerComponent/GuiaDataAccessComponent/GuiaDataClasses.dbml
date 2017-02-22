@@ -1,0 +1,935 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Guia" Class="GuiaDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=MX-DF2K8APP02;Initial Catalog=Guia;Persist Security Info=True;User ID=sa" SettingsObjectName="GuiaDataAccessComponent.Properties.Settings" SettingsPropertyName="GuiaConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Clients">
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_Clients" Member="Clients2" ThisKey="ClientId" OtherKey="ClientId" Type="Clients" Cardinality="One" />
+      <Association Name="Clients_ClientPhones" Member="ClientPhones" ThisKey="ClientId" OtherKey="ClientId" Type="ClientPhones" />
+      <Association Name="Clients_ClientProducts" Member="ClientProducts" ThisKey="ClientId" OtherKey="ClientId" Type="ClientProducts" />
+      <Association Name="Clients_ClientSpecialities" Member="ClientSpecialities" ThisKey="ClientId" OtherKey="ClientId" Type="ClientSpecialities" />
+      <Association Name="Clients_Clients" Member="Clients1" ThisKey="ClientId" OtherKey="ClientId" Type="Clients" IsForeignKey="true" />
+      <Association Name="Countries_Clients" Member="Countries" ThisKey="CountryId" OtherKey="CountryId" Type="Countries" IsForeignKey="true" />
+      <Association Name="States_Clients" Member="States" ThisKey="StateId" OtherKey="StateId" Type="States" IsForeignKey="true" />
+      <Association Name="Editions_Clients" Member="Editions" ThisKey="EditionId" OtherKey="EditionId" Type="Editions" IsForeignKey="true" />
+      <Association Name="ClientTypes_Clients" Member="ClientTypes" ThisKey="ClientTypeId" OtherKey="ClientTypeId" Type="ClientTypes" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Countries" Member="Countries">
+    <Type Name="Countries">
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="ID" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Countries_Clients" Member="Clients" ThisKey="CountryId" OtherKey="CountryId" Type="Clients" />
+      <Association Name="Countries_States" Member="States" ThisKey="CountryId" OtherKey="CountryId" Type="States" />
+      <Association Name="Countries_Editions" Member="Editions" ThisKey="CountryId" OtherKey="CountryId" Type="Editions" />
+    </Type>
+  </Table>
+  <Table Name="dbo.States" Member="States">
+    <Type Name="States">
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="States_Clients" Member="Clients" ThisKey="StateId" OtherKey="StateId" Type="Clients" />
+      <Association Name="Countries_States" Member="Countries" ThisKey="CountryId" OtherKey="CountryId" Type="Countries" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClientPhones" Member="ClientPhones">
+    <Type Name="ClientPhones">
+      <Column Name="ClientPhoneId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Number" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Lada" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_ClientPhones" Member="Clients" ThisKey="ClientId" OtherKey="ClientId" Type="Clients" IsForeignKey="true" />
+      <Association Name="PhoneTypes_ClientPhones" Member="PhoneTypes" ThisKey="PhoneTypeId" OtherKey="PhoneTypeId" Type="PhoneTypes" IsForeignKey="true" />
+      <Association Name="Specialities_ClientPhones" Member="Specialities" ThisKey="SpecialityId" OtherKey="SpecialityId" Type="Specialities" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PhoneTypes" Member="PhoneTypes">
+    <Type Name="PhoneTypes">
+      <Column Name="PhoneTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="PhoneTypes_ClientPhones" Member="ClientPhones" ThisKey="PhoneTypeId" OtherKey="PhoneTypeId" Type="ClientPhones" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClientProducts" Member="ClientProducts">
+    <Type Name="ClientProducts">
+      <Column Name="ClientProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_ClientProducts" Member="Clients" ThisKey="ClientId" OtherKey="ClientId" Type="Clients" IsForeignKey="true" />
+      <Association Name="Products_ClientProducts" Member="Products" ThisKey="ProductId" OtherKey="ProductId" Type="Products" IsForeignKey="true" />
+      <Association Name="SubProducts_ClientProducts" Member="SubProducts" ThisKey="SubProductId" OtherKey="SubProductId" Type="SubProducts" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Products" Member="Products">
+    <Type Name="Products">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Products_ClientProducts" Member="ClientProducts" ThisKey="ProductId" OtherKey="ProductId" Type="ClientProducts" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubProducts" Member="SubProducts">
+    <Type Name="SubProducts">
+      <Column Name="SubProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="SubProducts_ClientProducts" Member="ClientProducts" ThisKey="SubProductId" OtherKey="SubProductId" Type="ClientProducts" />
+    </Type>
+  </Table>
+  <Table Name="" Member="PhonesByClient">
+    <Type Name="PhonesByClient">
+      <Column Name="PhoneTypeId" Type="System.Byte" CanBeNull="false" />
+      <Column Name="Number" Type="System.String" CanBeNull="false" />
+      <Column Name="Lada" Type="System.String" CanBeNull="false" />
+      <Column Name="PhoneType" Type="System.String" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Editions" Member="Editions">
+    <Type Name="Editions">
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EditionCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumberEdition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ISBN" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="BarCode" Type="System.String" DbType="VarChar(80) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Editions_Clients" Member="Clients" ThisKey="EditionId" OtherKey="EditionId" Type="Clients" />
+      <Association Name="Countries_Editions" Member="Countries" ThisKey="CountryId" OtherKey="CountryId" Type="Countries" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClientTypes" Member="ClientTypes">
+    <Type Name="ClientTypes">
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TypeName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ClientTypes_Clients" Member="Clients" ThisKey="ClientTypeId" OtherKey="ClientTypeId" Type="Clients" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Specialities" Member="Specialities">
+    <Type Name="Specialities">
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Specialities_ClientPhones" Member="ClientPhones" ThisKey="SpecialityId" OtherKey="SpecialityId" Type="ClientPhones" />
+      <Association Name="Specialities_ClientSpecialities" Member="ClientSpecialities" ThisKey="SpecialityId" OtherKey="SpecialityId" Type="ClientSpecialities" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClientSpecialities" Member="ClientSpecialities">
+    <Type Name="ClientSpecialities">
+      <Column Name="ClientSpecialityId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Advertisement" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_ClientSpecialities" Member="Clients" ThisKey="ClientId" OtherKey="ClientId" Type="Clients" IsForeignKey="true" />
+      <Association Name="Specialities_ClientSpecialities" Member="Specialities" ThisKey="SpecialityId" OtherKey="SpecialityId" Type="Specialities" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.roc_spGetSpecialities" Method="roc_spGetSpecialities">
+    <ElementType Name="roc_spGetSpecialitiesResult">
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetStatesByCountry" Method="roc_spGetStatesByCountry">
+    <Parameter Name="countryId" Type="System.Byte" DbType="TinyInt" />
+    <ElementType Name="roc_spGetStatesByCountryResult">
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProducts" Method="roc_spGetProducts">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByLetter" Method="roc_spGetProductsByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetProductsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByEditionByText" Method="roc_spGetProductsByEditionByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="roc_spGetProductsByEditionByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsByBrand" Method="roc_spGetClientsByBrand">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="brandId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="top" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsByBrandResult">
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProduct" Method="roc_spGetProduct">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSpeciality" Method="roc_spGetSpeciality">
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSpecialityResult">
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByClient" Method="roc_spGetProductsByClient">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="top" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByClientResult">
+      <Column Name="ClientProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ProductClientActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ProductActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SubProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubProductName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SubProductActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBrands" Method="roc_spGetBrands">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetBrandsResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBrandsByLetter" Method="roc_spGetBrandsByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetBrandsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsWithoutSubProduct" Method="roc_spGetClientsWithoutSubProduct">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsWithoutSubProductResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByText" Method="roc_spGetProductsByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSubProductByProduct" Method="roc_spGetSubProductByProduct">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSubProductByProductResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsBySpecByFullText" Method="roc_spGetClientsBySpecByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="roc_spGetClientsBySpecByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBrandsByFullText" Method="roc_spGetBrandsByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetBrandsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByFullText" Method="roc_spGetProductsByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubProductId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsAndSpecialityByText" Method="roc_spGetClientsAndSpecialityByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetClientsAndSpecialityByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpecialityDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternational" Method="roc_spGetInternational">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetInternationalResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalByFullText" Method="roc_spGetInternationalByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetInternationalByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalByLetter" Method="roc_spGetInternationalByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetInternationalByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalByText" Method="roc_spGetInternationalByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetInternationalByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalCategoriesByParentId" Method="roc_spGetInternationalCategoriesByParentId">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetInternationalCategoriesByParentIdResult">
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalProductsByParentId" Method="roc_spGetInternationalProductsByParentId">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="categoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productParentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetInternationalProductsByParentIdResult">
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetPhonesByInternationalId" Method="roc_spGetPhonesByInternationalId">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetPhonesByInternationalIdResult">
+      <Column Name="IntClientPhoneId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="IntClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Number" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Lada" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetAddressByInternationalId" Method="roc_spGetAddressByInternationalId">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetAddressByInternationalIdResult">
+      <Column Name="IntAddressesId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="ZipCode" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalSubcategoriesByClientId" Method="roc_spGetInternationalSubcategoriesByClientId">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetInternationalSubcategoriesByClientIdResult">
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCategoryById" Method="roc_spGetCategoryById">
+    <Parameter Name="categoryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCategoryByIdResult">
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalCategoriesByClientId" Method="roc_spGetInternationalCategoriesByClientId">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetInternationalCategoriesByClientIdResult">
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalCategories" Method="roc_spGetInternationalCategories">
+    <ElementType Name="roc_spGetInternationalCategoriesResult">
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetInternationalProductsByClientAndCategory" Method="roc_spGetInternationalProductsByClientAndCategory">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="categoryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetInternationalProductsByClientAndCategoryResult">
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetIntClient" Method="roc_spGetIntClient">
+    <Parameter Name="intClientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetIntClientResult">
+      <Column Name="IntClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDrugsByClientId" Method="roc_spGetDrugsByClientId">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDrugsByClientIdResult">
+      <Column Name="DrugId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DrugName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstance" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaceuticForm" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Presentation" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.plm_spGetBrandsByClient" Method="plm_spGetBrandsByClient">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="plm_spGetBrandsByClientResult">
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.plm_spGetDrugs" Method="plm_spGetDrugs">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="plm_spGetDrugsResult">
+      <Column Name="DrugId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DrugName" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaceuticForm" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ActiveSubstance" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Presentation" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsByLetter" Method="roc_spGetClientsByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="clientTypeId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsByType" Method="roc_spGetClientsByType">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="clientTypeId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsByTypeResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsByText" Method="roc_spGetClientsByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="clientTypeId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsBySpeciality" Method="roc_spGetClientsBySpeciality">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsBySpecialityResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsBySpecByStateByText" Method="roc_spGetClientsBySpecByStateByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="stateId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="roc_spGetClientsBySpecByStateByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsBySpecByState" Method="roc_spGetClientsBySpecByState">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="stateId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsBySpecByStateResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsBySpecByText" Method="roc_spGetClientsBySpecByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="roc_spGetClientsBySpecByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBrandsByEditionText" Method="roc_spGetBrandsByEditionText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="roc_spGetBrandsByEditionTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBrand" Method="roc_spGetBrand">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="brandId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetBrandResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetAdvertisementsByClient" Method="roc_spGetAdvertisementsByClient">
+    <Parameter Name="clientId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetAdvertisementsByClientResult">
+      <Column Name="AdvertId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdvertName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Orden" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBrandsByText" Method="roc_spGetBrandsByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetBrandsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BrandId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BrandName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsByFullText" Method="roc_spGetClientsByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="clientTypeId" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetClientsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsBySpecByStateByFullText" Method="roc_spGetClientsBySpecByStateByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="specialityId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="stateId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(255)" />
+    <ElementType Name="roc_spGetClientsBySpecByStateByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClientIdParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Suburb" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PostalCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Products" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetClientsAndSpecialityByFullText" Method="roc_spGetClientsAndSpecialityByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fullText" Type="System.String" DbType="VarChar(40)" />
+    <ElementType Name="roc_spGetClientsAndSpecialityByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ClientTypeId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="SpecialityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpecialityDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{983BCE2B-8689-4EB4-9F2A-D4A074C4880D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AgroDataAccessComponent</RootNamespace>
+    <AssemblyName>AgroDataAccessComponent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AgroBussinessEntries">
+      <HintPath>..\..\BusinessEntries\AgroBussinessEntries\bin\Debug\AgroBussinessEntries.dll</HintPath>
+    </Reference>
+    <Reference Include="AgroEntityFramework">
+      <HintPath>..\..\EntityFramework\AgroEntityFramework\bin\Debug\AgroEntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\..\..\PLM Development\References\Framework 4.0\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\..\..\PLM Development\References\Framework 4.0\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data.SqlCe">
+      <HintPath>..\..\..\PLM Development\References\Framework 4.0\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActiveSubstancesDALC.cs" />
+    <Compile Include="AgrochemicalUsesDALC.cs" />
+    <Compile Include="BooksDALC.cs" />
+    <Compile Include="CountriesDALC.cs" />
+    <Compile Include="CropsDALC.cs" />
+    <Compile Include="AgroDataAccess.cs" />
+    <Compile Include="AgroDataAccessAdapter.cs" />
+    <Compile Include="AgroEngineDataAccess.cs" />
+    <Compile Include="AgroEngineDataAccessAdapter.cs" />
+    <Compile Include="DiseasesDALC.cs" />
+    <Compile Include="DivisionAddresDALC.cs" />
+    <Compile Include="DivisionCategoriesDALC.cs" />
+    <Compile Include="DivisionInfoDALC.cs" />
+    <Compile Include="DivisionsDALC.cs" />
+    <Compile Include="EditionDivisionProductsDALC.cs" />
+    <Compile Include="EditionsDALC.cs" />
+    <Compile Include="FilesDALC.cs" />
+    <Compile Include="LaboratoriesDALC.cs" />
+    <Compile Include="MentionatedProductsDALC.cs" />
+    <Compile Include="ModifiedAttributeGroupsDALC.cs" />
+    <Compile Include="NewProductsDALC.cs" />
+    <Compile Include="ParticipantProductsDALC.cs" />
+    <Compile Include="PestsDALC.cs" />
+    <Compile Include="PharmaceuticalFormsDALC.cs" />
+    <Compile Include="PresentationsDALC.cs" />
+    <Compile Include="ProductCategoriesDALC.cs" />
+    <Compile Include="ProductPharmaFormsDALC.cs" />
+    <Compile Include="ProductsDALC.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SeedsDALC.cs" />
+    <Compile Include="StatesDALC.cs" />
+    <Compile Include="SubstancesDALC.cs" />
+    <Compile Include="WeedsDALC.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Script\plm_vw_AllInformationDPW.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,806 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DEAQ" Class="DEAQDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=MX-DF2K8APP02;Initial Catalog=DEAQ;Persist Security Info=True;User ID=sa" SettingsObjectName="DEAQDataAccessComponent.Properties.Settings" SettingsPropertyName="DEAQConnectionString1" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.plm_spGetProductByEdition" Method="plm_spGetProductByEdition">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="typeInEdition" Type="System.String" DbType="VarChar(2)" />
+    <ElementType Name="plm_spGetProductByEditionResult">
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductDescription" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaForm" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.plm_spGetProductCropsByEdition" Method="plm_spGetProductCropsByEdition">
+    <Parameter Name="EditionId" Parameter="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TableName" Parameter="tableName" Type="System.String" DbType="VarChar(60)" />
+  </Function>
+  <Function Name="dbo.plm_spGetProductInformationByEditionDEAQ" Method="plm_spGetProductInformationByEditionDEAQ">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="tableName" Type="System.String" DbType="VarChar(35)" />
+  </Function>
+  <Function Name="dbo.plm_spGetProductSeedsByEdition" Method="plm_spGetProductSeedsByEdition">
+    <Parameter Name="EditionId" Parameter="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TableName" Parameter="tableName" Type="System.String" DbType="VarChar(60)" />
+  </Function>
+  <Function Name="dbo.plm_spGetProductSubstancesByEdition" Method="plm_spGetProductSubstancesByEdition">
+    <Parameter Name="EditionId" Parameter="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TableName" Parameter="tableName" Type="System.String" DbType="VarChar(60)" />
+  </Function>
+  <Function Name="dbo.plm_spGetProductUsesByEdition" Method="plm_spGetProductUsesByEdition">
+    <Parameter Name="EditionId" Parameter="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TableName" Parameter="tableName" Type="System.String" DbType="VarChar(60)" />
+  </Function>
+  <Function Name="dbo.roc_spGetActiveSubstance" Method="roc_spGetActiveSubstance">
+    <Parameter Name="activeSubstanceId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetActiveSubstanceResult">
+      <Column Name="ActiveSubstanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstanceName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetActiveSubstances" Method="roc_spGetActiveSubstances">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetActiveSubstancesResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActiveSubstanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstanceName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetActiveSubstancesByFullText" Method="roc_spGetActiveSubstancesByFullText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fullText" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetActiveSubstancesByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActiveSubstanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstanceName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetActiveSubstancesByLetter" Method="roc_spGetActiveSubstancesByLetter">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="roc_spGetActiveSubstancesByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActiveSubstanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstanceName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetActiveSubstancesByProduct" Method="roc_spGetActiveSubstancesByProduct">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetActiveSubstancesByProductResult">
+      <Column Name="ActiveSubstanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstanceName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetActiveSubstancesByText" Method="roc_spGetActiveSubstancesByText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetActiveSubstancesByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActiveSubstanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveSubstanceName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetAdvertisementsByDivision" Method="roc_spGetAdvertisementsByDivision">
+    <Parameter Name="divisionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetAdvertisementsByDivisionResult">
+      <Column Name="AdId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdFile" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BaseUrl" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetBook" Method="roc_spGetBook">
+    <Parameter Name="bookId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetBookResult">
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BookName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCategory" Method="roc_spGetCategory">
+    <Parameter Name="categoryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCategoryResult">
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCountries" Method="roc_spGetCountries">
+    <ElementType Name="roc_spGetCountriesResult">
+      <Column Name="CountryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="ID" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCountry" Method="roc_spGetCountry">
+    <Parameter Name="country" Type="System.String" DbType="VarChar(3)" />
+    <ElementType Name="roc_spGetCountryResult">
+      <Column Name="CountryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="ID" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCountryByEdition" Method="roc_spGetCountryByEdition">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCountryByEditionResult">
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCountryById" Method="roc_spGetCountryById">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCountryByIdResult">
+      <Column Name="CountryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CountryCode" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="ID" Type="System.String" DbType="VarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCrop" Method="roc_spGetCrop">
+    <Parameter Name="cropId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCropResult">
+      <Column Name="CropId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CropName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCrops" Method="roc_spGetCrops">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCropsResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CropId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CropName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCropsByFullText" Method="roc_spGetCropsByFullText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetCropsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CropId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CropName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCropsByLetter" Method="roc_spGetCropsByLetter">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetCropsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CropId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CropName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCropsByProductId" Method="roc_spGetCropsByProductId">
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetCropsByProductIdResult">
+      <Column Name="CropId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CropName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetCropsByText" Method="roc_spGetCropsByText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetCropsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CropId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CropName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivision" Method="roc_spGetDivision">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="divisionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDivisionResult">
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionInformationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Telephone" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Lada" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionByLaboratoryId" Method="roc_spGetDivisionByLaboratoryId">
+    <Parameter Name="laboratoryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDivisionByLaboratoryIdResult">
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionInformationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Telephone" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Lada" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionCategories" Method="roc_spGetDivisionCategories">
+    <Parameter Name="divisionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDivisionCategoriesResult">
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisions" Method="roc_spGetDivisions">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDivisionsResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionsByFullText" Method="roc_spGetDivisionsByFullText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetDivisionsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionsByLaboratoryIdAndParentId" Method="roc_spGetDivisionsByLaboratoryIdAndParentId">
+    <Parameter Name="laboratoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDivisionsByLaboratoryIdAndParentIdResult">
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionInformationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Telephone" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Lada" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionsByLetter" Method="roc_spGetDivisionsByLetter">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetDivisionsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionsByParentId" Method="roc_spGetDivisionsByParentId">
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetDivisionsByParentIdResult">
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionInformationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Image" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Suburb" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Zipcode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Telephone" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Lada" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Web" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="Active1" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetDivisionsByText" Method="roc_spGetDivisionsByText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetDivisionsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetEdition" Method="roc_spGetEdition">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="bookId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetEditionResult">
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumberEdition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ISBN" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="BarCode" Type="System.String" DbType="VarChar(80)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetLaboratory" Method="roc_spGetLaboratory">
+    <Parameter Name="laboratoryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetLaboratoryResult">
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetMentionatedProduct" Method="roc_spGetMentionatedProduct">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetMentionatedProductResult">
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetParticipantProduct" Method="roc_spGetParticipantProduct">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetParticipantProductResult">
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HTMLContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Page" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="XMLContent" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetPharmaForm" Method="roc_spGetPharmaForm">
+    <Parameter Name="pharmaFormId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetPharmaFormResult">
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaForm" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetPharmaFormsByProductId" Method="roc_spGetPharmaFormsByProductId">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetPharmaFormsByProductIdResult">
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaForm" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductById" Method="roc_spGetProductById">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="productId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductByIdResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProducts" Method="roc_spGetProducts">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByActiveSubstance" Method="roc_spGetProductsByActiveSubstance">
+    <Parameter Name="activeSubstanceId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByActiveSubstanceResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaForm" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByCombinedActiveSubstance" Method="roc_spGetProductsByCombinedActiveSubstance">
+    <Parameter Name="activeSubstanceId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByCombinedActiveSubstanceResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaForm" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByCrop" Method="roc_spGetProductsByCrop">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="cropId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByCropResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByDivisionAndCategory" Method="roc_spGetProductsByDivisionAndCategory">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="categoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="divisionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByDivisionAndCategoryResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaForm" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByFullText" Method="roc_spGetProductsByFullText">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fullText" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetProductsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByLetter" Method="roc_spGetProductsByLetter">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="roc_spGetProductsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsBySeed" Method="roc_spGetProductsBySeed">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="seedId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsBySeedResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsBySeedAndLaboratory" Method="roc_spGetProductsBySeedAndLaboratory">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="seedId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="laboratoryId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsBySeedAndLaboratoryResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EditionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByText" Method="roc_spGetProductsByText">
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetProductsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByUseAndCategory" Method="roc_spGetProductsByUseAndCategory">
+    <Parameter Name="useId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="categoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByUseAndCategoryResult">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PharmaFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LaboratoryName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetProductsByUseId" Method="roc_spGetProductsByUseId">
+    <Parameter Name="useId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="countryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetProductsByUseIdResult">
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Register" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LaboratoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DivisionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSeed" Method="roc_spGetSeed">
+    <Parameter Name="seedId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSeedResult">
+      <Column Name="SeedId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeedName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSeeds" Method="roc_spGetSeeds">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetSeedsResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SeedId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeedName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSeedsByFullText" Method="roc_spGetSeedsByFullText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetSeedsByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SeedId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeedName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSeedsByLetter" Method="roc_spGetSeedsByLetter">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="roc_spGetSeedsByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SeedId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeedName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetSeedsByText" Method="roc_spGetSeedsByText">
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(250)" />
+    <ElementType Name="roc_spGetSeedsByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SeedId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeedName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetUse" Method="roc_spGetUse">
+    <Parameter Name="useId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetUseResult">
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UseKey" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetUseByParent" Method="roc_spGetUseByParent">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="parentId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetUseByParentResult">
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UseKey" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetUses" Method="roc_spGetUses">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <ElementType Name="roc_spGetUsesResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetUsesByFullText" Method="roc_spGetUsesByFullText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fullText" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetUsesByFullTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetUsesByLetter" Method="roc_spGetUsesByLetter">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="letter" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="roc_spGetUsesByLetterResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.roc_spGetUsesByText" Method="roc_spGetUsesByText">
+    <Parameter Name="editionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="numberByPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="text" Type="System.String" DbType="VarChar(30)" />
+    <ElementType Name="roc_spGetUsesByTextResult">
+      <Column Name="TOTAL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AgrochemicalUseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AgrochemicalUseName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="RowNumber" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

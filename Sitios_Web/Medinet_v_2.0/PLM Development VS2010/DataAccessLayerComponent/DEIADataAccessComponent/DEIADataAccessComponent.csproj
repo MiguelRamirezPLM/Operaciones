@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6D11F1A8-C0EB-47B8-9737-B0DB828D0801}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DEIADataAccessComponent</RootNamespace>
+    <AssemblyName>DEIADataAccessComponent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DEIABusinessEntries, Version=1.0.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BusinessEntries\DEIABusinessEntries\bin\Debug\DEIABusinessEntries.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CatalogsDALC.cs" />
+    <Compile Include="CompaniesDALC.cs" />
+    <Compile Include="DEIADataClasses.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DEIADataClasses.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="ProductsDALC.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SectionsDALC.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\roc_spGetProductsIndex.sql" />
+    <Content Include="Scripts\roc_spGetProductsIndexByFullText.sql" />
+    <Content Include="Scripts\roc_spGetProductsIndexByLetter.sql" />
+    <Content Include="Scripts\roc_spGetProductsIndexByText.sql" />
+    <Content Include="Scripts\roc_spGetQualityControl.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlByFullText.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlByLetter.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlByText.sql" />
+    <Content Include="Scripts\roc_spGetSubRawMaterialsByParentId.sql" />
+    <Content Include="Scripts\roc_spGetAdvertisementsByCompanyId.sql" />
+    <Content Include="Scripts\roc_spGetAdvertisementsBySectionId.sql" />
+    <Content Include="Scripts\roc_spGetCity.sql" />
+    <Content Include="Scripts\roc_spGetCityWhitCompaniesByState.sql" />
+    <Content Include="Scripts\roc_spGetCompaniesByCityAndSection.sql" />
+    <Content Include="Scripts\roc_spGetCompaniesBySection.sql" />
+    <Content Include="Scripts\roc_spGetCompany.sql" />
+    <Content Include="Scripts\roc_spGetEdition.sql" />
+    <Content Include="Scripts\roc_spGetEditionProduct.sql" />
+    <Content Include="Scripts\roc_spGetIndexProductsBySection.sql" />
+    <Content Include="Scripts\roc_spGetPhonesByCompany.sql" />
+    <Content Include="Scripts\roc_spGetProduct.sql" />
+    <Content Include="Scripts\roc_spGetProductsByCompanyId.sql" />
+    <Content Include="Scripts\roc_spGetProductsBySection.sql" />
+    <Content Include="Scripts\roc_spGetProductsBySectionAndType.sql" />
+    <Content Include="Scripts\roc_spGetProviders.sql" />
+    <Content Include="Scripts\roc_spGetProvidersAndManufactures.sql" />
+    <Content Include="Scripts\roc_spGetProvidersAndManufacturesByFulltext.sql" />
+    <Content Include="Scripts\roc_spGetProvidersAndManufacturesByLetter.sql" />
+    <Content Include="Scripts\roc_spGetProvidersAndManufacturesByText.sql" />
+    <Content Include="Scripts\roc_spGetProvidersByFulltext.sql" />
+    <Content Include="Scripts\roc_spGetProvidersByLetter.sql" />
+    <Content Include="Scripts\roc_spGetProvidersByText.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlIndex.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlIndexByFullText.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlIndexByLetter.sql" />
+    <Content Include="Scripts\roc_spGetQualityControlIndexByText.sql" />
+    <Content Include="Scripts\roc_spGetSectionById.sql" />
+    <Content Include="Scripts\roc_spGetSectionListByParentId.sql" />
+    <Content Include="Scripts\roc_spGetSectionsAndProductsByFullText.sql" />
+    <Content Include="Scripts\roc_spGetSectionsAndProductsByText.sql" />
+    <Content Include="Scripts\roc_spGetSectionsByParentId.sql" />
+    <Content Include="Scripts\roc_spGetSectionsByParentIdByFulltext.sql" />
+    <Content Include="Scripts\roc_spGetSectionsByParentIdByLetter.sql" />
+    <Content Include="Scripts\roc_spGetSectionsByParentIdByText.sql" />
+    <Content Include="Scripts\roc_spGetSectionsWithCompanies.sql" />
+    <Content Include="Scripts\roc_spGetSectionsWithCompaniesByFulltext.sql" />
+    <Content Include="Scripts\roc_spGetSectionsWithCompaniesByLetter.sql" />
+    <Content Include="Scripts\roc_spGetSectionsWithCompaniesByText.sql" />
+    <Content Include="Scripts\roc_spGetServicesByCompany.sql" />
+    <Content Include="Scripts\roc_spGetState.sql" />
+    <Content Include="Scripts\roc_spGetStatesWithCompaniesBySection.sql" />
+    <Content Include="Scripts\roc_spGetSubsection.sql" />
+    <Content Include="Scripts\roc_spGetSubsectionByFulltext.sql" />
+    <Content Include="Scripts\roc_spGetSubsectionByLetter.sql" />
+    <Content Include="Scripts\roc_spGetSubsectionByText.sql" />
+    <Content Include="Scripts\roc_spGetSubsectionsBySectionId.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DEIADataClasses.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>DEIADataClasses.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DEIADataClasses.dbml.layout">
+      <DependentUpon>DEIADataClasses.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
