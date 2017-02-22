@@ -1,0 +1,1895 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActiveSubstanceName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CropFightDiseases" Relationship="Self.FK_CropFightDiseases_ActiveSubstances" FromRole="ActiveSubstances" ToRole="CropFightDiseases" />
+    <NavigationProperty Name="CropFightPests" Relationship="Self.FK_CropFightPests_ActiveSubstances" FromRole="ActiveSubstances" ToRole="CropFightPests" />
+    <NavigationProperty Name="CropFightWeeds" Relationship="Self.FK_CropFightWeeds_ActiveSubstances" FromRole="ActiveSubstances" ToRole="CropFightWeeds" />
+    <NavigationProperty Name="Products" Relationship="Self.ProductSubstances" FromRole="ActiveSubstances" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdId" />
+    </Key>
+    <Property Name="AdId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdFile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionDivisionAds" Relationship="Self.FK_EditionDivisionAds_Advertisements" FromRole="Advertisements" ToRole="EditionDivisionAds" />
+  </EntityType>
+  <EntityType Name="AgrochemicalUses">
+    <Key>
+      <PropertyRef Name="AgrochemicalUseId" />
+    </Key>
+    <Property Name="AgrochemicalUseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AgrochemicalUseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="UseKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="AgrochemicalUses1" Relationship="Self.R_17" FromRole="AgrochemicalUses" ToRole="AgrochemicalUses1" />
+    <NavigationProperty Name="AgrochemicalUses2" Relationship="Self.R_17" FromRole="AgrochemicalUses1" ToRole="AgrochemicalUses" />
+    <NavigationProperty Name="Products" Relationship="Self.ProductAgrochemicalUses" FromRole="AgrochemicalUses" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AttributeGroupName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Order" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="EditionAttributes" Relationship="Self.EditionAttributeGroup" FromRole="AttributeGroup" ToRole="EditionAttributes" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionAttributes" Relationship="Self.FK_EditionAttributes_Attributes" FromRole="Attributes" ToRole="EditionAttributes" />
+    <NavigationProperty Name="ProductContents" Relationship="Self.ProductContents_Attributes_FK" FromRole="Attributes" ToRole="ProductContents" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_8" FromRole="Books" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="Carousel">
+    <Key>
+      <PropertyRef Name="CarouselId" />
+    </Key>
+    <Property Name="CarouselId" Type="Byte" Nullable="false" />
+    <Property Name="CarName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CarouselProductShots" Relationship="Self.CarouselProductShots_Carousel_FK" FromRole="Carousel" ToRole="CarouselProductShots" />
+  </EntityType>
+  <EntityType Name="CarouselProductShots">
+    <Key>
+      <PropertyRef Name="CarouselId" />
+      <PropertyRef Name="EditionProductShotId" />
+    </Key>
+    <Property Name="CarouselId" Type="Byte" Nullable="false" />
+    <Property Name="EditionProductShotId" Type="Int32" Nullable="false" />
+    <Property Name="Link" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Order" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Carousel" Relationship="Self.CarouselProductShots_Carousel_FK" FromRole="CarouselProductShots" ToRole="Carousel" />
+    <NavigationProperty Name="EditionProductShots" Relationship="Self.CarouselProductShots_EditionProductShots_FK" FromRole="CarouselProductShots" ToRole="EditionProductShots" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionCategories" Relationship="Self.R_39" FromRole="Categories" ToRole="DivisionCategories" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_33" FromRole="Cities" ToRole="Countries" />
+    <NavigationProperty Name="DivisionCities" Relationship="Self.R_34" FromRole="Cities" ToRole="DivisionCities" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryCode" Type="Byte" />
+    <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Cities" Relationship="Self.R_33" FromRole="Countries" ToRole="Cities" />
+    <NavigationProperty Name="States" Relationship="Self.FK_States_Countries" FromRole="Countries" ToRole="States" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_24" FromRole="Countries" ToRole="Divisions" />
+    <NavigationProperty Name="Products" Relationship="Self.R_4" FromRole="Countries" ToRole="Products" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_7" FromRole="Countries" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="CropDiseaseImages">
+    <Key>
+      <PropertyRef Name="CropDiseaseImageId" />
+    </Key>
+    <Property Name="CropDiseaseImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="DiseaseId" Type="Int32" Nullable="false" />
+    <Property Name="ImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BaseUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CropDiseases" Relationship="Self.FK_CropId_StateId_DiseaseId" FromRole="CropDiseaseImages" ToRole="CropDiseases" />
+    <NavigationProperty Name="OutputImageSizes" Relationship="Self.CropDiseaseImageSizes" FromRole="CropDiseaseImages" ToRole="OutputImageSizes" />
+  </EntityType>
+  <EntityType Name="CropDiseases">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="DiseaseId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="DiseaseId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CropDiseaseImages" Relationship="Self.FK_CropId_StateId_DiseaseId" FromRole="CropDiseases" ToRole="CropDiseaseImages" />
+    <NavigationProperty Name="Diseases" Relationship="Self.FK_CropDiseases_Diseases" FromRole="CropDiseases" ToRole="Diseases" />
+    <NavigationProperty Name="StateCrops" Relationship="Self.FK_CropDiseases_StateCrops" FromRole="CropDiseases" ToRole="StateCrops" />
+    <NavigationProperty Name="CropFightDiseases" Relationship="Self.FK_CropFightDiseases_CropDiseases" FromRole="CropDiseases" ToRole="CropFightDiseases" />
+  </EntityType>
+  <EntityType Name="CropFightDiseases">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="DiseaseId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="DiseaseId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FightTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Self.FK_CropFightDiseases_ActiveSubstances" FromRole="CropFightDiseases" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="CropDiseases" Relationship="Self.FK_CropFightDiseases_CropDiseases" FromRole="CropFightDiseases" ToRole="CropDiseases" />
+    <NavigationProperty Name="FightTypes" Relationship="Self.FK_CropFightDiseases_FightTypes" FromRole="CropFightDiseases" ToRole="FightTypes" />
+  </EntityType>
+  <EntityType Name="CropFightPests">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="PestId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="PestId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FightTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Self.FK_CropFightPests_ActiveSubstances" FromRole="CropFightPests" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="CropPests" Relationship="Self.FK_CropFightPests_CropPests" FromRole="CropFightPests" ToRole="CropPests" />
+    <NavigationProperty Name="FightTypes" Relationship="Self.FK_CropFightPests_FightTypes" FromRole="CropFightPests" ToRole="FightTypes" />
+  </EntityType>
+  <EntityType Name="CropFightWeeds">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="WeedId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="WeedId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FightTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Self.FK_CropFightWeeds_ActiveSubstances" FromRole="CropFightWeeds" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="CropWeeds" Relationship="Self.FK_CropFightWeeds_CropWeeds" FromRole="CropFightWeeds" ToRole="CropWeeds" />
+    <NavigationProperty Name="FightTypes" Relationship="Self.FK_CropFightWeeds_FightTypes" FromRole="CropFightWeeds" ToRole="FightTypes" />
+  </EntityType>
+  <EntityType Name="CropPestImages">
+    <Key>
+      <PropertyRef Name="CropPestImageId" />
+    </Key>
+    <Property Name="CropPestImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="PestId" Type="Int32" Nullable="false" />
+    <Property Name="ImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BaseUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CropPests" Relationship="Self.FK_CropId_StateId_PestId_CropPestImages_CropPests" FromRole="CropPestImages" ToRole="CropPests" />
+    <NavigationProperty Name="OutputImageSizes" Relationship="Self.CropPestImageSizes" FromRole="CropPestImages" ToRole="OutputImageSizes" />
+  </EntityType>
+  <EntityType Name="CropPests">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="PestId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="PestId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CropFightPests" Relationship="Self.FK_CropFightPests_CropPests" FromRole="CropPests" ToRole="CropFightPests" />
+    <NavigationProperty Name="CropPestImages" Relationship="Self.FK_CropId_StateId_PestId_CropPestImages_CropPests" FromRole="CropPests" ToRole="CropPestImages" />
+    <NavigationProperty Name="Pests" Relationship="Self.FK_CropPests_Pests" FromRole="CropPests" ToRole="Pests" />
+    <NavigationProperty Name="StateCrops" Relationship="Self.FK_CropPests_StateCrops" FromRole="CropPests" ToRole="StateCrops" />
+  </EntityType>
+  <EntityType Name="Crops">
+    <Key>
+      <PropertyRef Name="CropId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CropName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="StateCrops" Relationship="Self.FK_StateCrops_Crops" FromRole="Crops" ToRole="StateCrops" />
+    <NavigationProperty Name="ProductCrops" Relationship="Self.R_22" FromRole="Crops" ToRole="ProductCrops" />
+  </EntityType>
+  <EntityType Name="CropWeedImages">
+    <Key>
+      <PropertyRef Name="CropWeedImageId" />
+    </Key>
+    <Property Name="CropWeedImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="WeedId" Type="Int32" Nullable="false" />
+    <Property Name="ImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BaseUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CropWeeds" Relationship="Self.FK_CropId_StateId_WeedId" FromRole="CropWeedImages" ToRole="CropWeeds" />
+    <NavigationProperty Name="OutputImageSizes" Relationship="Self.CropWeedImageSizes" FromRole="CropWeedImages" ToRole="OutputImageSizes" />
+  </EntityType>
+  <EntityType Name="CropWeeds">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="WeedId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <Property Name="WeedId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CropFightWeeds" Relationship="Self.FK_CropFightWeeds_CropWeeds" FromRole="CropWeeds" ToRole="CropFightWeeds" />
+    <NavigationProperty Name="CropWeedImages" Relationship="Self.FK_CropId_StateId_WeedId" FromRole="CropWeeds" ToRole="CropWeedImages" />
+    <NavigationProperty Name="StateCrops" Relationship="Self.FK_CropWeeds_StateCrops" FromRole="CropWeeds" ToRole="StateCrops" />
+    <NavigationProperty Name="Weeds" Relationship="Self.FK_CropWeeds_Weeds" FromRole="CropWeeds" ToRole="Weeds" />
+  </EntityType>
+  <EntityType Name="Diseases">
+    <Key>
+      <PropertyRef Name="DiseaseId" />
+    </Key>
+    <Property Name="DiseaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DiseaseName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CropDiseases" Relationship="Self.FK_CropDiseases_Diseases" FromRole="Diseases" ToRole="CropDiseases" />
+  </EntityType>
+  <EntityType Name="DivisionCategories">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Categories" Relationship="Self.R_39" FromRole="DivisionCategories" ToRole="Categories" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_38" FromRole="DivisionCategories" ToRole="Divisions" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_44" FromRole="DivisionCategories" ToRole="ProductCategories" />
+  </EntityType>
+  <EntityType Name="DivisionCities">
+    <Key>
+      <PropertyRef Name="CityId" />
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="LaboratoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Cities" Relationship="Self.R_34" FromRole="DivisionCities" ToRole="Cities" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_35" FromRole="DivisionCities" ToRole="Divisions" />
+  </EntityType>
+  <EntityType Name="DivisionImages">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageTypeId" Type="Byte" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="ImageName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Divisions" Relationship="Self.DivisionImages_DivisionId_FK" FromRole="DivisionImages" ToRole="Divisions" />
+    <NavigationProperty Name="ImageTypes" Relationship="Self.DivisionImages_ImageTypeId_FK" FromRole="DivisionImages" ToRole="ImageTypes" />
+  </EntityType>
+  <EntityType Name="DivisionInformation">
+    <Key>
+      <PropertyRef Name="DivisionInformationId" />
+    </Key>
+    <Property Name="DivisionInformationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Suburb" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Location" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Telephone" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Lada" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_25" FromRole="DivisionInformation" ToRole="Divisions" />
+  </EntityType>
+  <EntityType Name="Divisions">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="DivisionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="DivisionName" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="LaboratoryId" Type="Int32" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_24" FromRole="Divisions" ToRole="Countries" />
+    <NavigationProperty Name="DivisionCategories" Relationship="Self.R_38" FromRole="Divisions" ToRole="DivisionCategories" />
+    <NavigationProperty Name="DivisionCities" Relationship="Self.R_35" FromRole="Divisions" ToRole="DivisionCities" />
+    <NavigationProperty Name="DivisionImages" Relationship="Self.DivisionImages_DivisionId_FK" FromRole="Divisions" ToRole="DivisionImages" />
+    <NavigationProperty Name="DivisionInformation" Relationship="Self.R_25" FromRole="Divisions" ToRole="DivisionInformation" />
+    <NavigationProperty Name="EditionDivisionAds" Relationship="Self.FK_EditionDivisionAds_Divisions" FromRole="Divisions" ToRole="EditionDivisionAds" />
+    <NavigationProperty Name="Laboratories" Relationship="Self.R_23" FromRole="Divisions" ToRole="Laboratories" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Attributes" Relationship="Self.FK_EditionAttributes_Attributes" FromRole="EditionAttributes" ToRole="Attributes" />
+    <NavigationProperty Name="Editions" Relationship="Self.EditionAttributes_Editions_FK" FromRole="EditionAttributes" ToRole="Editions" />
+    <NavigationProperty Name="AttributeGroup" Relationship="Self.EditionAttributeGroup" FromRole="EditionAttributes" ToRole="AttributeGroup" />
+  </EntityType>
+  <EntityType Name="EditionDivisionAds">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="AdId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="AdId" Type="Int32" Nullable="false" />
+    <Property Name="BaseUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Advertisements" Relationship="Self.FK_EditionDivisionAds_Advertisements" FromRole="EditionDivisionAds" ToRole="Advertisements" />
+    <NavigationProperty Name="Divisions" Relationship="Self.FK_EditionDivisionAds_Divisions" FromRole="EditionDivisionAds" ToRole="Divisions" />
+    <NavigationProperty Name="Editions" Relationship="Self.FK_EditionDivisionAds_Editions" FromRole="EditionDivisionAds" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionDivisionProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EditionProductShots" Relationship="Self.EditionProductShots_EditionDivisionProducts_FK" FromRole="EditionDivisionProducts" ToRole="EditionProductShots" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_45" FromRole="EditionDivisionProducts" ToRole="ProductCategories" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_46" FromRole="EditionDivisionProducts" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionProductShots">
+    <Key>
+      <PropertyRef Name="EditionProductShotId" />
+    </Key>
+    <Property Name="EditionProductShotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="PharmaFormId" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="PSTypeId" Type="Byte" />
+    <Property Name="ProductShot" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="QtyCells" Type="Byte" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CarouselProductShots" Relationship="Self.CarouselProductShots_EditionProductShots_FK" FromRole="EditionProductShots" ToRole="CarouselProductShots" />
+    <NavigationProperty Name="EditionDivisionProducts" Relationship="Self.EditionProductShots_EditionDivisionProducts_FK" FromRole="EditionProductShots" ToRole="EditionDivisionProducts" />
+    <NavigationProperty Name="ProductShotTypes" Relationship="Self.EditionProductShots_ProductShotTypes_FK" FromRole="EditionProductShots" ToRole="ProductShotTypes" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="BookId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Books" Relationship="Self.R_8" FromRole="Editions" ToRole="Books" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_7" FromRole="Editions" ToRole="Countries" />
+    <NavigationProperty Name="EditionAttributes" Relationship="Self.EditionAttributes_Editions_FK" FromRole="Editions" ToRole="EditionAttributes" />
+    <NavigationProperty Name="EditionDivisionAds" Relationship="Self.FK_EditionDivisionAds_Editions" FromRole="Editions" ToRole="EditionDivisionAds" />
+    <NavigationProperty Name="EditionDivisionProducts" Relationship="Self.R_46" FromRole="Editions" ToRole="EditionDivisionProducts" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_13" FromRole="Editions" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="Editions1" Relationship="Self.R_37" FromRole="Editions" ToRole="Editions1" />
+    <NavigationProperty Name="Editions2" Relationship="Self.R_37" FromRole="Editions1" ToRole="Editions" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.MentionatedProducts" FromRole="Editions" ToRole="ProductCategories" />
+    <NavigationProperty Name="ProductCategories1" Relationship="Self.NewProducts" FromRole="Editions" ToRole="ProductCategories" />
+  </EntityType>
+  <EntityType Name="FightTypes">
+    <Key>
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="FightTypeId" Type="Byte" Nullable="false" />
+    <Property Name="FightName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CropFightDiseases" Relationship="Self.FK_CropFightDiseases_FightTypes" FromRole="FightTypes" ToRole="CropFightDiseases" />
+    <NavigationProperty Name="CropFightPests" Relationship="Self.FK_CropFightPests_FightTypes" FromRole="FightTypes" ToRole="CropFightPests" />
+    <NavigationProperty Name="CropFightWeeds" Relationship="Self.FK_CropFightWeeds_FightTypes" FromRole="FightTypes" ToRole="CropFightWeeds" />
+  </EntityType>
+  <EntityType Name="Images">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ImageFile" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.ProductImages" FromRole="Images" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="ImageSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <Property Name="Size" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="OutputImageSizes" Relationship="Self.FK_ImageSizeId_OutputImageSizes_ImageSizes" FromRole="ImageSizes" ToRole="OutputImageSizes" />
+  </EntityType>
+  <EntityType Name="ImageTypes">
+    <Key>
+      <PropertyRef Name="ImageTypeId" />
+    </Key>
+    <Property Name="ImageTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionImages" Relationship="Self.DivisionImages_ImageTypeId_FK" FromRole="ImageTypes" ToRole="DivisionImages" />
+  </EntityType>
+  <EntityType Name="Laboratories">
+    <Key>
+      <PropertyRef Name="LaboratoryId" />
+    </Key>
+    <Property Name="LaboratoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LaboratoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_23" FromRole="Laboratories" ToRole="Divisions" />
+    <NavigationProperty Name="Products" Relationship="Self.R_36" FromRole="Laboratories" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="OutputImages">
+    <Key>
+      <PropertyRef Name="OutputImageId" />
+    </Key>
+    <Property Name="OutputImageId" Type="Byte" Nullable="false" />
+    <Property Name="OutputName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="OutputImageSizes" Relationship="Self.FK_OutputImageId_OutputImageSizes_OutputImages" FromRole="OutputImages" ToRole="OutputImageSizes" />
+  </EntityType>
+  <EntityType Name="OutputImageSizes">
+    <Key>
+      <PropertyRef Name="OutputImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="OutputImageId" Type="Byte" Nullable="false" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ImageSizes" Relationship="Self.FK_ImageSizeId_OutputImageSizes_ImageSizes" FromRole="OutputImageSizes" ToRole="ImageSizes" />
+    <NavigationProperty Name="OutputImages" Relationship="Self.FK_OutputImageId_OutputImageSizes_OutputImages" FromRole="OutputImageSizes" ToRole="OutputImages" />
+    <NavigationProperty Name="CropDiseaseImages" Relationship="Self.CropDiseaseImageSizes" FromRole="OutputImageSizes" ToRole="CropDiseaseImages" />
+    <NavigationProperty Name="CropPestImages" Relationship="Self.CropPestImageSizes" FromRole="OutputImageSizes" ToRole="CropPestImages" />
+    <NavigationProperty Name="CropWeedImages" Relationship="Self.CropWeedImageSizes" FromRole="OutputImageSizes" ToRole="CropWeedImages" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_13" FromRole="ParticipantProducts" ToRole="Editions" />
+    <NavigationProperty Name="ProductContents" Relationship="Self.ProductContents_ParticipantProducts_FK" FromRole="ParticipantProducts" ToRole="ProductContents" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_47" FromRole="ParticipantProducts" ToRole="ProductCategories" />
+  </EntityType>
+  <EntityType Name="Pests">
+    <Key>
+      <PropertyRef Name="PestId" />
+    </Key>
+    <Property Name="PestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PestName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="CropPests" Relationship="Self.FK_CropPests_Pests" FromRole="Pests" ToRole="CropPests" />
+  </EntityType>
+  <EntityType Name="PharmaForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PharmaForm" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_2" FromRole="PharmaForms" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <EntityType Name="ProductCategories">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DivisionCategories" Relationship="Self.R_44" FromRole="ProductCategories" ToRole="DivisionCategories" />
+    <NavigationProperty Name="EditionDivisionProducts" Relationship="Self.R_45" FromRole="ProductCategories" ToRole="EditionDivisionProducts" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_47" FromRole="ProductCategories" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_43" FromRole="ProductCategories" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="Editions" Relationship="Self.MentionatedProducts" FromRole="ProductCategories" ToRole="Editions" />
+    <NavigationProperty Name="Editions1" Relationship="Self.NewProducts" FromRole="ProductCategories" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PlainContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Attributes" Relationship="Self.ProductContents_Attributes_FK" FromRole="ProductContents" ToRole="Attributes" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.ProductContents_ParticipantProducts_FK" FromRole="ProductContents" ToRole="ParticipantProducts" />
+  </EntityType>
+  <EntityType Name="ProductCrops">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CropId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="Substance" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Crops" Relationship="Self.R_22" FromRole="ProductCrops" ToRole="Crops" />
+    <NavigationProperty Name="Products" Relationship="Self.R_21" FromRole="ProductCrops" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PharmaForms" Relationship="Self.R_2" FromRole="ProductPharmaForms" ToRole="PharmaForms" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_43" FromRole="ProductPharmaForms" ToRole="ProductCategories" />
+    <NavigationProperty Name="Products" Relationship="Self.R_1" FromRole="ProductPharmaForms" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Register" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="LaboratoryId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AccessId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_4" FromRole="Products" ToRole="Countries" />
+    <NavigationProperty Name="Laboratories" Relationship="Self.R_36" FromRole="Products" ToRole="Laboratories" />
+    <NavigationProperty Name="ProductCrops" Relationship="Self.R_21" FromRole="Products" ToRole="ProductCrops" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_1" FromRole="Products" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="AgrochemicalUses" Relationship="Self.ProductAgrochemicalUses" FromRole="Products" ToRole="AgrochemicalUses" />
+    <NavigationProperty Name="Images" Relationship="Self.ProductImages" FromRole="Products" ToRole="Images" />
+    <NavigationProperty Name="Seeds" Relationship="Self.ProductSeeds" FromRole="Products" ToRole="Seeds" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Self.ProductSubstances" FromRole="Products" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="Types" Relationship="Self.ProductTypes" FromRole="Products" ToRole="Types" />
+  </EntityType>
+  <EntityType Name="ProductShotTypes">
+    <Key>
+      <PropertyRef Name="PSTypeId" />
+    </Key>
+    <Property Name="PSTypeId" Type="Byte" Nullable="false" />
+    <Property Name="TypeName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionProductShots" Relationship="Self.EditionProductShots_ProductShotTypes_FK" FromRole="ProductShotTypes" ToRole="EditionProductShots" />
+  </EntityType>
+  <EntityType Name="Seeds">
+    <Key>
+      <PropertyRef Name="SeedId" />
+    </Key>
+    <Property Name="SeedId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SeedName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.ProductSeeds" FromRole="Seeds" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="StateCrops">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="StateId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="CropDiseases" Relationship="Self.FK_CropDiseases_StateCrops" FromRole="StateCrops" ToRole="CropDiseases" />
+    <NavigationProperty Name="CropPests" Relationship="Self.FK_CropPests_StateCrops" FromRole="StateCrops" ToRole="CropPests" />
+    <NavigationProperty Name="Crops" Relationship="Self.FK_StateCrops_Crops" FromRole="StateCrops" ToRole="Crops" />
+    <NavigationProperty Name="CropWeeds" Relationship="Self.FK_CropWeeds_StateCrops" FromRole="StateCrops" ToRole="CropWeeds" />
+    <NavigationProperty Name="States" Relationship="Self.FK_StateCrops_States" FromRole="StateCrops" ToRole="States" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" />
+    <NavigationProperty Name="Countries" Relationship="Self.FK_States_Countries" FromRole="States" ToRole="Countries" />
+    <NavigationProperty Name="StateCrops" Relationship="Self.FK_StateCrops_States" FromRole="States" ToRole="StateCrops" />
+  </EntityType>
+  <EntityType Name="Types">
+    <Key>
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.ProductTypes" FromRole="Types" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Weeds">
+    <Key>
+      <PropertyRef Name="WeedId" />
+    </Key>
+    <Property Name="WeedId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WeedName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="WeedTypeId" Type="Int32" />
+    <NavigationProperty Name="CropWeeds" Relationship="Self.FK_CropWeeds_Weeds" FromRole="Weeds" ToRole="CropWeeds" />
+    <NavigationProperty Name="WeedTypes" Relationship="Self.FK_Weeds_WeedTypes" FromRole="Weeds" ToRole="WeedTypes" />
+  </EntityType>
+  <EntityType Name="WeedTypes">
+    <Key>
+      <PropertyRef Name="WeedTypeId" />
+    </Key>
+    <Property Name="WeedTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Weeds" Relationship="Self.FK_Weeds_WeedTypes" FromRole="WeedTypes" ToRole="Weeds" />
+  </EntityType>
+  <Association Name="FK_CropFightDiseases_ActiveSubstances">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="CropFightDiseases" Type="Self.CropFightDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="CropFightDiseases">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightPests_ActiveSubstances">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="CropFightPests" Type="Self.CropFightPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="CropFightPests">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightWeeds_ActiveSubstances">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="CropFightWeeds" Type="Self.CropFightWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="CropFightWeeds">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Advertisements">
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Advertisements">
+        <PropertyRef Name="AdId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="AdId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_17">
+    <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="1" />
+    <End Role="AgrochemicalUses1" Type="Self.AgrochemicalUses" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Principal>
+      <Dependent Role="AgrochemicalUses1">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionAttributes_Attributes">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductContents_Attributes_FK">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_8">
+    <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CarouselProductShots_Carousel_FK">
+    <End Role="Carousel" Type="Self.Carousel" Multiplicity="1" />
+    <End Role="CarouselProductShots" Type="Self.CarouselProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carousel">
+        <PropertyRef Name="CarouselId" />
+      </Principal>
+      <Dependent Role="CarouselProductShots">
+        <PropertyRef Name="CarouselId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CarouselProductShots_EditionProductShots_FK">
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="1" />
+    <End Role="CarouselProductShots" Type="Self.CarouselProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionProductShots">
+        <PropertyRef Name="EditionProductShotId" />
+      </Principal>
+      <Dependent Role="CarouselProductShots">
+        <PropertyRef Name="EditionProductShotId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_39">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="DivisionCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_33">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Cities">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_34">
+    <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+    <End Role="DivisionCities" Type="Self.DivisionCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cities">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="DivisionCities">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_States_Countries">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="States" Type="Self.States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Divisions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_4">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_7">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropId_StateId_DiseaseId">
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="1" />
+    <End Role="CropDiseaseImages" Type="Self.CropDiseaseImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Principal>
+      <Dependent Role="CropDiseaseImages">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropDiseases_Diseases">
+    <End Role="Diseases" Type="Self.Diseases" Multiplicity="1" />
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Diseases">
+        <PropertyRef Name="DiseaseId" />
+      </Principal>
+      <Dependent Role="CropDiseases">
+        <PropertyRef Name="DiseaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropDiseases_StateCrops">
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="1" />
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StateCrops">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="CropDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightDiseases_CropDiseases">
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="1" />
+    <End Role="CropFightDiseases" Type="Self.CropFightDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Principal>
+      <Dependent Role="CropFightDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightDiseases_FightTypes">
+    <End Role="FightTypes" Type="Self.FightTypes" Multiplicity="1" />
+    <End Role="CropFightDiseases" Type="Self.CropFightDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FightTypes">
+        <PropertyRef Name="FightTypeId" />
+      </Principal>
+      <Dependent Role="CropFightDiseases">
+        <PropertyRef Name="FightTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightPests_CropPests">
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="1" />
+    <End Role="CropFightPests" Type="Self.CropFightPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Principal>
+      <Dependent Role="CropFightPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightPests_FightTypes">
+    <End Role="FightTypes" Type="Self.FightTypes" Multiplicity="1" />
+    <End Role="CropFightPests" Type="Self.CropFightPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FightTypes">
+        <PropertyRef Name="FightTypeId" />
+      </Principal>
+      <Dependent Role="CropFightPests">
+        <PropertyRef Name="FightTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightWeeds_CropWeeds">
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="1" />
+    <End Role="CropFightWeeds" Type="Self.CropFightWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Principal>
+      <Dependent Role="CropFightWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightWeeds_FightTypes">
+    <End Role="FightTypes" Type="Self.FightTypes" Multiplicity="1" />
+    <End Role="CropFightWeeds" Type="Self.CropFightWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FightTypes">
+        <PropertyRef Name="FightTypeId" />
+      </Principal>
+      <Dependent Role="CropFightWeeds">
+        <PropertyRef Name="FightTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropId_StateId_PestId_CropPestImages_CropPests">
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="1" />
+    <End Role="CropPestImages" Type="Self.CropPestImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Principal>
+      <Dependent Role="CropPestImages">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropPests_Pests">
+    <End Role="Pests" Type="Self.Pests" Multiplicity="1" />
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pests">
+        <PropertyRef Name="PestId" />
+      </Principal>
+      <Dependent Role="CropPests">
+        <PropertyRef Name="PestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropPests_StateCrops">
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="1" />
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StateCrops">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="CropPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StateCrops_Crops">
+    <End Role="Crops" Type="Self.Crops" Multiplicity="1" />
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Crops">
+        <PropertyRef Name="CropId" />
+      </Principal>
+      <Dependent Role="StateCrops">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_22">
+    <End Role="Crops" Type="Self.Crops" Multiplicity="1" />
+    <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Crops">
+        <PropertyRef Name="CropId" />
+      </Principal>
+      <Dependent Role="ProductCrops">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropId_StateId_WeedId">
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="1" />
+    <End Role="CropWeedImages" Type="Self.CropWeedImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Principal>
+      <Dependent Role="CropWeedImages">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropWeeds_StateCrops">
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="1" />
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StateCrops">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="CropWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropWeeds_Weeds">
+    <End Role="Weeds" Type="Self.Weeds" Multiplicity="1" />
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Weeds">
+        <PropertyRef Name="WeedId" />
+      </Principal>
+      <Dependent Role="CropWeeds">
+        <PropertyRef Name="WeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_38">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionCategories">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_44">
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="1" />
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DivisionCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_35">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="DivisionCities" Type="Self.DivisionCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionCities">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImages_DivisionId_FK">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImages_ImageTypeId_FK">
+    <End Role="ImageTypes" Type="Self.ImageTypes" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageTypes">
+        <PropertyRef Name="ImageTypeId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="ImageTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_25">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionInformation" Type="Self.DivisionInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionInformation">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Divisions">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="0..1" />
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Laboratories">
+        <PropertyRef Name="LaboratoryId" />
+      </Principal>
+      <Dependent Role="Divisions">
+        <PropertyRef Name="LaboratoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionAttributes_Editions_FK">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Editions">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionProductShots_EditionDivisionProducts_FK">
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="0..1" />
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionDivisionProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_45">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionDivisionProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_46">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionProductShots_ProductShotTypes_FK">
+    <End Role="ProductShotTypes" Type="Self.ProductShotTypes" Multiplicity="0..1" />
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductShotTypes">
+        <PropertyRef Name="PSTypeId" />
+      </Principal>
+      <Dependent Role="EditionProductShots">
+        <PropertyRef Name="PSTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_13">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_37">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ImageSizeId_OutputImageSizes_ImageSizes">
+    <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="OutputImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_36">
+    <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Laboratories">
+        <PropertyRef Name="LaboratoryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="LaboratoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OutputImageId_OutputImageSizes_OutputImages">
+    <End Role="OutputImages" Type="Self.OutputImages" Multiplicity="1" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OutputImages">
+        <PropertyRef Name="OutputImageId" />
+      </Principal>
+      <Dependent Role="OutputImageSizes">
+        <PropertyRef Name="OutputImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductContents_ParticipantProducts_FK">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_47">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_2">
+    <End Role="PharmaForms" Type="Self.PharmaForms" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_43">
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductCrops">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_1">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StateCrops_States">
+    <End Role="States" Type="Self.States" Multiplicity="1" />
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="StateCrops">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Weeds_WeedTypes">
+    <End Role="WeedTypes" Type="Self.WeedTypes" Multiplicity="0..1" />
+    <End Role="Weeds" Type="Self.Weeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WeedTypes">
+        <PropertyRef Name="WeedTypeId" />
+      </Principal>
+      <Dependent Role="Weeds">
+        <PropertyRef Name="WeedTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CropDiseaseImageSizes">
+    <End Role="CropDiseaseImages" Type="Self.CropDiseaseImages" Multiplicity="*" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+  </Association>
+  <Association Name="CropPestImageSizes">
+    <End Role="CropPestImages" Type="Self.CropPestImages" Multiplicity="*" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+  </Association>
+  <Association Name="CropWeedImageSizes">
+    <End Role="CropWeedImages" Type="Self.CropWeedImages" Multiplicity="*" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+  </Association>
+  <Association Name="EditionAttributeGroup">
+    <End Role="AttributeGroup" Type="Self.AttributeGroup" Multiplicity="*" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+  </Association>
+  <Association Name="MentionatedProducts">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+  </Association>
+  <Association Name="NewProducts">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductAgrochemicalUses">
+    <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="*" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductImages">
+    <End Role="Images" Type="Self.Images" Multiplicity="*" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductSeeds">
+    <End Role="Seeds" Type="Self.Seeds" Multiplicity="*" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductSubstances">
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductTypes">
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <End Role="Types" Type="Self.Types" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="DEAQ_20141007Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" />
+    <EntitySet Name="Advertisements" EntityType="Self.Advertisements" />
+    <EntitySet Name="AgrochemicalUses" EntityType="Self.AgrochemicalUses" />
+    <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" />
+    <EntitySet Name="Attributes" EntityType="Self.Attributes" />
+    <EntitySet Name="Books" EntityType="Self.Books" />
+    <EntitySet Name="Carousel" EntityType="Self.Carousel" />
+    <EntitySet Name="CarouselProductShots" EntityType="Self.CarouselProductShots" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" />
+    <EntitySet Name="Cities" EntityType="Self.Cities" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" />
+    <EntitySet Name="CropDiseaseImages" EntityType="Self.CropDiseaseImages" />
+    <EntitySet Name="CropDiseases" EntityType="Self.CropDiseases" />
+    <EntitySet Name="CropFightDiseases" EntityType="Self.CropFightDiseases" />
+    <EntitySet Name="CropFightPests" EntityType="Self.CropFightPests" />
+    <EntitySet Name="CropFightWeeds" EntityType="Self.CropFightWeeds" />
+    <EntitySet Name="CropPestImages" EntityType="Self.CropPestImages" />
+    <EntitySet Name="CropPests" EntityType="Self.CropPests" />
+    <EntitySet Name="Crops" EntityType="Self.Crops" />
+    <EntitySet Name="CropWeedImages" EntityType="Self.CropWeedImages" />
+    <EntitySet Name="CropWeeds" EntityType="Self.CropWeeds" />
+    <EntitySet Name="Diseases" EntityType="Self.Diseases" />
+    <EntitySet Name="DivisionCategories" EntityType="Self.DivisionCategories" />
+    <EntitySet Name="DivisionCities" EntityType="Self.DivisionCities" />
+    <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" />
+    <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" />
+    <EntitySet Name="Divisions" EntityType="Self.Divisions" />
+    <EntitySet Name="EditionAttributes" EntityType="Self.EditionAttributes" />
+    <EntitySet Name="EditionDivisionAds" EntityType="Self.EditionDivisionAds" />
+    <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" />
+    <EntitySet Name="EditionProductShots" EntityType="Self.EditionProductShots" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" />
+    <EntitySet Name="FightTypes" EntityType="Self.FightTypes" />
+    <EntitySet Name="Images" EntityType="Self.Images" />
+    <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" />
+    <EntitySet Name="ImageTypes" EntityType="Self.ImageTypes" />
+    <EntitySet Name="Laboratories" EntityType="Self.Laboratories" />
+    <EntitySet Name="OutputImages" EntityType="Self.OutputImages" />
+    <EntitySet Name="OutputImageSizes" EntityType="Self.OutputImageSizes" />
+    <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" />
+    <EntitySet Name="Pests" EntityType="Self.Pests" />
+    <EntitySet Name="PharmaForms" EntityType="Self.PharmaForms" />
+    <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" />
+    <EntitySet Name="ProductContents" EntityType="Self.ProductContents" />
+    <EntitySet Name="ProductCrops" EntityType="Self.ProductCrops" />
+    <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" />
+    <EntitySet Name="Products" EntityType="Self.Products" />
+    <EntitySet Name="ProductShotTypes" EntityType="Self.ProductShotTypes" />
+    <EntitySet Name="Seeds" EntityType="Self.Seeds" />
+    <EntitySet Name="StateCrops" EntityType="Self.StateCrops" />
+    <EntitySet Name="States" EntityType="Self.States" />
+    <EntitySet Name="Types" EntityType="Self.Types" />
+    <EntitySet Name="Weeds" EntityType="Self.Weeds" />
+    <EntitySet Name="WeedTypes" EntityType="Self.WeedTypes" />
+    <AssociationSet Name="FK_CropFightDiseases_ActiveSubstances" Association="Self.FK_CropFightDiseases_ActiveSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="CropFightDiseases" EntitySet="CropFightDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightPests_ActiveSubstances" Association="Self.FK_CropFightPests_ActiveSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="CropFightPests" EntitySet="CropFightPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightWeeds_ActiveSubstances" Association="Self.FK_CropFightWeeds_ActiveSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="CropFightWeeds" EntitySet="CropFightWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Advertisements" Association="Self.FK_EditionDivisionAds_Advertisements">
+      <End Role="Advertisements" EntitySet="Advertisements" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="R_17" Association="Self.R_17">
+      <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+      <End Role="AgrochemicalUses1" EntitySet="AgrochemicalUses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionAttributes_Attributes" Association="Self.FK_EditionAttributes_Attributes">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="ProductContents_Attributes_FK" Association="Self.ProductContents_Attributes_FK">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_8" Association="Self.R_8">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="CarouselProductShots_Carousel_FK" Association="Self.CarouselProductShots_Carousel_FK">
+      <End Role="Carousel" EntitySet="Carousel" />
+      <End Role="CarouselProductShots" EntitySet="CarouselProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="CarouselProductShots_EditionProductShots_FK" Association="Self.CarouselProductShots_EditionProductShots_FK">
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+      <End Role="CarouselProductShots" EntitySet="CarouselProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_39" Association="Self.R_39">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_33" Association="Self.R_33">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Cities" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="R_34" Association="Self.R_34">
+      <End Role="Cities" EntitySet="Cities" />
+      <End Role="DivisionCities" EntitySet="DivisionCities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_States_Countries" Association="Self.FK_States_Countries">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="Self.R_24">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Divisions" EntitySet="Divisions" />
+    </AssociationSet>
+    <AssociationSet Name="R_4" Association="Self.R_4">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_7" Association="Self.R_7">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropId_StateId_DiseaseId" Association="Self.FK_CropId_StateId_DiseaseId">
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+      <End Role="CropDiseaseImages" EntitySet="CropDiseaseImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropDiseases_Diseases" Association="Self.FK_CropDiseases_Diseases">
+      <End Role="Diseases" EntitySet="Diseases" />
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropDiseases_StateCrops" Association="Self.FK_CropDiseases_StateCrops">
+      <End Role="StateCrops" EntitySet="StateCrops" />
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightDiseases_CropDiseases" Association="Self.FK_CropFightDiseases_CropDiseases">
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+      <End Role="CropFightDiseases" EntitySet="CropFightDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightDiseases_FightTypes" Association="Self.FK_CropFightDiseases_FightTypes">
+      <End Role="FightTypes" EntitySet="FightTypes" />
+      <End Role="CropFightDiseases" EntitySet="CropFightDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightPests_CropPests" Association="Self.FK_CropFightPests_CropPests">
+      <End Role="CropPests" EntitySet="CropPests" />
+      <End Role="CropFightPests" EntitySet="CropFightPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightPests_FightTypes" Association="Self.FK_CropFightPests_FightTypes">
+      <End Role="FightTypes" EntitySet="FightTypes" />
+      <End Role="CropFightPests" EntitySet="CropFightPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightWeeds_CropWeeds" Association="Self.FK_CropFightWeeds_CropWeeds">
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+      <End Role="CropFightWeeds" EntitySet="CropFightWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightWeeds_FightTypes" Association="Self.FK_CropFightWeeds_FightTypes">
+      <End Role="FightTypes" EntitySet="FightTypes" />
+      <End Role="CropFightWeeds" EntitySet="CropFightWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropId_StateId_PestId_CropPestImages_CropPests" Association="Self.FK_CropId_StateId_PestId_CropPestImages_CropPests">
+      <End Role="CropPests" EntitySet="CropPests" />
+      <End Role="CropPestImages" EntitySet="CropPestImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropPests_Pests" Association="Self.FK_CropPests_Pests">
+      <End Role="Pests" EntitySet="Pests" />
+      <End Role="CropPests" EntitySet="CropPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropPests_StateCrops" Association="Self.FK_CropPests_StateCrops">
+      <End Role="StateCrops" EntitySet="StateCrops" />
+      <End Role="CropPests" EntitySet="CropPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StateCrops_Crops" Association="Self.FK_StateCrops_Crops">
+      <End Role="Crops" EntitySet="Crops" />
+      <End Role="StateCrops" EntitySet="StateCrops" />
+    </AssociationSet>
+    <AssociationSet Name="R_22" Association="Self.R_22">
+      <End Role="Crops" EntitySet="Crops" />
+      <End Role="ProductCrops" EntitySet="ProductCrops" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropId_StateId_WeedId" Association="Self.FK_CropId_StateId_WeedId">
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+      <End Role="CropWeedImages" EntitySet="CropWeedImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropWeeds_StateCrops" Association="Self.FK_CropWeeds_StateCrops">
+      <End Role="StateCrops" EntitySet="StateCrops" />
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropWeeds_Weeds" Association="Self.FK_CropWeeds_Weeds">
+      <End Role="Weeds" EntitySet="Weeds" />
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="R_38" Association="Self.R_38">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_44" Association="Self.R_44">
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_35" Association="Self.R_35">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionCities" EntitySet="DivisionCities" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImages_DivisionId_FK" Association="Self.DivisionImages_DivisionId_FK">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImages_ImageTypeId_FK" Association="Self.DivisionImages_ImageTypeId_FK">
+      <End Role="ImageTypes" EntitySet="ImageTypes" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="R_25" Association="Self.R_25">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionInformation" EntitySet="DivisionInformation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Divisions" Association="Self.FK_EditionDivisionAds_Divisions">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="Self.R_23">
+      <End Role="Laboratories" EntitySet="Laboratories" />
+      <End Role="Divisions" EntitySet="Divisions" />
+    </AssociationSet>
+    <AssociationSet Name="EditionAttributes_Editions_FK" Association="Self.EditionAttributes_Editions_FK">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Editions" Association="Self.FK_EditionDivisionAds_Editions">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="EditionProductShots_EditionDivisionProducts_FK" Association="Self.EditionProductShots_EditionDivisionProducts_FK">
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_45" Association="Self.R_45">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_46" Association="Self.R_46">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+    </AssociationSet>
+    <AssociationSet Name="EditionProductShots_ProductShotTypes_FK" Association="Self.EditionProductShots_ProductShotTypes_FK">
+      <End Role="ProductShotTypes" EntitySet="ProductShotTypes" />
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_13" Association="Self.R_13">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_37" Association="Self.R_37">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ImageSizeId_OutputImageSizes_ImageSizes" Association="Self.FK_ImageSizeId_OutputImageSizes_ImageSizes">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="R_36" Association="Self.R_36">
+      <End Role="Laboratories" EntitySet="Laboratories" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OutputImageId_OutputImageSizes_OutputImages" Association="Self.FK_OutputImageId_OutputImageSizes_OutputImages">
+      <End Role="OutputImages" EntitySet="OutputImages" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="ProductContents_ParticipantProducts_FK" Association="Self.ProductContents_ParticipantProducts_FK">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_47" Association="Self.R_47">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_2" Association="Self.R_2">
+      <End Role="PharmaForms" EntitySet="PharmaForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_43" Association="Self.R_43">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="Self.R_21">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductCrops" EntitySet="ProductCrops" />
+    </AssociationSet>
+    <AssociationSet Name="R_1" Association="Self.R_1">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StateCrops_States" Association="Self.FK_StateCrops_States">
+      <End Role="States" EntitySet="States" />
+      <End Role="StateCrops" EntitySet="StateCrops" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Weeds_WeedTypes" Association="Self.FK_Weeds_WeedTypes">
+      <End Role="WeedTypes" EntitySet="WeedTypes" />
+      <End Role="Weeds" EntitySet="Weeds" />
+    </AssociationSet>
+    <AssociationSet Name="CropDiseaseImageSizes" Association="Self.CropDiseaseImageSizes">
+      <End Role="CropDiseaseImages" EntitySet="CropDiseaseImages" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="CropPestImageSizes" Association="Self.CropPestImageSizes">
+      <End Role="CropPestImages" EntitySet="CropPestImages" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="CropWeedImageSizes" Association="Self.CropWeedImageSizes">
+      <End Role="CropWeedImages" EntitySet="CropWeedImages" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="EditionAttributeGroup" Association="Self.EditionAttributeGroup">
+      <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="MentionatedProducts" Association="Self.MentionatedProducts">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="NewProducts" Association="Self.NewProducts">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="ProductAgrochemicalUses" Association="Self.ProductAgrochemicalUses">
+      <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="ProductImages" Association="Self.ProductImages">
+      <End Role="Images" EntitySet="Images" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="ProductSeeds" Association="Self.ProductSeeds">
+      <End Role="Seeds" EntitySet="Seeds" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="ProductSubstances" Association="Self.ProductSubstances">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="ProductTypes" Association="Self.ProductTypes">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Types" EntitySet="Types" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

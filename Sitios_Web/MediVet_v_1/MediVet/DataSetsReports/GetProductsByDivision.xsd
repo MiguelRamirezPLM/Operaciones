@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="GetProductsByDivision" targetNamespace="http://tempuri.org/GetProductsByDivision.xsd" xmlns:mstns="http://tempuri.org/GetProductsByDivision.xsd" xmlns="http://tempuri.org/GetProductsByDivision.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="PEVConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="PEVConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.PEVConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="GetProductsByDivisionTableAdapter" GeneratorDataComponentClassName="GetProductsByDivisionTableAdapter" Name="GetProductsByDivision" UserDataComponentName="GetProductsByDivisionTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="PEVConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetProductsbyDivision" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetProductsbyDivision" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetProductsbyDivision" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        p.ProductName, p.Description, d.DivisionName, pf.PharmaForm, c.CategoryName, 0 AS NumberEdition, NULL AS Type, NULL AS NewP, 0 as Count, NULL as Active, '' as RegisterSanitary
+FROM            ProductCategories AS pc INNER JOIN
+                         Products AS p ON pc.ProductId = p.ProductId INNER JOIN
+                         Divisions AS d ON pc.DivisionId = d.DivisionId INNER JOIN
+                         PharmaceuticalForms AS pf ON pc.PharmaFormId = pf.PharmaFormId INNER JOIN
+                         Categories AS c ON pc.CategoryId = c.CategoryId
+ORDER BY p.ProductName</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ProductName" DataSetColumn="ProductName" />
+              <Mapping SourceColumn="Description" DataSetColumn="Description" />
+              <Mapping SourceColumn="DivisionName" DataSetColumn="DivisionName" />
+              <Mapping SourceColumn="PharmaForm" DataSetColumn="PharmaForm" />
+              <Mapping SourceColumn="CategoryName" DataSetColumn="CategoryName" />
+              <Mapping SourceColumn="NumberEdition" DataSetColumn="NumberEdition" />
+              <Mapping SourceColumn="Type" DataSetColumn="Type" />
+              <Mapping SourceColumn="NewP" DataSetColumn="NewP" />
+              <Mapping SourceColumn="Count" DataSetColumn="Count" />
+              <Mapping SourceColumn="Active" DataSetColumn="Active" />
+              <Mapping SourceColumn="RegisterSanitary" DataSetColumn="RegisterSanitary" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="GetProductsByDivision" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="GetProductsByDivision" msprop:Generator_UserDSName="GetProductsByDivision">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="GetProductsByDivision" msprop:Generator_TableClassName="GetProductsByDivisionDataTable" msprop:Generator_TableVarName="tableGetProductsByDivision" msprop:Generator_RowChangedName="GetProductsByDivisionRowChanged" msprop:Generator_TablePropName="_GetProductsByDivision" msprop:Generator_RowDeletingName="GetProductsByDivisionRowDeleting" msprop:Generator_RowChangingName="GetProductsByDivisionRowChanging" msprop:Generator_RowEvHandlerName="GetProductsByDivisionRowChangeEventHandler" msprop:Generator_RowDeletedName="GetProductsByDivisionRowDeleted" msprop:Generator_RowClassName="GetProductsByDivisionRow" msprop:Generator_UserTableName="GetProductsByDivision" msprop:Generator_RowEvArgName="GetProductsByDivisionRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" msprop:Generator_UserColumnName="Description" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DivisionName" msprop:Generator_ColumnVarNameInTable="columnDivisionName" msprop:Generator_ColumnPropNameInRow="DivisionName" msprop:Generator_ColumnPropNameInTable="DivisionNameColumn" msprop:Generator_UserColumnName="DivisionName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="300" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PharmaForm" msprop:Generator_ColumnVarNameInTable="columnPharmaForm" msprop:Generator_ColumnPropNameInRow="PharmaForm" msprop:Generator_ColumnPropNameInTable="PharmaFormColumn" msprop:Generator_UserColumnName="PharmaForm">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CategoryName" msprop:Generator_ColumnVarNameInTable="columnCategoryName" msprop:Generator_ColumnPropNameInRow="CategoryName" msprop:Generator_ColumnPropNameInTable="CategoryNameColumn" msprop:Generator_UserColumnName="CategoryName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NumberEdition" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnNumberEdition" msprop:Generator_ColumnPropNameInRow="NumberEdition" msprop:Generator_ColumnPropNameInTable="NumberEditionColumn" msprop:Generator_UserColumnName="NumberEdition" type="xs:int" minOccurs="0" />
+              <xs:element name="Type" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnType" msprop:Generator_ColumnPropNameInRow="Type" msprop:Generator_ColumnPropNameInTable="TypeColumn" msprop:Generator_UserColumnName="Type" type="xs:int" minOccurs="0" />
+              <xs:element name="NewP" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnNewP" msprop:Generator_ColumnPropNameInRow="NewP" msprop:Generator_ColumnPropNameInTable="NewPColumn" msprop:Generator_UserColumnName="NewP" type="xs:int" minOccurs="0" />
+              <xs:element name="Count" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCount" msprop:Generator_ColumnPropNameInRow="Count" msprop:Generator_ColumnPropNameInTable="CountColumn" msprop:Generator_UserColumnName="Count" type="xs:int" minOccurs="0" />
+              <xs:element name="Active" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:int" minOccurs="0" />
+              <xs:element name="RegisterSanitary" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnRegisterSanitary" msprop:Generator_ColumnPropNameInRow="RegisterSanitary" msprop:Generator_ColumnPropNameInTable="RegisterSanitaryColumn" msprop:Generator_UserColumnName="RegisterSanitary" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

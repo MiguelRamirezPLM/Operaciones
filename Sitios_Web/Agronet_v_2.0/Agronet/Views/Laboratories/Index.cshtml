@@ -1,0 +1,476 @@
+﻿@model IEnumerable<DivisionInformation>
+@using Agronet.Models;
+@{
+    ViewBag.Title = "Index";
+    Agronet.Models.Sessions.sessionCountryId ind = (Agronet.Models.Sessions.sessionCountryId)Session["sessionCountryId"];
+    DEAQ db = new DEAQ();
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 25);
+    int CountryId, DivisionId;
+    if (ind != null)
+    {
+        CountryId = ind.CountryId;
+        DivisionId = ind.DivisionId;
+    }
+    else
+    {
+        CountryId = 0;
+        DivisionId = 0;
+    }
+}
+
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr">Ventas</a></li>
+    <li class="active">Laboratorios</li>
+</ol>
+<div class="row">
+    <div class="col-lg-6">
+        <table class="widthtable">
+            <tr>
+                <td colspan="3">
+                    @using (Html.BeginForm())
+                    {
+                    <div style="text-align:right;display:none">
+                        <p>
+                            @{
+                                if (ind != null)
+                                {
+                                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CountryId" style="width:30px">
+                                        <label>division</label><input id="DivisionId" name="DivisionId" type="text" value="@ind.DivisionId" style="width:30px">
+                                        <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                                }
+                                else
+                                {
+                                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="" style="width:30px">
+                                        <label>division</label><input id="DivisionId" name="DivisionId" type="text" value="" style="width:30px">
+                                        <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                                }
+                            }
+                        </p>
+                    </div>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="labelsfilters" style="line-height: 30px;">
+                    <label class="title-filter">País:</label>
+                </td>
+                <td class="requieredfield" style="line-height: 30px;">
+                    <label style="font-size:large">*</label>
+                </td>
+                <td style="line-height: 30px;">
+                    @{
+                        if (ind != null)
+                        {
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getDivisionsD($(this).val())" id="Countries">
+                        <option>Seleccione...</option>
+                        @{
+                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                            if (Session["CountriesUsers"] == null)
+                            {
+                                Session.Abandon();
+                                Response.Redirect(Url.Action("Logout", "Login"));
+                                Response.End();
+                            }
+                            else if (p != null)
+                            {
+                                List<string> d = p.var;
+                                foreach (var f in d)
+                                {
+                                    var countries = (from country in db.Countries
+                                                     where country.ID == f
+                                                     select country);
+                                    foreach (Countries w in countries)
+                                    {
+                                        if (w.CountryId == CountryId)
+                                        {
+                                <option id="Country" value="@w.CountryId" selected="selected">@w.CountryName </option>
+                                        }
+                                        else
+                                        {
+                                <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                        }
+                        else
+                        {
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getDivisionsD($(this).val())" id="Countries">
+                        <option>Seleccione...</option>
+                        @{
+                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                            if (Session["CountriesUsers"] == null)
+                            {
+                                Session.Abandon();
+                                Response.Redirect(Url.Action("Logout", "Login"));
+                                Response.End();
+                            }
+                            else if (p != null)
+                            {
+                                List<string> d = p.var;
+                                foreach (var f in d)
+                                {
+                                    var countries = (from country in db.Countries
+                                                     where country.ID == f
+                                                     select country);
+                                    foreach (Countries w in countries)
+                                    {
+                                <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="labelsfilters" style="line-height: 30px;">
+                    <label class="title-filter">Laboratorio:</label>
+                </td>
+                <td class="requieredfield" style="line-height: 30px;">
+                    <label style="font-size:large">*</label>
+                </td>
+                <td style="line-height: 30px;">
+                    @{
+                        if (ind != null)
+                        {
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="GetResultCountry($(this).val())">
+                        <option>Seleccione...</option>
+                        @{
+                            List<Divisions> LD = db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
+                            foreach (Divisions _d in LD)
+                            {
+                                <option value="@_d.DivisionId">@_d.DivisionName</option>
+                            }
+                        }
+                    </select>
+                        }
+                        else
+                        {
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="GetResultCountry($(this).val())"></select>
+                        }
+                    }
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-6">
+
+    </div>
+</div>
+<br />
+<br />
+
+@{
+    if (ind != null)
+    {
+        <div class="row">
+            <div class="col-lg-5" style="border:none">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width:20%">
+                            <label class="title-filter">País:</label>
+                        </td>
+                        <td>
+                            @{
+                                var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                                <span style="font-style:italic; font-weight:bold">@c[0].CountryName</span>
+                            }
+                        </td>
+                    </tr>
+                    @{
+                        var divs = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+                        <tr>
+                            <td>
+                                <label class="title-filter">Razón Social:</label>
+                            </td>
+                            <td>
+                                <span style="font-style:italic; font-weight:bold" id="lblDivisionName" class="show-dataD">@divs[0].DivisionName</span>
+                                <textarea class="form-control edit-dataD" style="font-size:12px; color:red; display:none" id="txtDivisionName">@divs[0].DivisionName</textarea>
+                                <input type="text" id="lblDivisionId" value="@divs[0].DivisionId" style="display:none"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="title-filter">Nombre Corto:</label>
+                            </td>
+                            <td>
+                                <span style="font-style:italic; font-weight:bold" id="lblShortName" class="show-dataD">@divs[0].ShortName</span>
+                                <textarea class="form-control edit-dataD" style="font-size:12px; color:red;display:none" id="txtShortName">@divs[0].ShortName</textarea>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="col-lg-7">
+                <div class="col-lg-4" style="text-align: center; border: none">
+                    <img src="@Url.Content("~/Images/user.png")" style="width:80px"/>
+                </div>
+                <div class="col-lg-4" style="text-align: center; border: none; ">
+                    <button class="btn btn-warning show-dataD" onclick="ShowEditDivs()">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span>&nbsp; Editar Laboratorio</span>
+                    </button>
+                    <button class="btn btn-primary edit-dataD" onclick="SaveEditDivs()" style="display:none">
+                        <span class="glyphicon glyphicon-save"></span>
+                        <span>&nbsp; Guardar</span>
+                    </button>
+                    <button class="btn btn-danger edit-dataD" onclick="CancelEditDivs()" style="display:none">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span>&nbsp; Cancelar</span>
+                    </button>
+                </div>
+                <div class="col-lg-4" style="text-align: center; border: none">
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#AddDivisionInformation" id="btnAddDivisionInformation">
+                        <span class="glyphicon glyphicon-upload"></span>
+                        <span>&nbsp; Agregar Dirección</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+}
+<br />
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="widthtable table-responsive">
+            @_datagrid.GetHtml(
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "webgrid-table",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                                _datagrid.Column("", header: "Dirección", format: @<text>
+                @{
+    <span class="show-dataA" id="lblAddress">@item.Address</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none; " id="trtxtAddress">@item.Address</textarea>
+    <input type="text" value="@item.DivisionInformationId" id="lblDivisionInformationId" style="display:none" />
+}
+                                </text>, style:"column86"),
+
+                                _datagrid.Column("", header: "Colonia", format: @<text>
+                @{
+    <span class="show-dataA" id="lblSuburb">@item.Suburb</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtSuburb">@item.Suburb</textarea>
+}
+                                </text>, style:"column86"),
+
+    _datagrid.Column("", header: "Locación", format: @<text>
+                @{
+    <span class="show-dataA" id="lblLocation">@item.Location</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtLocation">@item.Location</textarea>
+}
+    </text>, style:"column86 text-center"),
+
+                                _datagrid.Column("", header: "C.P", format: @<text>
+                @{
+    <span class="show-dataA" id="lblZipCode">@item.ZipCode</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtZipCode">@item.ZipCode</textarea>
+}
+                                </text>, style:"text-center column7"),
+
+                _datagrid.Column("", header: "Teléfono", format: @<text>
+                @{
+    <span class="show-dataA" id="lblTelephone">@item.Telephone</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtTelephone">@item.Telephone</textarea>
+}
+                </text>, style:"text-center column86"),
+
+
+                _datagrid.Column("", header: "Lada", format: @<text>
+                @{
+    <span class="show-dataA" id="lblLada">@item.Lada</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtLada">@item.Lada</textarea>
+}
+                </text>, style:"text-center column86"),
+
+            _datagrid.Column("", header: "Fax", format: @<text>
+                @{
+    <span class="show-dataA" id="lblFax">@item.Fax</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtFax">@item.Fax</textarea>
+}
+            </text>, style:"text-center column86"),
+            _datagrid.Column("", header: "Web", format: @<text>
+                @{
+    <span class="show-dataA" id="lblWeb">@item.Web</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtWeb">@item.Web</textarea>
+}
+            </text>, style:"text-center column86"),
+
+            _datagrid.Column("", header: "Ciudad", format: @<text>
+                @{
+    <span class="show-dataA" id="lblCity">@item.City</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtCity">@item.City</textarea>
+}
+            </text>, style:"text-center column86"),
+
+
+            _datagrid.Column("", header: "Estado", format: @<text>
+                @{
+    <span class="show-dataA" id="lblState">@item.State</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtState">@item.State</textarea>
+}
+            </text>, style:"text-center column86"),
+
+            _datagrid.Column("", header: "Email", format: @<text>
+                @{
+    <span class="show-dataA" id="lblEmail">@item.Email</span>
+    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtEmail">@item.Email</textarea>
+}
+            </text>, style:"text-center column86"),
+            _datagrid.Column("", header: "Editar", format: @<text>
+                @{
+    <button class="btn btn-warning btn-sm show-dataA" onclick="ShowEditAddress($(this))">
+        <span class="glyphicon glyphicon-edit"></span>
+    </button>
+    <button class="btn btn-primary btn-sm edit-dataA" style="display:none" onclick="SaveEditAddress($(this))">
+        <span class="glyphicon glyphicon-ok"></span>
+    </button>
+    <button class="btn btn-danger btn-sm edit-dataA" style="display:none" onclick="CancelEditAddress($(this))">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+}
+            </text>, style:"text-center column7")
+                                }
+                                                                                                                                                                                                                                                             )
+        </div>
+    }
+}
+<br />
+
+
+<div class="modal fade" id="AddDivisionInformation" role="dialog" style="font-style:normal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal" onclick="CancelAddPharmaForm()">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Dirección.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Dirección: </label></td>
+                        <td>
+                            <input type="text" id="txtAddress" class="form-control" placeholder="Dirección..."/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Colonia: </label></td>
+                        <td>
+                            <input type="text" id="txtSuburb" class="form-control" placeholder="Colonia..."/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Locación: </label></td>
+                        <td>
+                            <input type="text" id="txtLocation" class="form-control" placeholder="Locación..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">C.P: </label></td>
+                        <td>
+                            <input type="text" id="txtZipCode" class="form-control" placeholder="Código Postal..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Teléfono: </label></td>
+                        <td>
+                            <input type="text" id="txtTelephone" class="form-control" placeholder="Teléfono..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Lada: </label></td>
+                        <td>
+                            <input type="text" id="txtLada" class="form-control" placeholder="Lada..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Fax: </label></td>
+                        <td>
+                            <input type="text" id="txtFax" class="form-control" placeholder="Fax..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Web: </label></td>
+                        <td>
+                            <input type="text" id="txtWeb" class="form-control" placeholder="Web..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Ciudad: </label></td>
+                        <td>
+                            <input type="text" id="txtCity" class="form-control" placeholder="Ciudad..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Estado: </label></td>
+                        <td>
+                            <input type="text" id="txtState" class="form-control" placeholder="Estado..." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%"><label class="title-filter">Email: </label></td>
+                        <td>
+                            <input type="text" id="txtEmail" class="form-control" placeholder="Email..." />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="AddDivisionInformation()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

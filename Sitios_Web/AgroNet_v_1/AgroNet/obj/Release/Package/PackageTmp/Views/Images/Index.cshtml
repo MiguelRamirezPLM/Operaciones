@@ -1,0 +1,314 @@
+﻿@model IEnumerable<AgroNet.Models.joinDivisionImageSizes>
+@using AgroNet.Models;
+@{
+    DEAQ db = new DEAQ();
+    ViewBag.Title = "Index";
+    WebGrid DataGridImages = new WebGrid(Model);
+}
+
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script>
+        $(function () {
+            $("#inserts").click(function () {
+                var image = $("#uploadFile").val();
+                if (!image.trim()) {
+                    apprise("<div align='center'><img src='/Images/alerta.png' /> </div>" + "El campo puede quedar vacío", { 'animate': true });
+                }
+                else {
+                }
+            });
+        });
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script>
+        $(function () {
+            $("#send").click(function () {
+                $("#bloqueo").show();
+                var image = $("#text").val();
+                var size = $("#sizes").val();
+                var nulls = $(".null").val();
+                console.log(size);
+                if (size == nulls) {
+                    $("#bloqueo").hide();
+                    apprise("<div align='center'><img src='/Images/alerta.png' /> </div>" + "<li> Antes de Insertar debe Seleccionar un Tamaño de Imagen", { 'animate': true });
+                }
+                else {
+                    if (!image.trim()) {
+                        $("#bloqueo").hide();
+                        apprise("<div align='center'><img src='/Images/alerta.png' /> </div>" + "<li> El campo Nombre de Imagen NO puede quedar vacío", { 'animate': true });
+                    }
+                    else {
+                        $("#sendimages").ajaxSubmit({
+                            type: "POST",
+                            url: '@Url.Content("~/Images/newimages")',
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                    console.log(data);
+                                }
+                                else {
+                                    //apprise("<div align='center'><img src='/Images/alerta.png' /> </div>" + "<li>La imagen seleccionada ya existe para la División</li>", { 'animate': true });
+                                    $("#bloqueo").hide();
+                                }
+                            },
+                        });
+                    }
+                }
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            document.getElementById("uploadBtn").onchange = function () {
+                document.getElementById("uploadFile").value = this.value;
+                document.getElementById("text").value = this.value;
+            };
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+    $(function () {
+        $("#sizes").change(function () {
+            var size = $(this).val();
+            var nulls = $(".null").val();
+            if (size == nulls) {
+            }
+            else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '@Url.Content("~/Images/imagesizes")',
+                        traditional: true,
+                        data: { sizeid: size },
+                        success: function (data) {
+                        }
+                    });
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <br />
+    <ol class="breadcrumb">
+        <li class="active">Imagenes</li>
+    </ol>
+    <br />
+    <style>
+       .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+       .fileUpload input.upload {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+    </style>
+    @{
+        DivisionsInf D = (DivisionsInf)Session["DivisionsInf"];
+        if (D != null)
+        {
+            var Div = from Divs in db.Divisions
+                      where Divs.DivisionId == D.Id
+                      select Divs;
+            foreach (Divisions Di in Div)
+            {
+               <div style="border: none; width: 50%; float: left">
+                    <table border="0">
+                        <tr>
+                            <td style="line-height: 40px;">
+                                <label style="font-size:16px; color:orangered">Nombre División:&nbsp;&nbsp;</label>
+                            </td>
+                            <td>
+                                <label style="font-style:italic">@Di.DivisionName</label><input id="DivisionIdN" name="DivisionIdN" type="text" style="display: none" value="@Di.DivisionId">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 40px;">
+                                <label style="font-size:16px; color:orangered">Nombre Corto:&nbsp;&nbsp;</label>
+                            </td>
+                            <td>
+                                <label style="font-style:italic">@Di.ShortName</label><input id="DivisionIdN" name="DivisionIdN" type="text" style="display: none" value="@Di.DivisionId"><br />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+               <div style="border:none; width:50%;float:right">
+                   <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn" onclick="history.back();"/>
+                </div>
+            }
+        }
+    }
+
+    <br />
+    <br />
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width:20%"></td>
+            <td style="width:20%;">
+                <label class="labels">Seleccionar Tamaño</label>
+            </td>
+            <td style="width: 40%;">
+                <select class="form-focus" id="sizes">
+                    <option class="null">Seleccione...</option>
+                    @{
+                        var imgs = (from ImagesS in db.ImageSizes
+                                    select ImagesS).ToList();
+                        foreach (ImageSizes IS in imgs)
+                        {
+                            <option value="@IS.ImageSizeId" class="sizeimg">@IS.Size</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="height:15px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><label class="labels">Seleccionar Imagen</label></td>
+            <td style="width: 40%;text-align:center;vertical-align:top">
+                <input type="text" style="height:35px;display:none" id="text" />
+                <form enctype="multipart/form-data" method="post" id="sendimages">
+                    <input id="uploadFile" placeholder="Seleccione Archivo..." style="width:80%;float:left" disabled="disabled" class="form-focus" accept="image/png" />
+                    <div class="fileUpload btn btn-info">
+                        <span>Seleccionar... </span>
+                        <input id="uploadBtn" type="file" class="upload" accept="image/png" name="file" />
+                    </div><br />
+                    <div style="text-align:center">
+                    </div>
+                </form>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="text-align: center; height: 40px">
+               <button id="send" class="btn btn-warning" style="height:35px">Insertar</button>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    @*<table style="width:100%" border="1">
+        <tr>
+            <td>
+                <label>
+                    Seleccione Tamaño de Imagen:
+                </label>
+            </td>
+            <td>
+                <select class="form-focus" id="sizes">
+                    <option class="null">Seleccione...</option>
+                    @{
+                        var imgs = (from ImagesS in db.ImageSizes
+                                    select ImagesS).ToList();
+                        foreach (ImageSizes IS in imgs)
+                        {
+                            <option value="@IS.ImageSizeId" class="sizeimg">@IS.Size</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    Seleccione Imagen:
+                </label>
+            </td>
+            <td>
+                <input type="text" style="height:35px;display:none" id="text" />
+                <form enctype="multipart/form-data" method="post" id="sendimages">
+                    <input id="uploadFile" placeholder="Seleccione Archivo..." style="width:500px" disabled="disabled" class="form-focus" accept="image/png" />
+                    <div class="fileUpload btn btn-warning">
+                        <span>Seleccionar... </span>
+                        <input id="uploadBtn" type="file" class="upload" accept="image/png" name="file" />
+                    </div><br />
+                    <div style="text-align:center">
+                    </div>
+                </form>
+            </td>
+            <td></td>
+            <td style="text-align:right">
+                <br />
+                <br />
+                @{
+                    DivInfoId Divv = (DivInfoId)Session["DivInfoId"];
+                    bool flag = Divv.flag;
+                    if (flag == true)
+                    {
+                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn return" id="search" onclick="location.href = '@Url.Action("Index", "Divs", new { flag = true })'; return false;">
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn return" id="search" onclick="location.href = '@Url.Action("Index", "DivisionInformation", new { flag = false})'; return false;">
+                    }
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="text" id="text" style="display: none" />
+                <p style="text-align:center"><button id="send" class="btn btn-success" style="height:35px">Insertar</button></p>
+            </td>
+        </tr>
+    </table>*@
+    <br />
+    <br />
+    <div>
+        @DataGridImages.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+            DataGridImages.Column("",header:"Nombre de Imagen",format:@<text>
+                <span class="display-mode"> <label id="lblLaboratoryName">@item.DivisionImages.ImageName</label> </span>
+                <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="LaboratoryName" value="@item.DivisionImages.ImageName" class="edit-mode" />
+                <input id="lblDivisionImageId" style="visibility: hidden;display:none" value="@item.DivisionImages.DivisionImageId" />
+            </text>),
+        
+            DataGridImages.Column("",header:"Tamaño de Imagen",format:@<text>
+            <span class="display-mode"> <label id="lblLaboratoryName">@item.ImageSizes.Size</label> </span>
+            </text>),
+        
+            DataGridImages.Column("",header:"Imagen",format:@<text>
+            @{
+                <img src="@Url.Action("showimagesdetails", "Images", new { image = item.DivisionImages.ImageName, DivisionImageId = item.DivisionImages.DivisionImageId, size = item.ImageSizes.ImageSizeId })" alt="" style="height:120px;width:120px;" />
+            }
+            </text>,style: "column6 buton")
+                        })
+    </div>
+</body>
+</html>

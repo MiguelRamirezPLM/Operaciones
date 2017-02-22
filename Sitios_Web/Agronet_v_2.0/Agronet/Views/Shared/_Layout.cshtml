@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Agronet</title>
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"/>
+    <script src="@Url.Content("~/Scripts/jQuery-2.1.4.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
+
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/apprise.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/AdminLTE.min.css")" rel="stylesheet">
+    @*<link href="@Url.Content("~/Content/morris.css")" rel="stylesheet">*@
+    <link href="@Url.Content("~/Content/_all-skins.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/blue.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/Agronet.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/jquery-jvectormap-1.2.2.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/datepicker3.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/daterangepicker-bs3.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/bootstrap3-wysihtml5.min.css")" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador">
+            <img src="~/Images/301.GIF" style="">
+        </div>
+    </div>
+    <div class="wrapper">
+        @if (Request.IsAuthenticated)
+        {
+            <header class="main-header">
+                <span class="logo">
+                    <span class="logo-mini"><img src="@Url.Content("~/Images/PLM1.png")" class="classimagelogo" /></span>
+                    <span class="logo-lg"><img src="@Url.Content("~/Images/Agronet.png")" class="classimagelogo" /></span>
+                </span>
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="@Url.Content("~/Images/user.png")" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">@User.Identity.Name.ToUpper()</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="@Url.Content("~/Images/user.png")" class="img-circle" alt="User Image">
+                                        <p>
+                                            @User.Identity.Name.ToUpper()
+                                            <small>@DateTime.Now.Date.Day/@DateTime.Now.Date.Month/@DateTime.Now.Date.Year</small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Body -->
+                                    <li class="user-body">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="@Url.Content("~/Login/Logout")" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Control Sidebar Toggle Button -->
+                            @*<li>
+                                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                                </li>*@
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li class="header">MENÚ</li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-pie-chart"></i>
+                                <span>Ventas</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu M">
+                                <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                @*<li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Especialidades</a></li>
+                                    <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Marcas</a></li>
+                                    <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                    <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Productos<br /> Hospitalarios</a></li>*@
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-laptop"></i>
+                                <span>Agroquímico</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
+                                    @*<li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
+    <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
+    <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
+    <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
+    <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>*@
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-edit"></i> <span>Producción</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                @*<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
+                                    <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
+                                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>*@
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+            <div class="content-wrapper">
+                <div style="margin-left:10px; margin-right:10px">
+                    @RenderBody()
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="content-wrapper" style="margin-left:0">
+                <div style="margin-left: 10px; margin-right: 10px">
+                    @RenderBody()
+                </div>
+            </div>
+        }
+
+        @*<footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 2.3.0
+                </div>
+                <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+            </footer>*@
+        <aside class="control-sidebar control-sidebar-dark"></aside>
+        <div class="control-sidebar-bg"></div>
+    </div>
+
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.sparkline.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-jvectormap-1.2.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-jvectormap-world-mill-en.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.knob.js")"></script>
+    <script src="@Url.Content("~/Scripts/daterangepicker.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap3-wysihtml5.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.slimscroll.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/fastclick.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/app.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/filters.js")"></script>
+    <script src="@Url.Content("~/Scripts/Sales.js")"></script>
+    <script src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+
+
+
+    @*<script>
+        $(document).ready(function () {
+
+            alert("Welcome to MEDINET 3.0 " + '@User.Identity.Name.ToString()' + "");
+        })
+        </script>*@
+
+    <script>
+        $(".ldr").click(function () {
+            $("#bloqueo").show();
+        })
+    </script>
+    <script>
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                $("#btnProductSearch").trigger("click");
+            }
+        });
+    </script>
+</body>
+</html>

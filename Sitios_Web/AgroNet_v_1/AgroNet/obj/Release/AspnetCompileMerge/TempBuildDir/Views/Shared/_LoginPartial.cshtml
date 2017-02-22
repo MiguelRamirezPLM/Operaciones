@@ -1,0 +1,20 @@
+﻿@if (Request.IsAuthenticated) {
+            <text>
+       @using (Html.BeginForm("Logout", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+       {
+           var Version = System.Configuration.ConfigurationManager.AppSettings["Version"];
+@Html.AntiForgeryToken()       
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        @Html.ActionLink("Hola " + User.Identity.Name + "!", "Index",  routeValues: null, htmlAttributes: new { title = "Administrar" })
+    </li>
+    <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li><br /><br />
+    <li style="position:fixed;left:88%">@Version</li>
+</ul>
+    }
+    </text>
+} else {
+    <ul class="nav navbar-nav navbar-right">
+        <li style="visibility:hidden">@Html.ActionLink("Iniciar sesión", "Login", "Users", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

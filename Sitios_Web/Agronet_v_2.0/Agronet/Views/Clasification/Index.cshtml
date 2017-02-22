@@ -1,0 +1,419 @@
+﻿@model IEnumerable<plm_vwProductsByEdition>
+@using Agronet.Models;
+@{
+    ViewBag.Title = "Index";
+
+    Agronet.Models.Sessions.sessionVM ind = (Agronet.Models.Sessions.sessionVM)Session["sessionVM"];
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage:25);
+
+    DEAQ db = new DEAQ();
+    
+    int DivisionId, EditionId, BookId, CountryId;
+
+    if (ind != null)
+    {
+        DivisionId = ind.DivisionId;
+        EditionId = ind.EditionId;
+        BookId = ind.BookId;
+        CountryId = ind.CountryId;
+    }
+    else
+    {
+        DivisionId = 0;
+        EditionId = 0;
+        BookId = 0;
+        CountryId = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Clasification/Index")" class="ldr">Agroquimico</a></li>
+    <li class="active">Productos</li>
+</ol>
+
+<div class="row">
+    <div class="col-lg-6">
+        <table border="0" class="widthtable">
+            <tr>
+                <td colspan="3">
+                    @using (Html.BeginForm())
+                    {
+                        <div style="text-align:right;display:none">
+                            <p>
+                                @{
+                        if (ind != null)
+                        {
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CountryId" style="width:30px">
+                                    <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BookId" style="width:30px">
+                                    <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EditionId" style="width:30px">
+                                    <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="@ind.DivisionId" style="width:30px">
+                                    <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                        }
+                        else
+                        {
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="" style="width:30px">
+                                    <label>book</label><input id="BookId" name="BookId" type="text" value="" style="width:30px">
+                                    <label>edition</label><input id="EditionId" name="EditionId" type="text" value="" style="width:30px">
+                                    <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="" style="width:30px">
+                                    <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                        }
+                                }
+                            </p>
+                        </div>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="labelsfilters" style="line-height: 30px;">
+                    <label class="title-filter">País:</label>
+                </td>
+                <td class="requieredfield" style="line-height: 30px;">
+                    <label style="font-size:large">*</label>
+                </td>
+                <td style="line-height: 30px;">
+                    @{
+                        if (ind != null)
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getBooks($(this).val())" id="Countries">
+                                <option>Seleccione...</option>
+                                @{
+                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                            if (Session["CountriesUsers"] == null)
+                            {
+                                Session.Abandon();
+                                Response.Redirect(Url.Action("Logout", "Login"));
+                                Response.End();
+                            }
+                            else if (p != null)
+                            {
+                                List<string> d = p.var;
+                                foreach (var f in d)
+                                {
+                                    var countries = (from country in db.Countries
+                                                     where country.ID == f
+                                                     select country);
+                                    foreach (Countries w in countries)
+                                    {
+                                        if (w.CountryId == CountryId)
+                                        {
+                                            <option id="Country" value="@w.CountryId" selected="selected">@w.CountryName </option>
+                                        }
+                                        else
+                                        {
+                                            <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                        }
+                                    }
+                                }
+                            }
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getBooks($(this).val())" id="Countries">
+                                <option>Seleccione...</option>
+                                @{
+                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                            if (Session["CountriesUsers"] == null)
+                            {
+                                Session.Abandon();
+                                Response.Redirect(Url.Action("Logout", "Login"));
+                                Response.End();
+                            }
+                            else if (p != null)
+                            {
+                                List<string> d = p.var;
+                                foreach (var f in d)
+                                {
+                                    var countries = (from country in db.Countries
+                                                     where country.ID == f
+                                                     select country);
+                                    foreach (Countries w in countries)
+                                    {
+                                        <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                    }
+                                }
+                            }
+                                }
+                            </select>
+                        }
+                    }
+
+
+                </td>
+            </tr>
+            <tr>
+                <td class="labelsfilters" style="line-height: 30px;">
+                    <label class="title-filter">Libro:</label>
+                </td>
+                <td class="requieredfield" style="line-height: 30px;">
+                    <label style="font-size:large">*</label>
+                </td>
+                <td style="line-height: 30px;">
+                    @{
+                        if (ind != null)
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())">
+                                @{
+                            var bk = db.Books.Where(x => x.Active == true).OrderBy(x => x.BookName);
+                            foreach (Books _bk in bk)
+                            {
+                                if (_bk.BookId == BookId)
+                                {
+                                    <option value="@_bk.BookId" selected="selected">@_bk.BookName</option>
+                                }
+                                else
+                                {
+                                    <option value="@_bk.BookId">@_bk.BookName</option>
+                                }
+                            }
+                                }
+                            </select>
+
+                        }
+                        else
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())"></select>
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td class="labelsfilters" style="line-height: 30px;">
+                    <label class="title-filter">Edición:</label>
+                </td>
+                <td class="requieredfield" style="line-height: 30px;">
+                    <label style="font-size:large">*</label>
+                </td>
+                <td style="line-height: 30px;">
+                    @{
+                        if (ind != null)
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Editions" onchange="getDivisions($(this).val())">
+                                <option>Seleccione...</option>
+                                @{
+                                    var e = db.Editions.Where(x => x.BookId == BookId && x.CountryId == CountryId).OrderBy(x => x.NumberEdition).ToList();
+                                    foreach (Editions _e in e)
+                                    {
+                                        if (_e.EditionId == EditionId)
+                                        {
+                                            <option value="@_e.EditionId" selected="selected">@_e.NumberEdition</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@_e.EditionId">@_e.NumberEdition</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Editions" onchange="getDivisions($(this).val())"></select>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="labelsfilters" style="line-height: 30px;">
+                    <label class="title-filter">Laboratorio:</label>
+                </td>
+                <td class="requieredfield" style="line-height: 30px;">
+                    <label style="font-size:large">*</label>
+                </td>
+                <td style="line-height: 30px;">
+                    @{
+                        if (ind != null)
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="getresults($(this).val())">
+                                <option>Seleccione...</option>
+                                @{
+                                    List<Divisions> LD = db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
+                                    foreach (Divisions _d in LD)
+                                    {
+                                        <option value="@_d.DivisionId">@_d.DivisionName</option>
+                                    }
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="getresults($(this).val())"></select>
+                        }
+                    }
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="widthtable table-hover">
+                    <tr>
+                        <td><label class="title-filter">País:</label></td>
+                        <td>
+                            @{
+                                var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                                if (c.LongCount() > 0)
+                                {
+                                    <span style="font-style: oblique; font-weight: bold">@c[0].CountryName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Obra:</label></td>
+                        <td>
+                            @{
+                                var b = db.Books.Where(x => x.BookId == BookId).ToList();
+
+                                if (b.LongCount() > 0)
+                                {
+                                    <span style="font-style: oblique; font-weight: bold">@b[0].BookName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Edición:</label></td>
+                        <td>
+                            @{
+                                var ed = db.Editions.Where(x => x.EditionId == EditionId).ToList();
+
+                                if (ed.LongCount() > 0)
+                                {
+                                    <span style="font-style: oblique; font-weight: bold">@ed[0].NumberEdition</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Laboratorio:</label></td>
+                        <td>
+                            @{
+                                var dv = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+
+                                if (dv.LongCount() > 0)
+                                {
+                                    <span style="font-style:oblique; font-weight:bold">@dv[0].DivisionName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+}
+<br />
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="widthtable table-responsive">
+            @_datagrid.GetHtml(
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "webgrid-table",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                                _datagrid.Column("", header: "Producto", format: @<text>
+                                @{
+                                    <span class="show-data" id="lblProductName">@item.ProductName</span>
+                                    <textarea class="form-control edit-data" style="font-size: 12px; color: red; display: none;" id="trtxtProductName">@item.ProductName</textarea>
+                                    <input type="text" value="@item.ProductId" id="lblProductId" style="display:none" />
+                                }
+                                </text>, style:"column11"),
+
+                                _datagrid.Column("", header: "Forma Farmacéutica", format: @<text>
+                @{
+                    <span>@item.PharmaForm</span>
+                    <input type="text" value="@item.PharmaFormId" id="lblPharmaFormId" style="display:none" />
+                }
+                                </text>, style:"column11"),
+
+                _datagrid.Column("", header: "Categoría", format: @<text>
+                @{
+                    <span>@item.CategoryName</span>
+                    <input type="text" value="@item.CategoryId" id="lblCategoryId" style="display:none" />
+                }
+                </text>, style:"column11"),
+
+
+                                _datagrid.Column("", header: "Sustancias Activa", format: @<text>
+                @{
+                    if (item.NumberOfActiveSubstances != 0)
+                    {
+                        <input type="checkbox" checked="checked" onclick="SIDEF($(this))" id="SIDEF" disabled="disabled"/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" onclick="SIDEF($(this))" id="SIDEF" disabled="disabled" />
+                    }
+}
+                                </text>, style:"text-center column7"),
+
+                                    _datagrid.Column("", header: "Cultivos", format: @<text>
+                @{
+    if (item.NumberOfCrops != 0)
+    {
+        <input type="checkbox" checked="checked" onclick="Participant($(this))" id="Participant" disabled="disabled" />
+    }
+    else
+    {
+        <input type="checkbox" onclick="Participant($(this))" id="Participant" disabled="disabled" />
+    }
+}
+                                    </text>, style:"text-center column7"),
+                                    _datagrid.Column("", header: "Usos Agroquímicos", format: @<text>
+                @{
+    if (item.NumberOfAgrochemicalUses != 0)
+    {
+        <input type="checkbox" checked="checked" id="Mentionated" onclick="Mentionated($(this))" disabled="disabled" />
+    }
+    else
+    {
+        <input type="checkbox" id="Mentionated" onclick="Mentionated($(this))" disabled="disabled" />
+    }
+}
+                                    </text>, style:"text-center column7"),
+                                    _datagrid.Column("", header: "Semillas", format: @<text>
+                @{
+    if (item.NumberOfSeeds != 0)
+    {
+        <input type="checkbox" checked="checked" onclick="ProductChanges($(this))" id="ProductChanges" disabled="disabled" />
+    }
+    else
+    {
+        <input type="checkbox" onclick="ProductChanges($(this))" id="ProductChanges" disabled="disabled" />
+    }
+}
+                                    </text>, style:"text-center column7"),
+                                    _datagrid.Column("", header: "Editar índices", format: @<text>
+                @{
+                    <button class="btn btn-danger btn-sm ldr" id="clasifbtn" style="display:normal" onclick="location.href='@Url.Action("ActiveSubstances", "Clasification", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId })';return false;">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </button>
+                }
+                                    </text>, style:"text-center column7"),
+
+                                }
+                                                                                                                                                                                                                                                          )
+        </div>
+    }
+}
+<br />

@@ -1,0 +1,1602 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DEAQModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActiveSubstances">
+          <Key>
+            <PropertyRef Name="ActiveSubstanceId" />
+          </Key>
+          <Property Name="ActiveSubstanceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActiveSubstanceName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AgrochemicalUses">
+          <Key>
+            <PropertyRef Name="AgrochemicalUseId" />
+          </Key>
+          <Property Name="AgrochemicalUseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgrochemicalUseName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="UseKey" Type="varchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ShortName" Type="varchar" MaxLength="200" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CountryCode" Type="tinyint" />
+          <Property Name="ID" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Crops">
+          <Key>
+            <PropertyRef Name="CropId" />
+          </Key>
+          <Property Name="CropId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CropName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ScientificName" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="DivisionInformation">
+          <Key>
+            <PropertyRef Name="DivisionInformationId" />
+          </Key>
+          <Property Name="DivisionInformationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DivisionId" Type="int" />
+          <Property Name="Image" Type="varchar" MaxLength="200" />
+          <Property Name="Address" Type="text" />
+          <Property Name="Suburb" Type="varchar" MaxLength="250" />
+          <Property Name="Location" Type="varchar" MaxLength="150" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="20" />
+          <Property Name="Telephone" Type="varchar" MaxLength="200" />
+          <Property Name="Lada" Type="varchar" MaxLength="150" />
+          <Property Name="Fax" Type="varchar" MaxLength="50" />
+          <Property Name="Web" Type="varchar" MaxLength="100" />
+          <Property Name="City" Type="varchar" MaxLength="100" />
+          <Property Name="State" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Divisions">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Name="DivisionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="DivisionName" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="ShortName" Type="varchar" MaxLength="200" />
+          <Property Name="LaboratoryId" Type="int" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EditionDivisionProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Editions">
+          <Key>
+            <PropertyRef Name="EditionId" />
+          </Key>
+          <Property Name="EditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="BookId" Type="int" />
+          <Property Name="NumberEdition" Type="int" Nullable="false" />
+          <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BarCode" Type="varchar" MaxLength="80" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MentionatedProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NewProducts">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="EditionId" />
+          </Key>
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParticipantProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+          </Key>
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="HTMLContent" Type="text" />
+          <Property Name="Page" Type="varchar" MaxLength="50" />
+          <Property Name="XMLContent" Type="text" />
+          <Property Name="ContentTypeId" Type="tinyint" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="PharmaForms">
+          <Key>
+            <PropertyRef Name="PharmaFormId" />
+          </Key>
+          <Property Name="PharmaFormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PharmaForm" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductAgrochemicalUses">
+          <Key>
+            <PropertyRef Name="AgrochemicalUseId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="AgrochemicalUseId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductCrops">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="CropId" />
+          </Key>
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="CropId" Type="int" Nullable="false" />
+          <Property Name="Substance" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="Register" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CountryId" Type="int" />
+          <Property Name="LaboratoryId" Type="int" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="AccessId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductSeeds">
+          <Key>
+            <PropertyRef Name="SeedId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="SeedId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductSubstances">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="ActiveSubstanceId" />
+          </Key>
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seeds">
+          <Key>
+            <PropertyRef Name="SeedId" />
+          </Key>
+          <Property Name="SeedId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeedName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ScientificName" Type="varchar" MaxLength="100" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="plm_vwProductsByEdition">
+          <Key>
+            <PropertyRef Name="CountryId" />
+            <PropertyRef Name="CountryName" />
+            <PropertyRef Name="LaboratoryId" />
+            <PropertyRef Name="LaboratoryName" />
+            <PropertyRef Name="LabActive" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="DivisionName" />
+            <PropertyRef Name="DivisionActive" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="CategoryName" />
+            <PropertyRef Name="CategoryActive" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="ProductActive" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="PharmaForm" />
+            <PropertyRef Name="PharmaActive" />
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="NumberEdition" />
+            <PropertyRef Name="ISBN" />
+            <PropertyRef Name="EditionActive" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="BookName" />
+            <PropertyRef Name="BookActive" />
+          </Key>
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LaboratoryId" Type="int" Nullable="false" />
+          <Property Name="LaboratoryName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="LabActive" Type="bit" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="DivisionName" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="DivisionShortName" Type="varchar" MaxLength="200" />
+          <Property Name="DivisionActive" Type="bit" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CategoryActive" Type="bit" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ProductDescription" Type="varchar" MaxLength="500" />
+          <Property Name="Register" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProductActive" Type="bit" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="PharmaForm" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="PharmaActive" Type="bit" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="NumberEdition" Type="int" Nullable="false" />
+          <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BarCode" Type="varchar" MaxLength="80" />
+          <Property Name="EditionActive" Type="bit" Nullable="false" />
+          <Property Name="TypeInEdition" Type="varchar" MaxLength="1" />
+          <Property Name="Page" Type="varchar" MaxLength="50" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="BookName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="BookActive" Type="bit" Nullable="false" />
+          <Property Name="NewProduct" Type="varchar" MaxLength="1" />
+          <Property Name="ContentType" Type="varchar" MaxLength="3" />
+          <Property Name="NumberOfActiveSubstances" Type="int" />
+          <Property Name="NumberOfCrops" Type="int" />
+          <Property Name="NumberOfSeeds" Type="int" />
+          <Property Name="NumberOfAgrochemicalUses" Type="int" />
+        </EntityType>
+        <Association Name="R_12">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="MentionatedProducts" Type="Self.MentionatedProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="MentionatedProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_13">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="ParticipantProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_16">
+          <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="1" />
+          <End Role="ProductAgrochemicalUses" Type="Self.ProductAgrochemicalUses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgrochemicalUses">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Principal>
+            <Dependent Role="ProductAgrochemicalUses">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_17">
+          <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="1" />
+          <End Role="AgrochemicalUses1" Type="Self.AgrochemicalUses" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AgrochemicalUses">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Principal>
+            <Dependent Role="AgrochemicalUses1">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_18">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductAgrochemicalUses" Type="Self.ProductAgrochemicalUses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductAgrochemicalUses">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_19">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductSubstances">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_20">
+          <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+          <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ProductSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_21">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCrops">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_22">
+          <End Role="Crops" Type="Self.Crops" Multiplicity="1" />
+          <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crops">
+              <PropertyRef Name="CropId" />
+            </Principal>
+            <Dependent Role="ProductCrops">
+              <PropertyRef Name="CropId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_24">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_25">
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+          <End Role="DivisionInformation" Type="Self.DivisionInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Divisions">
+              <PropertyRef Name="DivisionId" />
+            </Principal>
+            <Dependent Role="DivisionInformation">
+              <PropertyRef Name="DivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_31">
+          <End Role="Seeds" Type="Self.Seeds" Multiplicity="1" />
+          <End Role="ProductSeeds" Type="Self.ProductSeeds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seeds">
+              <PropertyRef Name="SeedId" />
+            </Principal>
+            <Dependent Role="ProductSeeds">
+              <PropertyRef Name="SeedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_32">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductSeeds" Type="Self.ProductSeeds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductSeeds">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_37">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="Editions1">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_4">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_46">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionDivisionProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_8">
+          <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DEAQModelStoreContainer">
+          <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgrochemicalUses" EntityType="Self.AgrochemicalUses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Crops" EntityType="Self.Crops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MentionatedProducts" EntityType="Self.MentionatedProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewProducts" EntityType="Self.NewProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PharmaForms" EntityType="Self.PharmaForms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductAgrochemicalUses" EntityType="Self.ProductAgrochemicalUses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCrops" EntityType="Self.ProductCrops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSeeds" EntityType="Self.ProductSeeds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSubstances" EntityType="Self.ProductSubstances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seeds" EntityType="Self.Seeds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="plm_vwProductsByEdition" EntityType="Self.plm_vwProductsByEdition" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [plm_vwProductsByEdition].[CountryId] AS [CountryId], 
+    [plm_vwProductsByEdition].[CountryName] AS [CountryName], 
+    [plm_vwProductsByEdition].[LaboratoryId] AS [LaboratoryId], 
+    [plm_vwProductsByEdition].[LaboratoryName] AS [LaboratoryName], 
+    [plm_vwProductsByEdition].[LabActive] AS [LabActive], 
+    [plm_vwProductsByEdition].[DivisionId] AS [DivisionId], 
+    [plm_vwProductsByEdition].[DivisionName] AS [DivisionName], 
+    [plm_vwProductsByEdition].[DivisionShortName] AS [DivisionShortName], 
+    [plm_vwProductsByEdition].[DivisionActive] AS [DivisionActive], 
+    [plm_vwProductsByEdition].[CategoryId] AS [CategoryId], 
+    [plm_vwProductsByEdition].[CategoryName] AS [CategoryName], 
+    [plm_vwProductsByEdition].[CategoryActive] AS [CategoryActive], 
+    [plm_vwProductsByEdition].[ProductId] AS [ProductId], 
+    [plm_vwProductsByEdition].[ProductName] AS [ProductName], 
+    [plm_vwProductsByEdition].[ProductDescription] AS [ProductDescription], 
+    [plm_vwProductsByEdition].[Register] AS [Register], 
+    [plm_vwProductsByEdition].[ProductActive] AS [ProductActive], 
+    [plm_vwProductsByEdition].[PharmaFormId] AS [PharmaFormId], 
+    [plm_vwProductsByEdition].[PharmaForm] AS [PharmaForm], 
+    [plm_vwProductsByEdition].[PharmaActive] AS [PharmaActive], 
+    [plm_vwProductsByEdition].[EditionId] AS [EditionId], 
+    [plm_vwProductsByEdition].[NumberEdition] AS [NumberEdition], 
+    [plm_vwProductsByEdition].[ISBN] AS [ISBN], 
+    [plm_vwProductsByEdition].[BarCode] AS [BarCode], 
+    [plm_vwProductsByEdition].[EditionActive] AS [EditionActive], 
+    [plm_vwProductsByEdition].[TypeInEdition] AS [TypeInEdition], 
+    [plm_vwProductsByEdition].[Page] AS [Page], 
+    [plm_vwProductsByEdition].[BookId] AS [BookId], 
+    [plm_vwProductsByEdition].[BookName] AS [BookName], 
+    [plm_vwProductsByEdition].[BookActive] AS [BookActive], 
+    [plm_vwProductsByEdition].[NewProduct] AS [NewProduct], 
+    [plm_vwProductsByEdition].[ContentType] AS [ContentType], 
+    [plm_vwProductsByEdition].[NumberOfActiveSubstances] AS [NumberOfActiveSubstances], 
+    [plm_vwProductsByEdition].[NumberOfCrops] AS [NumberOfCrops], 
+    [plm_vwProductsByEdition].[NumberOfSeeds] AS [NumberOfSeeds], 
+    [plm_vwProductsByEdition].[NumberOfAgrochemicalUses] AS [NumberOfAgrochemicalUses]
+    FROM [dbo].[plm_vwProductsByEdition] AS [plm_vwProductsByEdition]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="R_12" Association="Self.R_12">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+          </AssociationSet>
+          <AssociationSet Name="R_13" Association="Self.R_13">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <AssociationSet Name="R_16" Association="Self.R_16">
+            <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+            <End Role="ProductAgrochemicalUses" EntitySet="ProductAgrochemicalUses" />
+          </AssociationSet>
+          <AssociationSet Name="R_17" Association="Self.R_17">
+            <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+            <End Role="AgrochemicalUses1" EntitySet="AgrochemicalUses" />
+          </AssociationSet>
+          <AssociationSet Name="R_18" Association="Self.R_18">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductAgrochemicalUses" EntitySet="ProductAgrochemicalUses" />
+          </AssociationSet>
+          <AssociationSet Name="R_19" Association="Self.R_19">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+          </AssociationSet>
+          <AssociationSet Name="R_20" Association="Self.R_20">
+            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+            <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+          </AssociationSet>
+          <AssociationSet Name="R_21" Association="Self.R_21">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductCrops" EntitySet="ProductCrops" />
+          </AssociationSet>
+          <AssociationSet Name="R_22" Association="Self.R_22">
+            <End Role="Crops" EntitySet="Crops" />
+            <End Role="ProductCrops" EntitySet="ProductCrops" />
+          </AssociationSet>
+          <AssociationSet Name="R_24" Association="Self.R_24">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_25" Association="Self.R_25">
+            <End Role="Divisions" EntitySet="Divisions" />
+            <End Role="DivisionInformation" EntitySet="DivisionInformation" />
+          </AssociationSet>
+          <AssociationSet Name="R_31" Association="Self.R_31">
+            <End Role="Seeds" EntitySet="Seeds" />
+            <End Role="ProductSeeds" EntitySet="ProductSeeds" />
+          </AssociationSet>
+          <AssociationSet Name="R_32" Association="Self.R_32">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSeeds" EntitySet="ProductSeeds" />
+          </AssociationSet>
+          <AssociationSet Name="R_37" Association="Self.R_37">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="Editions1" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_4" Association="Self.R_4">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_46" Association="Self.R_46">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="Self.R_7">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_8" Association="Self.R_8">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DEAQModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CountryCode" Type="Byte" />
+          <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Divisions" Relationship="DEAQModel.R_24" FromRole="Countries" ToRole="Divisions" />
+          <NavigationProperty Name="Editions" Relationship="DEAQModel.R_7" FromRole="Countries" ToRole="Editions" />
+          <NavigationProperty Name="Products" Relationship="DEAQModel.R_4" FromRole="Countries" ToRole="Products" />
+        </EntityType>
+        <EntityContainer Name="DEAQ" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Countries" EntityType="Self.Countries" />
+          <EntitySet Name="Divisions" EntityType="DEAQModel.Divisions" />
+          <EntitySet Name="Books" EntityType="DEAQModel.Books" />
+          <EntitySet Name="Editions" EntityType="DEAQModel.Editions" />
+          <EntitySet Name="Categories" EntityType="DEAQModel.Categories" />
+          <EntitySet Name="PharmaForms" EntityType="DEAQModel.PharmaForms" />
+          <AssociationSet Name="R_8" Association="DEAQModel.R_8">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_24" Association="DEAQModel.R_24">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="DEAQModel.R_7">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_37" Association="DEAQModel.R_37">
+            <End EntitySet="Editions" Role="Editions" />
+            <End EntitySet="Editions" Role="Editions1" />
+          </AssociationSet>
+          <EntitySet Name="ParticipantProducts" EntityType="DEAQModel.ParticipantProducts" />
+          <AssociationSet Name="R_13" Association="DEAQModel.R_13">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <EntitySet Name="MentionatedProducts" EntityType="DEAQModel.MentionatedProducts" />
+          <EntitySet Name="NewProducts" EntityType="DEAQModel.NewProducts" />
+          <AssociationSet Name="R_12" Association="DEAQModel.R_12">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+          </AssociationSet>
+          <AssociationSet Name="R_124" Association="DEAQModel.R_124">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="NewProducts" EntitySet="NewProducts" />
+          </AssociationSet>
+          <EntitySet Name="plm_vwProductsByEdition" EntityType="DEAQModel.plm_vwProductsByEdition" />
+          <EntitySet Name="EditionDivisionProducts" EntityType="DEAQModel.EditionDivisionProducts" />
+          <AssociationSet Name="R_46" Association="DEAQModel.R_46">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+          </AssociationSet>
+          <EntitySet Name="Products" EntityType="DEAQModel.Products" />
+          <AssociationSet Name="R_4" Association="DEAQModel.R_4">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="DivisionInformation" EntityType="DEAQModel.DivisionInformation" />
+          <AssociationSet Name="R_25" Association="DEAQModel.R_25">
+            <End Role="Divisions" EntitySet="Divisions" />
+            <End Role="DivisionInformation" EntitySet="DivisionInformation" />
+          </AssociationSet>
+          <EntitySet Name="ActiveSubstances" EntityType="DEAQModel.ActiveSubstances" />
+          <EntitySet Name="AgrochemicalUses" EntityType="DEAQModel.AgrochemicalUses" />
+          <EntitySet Name="Crops" EntityType="DEAQModel.Crops" />
+          <EntitySet Name="Seeds" EntityType="DEAQModel.Seeds" />
+          <AssociationSet Name="R_17" Association="DEAQModel.R_17">
+            <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+            <End Role="AgrochemicalUses1" EntitySet="AgrochemicalUses" />
+          </AssociationSet>
+          <EntitySet Name="ProductSubstances" EntityType="DEAQModel.ProductSubstances" />
+          <AssociationSet Name="ActiveSubstancesProductSubstances" Association="DEAQModel.ActiveSubstancesProductSubstances">
+            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+            <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+          </AssociationSet>
+          <AssociationSet Name="ProductsProductSubstances" Association="DEAQModel.ProductsProductSubstances">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+          </AssociationSet>
+          <EntitySet Name="ProductAgrochemicalUses" EntityType="DEAQModel.ProductAgrochemicalUses" />
+          <AssociationSet Name="ProductsProductAgrochemicalUses" Association="DEAQModel.ProductsProductAgrochemicalUses">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductAgrochemicalUses" EntitySet="ProductAgrochemicalUses" />
+          </AssociationSet>
+          <AssociationSet Name="AgrochemicalUsesProductAgrochemicalUses" Association="DEAQModel.AgrochemicalUsesProductAgrochemicalUses">
+            <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+            <End Role="ProductAgrochemicalUses" EntitySet="ProductAgrochemicalUses" />
+          </AssociationSet>
+          <EntitySet Name="ProductCrops" EntityType="DEAQModel.ProductCrops" />
+          <AssociationSet Name="R_22" Association="DEAQModel.R_22">
+            <End Role="Crops" EntitySet="Crops" />
+            <End Role="ProductCrops" EntitySet="ProductCrops" />
+          </AssociationSet>
+          <AssociationSet Name="R_21" Association="DEAQModel.R_21">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductCrops" EntitySet="ProductCrops" />
+          </AssociationSet>
+          <EntitySet Name="ProductSeeds" EntityType="DEAQModel.ProductSeeds" />
+          <AssociationSet Name="ProductsProductSeeds" Association="DEAQModel.ProductsProductSeeds">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSeeds" EntitySet="ProductSeeds" />
+          </AssociationSet>
+          <AssociationSet Name="SeedsProductSeeds" Association="DEAQModel.SeedsProductSeeds">
+            <End Role="Seeds" EntitySet="Seeds" />
+            <End Role="ProductSeeds" EntitySet="ProductSeeds" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Divisions">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LaboratoryId" Type="Int32" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Countries" Relationship="DEAQModel.R_24" FromRole="Divisions" ToRole="Countries" />
+          <NavigationProperty Name="DivisionInformation" Relationship="DEAQModel.R_25" FromRole="Divisions" ToRole="DivisionInformation" />
+        </EntityType>
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="DEAQModel.R_8" FromRole="Books" ToRole="Editions" />
+        </EntityType>
+        <EntityType Name="Editions">
+          <Key>
+            <PropertyRef Name="EditionId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="BookId" Type="Int32" />
+          <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Books" Relationship="DEAQModel.R_8" FromRole="Editions" ToRole="Books" />
+          <NavigationProperty Name="Countries" Relationship="DEAQModel.R_7" FromRole="Editions" ToRole="Countries" />
+          <NavigationProperty Name="Editions1" Relationship="DEAQModel.R_37" FromRole="Editions" ToRole="Editions1" />
+          <NavigationProperty Name="Editions2" Relationship="DEAQModel.R_37" FromRole="Editions1" ToRole="Editions" />
+          <NavigationProperty Name="ParticipantProducts" Relationship="DEAQModel.R_13" FromRole="Editions" ToRole="ParticipantProducts" />
+          <NavigationProperty Name="MentionatedProducts" Relationship="DEAQModel.R_12" FromRole="Editions" ToRole="MentionatedProducts" />
+          <NavigationProperty Name="NewProducts" Relationship="DEAQModel.R_124" FromRole="Editions" ToRole="NewProducts" />
+          <NavigationProperty Name="EditionDivisionProducts" Relationship="DEAQModel.R_46" FromRole="Editions" ToRole="EditionDivisionProducts" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PharmaForms">
+          <Key>
+            <PropertyRef Name="PharmaFormId" />
+          </Key>
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="R_8">
+          <End Type="DEAQModel.Books" Role="Books" Multiplicity="0..1" />
+          <End Type="DEAQModel.Editions" Role="Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_24">
+          <End Type="DEAQModel.Countries" Role="Countries" Multiplicity="0..1" />
+          <End Type="DEAQModel.Divisions" Role="Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Type="DEAQModel.Countries" Role="Countries" Multiplicity="0..1" />
+          <End Type="DEAQModel.Editions" Role="Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_37">
+          <End Type="DEAQModel.Editions" Multiplicity="1" Role="Editions" />
+          <End Type="DEAQModel.Editions" Multiplicity="0..1" Role="Editions1" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="Editions1">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ParticipantProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ContentTypeId" Type="Byte" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Editions" Relationship="DEAQModel.R_13" FromRole="ParticipantProducts" ToRole="Editions" />
+        </EntityType>
+        <Association Name="R_13">
+          <End Type="DEAQModel.Editions" Role="Editions" Multiplicity="1" />
+          <End Type="DEAQModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="ParticipantProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MentionatedProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="DEAQModel.R_12" FromRole="MentionatedProducts" ToRole="Editions" />
+        </EntityType>
+        <EntityType Name="NewProducts">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="EditionId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="DEAQModel.R_124" FromRole="NewProducts" ToRole="Editions" />
+        </EntityType>
+        <Association Name="R_12">
+          <End Type="DEAQModel.Editions" Role="Editions" Multiplicity="1" />
+          <End Type="DEAQModel.MentionatedProducts" Role="MentionatedProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="MentionatedProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_124">
+          <End Type="DEAQModel.Editions" Role="Editions" Multiplicity="1" />
+          <End Type="DEAQModel.NewProducts" Role="NewProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="NewProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="plm_vwProductsByEdition">
+          <Key>
+            <PropertyRef Name="CountryId" />
+            <PropertyRef Name="CountryName" />
+            <PropertyRef Name="LaboratoryId" />
+            <PropertyRef Name="LaboratoryName" />
+            <PropertyRef Name="LabActive" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="DivisionName" />
+            <PropertyRef Name="DivisionActive" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="CategoryName" />
+            <PropertyRef Name="CategoryActive" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="Register" />
+            <PropertyRef Name="ProductActive" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="PharmaForm" />
+            <PropertyRef Name="PharmaActive" />
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="NumberEdition" />
+            <PropertyRef Name="ISBN" />
+            <PropertyRef Name="EditionActive" />
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="BookName" />
+            <PropertyRef Name="BookActive" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+          <Property Name="LaboratoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="LabActive" Type="Boolean" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="DivisionShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DivisionActive" Type="Boolean" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryActive" Type="Boolean" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ProductDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProductActive" Type="Boolean" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PharmaActive" Type="Boolean" Nullable="false" />
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="EditionActive" Type="Boolean" Nullable="false" />
+          <Property Name="TypeInEdition" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BookActive" Type="Boolean" Nullable="false" />
+          <Property Name="NewProduct" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ContentType" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="NumberOfActiveSubstances" Type="Int32" />
+          <Property Name="NumberOfCrops" Type="Int32" />
+          <Property Name="NumberOfSeeds" Type="Int32" />
+          <Property Name="NumberOfAgrochemicalUses" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EditionDivisionProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="DEAQModel.R_46" FromRole="EditionDivisionProducts" ToRole="Editions" />
+        </EntityType>
+        <Association Name="R_46">
+          <End Type="DEAQModel.Editions" Role="Editions" Multiplicity="1" />
+          <End Type="DEAQModel.EditionDivisionProducts" Role="EditionDivisionProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionDivisionProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Register" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CountryId" Type="Int32" />
+          <Property Name="LaboratoryId" Type="Int32" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="AccessId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Countries" Relationship="DEAQModel.R_4" FromRole="Products" ToRole="Countries" />
+          <NavigationProperty Name="ProductSubstances" Relationship="DEAQModel.ProductsProductSubstances" FromRole="Products" ToRole="ProductSubstances" />
+          <NavigationProperty Name="ProductAgrochemicalUses" Relationship="DEAQModel.ProductsProductAgrochemicalUses" FromRole="Products" ToRole="ProductAgrochemicalUses" />
+          <NavigationProperty Name="ProductCrops" Relationship="DEAQModel.R_21" FromRole="Products" ToRole="ProductCrops" />
+          <NavigationProperty Name="ProductSeeds" Relationship="DEAQModel.ProductsProductSeeds" FromRole="Products" ToRole="ProductSeeds" />
+        </EntityType>
+        <Association Name="R_4">
+          <End Type="DEAQModel.Countries" Role="Countries" Multiplicity="0..1" />
+          <End Type="DEAQModel.Products" Role="Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DivisionInformation">
+          <Key>
+            <PropertyRef Name="DivisionInformationId" />
+          </Key>
+          <Property Name="DivisionInformationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DivisionId" Type="Int32" />
+          <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Suburb" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Lada" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Divisions" Relationship="DEAQModel.R_25" FromRole="DivisionInformation" ToRole="Divisions" />
+        </EntityType>
+        <Association Name="R_25">
+          <End Type="DEAQModel.Divisions" Role="Divisions" Multiplicity="0..1" />
+          <End Type="DEAQModel.DivisionInformation" Role="DivisionInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Divisions">
+              <PropertyRef Name="DivisionId" />
+            </Principal>
+            <Dependent Role="DivisionInformation">
+              <PropertyRef Name="DivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ActiveSubstances">
+          <Key>
+            <PropertyRef Name="ActiveSubstanceId" />
+          </Key>
+          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActiveSubstanceName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductSubstances" Relationship="DEAQModel.ActiveSubstancesProductSubstances" FromRole="ActiveSubstances" ToRole="ProductSubstances" />
+        </EntityType>
+        <EntityType Name="AgrochemicalUses">
+          <Key>
+            <PropertyRef Name="AgrochemicalUseId" />
+          </Key>
+          <Property Name="AgrochemicalUseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgrochemicalUseName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="UseKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AgrochemicalUses1" Relationship="DEAQModel.R_17" FromRole="AgrochemicalUses" ToRole="AgrochemicalUses1" />
+          <NavigationProperty Name="AgrochemicalUses2" Relationship="DEAQModel.R_17" FromRole="AgrochemicalUses1" ToRole="AgrochemicalUses" />
+          <NavigationProperty Name="ProductAgrochemicalUses" Relationship="DEAQModel.AgrochemicalUsesProductAgrochemicalUses" FromRole="AgrochemicalUses" ToRole="ProductAgrochemicalUses" />
+        </EntityType>
+        <EntityType Name="Crops">
+          <Key>
+            <PropertyRef Name="CropId" />
+          </Key>
+          <Property Name="CropId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CropName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="ProductCrops" Relationship="DEAQModel.R_22" FromRole="Crops" ToRole="ProductCrops" />
+        </EntityType>
+        <EntityType Name="Seeds">
+          <Key>
+            <PropertyRef Name="SeedId" />
+          </Key>
+          <Property Name="SeedId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeedName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductSeeds" Relationship="DEAQModel.SeedsProductSeeds" FromRole="Seeds" ToRole="ProductSeeds" />
+        </EntityType>
+        <Association Name="R_17">
+          <End Type="DEAQModel.AgrochemicalUses" Role="AgrochemicalUses" Multiplicity="1" />
+          <End Type="DEAQModel.AgrochemicalUses" Role="AgrochemicalUses1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AgrochemicalUses">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Principal>
+            <Dependent Role="AgrochemicalUses1">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductSubstances">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="ActiveSubstanceId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ActiveSubstances" Relationship="DEAQModel.ActiveSubstancesProductSubstances" FromRole="ProductSubstances" ToRole="ActiveSubstances" />
+          <NavigationProperty Name="Products" Relationship="DEAQModel.ProductsProductSubstances" FromRole="ProductSubstances" ToRole="Products" />
+        </EntityType>
+        <Association Name="ActiveSubstancesProductSubstances">
+          <End Type="DEAQModel.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+          <End Type="DEAQModel.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ProductSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductsProductSubstances">
+          <End Type="DEAQModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="DEAQModel.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductSubstances">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductAgrochemicalUses">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="AgrochemicalUseId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgrochemicalUseId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="DEAQModel.ProductsProductAgrochemicalUses" FromRole="ProductAgrochemicalUses" ToRole="Products" />
+          <NavigationProperty Name="AgrochemicalUses" Relationship="DEAQModel.AgrochemicalUsesProductAgrochemicalUses" FromRole="ProductAgrochemicalUses" ToRole="AgrochemicalUses" />
+        </EntityType>
+        <Association Name="ProductsProductAgrochemicalUses">
+          <End Type="DEAQModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="DEAQModel.ProductAgrochemicalUses" Role="ProductAgrochemicalUses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductAgrochemicalUses">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AgrochemicalUsesProductAgrochemicalUses">
+          <End Type="DEAQModel.AgrochemicalUses" Role="AgrochemicalUses" Multiplicity="1" />
+          <End Type="DEAQModel.ProductAgrochemicalUses" Role="ProductAgrochemicalUses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgrochemicalUses">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Principal>
+            <Dependent Role="ProductAgrochemicalUses">
+              <PropertyRef Name="AgrochemicalUseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductCrops">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="CropId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="CropId" Type="Int32" Nullable="false" />
+          <Property Name="Substance" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Crops" Relationship="DEAQModel.R_22" FromRole="ProductCrops" ToRole="Crops" />
+          <NavigationProperty Name="Products" Relationship="DEAQModel.R_21" FromRole="ProductCrops" ToRole="Products" />
+        </EntityType>
+        <Association Name="R_22">
+          <End Type="DEAQModel.Crops" Role="Crops" Multiplicity="1" />
+          <End Type="DEAQModel.ProductCrops" Role="ProductCrops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Crops">
+              <PropertyRef Name="CropId" />
+            </Principal>
+            <Dependent Role="ProductCrops">
+              <PropertyRef Name="CropId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_21">
+          <End Type="DEAQModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="DEAQModel.ProductCrops" Role="ProductCrops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCrops">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductSeeds">
+          <Key>
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="SeedId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeedId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="DEAQModel.ProductsProductSeeds" FromRole="ProductSeeds" ToRole="Products" />
+          <NavigationProperty Name="Seeds" Relationship="DEAQModel.SeedsProductSeeds" FromRole="ProductSeeds" ToRole="Seeds" />
+        </EntityType>
+        <Association Name="ProductsProductSeeds">
+          <End Type="DEAQModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="DEAQModel.ProductSeeds" Role="ProductSeeds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductSeeds">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SeedsProductSeeds">
+          <End Type="DEAQModel.Seeds" Role="Seeds" Multiplicity="1" />
+          <End Type="DEAQModel.ProductSeeds" Role="ProductSeeds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seeds">
+              <PropertyRef Name="SeedId" />
+            </Principal>
+            <Dependent Role="ProductSeeds">
+              <PropertyRef Name="SeedId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DEAQModelStoreContainer" CdmEntityContainer="DEAQ">
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="DEAQModel.Countries">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Divisions">
+            <EntityTypeMapping TypeName="DEAQModel.Divisions">
+              <MappingFragment StoreEntitySet="Divisions">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="DEAQModel.Books">
+              <MappingFragment StoreEntitySet="Books">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editions">
+            <EntityTypeMapping TypeName="DEAQModel.Editions">
+              <MappingFragment StoreEntitySet="Editions">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="NumberEdition" ColumnName="NumberEdition" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="DEAQModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PharmaForms">
+            <EntityTypeMapping TypeName="DEAQModel.PharmaForms">
+              <MappingFragment StoreEntitySet="PharmaForms">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PharmaForm" ColumnName="PharmaForm" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParticipantProducts">
+            <EntityTypeMapping TypeName="DEAQModel.ParticipantProducts">
+              <MappingFragment StoreEntitySet="ParticipantProducts">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ContentTypeId" ColumnName="ContentTypeId" />
+                <ScalarProperty Name="XMLContent" ColumnName="XMLContent" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="HTMLContent" ColumnName="HTMLContent" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MentionatedProducts">
+            <EntityTypeMapping TypeName="DEAQModel.MentionatedProducts">
+              <MappingFragment StoreEntitySet="MentionatedProducts">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewProducts">
+            <EntityTypeMapping TypeName="DEAQModel.NewProducts">
+              <MappingFragment StoreEntitySet="NewProducts">
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="plm_vwProductsByEdition">
+            <EntityTypeMapping TypeName="DEAQModel.plm_vwProductsByEdition">
+              <MappingFragment StoreEntitySet="plm_vwProductsByEdition">
+                <ScalarProperty Name="NumberOfAgrochemicalUses" ColumnName="NumberOfAgrochemicalUses" />
+                <ScalarProperty Name="NumberOfSeeds" ColumnName="NumberOfSeeds" />
+                <ScalarProperty Name="NumberOfCrops" ColumnName="NumberOfCrops" />
+                <ScalarProperty Name="NumberOfActiveSubstances" ColumnName="NumberOfActiveSubstances" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="NewProduct" ColumnName="NewProduct" />
+                <ScalarProperty Name="BookActive" ColumnName="BookActive" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="TypeInEdition" ColumnName="TypeInEdition" />
+                <ScalarProperty Name="EditionActive" ColumnName="EditionActive" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="NumberEdition" ColumnName="NumberEdition" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="PharmaActive" ColumnName="PharmaActive" />
+                <ScalarProperty Name="PharmaForm" ColumnName="PharmaForm" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductActive" ColumnName="ProductActive" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CategoryActive" ColumnName="CategoryActive" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionActive" ColumnName="DivisionActive" />
+                <ScalarProperty Name="DivisionShortName" ColumnName="DivisionShortName" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="LabActive" ColumnName="LabActive" />
+                <ScalarProperty Name="LaboratoryName" ColumnName="LaboratoryName" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EditionDivisionProducts">
+            <EntityTypeMapping TypeName="DEAQModel.EditionDivisionProducts">
+              <MappingFragment StoreEntitySet="EditionDivisionProducts">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="DEAQModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="AccessId" ColumnName="AccessId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Register" ColumnName="Register" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DivisionInformation">
+            <EntityTypeMapping TypeName="DEAQModel.DivisionInformation">
+              <MappingFragment StoreEntitySet="DivisionInformation">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Web" ColumnName="Web" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Lada" ColumnName="Lada" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Suburb" ColumnName="Suburb" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="DivisionInformationId" ColumnName="DivisionInformationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActiveSubstances">
+            <EntityTypeMapping TypeName="DEAQModel.ActiveSubstances">
+              <MappingFragment StoreEntitySet="ActiveSubstances">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ActiveSubstanceName" ColumnName="ActiveSubstanceName" />
+                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgrochemicalUses">
+            <EntityTypeMapping TypeName="DEAQModel.AgrochemicalUses">
+              <MappingFragment StoreEntitySet="AgrochemicalUses">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UseKey" ColumnName="UseKey" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="AgrochemicalUseName" ColumnName="AgrochemicalUseName" />
+                <ScalarProperty Name="AgrochemicalUseId" ColumnName="AgrochemicalUseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Crops">
+            <EntityTypeMapping TypeName="DEAQModel.Crops">
+              <MappingFragment StoreEntitySet="Crops">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ScientificName" ColumnName="ScientificName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CropName" ColumnName="CropName" />
+                <ScalarProperty Name="CropId" ColumnName="CropId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seeds">
+            <EntityTypeMapping TypeName="DEAQModel.Seeds">
+              <MappingFragment StoreEntitySet="Seeds">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ScientificName" ColumnName="ScientificName" />
+                <ScalarProperty Name="SeedName" ColumnName="SeedName" />
+                <ScalarProperty Name="SeedId" ColumnName="SeedId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductSubstances">
+            <EntityTypeMapping TypeName="IsTypeOf(DEAQModel.ProductSubstances)">
+              <MappingFragment StoreEntitySet="ProductSubstances">
+                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductAgrochemicalUses">
+            <EntityTypeMapping TypeName="IsTypeOf(DEAQModel.ProductAgrochemicalUses)">
+              <MappingFragment StoreEntitySet="ProductAgrochemicalUses">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="AgrochemicalUseId" ColumnName="AgrochemicalUseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCrops">
+            <EntityTypeMapping TypeName="DEAQModel.ProductCrops">
+              <MappingFragment StoreEntitySet="ProductCrops">
+                <ScalarProperty Name="Substance" ColumnName="Substance" />
+                <ScalarProperty Name="CropId" ColumnName="CropId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductSeeds">
+            <EntityTypeMapping TypeName="IsTypeOf(DEAQModel.ProductSeeds)">
+              <MappingFragment StoreEntitySet="ProductSeeds">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="SeedId" ColumnName="SeedId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

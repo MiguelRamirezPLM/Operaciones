@@ -1,0 +1,238 @@
+﻿@model List<MediVet.Models.Letters>
+@using MediVet.Models;
+@{
+    ViewBag.Title = "clasificationTherapeuticUses";
+    PEV db = new PEV();
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 10);
+
+    var ds = Model;
+}
+
+<html>
+<head>
+    
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    
+    <title></title>
+</head>
+<body>
+    <br />
+    <ol class="breadcrumb">
+        <li><a href="/Veterinary/Index">Veterinario</a></li>
+        <li><a href="/Veterinary/Index">Productos</a></li>
+        <li class="active">Clasificación por Usos Terapéuticos</li>
+    </ol>
+
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width: 10%;"><label class="labels">País:</label></td>
+            <td style="width: 1%;"></td>
+            <td>
+                @{
+
+                    <label>@ViewData["CountryNameV"]</label>
+                }
+            </td>
+            <td style="width:10%"><label class="labels">Producto:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["ProductNameV"]</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Libro:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["BookNameV"]</label>
+                }
+            </td>
+            <td style="width:15%"><label class="labels">Forma Farmacéutica:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["PharmaFormV"]</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Edición:</label></td>
+            <td></td>
+            <td>
+                @{
+                    <label>@ViewData["NumberEditionV"]</label>
+                }
+            </td>
+            <td style="width:10%"><label class="labels">Categoría:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["CategoryNameV"]</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Divisón:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["DivisionNameV"]</label>
+                }
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div style="height:100%;width:100%; border-bottom:none">
+        <div style="width:100%;height:100%"></div>
+        <br />
+        <label id="Equipos" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductEquipment", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Equipos</label>
+        <label id="Especies" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductSpecies", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Especies</label>
+        <label id="Sustancias" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductSubstances", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Sustancias Activas</label>
+        <label id="Usos" class="labelin cpe" onclick="location.href='@Url.Action("clasificationTherapeuticUses", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Usos Terapéuticos</label>
+    </div>
+    <div style="width: 100%; height: 100%; display: normal; border-top: 1px solid #ddd;" id="divequipos">
+        <br />
+        <div style="border:none; width:100%">
+            <table style=" width: 100%">
+                <tr>
+                    <td style="text-align:center"><label class="labels">Usos Terapéuticos Disponibles</label> </td>
+                    <td style="text-align:center"><label class="labels">Usos Terapéuticos Asociadas</label> </td>
+                </tr>
+                <tr>
+                    <td style="height:15px"></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        @{
+            int ProductId = Convert.ToInt32(ViewData["ProductIdV"]);
+            var equip = db.Database.SqlQuery<ActiveSubstances>("plm_spGetProductsSubstances @productid=" + ProductId).ToList();
+            WebGrid _datagridAS = new WebGrid(equip, rowsPerPage: 10);
+        }
+        @*<script type="text/javascript">
+            $(document).ready(function () {
+                $(".treeview li>ul").css('display', 'none');
+                $(".collapsible").click(function (e) {
+                    e.preventDefault();
+                    $(this).toggleClass("collapse1 expand1");
+                    $(this).closest('li').children('ul').slideToggle();
+                });
+            });
+        </script>*@
+        <style>
+            .loadingP {
+                background-image: url('../Images/generated-image.gif');
+                width: 15px;
+                display: inline-block;
+            }
+
+            .collapse1 {
+                width: 15px;
+                background-image: url('../Images/ui-icons_454545_256x240.png');
+                background-repeat: no-repeat;
+                background-position: -36px -17px;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .expand {
+                width: 15px;
+                background-image: url('../Images/ui-icons_454545_256x240.png');
+                background-repeat: no-repeat;
+                background-position: -50px -17px;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .treeview ul {
+                font: 14px Arial, Sans-Serif;
+                margin: 0px;
+                padding-left: 20px;
+                list-style: none;
+            }
+
+            .treeview > li > a {
+                font-weight: bold;
+            }
+
+            .treeview li a {
+                padding: 4px;
+                font-size: 12px;
+                display: inline-block;
+                text-decoration: none;
+                width: auto;
+            }
+        </style>
+
+        <div style="border:1px solid black; padding:0px;  background-color:#FAFAFA">
+            @{
+                <div class="treeview">
+                    @{
+                        if (Model != null && Model.Count() > 0)
+                        {
+                            @*Here I will going to load Treeview menus*@
+                            <ul>
+                                @foreach (var i in Model)
+                                {
+                                    <li>
+                                        <span class="collapse1 collapsible" data-loaded="false" pid="@i.TherapeuticId">&nbsp;</span>
+                                        @* Here I have added the above span for collapsible button for treeview *@
+                                        @* and data-loaded="false" means its sub menu not loaded yet from database *@
+                                        <span>
+                                            <a href="@i.TherapeuticId">@i.TherapeuticName</a>
+                                        </span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+                </div>
+            }
+        </div>
+
+        @section Scripts{
+            @* Here I am going to add js code for populate submenu for the selected tree node *@
+            <script src="~/Scripts/MyTreeview.js"></script>
+        }
+    </div>
+
+        @*<div style="width: 40%; float: left; height: 100%">
+            <div class="treeview scrollbar1" id="scrollbar">
+                @{
+                    if (Model != null && Model.Count() > 0)
+                    {
+                        <ul>
+                            @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentId)
+                        </ul>
+                    }
+                }
+            </div>
+        </div>*@
+        @*<div style="width:40%; float:right; height:100%">
+            @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Uso", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblProductName" style="width:180px">@item.TherapeuticName</label> </span>
+                                    <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId" />
+                                }
+                        </text>),
+             _datagrid.Column("", header: "Eliminar", format: @<text>
+                @{
+                    <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteproductsubstances", "Veterinary", new { TherapeuticId = item.TherapeuticId, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                }
+            </text>, style:"buton")
+        })
+        </div>*@
+    </div>
+</body>
+</html>

@@ -1,0 +1,1503 @@
+﻿@model List<PillBooks.Models.JoinPillBooks>
+@using PillBooks.Models;
+@{
+    ViewBag.Title = "Index";
+    MedinetPB db = new MedinetPB();
+    SessionCatch ind = (SessionCatch)Session["SessionCatch"];
+    var mdl = Model;
+    SessionActiveTT SessionActiveTT = (SessionActiveTT)Session["SessionActiveTT"];
+}
+
+<script>
+    $(document).ready(function () {
+        onloadpage();
+    })
+</script>
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<div id="content">
+    <div id="column-left">
+        <br />
+        <table border="0" style="width:100%; height:100%">
+            <tr>
+                <td colspan="3" style="width:50%;">
+                    @using (Html.BeginForm())
+                    {
+                    <div style="text-align:right;display:none">
+                        <p>
+                            @{
+                                if (ind != null)
+                                {
+                                    <label>PillBookId</label><input id="PillBookId" name="PillBookId" type="text" value="@Convert.ToInt32(ind.PillBookId)">
+                                    <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+                                }
+                                else
+                                {
+                                    <label>PillBookId</label><input id="PillBookId" name="PillBookId" type="text" value="">
+                                    <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                                }
+                            }
+                        </p>
+                    </div>
+                    }
+                    @{
+                        if (ind == null)
+                        {
+                            <div style="width: 100%; float: left">
+                                <table style="width:100%" border="0">
+                                    <tr>
+                                        <td width="10%">
+                                            <label style="color:black">Seleccione:</label>
+                                        </td>
+                                        <td style="line-height: 30px;width:90%">
+                                            <select class="form-control" style="width:100%" onchange="getpillbookinformation($(this).val())">
+                                                <option value="0">Seleccione Pillbook...</option>
+                                                @{
+                                                    var pb = db.PillBook.Where(x => x.Active == true).OrderBy(x => x.PillBookName).ToList();
+
+                                                    foreach (PillBook _pb in pb)
+                                                    {
+                                                        <option value="@_pb.PillBookId">@_pb.PillBookName.ToUpper().Trim()</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="width: 100%;">
+                                <table style="width:100%;border-color:white" border="0">
+                                    <tr>
+                                        <td width="10%">
+                                            <label style="color:black">Seleccione:</label>
+                                        </td>
+                                        <td style="line-height: 30px;width:90%" colspan="4">
+                                            <select class="form-control" style="width:100%" onchange="getpillbookinformation($(this).val())">
+                                                <option value="0">Seleccione Pillbook...</option>
+                                                @{
+                                                    int PillBookId = Convert.ToInt32(ind.PillBookId);
+
+                                                    var pb = db.PillBook.Where(x => x.Active == true).OrderBy(x => x.PillBookName).ToList();
+
+                                                    foreach (PillBook _pb in pb)
+                                                    {
+                                                        if (_pb.PillBookId == PillBookId)
+                                                        {
+                                                                        <option value="@_pb.PillBookId" selected="selected">@_pb.PillBookName.ToUpper().Trim()</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                        <option value="@_pb.PillBookId">@_pb.PillBookName.ToUpper().Trim()</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"><br /></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="classh2" style="color: black; border-bottom: groove; border-color: #f0ad4e; text-align: center; width: 34%">Nombre</td>
+                                        <td class="classh2" style="color: black; border-bottom: groove; border-color: #f0ad4e; text-align: center; width: 30%; ">Código</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td style="border:none;width:32%">
+                                            @{
+                                                var pbs = db.PillBook.Where(x => x.PillBookId == ind.PBId && x.Active == true).ToList();
+                                                if (pbs.LongCount() > 0)
+                                                {
+                                                    <label style="color: #003870; font-size:20px;font-style:italic" id="lblpb">@pbs[0].PillBookName</label>
+                                                    <input type="text" value="@pbs[0].PillBookName" class="form-control" id="editpb" style="display:none;color:red" />
+                                                    <input type="text" value="@pbs[0].PillBookId" id="PBId" style="display:none" />
+                                                }
+                                            }
+                                        </td>
+                                        <td style="border: none; width: 30%">
+                                            @{
+                                                <label style="color: #003870; font-size: 20px; font-style: italic" id="lblpbc">@pbs[0].PIllBookCode</label>
+                                            }
+                                        </td>
+                                        <td style="text-align:center">
+                                            <button class="btn btn-warning" onclick="function_edit()" id="btneditpb">Editar</button>
+                                            <button class="btn btn-warning" onclick="editpillbook()" id="btnsavepb" style="display:none">Guardar</button>
+                                            <button class="btn btn-warning" onclick="function_canceledit()" id="btncancelpb" style="display:none">Cancelar</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                    }
+                </td>
+                <td style="width:50%;text-align:center">
+                    <table border="0" style="width:100%">
+                        <tr>
+                            <td style="width:50%;text-align:center">
+                                <button class="btn " id="inspb" data-toggle="modal" data-target="#myModal" style="border-radius: 10px; color: white; background-color: #065977; " onclick="open_popup_createPB()">Agregar PillBook</button>
+                            </td>
+                            <td style="width:50%;text-align:center">
+                                @{
+                                    if(ind != null)
+                                    {
+                                        var pbfb = db.PillBook.Where(x => x.Active == true && x.PillBookId == ind.PBId && x.Finished == true).ToList();
+                                        if(pbfb.LongCount() > 0)
+                                        {
+                                            <script>
+                                                messageclosepb();
+                                            </script>
+
+                                            <button class="btn btn-success" id="btnsuccessop" data-toggle="modal" data-target="#myModal" style="border-radius: 10px; color: white;" onclick="openpillbook()">Abrir PillBook</button>
+                                            <button class="btn btn-warning" id="btnwarningcp" data-toggle="modal" data-target="#myModal" style="border-radius: 10px; color: white;display:none" onclick="closepillbook()">Vo.Bo. LI</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-success" id="btnsuccessop" data-toggle="modal" data-target="#myModal" style="border-radius: 10px; color: white; display: none" onclick="openpillbook()">Abrir PillBook</button>
+                                            <button class="btn btn-warning" id="btnwarningcp" data-toggle="modal" data-target="#myModal" style="border-radius: 10px; color: white;" onclick="closepillbook()">Vo.Bo. LI</button>
+                                        }
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br /><br /></td>
+                        </tr>
+                        <tr>
+                            @{
+                                if (ind != null)
+                                {
+                                    var pbf = db.PillBook.Where(x => x.Active == true && x.PillBookId == ind.PBId && x.Finished == true).ToList();
+                                    if (pbf.LongCount() > 0)
+                                    {
+                                        <td colspan="2" id="closepb" style="color: white; font-size:20px;font-style:italic;background-color:blueviolet; border-radius:20px">EL PILLBOOK SELECCIONADO ESTA CERRADO</td>
+                                    }
+                                    else
+                                    {
+                                        <td id="closepb" colspan="2" style="color: white; font-size:20px;font-style:italic;background-color:blueviolet; border-radius:20px;display:none">EL PILLBOOK SELECCIONADO HA SIDO CERRADO</td>
+                                    }
+                                }
+                            }
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div style="text-align: center; width: 100%; height: 100%; ">
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+@{
+
+    if (ind != null)
+    {
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" id="pbds" onclick="gettargetname($(this))">
+                            PillBooks
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse" style="background-color: #d6d6d6">
+                    <div class="panel-body">
+                        <div style="height:100%;width:100%; border-bottom:none;">
+                            <br />
+                            <table border="0" style="width:100%;height:5px">
+                                <tr>
+                                    <td style="width: 16.6%; text-align: center" id="tdsa">
+                                        <div class="labelout" id="sa" onclick="activesubstances($(this))" style="color: white; font-size: 1.20em;cursor:pointer; font-style: italic;">
+                                            SUSTANCIAS ACTIVAS INN
+                                        </div>
+                                    </td>
+                                    <td style="width: 16.6%; text-align: center" id="tdsa">
+                                        <div class="labelout" id="saPLM" onclick="activesubstancesPLM($(this))" style="color: white; font-size: 1.20em;cursor:pointer; font-style: italic;">
+                                            SUSTANCIAS ACTIVAS PLM
+                                        </div>
+                                    </td>
+                                    <td style="width: 16.6%; text-align: center">
+                                        <div class="labelout" id="atc" onclick="atc($(this))" style="color: white; font-size: 1.20em; cursor: pointer; font-style: italic;">
+                                            ATC EphMRA
+                                        </div>
+                                    </td>
+                                    <td style="width: 16.6%; text-align: center">
+                                        <div class="labelout" id="atcoms" onclick="atcoms($(this))" style="color: white; font-size: 1.20em; cursor: pointer; font-style: italic;">
+                                            ATC OMS
+                                        </div>
+                                    </td>
+                                    <td style="width: 16.6%; text-align: center">
+                                        <div onclick="brands($(this))" id="brans" class="labelout" style="color: white; font-size: 1.20em; cursor: pointer; font-style: italic;">
+                                            MARCAS
+                                        </div>
+                                    </td>
+                                    <td style="width: 16.6%; text-align: center">
+                                        <div onclick="cie($(this))" id="cie" class="labelout" style="color: white; font-size: 1.20em; cursor: pointer; font-style: italic;">
+                                            CIE-10
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                        <div style="width: 100%; height: 100%; display: normal; border-top: 1px solid #ddd;" id="divacts">
+                            <br />
+                            <table border="0" style="width:100%" class="table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; width: 5%"><h4 style="color: #065977"></h4></th>
+                                        <th style="text-align: center; width: 85%"><h4 style="color: #065977">Sustancia Activa</h4></th>
+                                        <th style="text-align: center; width: 10%"><h4 style="color: #065977">Eliminar</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (INNActiveSubstances _p in Model.FirstOrDefault().INNActiveSubstances)
+                                        {
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <label class="labelwhite" style="font-size:12px"><label style="color: #04a8e0">&bullet;</label> @_p.Description.ToUpper()</label><br />
+                                        </td>
+                                        <td style="text-align:center">
+                                            <button class="btn btn-warning" value="@_p.INNActiveSubstanceId" onclick="deleteinnactivesubstances($(this).val())">X</button>
+                                        </td>
+                                    </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td colspan="4"><br /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:right" colspan="4">
+                                            <button class="btn btn-info" id="openpopupaddinnsubstance" onclick="open_getsubstances()"><b>+</b></button>
+                                            <button class="btn btn-warning" style="display:none" id="closepopupaddinnsubstance" onclick="close_popupaddsubstance()"><b>-</b></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div style="display:none" id="addinnasubstances">
+                                                <div class="panel-group" id="accordionINNA" style="border-top:none">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordionINNA" href="#collapseINNA">
+                                                                    Sustancias INN
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseINNA" class="panel-collapse in collapse">
+                                                            <br />
+                                                            <table style="width:100%;height:100%" border="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width:10%"></th>
+                                                                        <th style="text-align:center;width:20%"><h4 style="color: #065977"></h4></th>
+                                                                        <th style="text-align: right; width: 50%"><h4 style="color: #065977">Buscar: &nbsp;</h4></th>
+                                                                        <th style="width:20%"><input type="text" class="form-control" onkeyup="autocompleteinnasubstances($(this).val())" /></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td colspan="2">
+                                                                            <div class="panel-body">
+                                                                                <table style="width:100%;height:100%" border="0" class="scrollbar1 table-hover" id="tablecontentinnasubstances"></table>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd;" id="divactsPLM">
+                            <br />
+                            <table border="0" style="width:100%" class="table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; width: 5%"><h4 style="color: #065977"></h4></th>
+                                        <th style="text-align:center; width:50%"><h4 style="color: #065977">SUSTANCIAS ACTIVAS INN</h4></th>
+                                        <th style="text-align:center; width: 50%"><h4 style="color: #065977">SUSTANCIAS ACTIVAS PLM</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (INNActiveSubstances _p in Model.FirstOrDefault().INNActiveSubstances)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <label class="labelwhite" style="font-size:12px"><label style="color: #04a8e0">&bullet;</label> @_p.Description.ToUpper()</label><br />
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var inn = (from ins in db.PLMINNSubstances
+                                                                   join ac in db.ActiveSubstances
+                                                                       on ins.ActiveSubstanceId equals ac.ActiveSubstanceId
+                                                                   where ins.INNActiveSubstanceId == _p.INNActiveSubstanceId
+                                                                   select ac).OrderBy(x => x.Description).ToList();
+                                                        if (inn.LongCount() > 0)
+                                                        {
+                                                            foreach (ActiveSubstances _inn in inn)
+                                                            {
+                                                                <label style="color: #04a8e0">&bullet; &nbsp;</label>@_inn.Description.ToUpper()<br />
+                                                            }
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td colspan="4">
+                                            <div style="display:none" id="addplmsubstances">
+                                                <div class="panel-group" id="accordionPLM" style="border-top:none">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordionPLM" href="#collapseINNA">
+                                                                    Sustancias PLM
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseINNA" class="panel-collapse in collapse">
+                                                            <br />
+                                                            <table style="width:100%;height:100%" border="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width:10%"></th>
+                                                                        <th style="text-align:center;width:20%"><h4 style="color: #065977"></h4></th>
+                                                                        <th style="text-align: right; width: 50%"><h4 style="color: #065977">Buscar: &nbsp;</h4></th>
+                                                                        <th style="width:20%"><input type="text" class="form-control" onkeyup="autocompleteinnasubstances($(this).val())" /></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td colspan="2">
+                                                                            <div class="panel-body">
+                                                                                <table style="width:100%;height:100%" border="0" class="scrollbar1 table-hover" id="tablecontentinnasubstances"></table>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd;" id="divatc">
+                            <br />
+                            <table border="0" style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        @{
+                                            <td style="width:100%">
+                                                <table border="0" style="width:100%" class="table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="text-align: center; width: 22.5%"><h4 style="color: #065977">Nivel 1</h4></th>
+                                                            <th style="text-align: center; width: 22.5%"><h4 style="color: #065977">Nivel 2</h4></th>
+                                                            <th style="text-align: center; width: 22.5%"><h4 style="color: #065977">Nivel 3</h4></th>
+                                                            <th style="text-align: center; width: 22.5%"><h4 style="color: #065977">Nivel 4</h4></th>
+                                                            <th style="text-align: center; width: 10%"><h4 style="color: #065977">Eliminar</h4></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            foreach (TherapeuticsByPillBook _p in Model.FirstOrDefault().TherapeuticsByPillBook)
+                                                            {
+                                                        <tr>
+                                                            <td>
+                                                                @if (_p.SpanishDescriptionNivel4 != null)
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel4</label>  -  @_p.SpanishDescriptionNivel4</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel4</label>
+                                                                        }
+
+                                                            </td>
+                                                            <td>
+                                                                @if (_p.SpanishDescriptionNivel3 != null)
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel3</label> -  @_p.SpanishDescriptionNivel3</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel3</label>
+                                                                        }
+                                                            </td>
+                                                            <td>
+                                                                @if (_p.SpanishDescriptionNivel2 != null)
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel2</label> -  @_p.SpanishDescriptionNivel2</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel2</label>
+                                                                        }
+                                                            </td>
+                                                            <td>
+                                                                @if (_p.SpanishDescriptionNivel1 != null)
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel1</label> -  @_p.SpanishDescriptionNivel1</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel1</label>
+                                                                        }
+                                                            </td>
+
+
+
+                                                            <td style="text-align:center">
+                                                                @{
+                                                                if (_p.SpanishDescriptionNivel1 != null)
+                                                                {
+                                                                        <button class="btn btn-warning" value="@_p.TherapeuticIdNivel1" onclick="deletepillbookatc($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_p.SpanishDescriptionNivel2 != null)
+                                                                {
+                                                                        <button class="btn btn-warning" value="@_p.TherapeuticIdNivel2" onclick="deletepillbookatc($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_p.SpanishDescriptionNivel3 != null)
+                                                                {
+                                                                        <button class="btn btn-warning" value="@_p.TherapeuticIdNivel3" onclick="deletepillbookatc($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_p.SpanishDescriptionNivel4 != null)
+                                                                {
+                                                                        <button class="btn btn-warning" value="@_p.TherapeuticIdNivel4" onclick="deletepillbookatc($(this).val())">X</button>
+                                                                }
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        }
+                                        <td style="text-align:right;vertical-align:top;width:5%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:right;vertical-align:top">                                            
+                                            <button class="btn btn-warning" id="closepopupaddtherapeutics" style="display:none" onclick="close_popupaddtherapeutics()">-</button>
+                                            <button class="btn btn-info" id="openpopupaddtherapeutics" onclick="open_popupaddtherapeutics()">+</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @{
+                                                <div class="" id="addtherapeutics" style="display:none">
+                                                    <div class="panel-group" id="accordionATC">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#accordionATC" href="#collapseATC">
+                                                                        ATC EphMRA
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseATC" class="panel-collapse in collapse">
+                                                                <div class="panel-body">
+                                                                    <div class="" id="contentss">
+                                                                        <ul id="livel1" style="list-style: none;">
+                                                                            @{
+                                                                                var lvl1ephmra = db.Therapeutics.Where(x => x.Active == true && x.ParentId == null).OrderBy(x => x.TherapeuticKey).ToList();
+                                                                                foreach (Therapeutics _lvl1 in lvl1ephmra)
+                                                                                {
+                                                                                    <li>
+                                                                                        <img src="~/Images/ui-icons_454545_256x240.png" onclick="getlevel2ATC($(this))" id="@_lvl1.TherapeuticId" />
+                                                                                        <img src="~/Images/ui-icons_454545_256x2401.png" onclick="collapselevel1ATC($(this))" id="collapselistATC_@_lvl1.TherapeuticId" style="display:none" />
+                                                                                        &nbsp;
+                                                                                        <label style='color: #065977;'>@_lvl1.TherapeuticKey - </label> @_lvl1.SpanishDescription
+                                                                                        <ul id="ATC_@_lvl1.TherapeuticId" style="list-style: none;"></ul>
+                                                                                    </li>
+                                                                                }
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd;" id="divatcoms">
+                            <br />
+                            <table border="0" style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        @{
+                                            <td style="width:100%">
+                                                <table border="0" style="width:100%" class="table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="text-align: center; width: 18%"><h4 style="color: #065977">Nivel 1 OMS</h4></th>
+                                                            <th style="text-align: center; width: 18%"><h4 style="color: #065977">Nivel 2 OMS</h4></th>
+                                                            <th style="text-align: center; width: 18%"><h4 style="color: #065977">Nivel 3 OMS</h4></th>
+                                                            <th style="text-align: center; width: 18%"><h4 style="color: #065977">Nivel 4 OMS</h4></th>
+                                                            <th style="text-align: center; width: 18%"><h4 style="color: #065977">Nivel 5 OMS</h4></th>
+                                                            <th style="text-align: center; width: 10%"><h4 style="color: #065977">Eliminar</h4></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            foreach (TherapeuticOMSByPillBook _p in Model.FirstOrDefault().TherapeuticOMSByPillBook)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @if (_p.SpanishDescriptionNivel5 != null)
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel5</label>  -  @_p.SpanishDescriptionNivel5</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel5</label>
+                                                                        }
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (_p.SpanishDescriptionNivel4 != null)
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel4</label>  -  @_p.SpanishDescriptionNivel4</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel4</label>
+                                                                        }
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (_p.SpanishDescriptionNivel3 != null)
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel3</label> -  @_p.SpanishDescriptionNivel3</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel3</label>
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (_p.SpanishDescriptionNivel2 != null)
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel2</label> -  @_p.SpanishDescriptionNivel2</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel2</label>
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (_p.SpanishDescriptionNivel1 != null)
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"><label style="color: #065977;">@_p.TherapeuticKeyNivel1</label> -  @_p.SpanishDescriptionNivel1</label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <label class="labelwhite" style="font-size:12px; text-transform:uppercase"> @_p.SpanishDescriptionNivel1</label>
+                                                                        }
+                                                                    </td>
+
+
+
+                                                                    <td style="text-align:center">
+                                                                        @{
+                                                                if (_p.SpanishDescriptionNivel1 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_p.TherapeuticOMSIdNivel1" onclick="deletepillbookatcoms($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_p.SpanishDescriptionNivel2 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_p.TherapeuticOMSIdNivel2" onclick="deletepillbookatcoms($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_p.SpanishDescriptionNivel3 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_p.TherapeuticOMSIdNivel3" onclick="deletepillbookatcoms($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_p.SpanishDescriptionNivel4 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_p.TherapeuticOMSIdNivel4" onclick="deletepillbookatcoms($(this).val())">X</button>
+                                                                }
+                                                                else if (_p.SpanishDescriptionNivel5 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_p.TherapeuticOMSIdNivel5" onclick="deletepillbookatcoms($(this).val())">X</button>
+                                                                }
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        }
+                                        <td style="text-align:right;vertical-align:top;width:5%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:right;vertical-align:top">
+                                            @{
+
+                                                <button class="btn btn-warning" id="closepopupaddtherapeuticsOMS" style="display:none" onclick="close_popupaddtherapeuticsOMS()">-</button>
+
+                                                <button class="btn btn-info" id="openpopupaddtherapeuticsOMS" onclick="open_popupaddtherapeuticsOMS()">+</button>
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @{
+                                                <div class="" id="addtherapeuticsOMS" style="display:none">
+                                                    <div class="panel-group" id="accordionATC">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#accordionATCOMS" href="#collapseATCOMS">
+                                                                        ATC OMS
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseATCOMS" class="panel-collapse in collapse">
+                                                                <div class="panel-body">
+                                                                    <div class="" id="contentssOMS">
+                                                                        <ul id="livel1" style="list-style: none;">
+                                                                            @{
+                                                                                var lvl1oms = db.TherapeuticOMS.Where(x => x.Active == true && x.ParentId == null).OrderBy(x => x.TherapeuticKey).ToList();
+                                                                                foreach (TherapeuticOMS _lvl1 in lvl1oms)
+                                                                                {
+                                                                                    <li>
+                                                                                        <img src="~/Images/ui-icons_454545_256x240.png" onclick="getlevel1TOMS($(this))" id="@_lvl1.TherapeuticOMSId" />
+                                                                                        <img src="~/Images/ui-icons_454545_256x2401.png" onclick="collapselevel1OMS($(this))" id="collapselistOMS_@_lvl1.TherapeuticOMSId" style="display:none" />
+                                                                                        &nbsp;
+                                                                                        <label style='color: #065977;'>@_lvl1.TherapeuticKey - </label> @_lvl1.SpanishDescription
+                                                                                        <ul id="OMS_@_lvl1.TherapeuticOMSId" style="list-style: none;"></ul>
+                                                                                    </li>
+                                                                                }
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                        <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd;" id="divbrans">
+                            <br />
+                            <table border="0" style="width:100%" class="table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width:10%"></th>
+                                        <th style="text-align:center;width:26.6%"><h4 style="color: #065977">Marca</h4></th>
+                                        <th style="text-align: center; width: 26.6%"><h4 style="color: #065977">Forma Farmacéutica</h4></th>
+                                        <th style="text-align: center; width: 26.6%"><h4 style="color: #065977">Sustancias Activas</h4></th>
+                                        <th style="text-align: center; width: 10%"><h4 style="color: #065977">Eliminar</h4></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (ProductPharmaFormsByPillBook _p in Model.FirstOrDefault().ProductPharmaFormsByPillBook)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                            <label class="labelwhite" style="font-size:12px;">&bullet; @_p.Brand</label>
+                                        </td>
+                                                @{
+                                                <td>
+                                                    <label class="labelwhite" style="font-size:12px;text-transform:uppercase">@_p.PharmaForm</label>
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var acs = db.Database.SqlQuery<ActiveSubstance>("plm_spGetActiveSubstancesByBrand @productId=" + _p.ProductId + "").OrderBy(x => x.Description).ToList();
+                                                        foreach (ActiveSubstance _acs in acs)
+                                                        {
+                                                                    <label class="labelwhite" style="font-size:12px;">@_acs.Description</label>
+                                                        }
+
+                                                    }
+                                                </td>
+                                                }
+                                                <td style="text-align:center">
+                                                    <button class="btn btn-warning" value="@_p.ProductId" onclick="deletepillbookproducts($(this).val(),$(@_p.PharmaFormId))">X</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td style="text-align:right" colspan="5">
+                                            <button class="btn btn-info" id="openpopupaddsubstance" onclick="open_popupaddproduct()"><b>+</b></button>
+                                            <button class="btn btn-warning" style="display:none" id="closepopupaddsubstance" onclick="close_popupaddsubstance()"><b>-</b></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div style="display:none" id="addsubstances">
+                                                <div class="panel-group" id="accordionBRANDS">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordionBRANDS" href="#collapseACT">
+                                                                    Productos
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseACT" class="panel-collapse in collapse">
+                                                            <div class="panel-body">
+                                                                <table style="width:100%;height:100%" border="0" class="scrollbar1 table-hover" id="tablecontent"></table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div style="width: 100%; height: 100%; display: none; border-top: 1px solid #ddd;" id="divcie">
+                            <br />
+                            <table border="0" style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        @{
+                                            <td style="width:100%">
+                                                <table border="0" style="width:100%" class="table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="text-align: center; width: 30%"><h4 style="color: #065977">Nivel 1</h4></th>
+                                                            <th style="text-align: center; width: 30%"><h4 style="color: #065977">Nivel 2</h4></th>
+                                                            <th style="text-align: center; width: 30%"><h4 style="color: #065977">Nivel 3</h4></th>
+                                                            <th style="text-align: center; width: 10%"><h4 style="color: #065977">Eliminar</h4></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            foreach (ICDByPillBook _icd in Model.FirstOrDefault().ICDByPillBook)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @{
+                                                                if (_icd.SpanishDescriptionN1 != null)
+                                                                {
+                                                                    <label class="labelwhite" style="font-size:12px;"><label style="color: #065977;">@_icd.ICDKeyN1 - </label> @_icd.SpanishDescriptionN1</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="labelwhite" style="font-size:12px;">@_icd.SpanishDescriptionN1</label>
+                                                                }
+                                                                        }
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @{
+                                                                if (_icd.SpanishDescriptionN2 != null)
+                                                                {
+                                                                    <label class="labelwhite" style="font-size:12px;"><label style="color: #065977;">@_icd.ICDKeyN2 - </label> @_icd.SpanishDescriptionN2</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="labelwhite" style="font-size:12px;">@_icd.SpanishDescriptionN2</label>
+                                                                }
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @{
+                                                                if (_icd.SpanishDescriptionN3 != null)
+                                                                {
+                                                                    <label class="labelwhite" style="font-size:12px;"><label style="color: #065977;">@_icd.ICDKeyN3 - </label> @_icd.SpanishDescriptionN3</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="labelwhite" style="font-size:12px;">@_icd.SpanishDescriptionN3</label>
+                                                                }
+                                                                        }
+                                                                    </td>
+                                                                    <td style="text-align:center">
+                                                                        @{
+                                                                if (_icd.SpanishDescriptionN3 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_icd.ICDIdN3" onclick="deletepillbookcie($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_icd.SpanishDescriptionN2 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_icd.ICDIdN2" onclick="deletepillbookcie($(this).val())">X</button>
+                                                                }
+
+                                                                else if (_icd.SpanishDescriptionN1 != null)
+                                                                {
+                                                                    <button class="btn btn-warning" value="@_icd.ICDIdN1" onclick="deletepillbookcie($(this).val())">X</button>
+                                                                }
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td></td>
+                                        }
+                                        @*<td style="text-align:right;vertical-align:top;width:5%"></td>*@
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:right;vertical-align:top" colspan="4">
+                                            <button class="btn btn-warning" id="closepopupaddcie" style="display:none" onclick="close_popupaddcie()">-</button>
+                                            <button class="btn btn-info" id="openpopupaddcie" onclick="open_popupaddcie()">+</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @{
+                                                <div class="" id="addcie" style="display:none">
+                                                    <div class="panel-group" id="accordionCIE">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a data-toggle="collapse" data-parent="#accordionCIE" href="#collapseATC">
+                                                                        CIE-10
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseATC" class="panel-collapse in collapse">
+                                                                <div class="panel-body">
+                                                                    <div class="" id="contentsICD">
+                                                                        <ul id="livel1" style="list-style: none;">
+                                                                            @{
+                                                                                var lvl1 = db.ICD.Where(x => x.Active == true && x.ParentId == null).OrderBy(x => x.ICDKey).ToList();
+                                                                                foreach (ICD _lvl1 in lvl1)
+                                                                                {
+                                                                                    <li>
+                                                                                        <img src="~/Images/ui-icons_454545_256x240.png" onclick="getCIElevel1($(this))" id="@_lvl1.ICDId" />
+                                                                                        <img src="~/Images/ui-icons_454545_256x2401.png" onclick="collapselevel1($(this))" id="collapselist_@_lvl1.ICDId" style="display:none" />
+                                                                                        &nbsp;<input type='checkbox' onclick='addpillbookcie($(this).val())' value="@_lvl1.ICDId" id="@_lvl1.ICDId" />
+                                                                                        <label style='color: #065977;'>@_lvl1.ICDKey - </label> @_lvl1.SpanishDescription
+                                                                                        <ul id="ICD_@_lvl1.ICDId" style="list-style: none;"></ul>
+                                                                                    </li>
+                                                                                }
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" id="attributes" onclick="gettargetname($(this))">
+                            Rubros
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="panel-group" id="accordion1">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro1" style="text-transform:uppercase" onclick="getcontent($('#inpag1'), $('#txtinpag'))">
+                                            @{
+                                                var ag = db.AttributeGroup.Where(x => x.AttributeGroupKey == "POR106").ToList();
+                                                @ag[0].AttributeGroupName
+                                                <input type="text" value="@ag[0].AttributeGroupId" id="inpag1" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag1').val(), $('#txtinpag').val())">Guardar</button>
+                                        <textarea class="form-control" style="height:300px;text-align:justify" id="txtinpag" ondblclick="popup_insertpillBookassociated($('#inpag1').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro2" style="text-transform:uppercase" onclick="getcontent($('#inpag2'), $('#txtinpag2'))">
+                                            @{
+        var ag2 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "PAR107").ToList();
+        @ag2[0].AttributeGroupName
+                                                <input type="text" value="@ag2[0].AttributeGroupId" id="inpag2" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag2').val(), $('#txtinpag2').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag2" ondblclick="popup_insertpillBookassociated($('#inpag2').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro3" style="text-transform:uppercase" onclick="getcontent($('#inpag3'), $('#txtinpag3'))">
+                                            @{
+        var ag3 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "COM108").ToList();
+        @ag3[0].AttributeGroupName
+                                                <input type="text" value="@ag3[0].AttributeGroupId" id="inpag3" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag3').val(), $('#txtinpag3').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag3" ondblclick="popup_insertpillBookassociated($('#inpag3').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro4" style="text-transform:uppercase" onclick="getcontent($('#inpag4'), $('#txtinpag4'))">
+                                            @{
+        var ag4 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "QUE109").ToList();
+        @ag4[0].AttributeGroupName
+                                                <input type="text" value="@ag4[0].AttributeGroupId" id="inpag4" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro4" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag4').val(), $('#txtinpag4').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag4" ondblclick="popup_insertpillBookassociated($('#inpag4').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro5" style="text-transform:uppercase" onclick="getcontent($('#inpag5'), $('#txtinpag5'))">
+                                            @{
+        var ag5 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "PUM153").ToList();
+        @ag5[0].AttributeGroupName
+                                                <input type="text" value="@ag5[0].AttributeGroupId" id="inpag5" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro5" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag5').val(), $('#txtinpag5').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag5" ondblclick="popup_insertpillBookassociated($('#inpag5').val())" onclick="    pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro6" style="text-transform:uppercase" onclick="getcontent($('#inpag6'), $('#txtinpag6'))">
+                                            @{
+        var ag6 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "DEV155").ToList();
+        @ag6[0].AttributeGroupName
+                                                <input type="text" value="@ag6[0].AttributeGroupId" id="inpag6" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro6" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag6').val(), $('#txtinpag6').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag6" ondblclick="popup_insertpillBookassociated($('#inpag6').val())" onclick="    pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro7" style="text-transform:uppercase" onclick="getcontent($('#inpag7'), $('#txtinpag7'))">
+                                            @{
+        var ag7 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "SIS115").ToList();
+        @ag7[0].AttributeGroupName
+                                                <input type="text" value="@ag7[0].AttributeGroupId" id="inpag7" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro7" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag7').val(), $('#txtinpag7').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag7" ondblclick="popup_insertpillBookassociated($('#inpag7').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro8" style="text-transform:uppercase" onclick="getcontent($('#inpag8'), $('#txtinpag8'))">
+                                            @{
+        var ag8 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "COM119").ToList();
+        @ag8[0].AttributeGroupName
+                                                <input type="text" value="@ag8[0].AttributeGroupId" id="inpag8" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro8" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag8').val(), $('#txtinpag8').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag8" ondblclick="popup_insertpillBookassociated($('#inpag8').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro9" style="text-transform:uppercase" onclick="getcontent($('#inpag9'), $('#txtinpag9'))">
+                                            @{
+        var ag9 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "QUN110").ToList();
+        @ag9[0].AttributeGroupName
+                                                <input type="text" value="@ag9[0].AttributeGroupId" id="inpag9" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro9" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag9').val(), $('#txtinpag9').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag9" ondblclick="popup_insertpillBookassociated($('#inpag9').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro10" style="text-transform:uppercase" onclick="getcontent($('#inpag10'), $('#txtinpag10'))">
+                                            @{
+        var ag10 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "CUL114").ToList();
+        @ag10[0].AttributeGroupName
+                                                <input type="text" value="@ag10[0].AttributeGroupId" id="inpag10" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro10" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag10').val(), $('#txtinpag10').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag10" ondblclick="popup_insertpillBookassociated($('#inpag10').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro11" style="text-transform:uppercase" onclick="getcontent($('#inpag11'), $('#txtinpag11'))">
+                                            @{
+        var ag11 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "SOB016").ToList();
+        @ag11[0].AttributeGroupName
+                                                <input type="text" value="@ag11[0].AttributeGroupId" id="inpag11" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro11" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag11').val(), $('#txtinpag11').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag11" ondblclick="popup_insertpillBookassociated($('#inpag11').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro12" style="text-transform:uppercase" onclick="getcontent($('#inpag12'), $('#txtinpag12'))">
+                                            @{
+        var ag12 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "QUR116").ToList();
+        @ag12[0].AttributeGroupName
+                                                <input type="text" value="@ag12[0].AttributeGroupId" id="inpag12" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro12" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag12').val(), $('#txtinpag12').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag12" ondblclick="popup_insertpillBookassociated($('#inpag12').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro13" style="text-transform:uppercase" onclick="getcontent($('#inpag13'), $('#txtinpag13'))">
+                                            @{
+        var ag13 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "COM118").ToList();
+        @ag13[0].AttributeGroupName
+                                                <input type="text" value="@ag13[0].AttributeGroupId" id="inpag13" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro13" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <button style="float:right" class="btn btn-info" onclick="insertpillbookcontent($('#inpag13').val(), $('#txtinpag13').val())">Guardar</button>
+                                        <textarea class="form-control" style="height: 300px; text-align: justify" id="txtinpag13" ondblclick="popup_insertpillBookassociated($('#inpag13').val())" onclick="pastevalue($(this))"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro14" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag14').val(), $('#attr14T'), $('#attr14N'))">
+                                            @{
+        var ag14 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "FTS156").ToList();
+        @ag14[0].AttributeGroupName
+                                                <input type="text" value="@ag14[0].AttributeGroupId" id="inpag14" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro14" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        @{
+                                            <label><input type="radio" id="attr14T" onchange="check_true($(this), $('#attr14N'), $('#inpag14').val())" value="1" />SI</label><br />
+                                            <label><input type="radio" id="attr14N" onchange="check_false($(this), $('#attr14T'), $('#inpag14').val())" value="2" />NO</label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro15" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag15').val(), $('#attr15T'), $('#attr15N'))">
+                                            @{
+        var ag15 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "FEC007").ToList();
+        @ag15[0].AttributeGroupName
+                                                <input type="text" value="@ag15[0].AttributeGroupId" id="inpag15" style="display: none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro15" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <label><input type="radio" id="attr15T" onchange="check_true($(this), $('#attr15N'), $('#inpag15').val())" value="3" />SI</label><br />
+                                        <label><input type="radio" id="attr15N" onchange="check_false($(this), $('#attr15T'), $('#inpag15').val())" value="4" />NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro16" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag16').val(), $('#attr16T'), $('#attr16N'))">
+                                            @{
+        var ag16 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "NER012").ToList();
+        @ag16[0].AttributeGroupName
+                                                <input type="text" value="@ag16[0].AttributeGroupId" id="inpag16" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro16" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <label><input type="radio" id="attr16T" onchange="check_true($(this), $('#attr16N'), $('#inpag16').val())" value="5" />SI</label><br />
+                                        <label><input type="radio" id="attr16N" onchange="check_false($(this), $('#attr16T'), $('#inpag16').val())" value="6" />NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro17" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag17').val(), $('#attr17T'), $('#attr17N'))">
+                                            @{
+        var ag17 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "ITA159").ToList();
+        @ag17[0].AttributeGroupName
+                                                <input type="text" value="@ag17[0].AttributeGroupId" id="inpag17" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro17" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <label><input type="radio" id="attr17T" onchange="check_true($(this), $('#attr17N'), $('#inpag17').val())" value="7" />SI</label><br />
+                                        <label><input type="radio" id="attr17N" onchange="check_false($(this), $('#attr17T'), $('#inpag17').val())" value="8" />NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro18" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag18').val(), $('#attr18T'), $('#attr18N'))">
+                                            @{
+        var ag18 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "ALT157").ToList();
+        @ag18[0].AttributeGroupName
+                                                <input type="text" value="@ag18[0].AttributeGroupId" id="inpag18" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro18" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <label><input type="radio" id="attr18T" onchange="check_true($(this), $('#attr18N'), $('#inpag18').val())" value="9" />SI</label><br />
+                                        <label><input type="radio" id="attr18N" onchange="check_false($(this), $('#attr18T'), $('#inpag18').val())" value="10" />NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro19" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag19').val(), $('#attr19T'), $('#attr19N'))">
+                                            @{
+        var ag19 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "MAR009").ToList();
+        @ag19[0].AttributeGroupName
+                                                <input type="text" value="@ag19[0].AttributeGroupId" id="inpag19" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro19" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <label><input type="radio" id="attr19T" onchange="check_true($(this), $('#attr19N'), $('#inpag19').val())" value="11" />SI</label><br />
+                                        <label><input type="radio" id="attr19N" onchange="check_false($(this), $('#attr19T'), $('#inpag19').val())" value="12" />NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro20" style="text-transform:uppercase" onclick="getcheckoptions($('#inpag20').val(), $('#attr20T'), $('#attr20N'))">
+                                            @{
+        var ag20 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "ARA158").ToList();
+        @ag20[0].AttributeGroupName
+                                                <input type="text" value="@ag20[0].AttributeGroupId" id="inpag20" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro20" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <label><input type="radio" id="attr20T" onchange="check_true($(this), $('#attr20N'), $('#inpag20').val())" value="13" />SI</label><br />
+                                        <label><input type="radio" id="attr20N" onchange="check_false($(this), $('#attr20T'), $('#inpag20').val())" value="14" />NO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion1" href="#collapserubro21" style="text-transform:uppercase" onclick="getreferences()" id="rfcs">
+                                            @{
+        var ag21 = db.AttributeGroup.Where(x => x.AttributeGroupKey == "BIB003").ToList();
+        @ag21[0].AttributeGroupName
+                                                <input type="text" value="@ag21[0].AttributeGroupId" id="inpag21" style="display:none" />
+                                            }
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapserubro21" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <table style="width:100%" border="0">
+                                            <tr>
+                                                <td style="text-align:right">
+                                                    <button class="btn btn-info" onclick="showformaddref()" id="showformref">+</button>
+                                                    <button class="btn btn-warning" style="display:none" id="hideformref" onclick="hideformaddref()">-</button>
+                                                </td>
+                                            </tr>
+                                            <tr style="display: none; background-color: #065977" id="traddref">
+                                                <td>
+                                                    <table style="width:100%;" border="0">
+                                                        <tr>
+                                                            <td colspan="5" style="text-align:center"><h2 style="color: #ffffff">Agregar Referencia</h2></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width:10%;color:white">Referencia:</td>
+                                                            <td style="width:40%">
+                                                                <textarea class="form-focus" style="height:100px" id="reference"></textarea>
+                                                            </td>
+                                                            <td style="width: 5%; text-align: center; color: white">URL:</td>
+                                                            <td style="width:40%">
+                                                                <textarea class="form-focus" style="height:100px" id="urlreference"></textarea>
+                                                            </td>
+                                                            <td style="width: 5%; text-align: center">
+                                                                <br />
+                                                                <button class="btn btn-info" onclick="savereference($('#reference').val(), $('#urlreference').val())">Guardar</button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <br />
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table border="0" style="width:100%;height:100%" id="references"></table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<div class="formdiv" id="insertproducts" style="display:none;border:none; vertical-align:middle">
+    <div class="panel-heading" style="border-radius: 5px;">
+        <div class="row">
+            <div style="text-align: center;">
+                <label class="classh2">Agregar PillBook</label>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" style="background-color: #919191; border-radius: 50px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <input type="text" placeholder="Nombre de PillBook" class="form-control" id="PBName" />
+                    <br />
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Código de PillBook" class="form-control" id="PBCode" />
+                    <br />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <p style="text-align:center ">
+                                <button type="submit" id="Insert" value="Insertar" class="submit btn" style="font-size: 17px; width: 90px; height: 35px; color: white; background-color: #065977;" onclick="create_pillbook();">Insertar</button>
+                                <button type="submit" id="Insert" value="Insertar" class="submit btn" style="font-size: 17px; width: 90px; height: 35px;" onclick="close_popup_createPB();">Cancelar</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="formdiv" id="selectoptions" style="display:none;border:none; vertical-align:middle">
+    <div class="panel-heading" style="border-radius: 5px;">
+        <div class="row">
+            <div style="text-align: center;">
+                <label class="classh2">Asociar PillBook / Enciclopedia</label>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" style="background-color: #919191; border-radius: 50px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <table style="width:100%" border="0">
+                    <tr>
+                        <td style="width:45%;vertical-align:top">
+                            <div class="form-group">
+                                <label>
+                                    <input id="attributeid" style="display:none" />
+                                    <input type="radio" id="PillBooks" onclick="getcatalog($('#PillBooks'), $('#Encyclopedias'));" />PillBooks
+                                </label>
+                                <br />
+                                <input type="text" class="form-control" id="searchpb" style="display:none" onkeyup="searchpbcat($(this).val())" />
+                                <br />
+                                <div class="" id="visds">
+                                    <table id="selectPB" class="table-hover" style="display:none;width:100%;" border="0"></table>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 45%; vertical-align: top">
+                            <div class="form-group">
+                                <label>
+                                    <input type="radio" id="Encyclopedias" onclick="getcatalog($('#Encyclopedias'), $('#PillBooks'));" />Enciclopedias
+                                </label>
+                                <br />
+                                <input type="text" class="form-control" id="searchenc" style="display:none" onkeyup="searchenccat($(this).val())" />
+                                <br />
+                                <div class="" id="visd">
+                                    <table id="selectEC" class="table-hover" style="display:none;width:100%;" border="0"></table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" id="Insert" value="Insertar" class="submit btn" style="font-size: 17px; width: 90px; height: 35px;float:right" onclick="closeoptions()">Cerrar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

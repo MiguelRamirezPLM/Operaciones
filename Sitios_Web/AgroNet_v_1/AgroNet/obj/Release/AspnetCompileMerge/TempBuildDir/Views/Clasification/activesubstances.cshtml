@@ -1,0 +1,104 @@
+﻿@model IEnumerable<AgroNet.Models.ActiveSubstances>
+@using AgroNet.Models;
+@{
+    DEAQ db = new DEAQ();
+    Newproducts Nprod = new Newproducts();
+    Products product = new Products();
+}
+
+@{
+    ClasificationProds CP12 = (ClasificationProds)Session["ClasificationProds"];
+    int? PId = CP12.PId;
+    var aA = db.Database.SqlQuery<ActiveSubstances>("PActiveSubstances @ProductId=" + PId + "").ToList();
+    ViewBag.Title = "activesubstances";
+    WebGrid DataGridClass = new WebGrid(aA, rowsPerPage: 10);
+}
+<html>
+<head>
+    <title></title>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+</head>
+<body>
+    <h2>activesubstances</h2>
+    <table id="table" style="display:normal">
+        <tr style="text-align: center">
+            <td style="width:100px"></td>
+            <td><label style="font-size: 16px; color: orangered">Sustancias</label></td>
+            <td style="width: 250px"></td>
+            <td><label style="font-size: 16px; color: orangered">Sustancias Asociadas al Producto</label></td>
+        </tr>
+        <tr>
+            <td style="width:100px"></td>
+            <td>
+                <div class="scrollbar" id="scrollbar">
+                    @DataGridClass.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+                              tableStyle: "webgrid-table ",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+
+                  DataGridClass.Column("", header: "Nombre de Sustancia", format: @<text>
+                    <span class="display-mode"> <label id="lblActiveSubstanceNameIns">@item.ActiveSubstanceName</label> </span>
+                    <input id="lblinsertActive" style="visibility: hidden; display: none" value="@item.ActiveSubstanceId" />
+                </text>),
+         DataGridClass.Column("", header: "Agregar", format: @<text>
+                        <button class="btn btn-default" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("InsertActiveSubstances", "Clasification", new { ActiveSubstanceId = item.ActiveSubstanceId })';return false;"><img src="@Url.Content("~/Images/active.png")" style="height:20px;width:20px"></button>
+        </text>),
+            })
+                </div>
+            </td>
+            <td style="width:250px"></td>
+            @{
+                ClasificationProds CP1 = (ClasificationProds)Session["ClasificationProds"];
+                int? ProdId = CP1.PId;
+                var Active = (from A in db.PProductSubstances
+                              join AS in db.ActiveSubstances
+                              on A.ActiveSubstanceId equals AS.ActiveSubstanceId
+                              join P in db.Products
+                              on A.ProductId equals P.ProductId
+                              where A.ProductId == ProdId
+                              orderby AS.ActiveSubstanceName ascending
+                              select AS);
+
+                WebGrid ProdsAsc = new WebGrid(Active);
+            }
+
+            <td>
+                <div class="scrollbar" id="scrollbar">
+                    @ProdsAsc.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table ",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+
+                  ProdsAsc.Column("", header: "Nombre de Sustancia", format: @<text>
+                    @{
+                        <span class="display-mode"> <label id="lblName">@item.ActiveSubstanceName</label> </span>
+                        <input id="lblActive" style="visibility: hidden; display: none" value="@item.ActiveSubstanceId" />
+                    }
+                </text>),
+         ProdsAsc.Column("", header: "Eliminar", format: @<text>
+                        <button class="btn btn-default" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("DeleteActiveSubstances", "Clasification", new { ActiveSubstanceId = item.ActiveSubstanceId })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+        </text>),
+            })
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

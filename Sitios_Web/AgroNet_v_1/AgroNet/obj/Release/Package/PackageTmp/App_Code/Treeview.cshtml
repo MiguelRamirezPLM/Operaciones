@@ -1,0 +1,35 @@
+﻿<script>
+    $(function () {
+        $(".insertau").click(function () {
+            $("#bloqueo").show();
+        });
+        $("#bloqueo").hide();
+    });
+</script>
+@helper GetTreeView(List<AgroNet.Models.AgrochemicalUses> tree, int? ParentId)
+{       
+   foreach (var i in tree.Where(a => a.ParentId.Equals(ParentId)))
+    {       
+        <li>
+            @{var subitem = tree.Where(a => a.ParentId.Equals(i.AgrochemicalUseId)).Count();}
+
+            @if (subitem > 0)
+            {
+                <span class="collapse1 collapsible">&nbsp;</span>
+            }
+            else
+            {
+                <span style="display:inline-block">&nbsp;</span>
+            }
+            <span>
+                <a href="../Clasification/insertagrochemicaluses/@i.AgrochemicalUseId" class="insertau" style="color:black" onclick="load($(this))">@i.AgrochemicalUseName</a>
+            </span>
+            @if (subitem > 0)
+            {
+                <ul>
+                    @Treeview.GetTreeView(tree,i.AgrochemicalUseId)                                        
+                </ul>
+            }
+        </li>
+    }
+}

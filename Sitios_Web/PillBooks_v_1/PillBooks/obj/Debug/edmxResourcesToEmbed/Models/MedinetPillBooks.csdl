@@ -1,0 +1,1414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ModelPB" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PillBookAssociated">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="AttributeGroupId" />
+      <PropertyRef Name="PillBookAssociatedId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" />
+    <Property Name="PillBookAssociatedId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PillBooks" Relationship="Self.R_539" FromRole="PillBookAssociated" ToRole="PillBooks" />
+    <NavigationProperty Name="EditionPillBookAttributes" Relationship="ModelPB.EditionPillBookAttributesPillBookAssociated" FromRole="PillBookAssociated" ToRole="EditionPillBookAttributes" />
+  </EntityType>
+  <EntityType Name="PillBookEncyclopedias">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="AttributeGroupId" />
+      <PropertyRef Name="EncyclopediaId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" />
+    <Property Name="EncyclopediaId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Encyclopedias" Relationship="ModelPB.R_533" FromRole="PillBookEncyclopedias" ToRole="Encyclopedias" />
+    <NavigationProperty Name="EditionPillBookAttributes" Relationship="ModelPB.EditionPillBookAttributesPillBookEncyclopedias" FromRole="PillBookEncyclopedias" ToRole="EditionPillBookAttributes" />
+  </EntityType>
+  <EntityType Name="PillBook">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PillBookName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PIllBookCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PillBookAssociated" Relationship="Self.R_539" FromRole="PillBooks" ToRole="PillBookAssociated" />
+    <NavigationProperty Name="PillBookSubstances" Relationship="Self.R_537" FromRole="PillBooks" ToRole="PillBookSubstances" />
+    <NavigationProperty Name="PillBookATC" Relationship="ModelPB.R_679" FromRole="PillBook" ToRole="PillBookATC" />
+    <NavigationProperty Name="PillBookProducts" Relationship="ModelPB.R_681" FromRole="PillBook" ToRole="PillBookProducts" />
+    <NavigationProperty Name="PillBookINNSubstances" Relationship="ModelPB.PillBookPillBookINNSubstances" FromRole="PillBook" ToRole="PillBookINNSubstances" />
+    <NavigationProperty Name="PillBookICD" Relationship="ModelPB.PillBookPillBookICD" FromRole="PillBook" ToRole="PillBookICD" />
+    <NavigationProperty Name="EditionPillBookAttributes" Relationship="ModelPB.R_536" FromRole="PillBook" ToRole="EditionPillBookAttributes" />
+    <NavigationProperty Name="PillBookReferences" Relationship="ModelPB.PillBookPillBookReferences" FromRole="PillBook" ToRole="PillBookReferences" />
+    <Property Name="Finished" Type="Boolean" />
+    <NavigationProperty Name="PillBookATCOMS" Relationship="ModelPB.PillBookPillBookATCOMS" FromRole="PillBook" ToRole="PillBookATCOMS" />
+    <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="PillBookSubstances">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PillBooks" Relationship="Self.R_537" FromRole="PillBookSubstances" ToRole="PillBooks" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="ModelPB.ActiveSubstancesPillBookSubstances" FromRole="PillBookSubstances" ToRole="ActiveSubstances" />
+  </EntityType>
+  <Association Name="R_539">
+    <End Role="PillBooks" Type="ModelPB.PillBook" Multiplicity="1" />
+    <End Role="PillBookAssociated" Type="Self.PillBookAssociated" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBooks">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookAssociated">
+        <PropertyRef Name="PillBookAssociatedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_537">
+    <End Role="PillBooks" Type="ModelPB.PillBook" Multiplicity="1" />
+    <End Role="PillBookSubstances" Type="Self.PillBookSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBooks">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookSubstances">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MedinetPB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PillBookAssociated" EntityType="Self.PillBookAssociated" />
+    <EntitySet Name="PillBookEncyclopedias" EntityType="Self.PillBookEncyclopedias" />
+    <EntitySet Name="PillBook" EntityType="ModelPB.PillBook" />
+    <EntitySet Name="PillBookSubstances" EntityType="Self.PillBookSubstances" />
+    <AssociationSet Name="R_539" Association="Self.R_539">
+      <End Role="PillBooks" EntitySet="PillBook" />
+      <End Role="PillBookAssociated" EntitySet="PillBookAssociated" />
+    </AssociationSet>
+    <AssociationSet Name="R_537" Association="Self.R_537">
+      <End Role="PillBooks" EntitySet="PillBook" />
+      <End Role="PillBookSubstances" EntitySet="PillBookSubstances" />
+    </AssociationSet>
+    <EntitySet Name="Countries" EntityType="ModelPB.Countries" />
+    <FunctionImport Name="plm_spGetCountries" ReturnType="Collection(ModelPB.plm_spGetCountries_Result)" />
+    <EntitySet Name="ActiveSubstances" EntityType="ModelPB.ActiveSubstances" />
+    <EntitySet Name="INNActiveSubstances" EntityType="ModelPB.INNActiveSubstances" />
+    <EntitySet Name="ProductSubstances" EntityType="ModelPB.ProductSubstances" />
+    <AssociationSet Name="FKACTIVESUBS_PS" Association="ModelPB.FKACTIVESUBS_PS">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="ActiveSubstancesPillBookSubstances" Association="ModelPB.ActiveSubstancesPillBookSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="PillBookSubstances" EntitySet="PillBookSubstances" />
+    </AssociationSet>
+    <EntitySet Name="Encyclopedias" EntityType="ModelPB.Encyclopedias" />
+    <EntitySet Name="PillBookATC" EntityType="ModelPB.PillBookATC" />
+    <EntitySet Name="PillBookProducts" EntityType="ModelPB.PillBookProducts" />
+    <AssociationSet Name="R_533" Association="ModelPB.R_533">
+      <End Role="Encyclopedias" EntitySet="Encyclopedias" />
+      <End Role="PillBookEncyclopedias" EntitySet="PillBookEncyclopedias" />
+    </AssociationSet>
+    <AssociationSet Name="R_679" Association="ModelPB.R_679">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="PillBookATC" EntitySet="PillBookATC" />
+    </AssociationSet>
+    <AssociationSet Name="R_681" Association="ModelPB.R_681">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="PillBookProducts" EntitySet="PillBookProducts" />
+    </AssociationSet>
+    <EntitySet Name="PillBookINNSubstances" EntityType="ModelPB.PillBookINNSubstances" />
+    <AssociationSet Name="INNActiveSubstancesPillBookINNSubstances" Association="ModelPB.INNActiveSubstancesPillBookINNSubstances">
+      <End Role="INNActiveSubstances" EntitySet="INNActiveSubstances" />
+      <End Role="PillBookINNSubstances" EntitySet="PillBookINNSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="PillBookPillBookINNSubstances" Association="ModelPB.PillBookPillBookINNSubstances">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="PillBookINNSubstances" EntitySet="PillBookINNSubstances" />
+    </AssociationSet>
+    <EntitySet Name="Products" EntityType="ModelPB.Products" />
+    <AssociationSet Name="FKCOUNTRY_PR" Association="ModelPB.FKCOUNTRY_PR">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FKPRODUCT_PS" Association="ModelPB.FKPRODUCT_PS">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <EntitySet Name="PharmaceuticalForms" EntityType="ModelPB.PharmaceuticalForms" />
+    <EntitySet Name="ICD" EntityType="ModelPB.ICD" />
+    <EntitySet Name="Therapeutics" EntityType="ModelPB.Therapeutics" />
+    <AssociationSet Name="FK_ICD_ICD" Association="ModelPB.FK_ICD_ICD">
+      <End EntitySet="ICD" Role="ICD" />
+      <End EntitySet="ICD" Role="ICD1" />
+    </AssociationSet>
+    <AssociationSet Name="FKPARENTID_TH" Association="ModelPB.FKPARENTID_TH">
+      <End EntitySet="Therapeutics" Role="Therapeutics" />
+      <End EntitySet="Therapeutics" Role="Therapeutics1" />
+    </AssociationSet>
+    <EntitySet Name="ProductICD" EntityType="ModelPB.ProductICD" />
+    <AssociationSet Name="R_424" Association="ModelPB.R_424">
+      <End Role="ICD" EntitySet="ICD" />
+      <End Role="ProductICD" EntitySet="ProductICD" />
+    </AssociationSet>
+    <AssociationSet Name="TherapeuticsPillBookATC" Association="ModelPB.TherapeuticsPillBookATC">
+      <End Role="Therapeutics" EntitySet="Therapeutics" />
+      <End Role="PillBookATC" EntitySet="PillBookATC" />
+    </AssociationSet>
+    <EntitySet Name="PLMINNSubstances" EntityType="ModelPB.PLMINNSubstances" />
+    <AssociationSet Name="ActiveSubstancesPLMINNSubstances" Association="ModelPB.ActiveSubstancesPLMINNSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="PLMINNSubstances" EntitySet="PLMINNSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="INNActiveSubstancesPLMINNSubstances" Association="ModelPB.INNActiveSubstancesPLMINNSubstances">
+      <End Role="INNActiveSubstances" EntitySet="INNActiveSubstances" />
+      <End Role="PLMINNSubstances" EntitySet="PLMINNSubstances" />
+    </AssociationSet>
+    <EntitySet Name="ProductPharmaForms" EntityType="ModelPB.ProductPharmaForms" />
+    <AssociationSet Name="FKPHARMAFORM_PF" Association="ModelPB.FKPHARMAFORM_PF">
+      <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="FKPRODUCT_PD" Association="ModelPB.FKPRODUCT_PD">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <EntitySet Name="ProductPharmaFormSubstances" EntityType="ModelPB.ProductPharmaFormSubstances" />
+    <AssociationSet Name="ActiveSubstancesProductPharmaFormSubstances" Association="ModelPB.ActiveSubstancesProductPharmaFormSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ProductPharmaFormSubstances" EntitySet="ProductPharmaFormSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="ProductPharmaFormsProductPharmaFormSubstances" Association="ModelPB.ProductPharmaFormsProductPharmaFormSubstances">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductPharmaFormSubstances" EntitySet="ProductPharmaFormSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="ProductPharmaFormsProductICD" Association="ModelPB.ProductPharmaFormsProductICD">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductICD" EntitySet="ProductICD" />
+    </AssociationSet>
+    <AssociationSet Name="ProductPharmaFormsPillBookProducts" Association="ModelPB.ProductPharmaFormsPillBookProducts">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="PillBookProducts" EntitySet="PillBookProducts" />
+    </AssociationSet>
+    <EntitySet Name="PillBookICD" EntityType="ModelPB.PillBookICD" />
+    <AssociationSet Name="PillBookPillBookICD" Association="ModelPB.PillBookPillBookICD">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="PillBookICD" EntitySet="PillBookICD" />
+    </AssociationSet>
+    <AssociationSet Name="ICDPillBookICD" Association="ModelPB.ICDPillBookICD">
+      <End Role="ICD" EntitySet="ICD" />
+      <End Role="PillBookICD" EntitySet="PillBookICD" />
+    </AssociationSet>
+    <EntitySet Name="plm_vwProductsByEdition" EntityType="ModelPB.plm_vwProductsByEdition" />
+    <FunctionImport Name="plm_spGetProductsByPillBook" ReturnType="Collection(ModelPB.plm_spGetProductsByPillBook_Result)">
+      <Parameter Name="pillbookid" Mode="In" Type="Int32" />
+      <Parameter Name="countryid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetBrandsByPillBook" ReturnType="Collection(ModelPB.plm_spGetBrandsByPillBook_Result)">
+      <Parameter Name="pillbookid" Mode="In" Type="Int32" />
+      <Parameter Name="countryid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetTherapeuticsByPillBook" ReturnType="Collection(ModelPB.plm_spGetTherapeuticsByPillBook_Result)">
+      <Parameter Name="pillbookid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetICDByPillBook" ReturnType="Collection(ModelPB.plm_spGetICDByPillBook_Result)">
+      <Parameter Name="pillbookid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="AttributeGroup" EntityType="ModelPB.AttributeGroup" />
+    <EntitySet Name="Attributes" EntityType="ModelPB.Attributes" />
+    <EntitySet Name="EditionAttributeGroup" EntityType="ModelPB.EditionAttributeGroup" />
+    <EntitySet Name="EditionAttributes" EntityType="ModelPB.EditionAttributes" />
+    <EntitySet Name="Editions" EntityType="ModelPB.Editions" />
+    <AssociationSet Name="FK_EditionAttributeGroup_AttributeGroup" Association="ModelPB.FK_EditionAttributeGroup_AttributeGroup">
+      <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionAttributes_Attributes" Association="ModelPB.FK_EditionAttributes_Attributes">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="R_5" Association="ModelPB.R_5">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionAttributeGroup_EditionAttributes" Association="ModelPB.FK_EditionAttributeGroup_EditionAttributes">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionAttributes_Editions" Association="ModelPB.FK_EditionAttributes_Editions">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="EditionsParentId_fk" Association="ModelPB.EditionsParentId_fk">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_42" Association="ModelPB.R_42">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <EntitySet Name="EditionPillBookAttributes" EntityType="ModelPB.EditionPillBookAttributes" />
+    <AssociationSet Name="R_531" Association="ModelPB.R_531">
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+      <End Role="EditionPillBookAttributes" EntitySet="EditionPillBookAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="R_536" Association="ModelPB.R_536">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="EditionPillBookAttributes" EntitySet="EditionPillBookAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="EditionPillBookAttributesPillBookEncyclopedias" Association="ModelPB.EditionPillBookAttributesPillBookEncyclopedias">
+      <End Role="EditionPillBookAttributes" EntitySet="EditionPillBookAttributes" />
+      <End Role="PillBookEncyclopedias" EntitySet="PillBookEncyclopedias" />
+    </AssociationSet>
+    <AssociationSet Name="EditionPillBookAttributesPillBookAssociated" Association="ModelPB.EditionPillBookAttributesPillBookAssociated">
+      <End Role="EditionPillBookAttributes" EntitySet="EditionPillBookAttributes" />
+      <End Role="PillBookAssociated" EntitySet="PillBookAssociated" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetReferencePillBookAsociate" ReturnType="Collection(String)">
+      <Parameter Name="atttgid" Mode="In" Type="Int32" />
+      <Parameter Name="attrid" Mode="In" Type="Int32" />
+      <Parameter Name="eid" Mode="In" Type="Int32" />
+      <Parameter Name="pbid" Mode="In" Type="Int32" />
+      <Parameter Name="PILLBOOK" Mode="In" Type="String" />
+      <Parameter Name="flag" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <EntitySet Name="PillBookIconAnswers" EntityType="ModelPB.PillBookIconAnswers" />
+    <EntitySet Name="PillBookIcons" EntityType="ModelPB.PillBookIcons" />
+    <AssociationSet Name="R_686" Association="ModelPB.R_686">
+      <End Role="PillBookIcons" EntitySet="PillBookIcons" />
+      <End Role="EditionPillBookAttributes" EntitySet="EditionPillBookAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="R_685" Association="ModelPB.R_685">
+      <End Role="PillBookIconAnswers" EntitySet="PillBookIconAnswers" />
+      <End Role="PillBookIcons" EntitySet="PillBookIcons" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetINNSubstancesByPillBook" ReturnType="Collection(ModelPB.plm_spGetINNSubstancesByPillBook_Result)">
+      <Parameter Name="pillbookid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetActiveSubstanceByProduct" ReturnType="Collection(ModelPB.plm_spGetActiveSubstanceByProduct_Result)">
+      <Parameter Name="productId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetActiveSubstancesByBrand" ReturnType="Collection(String)">
+      <Parameter Name="productId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="ClinicalReferences" EntityType="ModelPB.ClinicalReferences" />
+    <EntitySet Name="PillBookReferences" EntityType="ModelPB.PillBookReferences" />
+    <AssociationSet Name="ClinicalReferencesPillBookReferences" Association="ModelPB.ClinicalReferencesPillBookReferences">
+      <End Role="ClinicalReferences" EntitySet="ClinicalReferences" />
+      <End Role="PillBookReferences" EntitySet="PillBookReferences" />
+    </AssociationSet>
+    <AssociationSet Name="PillBookPillBookReferences" Association="ModelPB.PillBookPillBookReferences">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="PillBookReferences" EntitySet="PillBookReferences" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetINNSubstancesBySearch" ReturnType="Collection(ModelPB.plm_spGetINNSubstancesBySearch_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetPLMSubstancesBySearch" ReturnType="Collection(ModelPB.plm_spGetPLMSubstancesBySearch_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetEncyclopediasBySearch" ReturnType="Collection(ModelPB.plm_spGetEncyclopediasBySearch_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="plm_spGetPillBooksBySearch" ReturnType="Collection(ModelPB.plm_spGetPillBooksBySearch_Result)">
+      <Parameter Name="param" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="TherapeuticOMS" EntityType="ModelPB.TherapeuticOMS" />
+    <EntitySet Name="PillBookATCOMS" EntityType="ModelPB.PillBookATCOMS" />
+    <AssociationSet Name="TherapeuticOMSPillBookATCOMS" Association="ModelPB.TherapeuticOMSPillBookATCOMS">
+      <End Role="TherapeuticOMS" EntitySet="TherapeuticOMS" />
+      <End Role="PillBookATCOMS" EntitySet="PillBookATCOMS" />
+    </AssociationSet>
+    <AssociationSet Name="PillBookPillBookATCOMS" Association="ModelPB.PillBookPillBookATCOMS">
+      <End Role="PillBook" EntitySet="PillBook" />
+      <End Role="PillBookATCOMS" EntitySet="PillBookATCOMS" />
+    </AssociationSet>
+    <FunctionImport Name="plm_spGetTherapeuticsOMSByPillBook" ReturnType="Collection(ModelPB.plm_spGetTherapeuticsOMSByPillBook_Result)">
+      <Parameter Name="pillbookid" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="ModelPB.FKCOUNTRY_PR" FromRole="Countries" ToRole="Products" />
+    <NavigationProperty Name="Editions" Relationship="ModelPB.R_5" FromRole="Countries" ToRole="Editions" />
+  </EntityType>
+  <ComplexType Name="plm_spGetCountries_Result">
+    <Property Type="Int32" Name="CountryId" Nullable="false" />
+    <Property Type="String" Name="CountryName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ID" Nullable="false" MaxLength="3" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubstanceKey" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescription" Type="String" MaxLength="202" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Enunciative" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductSubstances" Relationship="ModelPB.FKACTIVESUBS_PS" FromRole="ActiveSubstances" ToRole="ProductSubstances" />
+    <NavigationProperty Name="PillBookSubstances" Relationship="ModelPB.ActiveSubstancesPillBookSubstances" FromRole="ActiveSubstances" ToRole="PillBookSubstances" />
+    <NavigationProperty Name="PLMINNSubstances" Relationship="ModelPB.ActiveSubstancesPLMINNSubstances" FromRole="ActiveSubstances" ToRole="PLMINNSubstances" />
+    <NavigationProperty Name="ProductPharmaFormSubstances" Relationship="ModelPB.ActiveSubstancesProductPharmaFormSubstances" FromRole="ActiveSubstances" ToRole="ProductPharmaFormSubstances" />
+  </EntityType>
+  <EntityType Name="INNActiveSubstances">
+    <Key>
+      <PropertyRef Name="INNActiveSubstanceId" />
+    </Key>
+    <Property Name="INNActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescription" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CASRNId" Type="Int32" />
+    <Property Name="SubstanceTypeId" Type="Byte" />
+    <Property Name="SubstanceSpecificTypeId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PillBookINNSubstances" Relationship="ModelPB.INNActiveSubstancesPillBookINNSubstances" FromRole="INNActiveSubstances" ToRole="PillBookINNSubstances" />
+    <NavigationProperty Name="PLMINNSubstances" Relationship="ModelPB.INNActiveSubstancesPLMINNSubstances" FromRole="INNActiveSubstances" ToRole="PLMINNSubstances" />
+  </EntityType>
+  <EntityType Name="ProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="ModelPB.FKACTIVESUBS_PS" FromRole="ProductSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="Products" Relationship="ModelPB.FKPRODUCT_PS" FromRole="ProductSubstances" ToRole="Products" />
+  </EntityType>
+  <Association Name="FKACTIVESUBS_PS">
+    <End Type="ModelPB.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="ModelPB.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ActiveSubstancesPillBookSubstances">
+    <End Type="ModelPB.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="ModelPB.PillBookSubstances" Role="PillBookSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="PillBookSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Encyclopedias">
+    <Key>
+      <PropertyRef Name="EncyclopediaId" />
+    </Key>
+    <Property Name="EncyclopediaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EncyclopediaName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="EncyclopediaTypeId" Type="Byte" Nullable="false" />
+    <Property Name="PLMCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PillBookEncyclopedias" Relationship="ModelPB.R_533" FromRole="Encyclopedias" ToRole="PillBookEncyclopedias" />
+  </EntityType>
+  <EntityType Name="PillBookATC">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="TherapeuticId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" />
+    <Property Name="TherapeuticId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PillBooks" Relationship="ModelPB.R_679" FromRole="PillBookATC" ToRole="PillBook" />
+    <NavigationProperty Name="Therapeutics" Relationship="ModelPB.TherapeuticsPillBookATC" FromRole="PillBookATC" ToRole="Therapeutics" />
+  </EntityType>
+  <EntityType Name="PillBookProducts">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PillBooks" Relationship="ModelPB.R_681" FromRole="PillBookProducts" ToRole="PillBook" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="ModelPB.ProductPharmaFormsPillBookProducts" FromRole="PillBookProducts" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <Association Name="R_533">
+    <End Type="ModelPB.Encyclopedias" Role="Encyclopedias" Multiplicity="1" />
+    <End Type="ModelPB.PillBookEncyclopedias" Role="PillBookEncyclopedias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Encyclopedias">
+        <PropertyRef Name="EncyclopediaId" />
+      </Principal>
+      <Dependent Role="PillBookEncyclopedias">
+        <PropertyRef Name="EncyclopediaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_679">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.PillBookATC" Role="PillBookATC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookATC">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_681">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.PillBookProducts" Role="PillBookProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookProducts">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PillBookINNSubstances">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="INNActiveSubstanceId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="INNActiveSubstanceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="INNActiveSubstances" Relationship="ModelPB.INNActiveSubstancesPillBookINNSubstances" FromRole="PillBookINNSubstances" ToRole="INNActiveSubstances" />
+    <NavigationProperty Name="PillBook" Relationship="ModelPB.PillBookPillBookINNSubstances" FromRole="PillBookINNSubstances" ToRole="PillBook" />
+  </EntityType>
+  <Association Name="INNActiveSubstancesPillBookINNSubstances">
+    <End Type="ModelPB.INNActiveSubstances" Role="INNActiveSubstances" Multiplicity="1" />
+    <End Type="ModelPB.PillBookINNSubstances" Role="PillBookINNSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="INNActiveSubstances">
+        <PropertyRef Name="INNActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="PillBookINNSubstances">
+        <PropertyRef Name="INNActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PillBookPillBookINNSubstances">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.PillBookINNSubstances" Role="PillBookINNSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookINNSubstances">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+    <Property Name="AlphabetId" Type="Byte" Nullable="false" />
+    <Property Name="ProductTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Brand" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="SanitaryRegistry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="ModelPB.FKCOUNTRY_PR" FromRole="Products" ToRole="Countries" />
+    <NavigationProperty Name="ProductSubstances" Relationship="ModelPB.FKPRODUCT_PS" FromRole="Products" ToRole="ProductSubstances" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="ModelPB.FKPRODUCT_PD" FromRole="Products" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <Association Name="FKCOUNTRY_PR">
+    <End Type="ModelPB.Countries" Role="Countries" Multiplicity="1" />
+    <End Type="ModelPB.Products" Role="Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKPRODUCT_PS">
+    <End Type="ModelPB.Products" Role="Products" Multiplicity="1" />
+    <End Type="ModelPB.ProductSubstances" Role="ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PharmaceuticalForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PharmaFormKey" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="ModelPB.FKPHARMAFORM_PF" FromRole="PharmaceuticalForms" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <EntityType Name="ICD">
+    <Key>
+      <PropertyRef Name="ICDId" />
+    </Key>
+    <Property Name="ICDId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="ICDKey" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Level" Type="Int32" />
+    <NavigationProperty Name="ICD1" Relationship="ModelPB.FK_ICD_ICD" FromRole="ICD" ToRole="ICD1" />
+    <NavigationProperty Name="ICD2" Relationship="ModelPB.FK_ICD_ICD" FromRole="ICD1" ToRole="ICD" />
+    <NavigationProperty Name="ProductICD" Relationship="ModelPB.R_424" FromRole="ICD" ToRole="ProductICD" />
+    <NavigationProperty Name="PillBookICD" Relationship="ModelPB.ICDPillBookICD" FromRole="ICD" ToRole="PillBookICD" />
+  </EntityType>
+  <EntityType Name="Therapeutics">
+    <Key>
+      <PropertyRef Name="TherapeuticId" />
+    </Key>
+    <Property Name="TherapeuticId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TherapeuticKey" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Therapeutics1" Relationship="ModelPB.FKPARENTID_TH" FromRole="Therapeutics" ToRole="Therapeutics1" />
+    <NavigationProperty Name="Therapeutics2" Relationship="ModelPB.FKPARENTID_TH" FromRole="Therapeutics1" ToRole="Therapeutics" />
+    <NavigationProperty Name="PillBookATC" Relationship="ModelPB.TherapeuticsPillBookATC" FromRole="Therapeutics" ToRole="PillBookATC" />
+  </EntityType>
+  <Association Name="FK_ICD_ICD">
+    <End Type="ModelPB.ICD" Multiplicity="0..1" Role="ICD" />
+    <End Type="ModelPB.ICD" Multiplicity="*" Role="ICD1" />
+    <ReferentialConstraint>
+      <Principal Role="ICD">
+        <PropertyRef Name="ICDId" />
+      </Principal>
+      <Dependent Role="ICD1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKPARENTID_TH">
+    <End Type="ModelPB.Therapeutics" Multiplicity="0..1" Role="Therapeutics" />
+    <End Type="ModelPB.Therapeutics" Multiplicity="*" Role="Therapeutics1" />
+    <ReferentialConstraint>
+      <Principal Role="Therapeutics">
+        <PropertyRef Name="TherapeuticId" />
+      </Principal>
+      <Dependent Role="Therapeutics1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductICD">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ICDId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ICDId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ICD" Relationship="ModelPB.R_424" FromRole="ProductICD" ToRole="ICD" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="ModelPB.ProductPharmaFormsProductICD" FromRole="ProductICD" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <Association Name="R_424">
+    <End Type="ModelPB.ICD" Role="ICD" Multiplicity="1" />
+    <End Type="ModelPB.ProductICD" Role="ProductICD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICD">
+        <PropertyRef Name="ICDId" />
+      </Principal>
+      <Dependent Role="ProductICD">
+        <PropertyRef Name="ICDId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TherapeuticsPillBookATC">
+    <End Type="ModelPB.Therapeutics" Role="Therapeutics" Multiplicity="1" />
+    <End Type="ModelPB.PillBookATC" Role="PillBookATC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Therapeutics">
+        <PropertyRef Name="TherapeuticId" />
+      </Principal>
+      <Dependent Role="PillBookATC">
+        <PropertyRef Name="TherapeuticId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PLMINNSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="INNActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="INNActiveSubstanceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="ModelPB.ActiveSubstancesPLMINNSubstances" FromRole="PLMINNSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="INNActiveSubstances" Relationship="ModelPB.INNActiveSubstancesPLMINNSubstances" FromRole="PLMINNSubstances" ToRole="INNActiveSubstances" />
+  </EntityType>
+  <Association Name="ActiveSubstancesPLMINNSubstances">
+    <End Type="ModelPB.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="ModelPB.PLMINNSubstances" Role="PLMINNSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="PLMINNSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="INNActiveSubstancesPLMINNSubstances">
+    <End Type="ModelPB.INNActiveSubstances" Role="INNActiveSubstances" Multiplicity="1" />
+    <End Type="ModelPB.PLMINNSubstances" Role="PLMINNSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="INNActiveSubstances">
+        <PropertyRef Name="INNActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="PLMINNSubstances">
+        <PropertyRef Name="INNActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ReferenceUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PharmaceuticalForms" Relationship="ModelPB.FKPHARMAFORM_PF" FromRole="ProductPharmaForms" ToRole="PharmaceuticalForms" />
+    <NavigationProperty Name="Products" Relationship="ModelPB.FKPRODUCT_PD" FromRole="ProductPharmaForms" ToRole="Products" />
+    <NavigationProperty Name="ProductPharmaFormSubstances" Relationship="ModelPB.ProductPharmaFormsProductPharmaFormSubstances" FromRole="ProductPharmaForms" ToRole="ProductPharmaFormSubstances" />
+    <NavigationProperty Name="ProductICD" Relationship="ModelPB.ProductPharmaFormsProductICD" FromRole="ProductPharmaForms" ToRole="ProductICD" />
+    <NavigationProperty Name="PillBookProducts" Relationship="ModelPB.ProductPharmaFormsPillBookProducts" FromRole="ProductPharmaForms" ToRole="PillBookProducts" />
+  </EntityType>
+  <Association Name="FKPHARMAFORM_PF">
+    <End Type="ModelPB.PharmaceuticalForms" Role="PharmaceuticalForms" Multiplicity="1" />
+    <End Type="ModelPB.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaceuticalForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKPRODUCT_PD">
+    <End Type="ModelPB.Products" Role="Products" Multiplicity="1" />
+    <End Type="ModelPB.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductPharmaFormSubstances">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="ModelPB.ActiveSubstancesProductPharmaFormSubstances" FromRole="ProductPharmaFormSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="ModelPB.ProductPharmaFormsProductPharmaFormSubstances" FromRole="ProductPharmaFormSubstances" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <Association Name="ActiveSubstancesProductPharmaFormSubstances">
+    <End Type="ModelPB.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="ModelPB.ProductPharmaFormSubstances" Role="ProductPharmaFormSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductPharmaFormSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductPharmaFormsProductPharmaFormSubstances">
+    <End Type="ModelPB.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="1" />
+    <End Type="ModelPB.ProductPharmaFormSubstances" Role="ProductPharmaFormSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaFormSubstances">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductPharmaFormsProductICD">
+    <End Type="ModelPB.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="1" />
+    <End Type="ModelPB.ProductICD" Role="ProductICD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductICD">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductPharmaFormsPillBookProducts">
+    <End Type="ModelPB.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="1" />
+    <End Type="ModelPB.PillBookProducts" Role="PillBookProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="PillBookProducts">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PillBookICD">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="ICDId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ICDId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PillBook" Relationship="ModelPB.PillBookPillBookICD" FromRole="PillBookICD" ToRole="PillBook" />
+    <NavigationProperty Name="ICD" Relationship="ModelPB.ICDPillBookICD" FromRole="PillBookICD" ToRole="ICD" />
+  </EntityType>
+  <Association Name="PillBookPillBookICD">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.PillBookICD" Role="PillBookICD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookICD">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ICDPillBookICD">
+    <End Type="ModelPB.ICD" Role="ICD" Multiplicity="1" />
+    <End Type="ModelPB.PillBookICD" Role="PillBookICD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICD">
+        <PropertyRef Name="ICDId" />
+      </Principal>
+      <Dependent Role="PillBookICD">
+        <PropertyRef Name="ICDId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="plm_vwProductsByEdition">
+    <Key>
+      <PropertyRef Name="CountryId" />
+      <PropertyRef Name="CountryName" />
+      <PropertyRef Name="LaboratoryId" />
+      <PropertyRef Name="LaboratoryName" />
+      <PropertyRef Name="LabActive" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="DivisionName" />
+      <PropertyRef Name="DivisionActive" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="CategoryName" />
+      <PropertyRef Name="CategoryActive" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="Brand" />
+      <PropertyRef Name="ProductActive" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="PharmaForm" />
+      <PropertyRef Name="PharmaActive" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="NumberEdition" />
+      <PropertyRef Name="EditionActive" />
+      <PropertyRef Name="NewProduct" />
+      <PropertyRef Name="BriefProduct" />
+      <PropertyRef Name="BookId" />
+      <PropertyRef Name="BookName" />
+      <PropertyRef Name="BookActive" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+    <Property Name="LaboratoryName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="LabActive" Type="Boolean" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="DivisionShortName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DivisionActive" Type="Boolean" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryActive" Type="Boolean" Nullable="false" />
+    <Property Name="ProductTypeId" Type="Byte" />
+    <Property Name="ProductType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="Brand" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SanitaryRegistry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="LabDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ProductActive" Type="Boolean" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishPharmaForm" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="PharmaActive" Type="Boolean" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="EditionActive" Type="Boolean" Nullable="false" />
+    <Property Name="TypeInEdition" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="ModifiedContent" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="Page" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="NewProduct" Type="Int32" Nullable="false" />
+    <Property Name="BriefProduct" Type="Int32" Nullable="false" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BookActive" Type="Boolean" Nullable="false" />
+    <Property Name="NumberOfActiveSubstances" Type="Int32" />
+    <Property Name="NumberOfIndications" Type="Int32" />
+    <Property Name="NumberOfTherapeutics" Type="Int32" />
+    <Property Name="NumberOfOMSTherapeutics" Type="Int32" />
+    <Property Name="CountryCodes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <ComplexType Name="plm_spGetProductsByPillBook_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="Brand" Nullable="false" MaxLength="255" />
+    <Property Type="Int32" Name="PharmaFormId" Nullable="false" />
+    <Property Type="String" Name="PharmaForm" Nullable="false" MaxLength="150" />
+    <Property Type="Boolean" Name="ProductActive" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetBrandsByPillBook_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="Brand" Nullable="false" MaxLength="255" />
+    <Property Type="Int32" Name="PharmaFormId" Nullable="false" />
+    <Property Type="String" Name="PharmaForm" Nullable="false" MaxLength="150" />
+    <Property Type="Boolean" Name="ProductActive" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetTherapeuticsByPillBook_Result">
+    <Property Type="Int32" Name="TherapeuticIdNivel4" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel4" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel4" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel4" Nullable="true" />
+    <Property Type="Int32" Name="TherapeuticIdNivel3" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel3" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel3" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel3" Nullable="true" />
+    <Property Type="Int32" Name="TherapeuticIdNivel2" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel2" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel2" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel2" Nullable="true" />
+    <Property Type="Int32" Name="TherapeuticIdNivel1" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel1" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel1" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel1" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetICDByPillBook_Result">
+    <Property Type="Int32" Name="ICDId" Nullable="true" />
+    <Property Type="String" Name="ICDKey" Nullable="true" MaxLength="5" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="SpanishDescription" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="Level" Nullable="true" />
+    <Property Type="Int32" Name="ICDId1" Nullable="true" />
+    <Property Type="String" Name="ICDKey1" Nullable="true" MaxLength="5" />
+    <Property Type="Int32" Name="ParentId1" Nullable="true" />
+    <Property Type="String" Name="SpanishDescription1" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="Level1" Nullable="true" />
+    <Property Type="Int32" Name="ICDId2" Nullable="true" />
+    <Property Type="String" Name="ICDKey2" Nullable="true" MaxLength="5" />
+    <Property Type="Int32" Name="ParentId2" Nullable="true" />
+    <Property Type="String" Name="SpanishDescription2" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="Level2" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AttributeGroupName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AttributeGroupOrder" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="EditionAttributeGroup" Relationship="ModelPB.FK_EditionAttributeGroup_AttributeGroup" FromRole="AttributeGroup" ToRole="EditionAttributeGroup" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="TechnicalSheet" Type="Boolean" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionAttributes" Relationship="ModelPB.FK_EditionAttributes_Attributes" FromRole="Attributes" ToRole="EditionAttributes" />
+  </EntityType>
+  <EntityType Name="EditionAttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeSearch" Type="Boolean" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="AttributeGroup" Relationship="ModelPB.FK_EditionAttributeGroup_AttributeGroup" FromRole="EditionAttributeGroup" ToRole="AttributeGroup" />
+    <NavigationProperty Name="EditionAttributes" Relationship="ModelPB.FK_EditionAttributeGroup_EditionAttributes" FromRole="EditionAttributeGroup" ToRole="EditionAttributes" />
+    <NavigationProperty Name="EditionPillBookAttributes" Relationship="ModelPB.R_531" FromRole="EditionAttributeGroup" ToRole="EditionPillBookAttributes" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeOrder" Type="Int32" Nullable="false" />
+    <Property Name="AttributeSearch" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Attributes" Relationship="ModelPB.FK_EditionAttributes_Attributes" FromRole="EditionAttributes" ToRole="Attributes" />
+    <NavigationProperty Name="EditionAttributeGroup" Relationship="ModelPB.FK_EditionAttributeGroup_EditionAttributes" FromRole="EditionAttributes" ToRole="EditionAttributeGroup" />
+    <NavigationProperty Name="Editions" Relationship="ModelPB.FK_EditionAttributes_Editions" FromRole="EditionAttributes" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EditionTypeId" Type="Byte" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="ModelPB.R_5" FromRole="Editions" ToRole="Countries" />
+    <NavigationProperty Name="EditionAttributes" Relationship="ModelPB.FK_EditionAttributes_Editions" FromRole="Editions" ToRole="EditionAttributes" />
+    <NavigationProperty Name="Editions1" Relationship="ModelPB.EditionsParentId_fk" FromRole="Editions" ToRole="Editions1" />
+    <NavigationProperty Name="Editions2" Relationship="ModelPB.EditionsParentId_fk" FromRole="Editions1" ToRole="Editions" />
+    <NavigationProperty Name="Editions11" Relationship="ModelPB.R_42" FromRole="Editions" ToRole="Editions1" />
+    <NavigationProperty Name="Editions3" Relationship="ModelPB.R_42" FromRole="Editions1" ToRole="Editions" />
+  </EntityType>
+  <Association Name="FK_EditionAttributeGroup_AttributeGroup">
+    <End Type="ModelPB.AttributeGroup" Role="AttributeGroup" Multiplicity="1" />
+    <End Type="ModelPB.EditionAttributeGroup" Role="EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AttributeGroup">
+        <PropertyRef Name="AttributeGroupId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="AttributeGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionAttributes_Attributes">
+    <End Type="ModelPB.Attributes" Role="Attributes" Multiplicity="1" />
+    <End Type="ModelPB.EditionAttributes" Role="EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_5">
+    <End Type="ModelPB.Countries" Role="Countries" Multiplicity="1" />
+    <End Type="ModelPB.Editions" Role="Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionAttributeGroup_EditionAttributes">
+    <End Type="ModelPB.EditionAttributes" Role="EditionAttributes" Multiplicity="1" />
+    <End Type="ModelPB.EditionAttributeGroup" Role="EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionAttributes_Editions">
+    <End Type="ModelPB.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="ModelPB.EditionAttributes" Role="EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionsParentId_fk">
+    <End Type="ModelPB.Editions" Role="Editions" Multiplicity="0..1" />
+    <End Type="ModelPB.Editions" Role="Editions1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_42">
+    <End Type="ModelPB.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="ModelPB.Editions" Role="Editions1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="EditionPillBookAttributes">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="EditionAttributeGroup" Relationship="ModelPB.R_531" FromRole="EditionPillBookAttributes" ToRole="EditionAttributeGroup" />
+    <NavigationProperty Name="PillBooks" Relationship="ModelPB.R_536" FromRole="EditionPillBookAttributes" ToRole="PillBook" />
+    <NavigationProperty Name="PillBookEncyclopedias" Relationship="ModelPB.EditionPillBookAttributesPillBookEncyclopedias" FromRole="EditionPillBookAttributes" ToRole="PillBookEncyclopedias" />
+    <NavigationProperty Name="PillBookAssociated" Relationship="ModelPB.EditionPillBookAttributesPillBookAssociated" FromRole="EditionPillBookAttributes" ToRole="PillBookAssociated" />
+    <Property Name="PillBookIconId" Type="Byte" />
+    <NavigationProperty Name="PillBookIcons" Relationship="ModelPB.R_686" FromRole="EditionPillBookAttributes" ToRole="PillBookIcons" />
+  </EntityType>
+  <Association Name="R_531">
+    <End Type="ModelPB.EditionAttributeGroup" Role="EditionAttributeGroup" Multiplicity="1" />
+    <End Type="ModelPB.EditionPillBookAttributes" Role="EditionPillBookAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributeGroup">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeGroupId" />
+      </Principal>
+      <Dependent Role="EditionPillBookAttributes">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_536">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.EditionPillBookAttributes" Role="EditionPillBookAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="EditionPillBookAttributes">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionPillBookAttributesPillBookEncyclopedias">
+    <End Type="ModelPB.EditionPillBookAttributes" Role="EditionPillBookAttributes" Multiplicity="1" />
+    <End Type="ModelPB.PillBookEncyclopedias" Role="PillBookEncyclopedias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionPillBookAttributes">
+        <PropertyRef Name="PillBookId" />
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="AttributeGroupId" />
+      </Principal>
+      <Dependent Role="PillBookEncyclopedias">
+        <PropertyRef Name="PillBookId" />
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="AttributeGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionPillBookAttributesPillBookAssociated">
+    <End Type="ModelPB.EditionPillBookAttributes" Role="EditionPillBookAttributes" Multiplicity="1" />
+    <End Type="ModelPB.PillBookAssociated" Role="PillBookAssociated" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionPillBookAttributes">
+        <PropertyRef Name="PillBookId" />
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="AttributeGroupId" />
+      </Principal>
+      <Dependent Role="PillBookAssociated">
+        <PropertyRef Name="PillBookId" />
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="AttributeGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PillBookIconAnswers">
+    <Key>
+      <PropertyRef Name="PillBookIconAnswerId" />
+    </Key>
+    <Property Name="PillBookIconAnswerId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PillBookIconAnswer" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PillBookIcons" Relationship="ModelPB.R_685" FromRole="PillBookIconAnswers" ToRole="PillBookIcons" />
+  </EntityType>
+  <EntityType Name="PillBookIcons">
+    <Key>
+      <PropertyRef Name="PillBookIconId" />
+    </Key>
+    <Property Name="PillBookIconId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PillBookIcon" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="BaseURL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PillBookIconAnswerId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="EditionPillBookAttributes" Relationship="ModelPB.R_686" FromRole="PillBookIcons" ToRole="EditionPillBookAttributes" />
+    <NavigationProperty Name="PillBookIconAnswers" Relationship="ModelPB.R_685" FromRole="PillBookIcons" ToRole="PillBookIconAnswers" />
+  </EntityType>
+  <Association Name="R_686">
+    <End Type="ModelPB.PillBookIcons" Role="PillBookIcons" Multiplicity="0..1" />
+    <End Type="ModelPB.EditionPillBookAttributes" Role="EditionPillBookAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBookIcons">
+        <PropertyRef Name="PillBookIconId" />
+      </Principal>
+      <Dependent Role="EditionPillBookAttributes">
+        <PropertyRef Name="PillBookIconId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_685">
+    <End Type="ModelPB.PillBookIconAnswers" Role="PillBookIconAnswers" Multiplicity="1" />
+    <End Type="ModelPB.PillBookIcons" Role="PillBookIcons" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBookIconAnswers">
+        <PropertyRef Name="PillBookIconAnswerId" />
+      </Principal>
+      <Dependent Role="PillBookIcons">
+        <PropertyRef Name="PillBookIconAnswerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetINNSubstancesByPillBook_Result">
+    <Property Type="Int32" Name="INNActiveSubstanceId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="EnglishDescription" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="CASRNId" Nullable="true" />
+    <Property Type="Byte" Name="SubstanceTypeId" Nullable="true" />
+    <Property Type="Int32" Name="SubstanceSpecificTypeId" Nullable="true" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetActiveSubstanceByProduct_Result">
+    <Property Type="Int32" Name="ActiveSubstanceId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="EnglishDescription" Nullable="true" MaxLength="202" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="ClinicalReferences">
+    <Key>
+      <PropertyRef Name="ClinicalReferenceId" />
+    </Key>
+    <Property Name="ClinicalReferenceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClinicalReference" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PillBookReferences" Relationship="ModelPB.ClinicalReferencesPillBookReferences" FromRole="ClinicalReferences" ToRole="PillBookReferences" />
+  </EntityType>
+  <EntityType Name="PillBookReferences">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="ClinicalReferenceId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClinicalReferenceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClinicalReferences" Relationship="ModelPB.ClinicalReferencesPillBookReferences" FromRole="PillBookReferences" ToRole="ClinicalReferences" />
+    <NavigationProperty Name="PillBook" Relationship="ModelPB.PillBookPillBookReferences" FromRole="PillBookReferences" ToRole="PillBook" />
+  </EntityType>
+  <Association Name="ClinicalReferencesPillBookReferences">
+    <End Type="ModelPB.ClinicalReferences" Role="ClinicalReferences" Multiplicity="1" />
+    <End Type="ModelPB.PillBookReferences" Role="PillBookReferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClinicalReferences">
+        <PropertyRef Name="ClinicalReferenceId" />
+      </Principal>
+      <Dependent Role="PillBookReferences">
+        <PropertyRef Name="ClinicalReferenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PillBookPillBookReferences">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.PillBookReferences" Role="PillBookReferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookReferences">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetINNSubstancesBySearch_Result">
+    <Property Type="Int32" Name="INNActiveSubstanceId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="EnglishDescription" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="CASRNId" Nullable="true" />
+    <Property Type="Byte" Name="SubstanceTypeId" Nullable="true" />
+    <Property Type="Int32" Name="SubstanceSpecificTypeId" Nullable="true" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetPLMSubstancesBySearch_Result">
+    <Property Type="Int32" Name="ActiveSubstanceId" Nullable="false" />
+    <Property Type="String" Name="SubstanceKey" Nullable="true" MaxLength="8" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="EnglishDescription" Nullable="true" MaxLength="202" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Boolean" Name="Enunciative" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetEncyclopediasBySearch_Result">
+    <Property Type="Int32" Name="EncyclopediaId" Nullable="false" />
+    <Property Type="String" Name="EncyclopediaName" Nullable="false" MaxLength="200" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Byte" Name="EncyclopediaTypeId" Nullable="false" />
+    <Property Type="String" Name="PLMCode" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetPillBooksBySearch_Result">
+    <Property Type="Int32" Name="PillBookId" Nullable="false" />
+    <Property Type="String" Name="PillBookName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="PIllBookCode" Nullable="false" MaxLength="10" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="TherapeuticOMS">
+    <Key>
+      <PropertyRef Name="TherapeuticOMSId" />
+    </Key>
+    <Property Name="TherapeuticOMSId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TherapeuticKey" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Level" Type="Int32" />
+    <NavigationProperty Name="PillBookATCOMS" Relationship="ModelPB.TherapeuticOMSPillBookATCOMS" FromRole="TherapeuticOMS" ToRole="PillBookATCOMS" />
+  </EntityType>
+  <EntityType Name="PillBookATCOMS">
+    <Key>
+      <PropertyRef Name="PillBookId" />
+      <PropertyRef Name="TherapeuticOMSId" />
+    </Key>
+    <Property Name="PillBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TherapeuticOMSId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TherapeuticOMS" Relationship="ModelPB.TherapeuticOMSPillBookATCOMS" FromRole="PillBookATCOMS" ToRole="TherapeuticOMS" />
+    <NavigationProperty Name="PillBook" Relationship="ModelPB.PillBookPillBookATCOMS" FromRole="PillBookATCOMS" ToRole="PillBook" />
+  </EntityType>
+  <Association Name="TherapeuticOMSPillBookATCOMS">
+    <End Type="ModelPB.TherapeuticOMS" Role="TherapeuticOMS" Multiplicity="1" />
+    <End Type="ModelPB.PillBookATCOMS" Role="PillBookATCOMS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TherapeuticOMS">
+        <PropertyRef Name="TherapeuticOMSId" />
+      </Principal>
+      <Dependent Role="PillBookATCOMS">
+        <PropertyRef Name="TherapeuticOMSId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PillBookPillBookATCOMS">
+    <End Type="ModelPB.PillBook" Role="PillBook" Multiplicity="1" />
+    <End Type="ModelPB.PillBookATCOMS" Role="PillBookATCOMS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PillBook">
+        <PropertyRef Name="PillBookId" />
+      </Principal>
+      <Dependent Role="PillBookATCOMS">
+        <PropertyRef Name="PillBookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="plm_spGetActiveSubstancesByINNActiveSubstance_Result">
+    <Property Type="Int32" Name="ActiveSubstanceId" Nullable="false" />
+    <Property Type="String" Name="SubstanceKey" Nullable="true" MaxLength="8" />
+    <Property Type="String" Name="Description" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="EnglishDescription" Nullable="true" MaxLength="202" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Boolean" Name="Enunciative" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="plm_spGetTherapeuticsOMSByPillBook_Result">
+    <Property Type="Int32" Name="TherapeuticOMSIdNivel5" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel5" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel5" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel5" Nullable="true" />
+    <Property Type="String" Name="TherapeuticKeyNivel5" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="TherapeuticOMSIdNivel4" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel4" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel4" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel4" Nullable="true" />
+    <Property Type="String" Name="TherapeuticKeyNivel4" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="TherapeuticOMSIdNivel3" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel3" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel3" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel3" Nullable="true" />
+    <Property Type="String" Name="TherapeuticKeyNivel3" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="TherapeuticOMSIdNivel2" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel2" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel2" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel2" Nullable="true" />
+    <Property Type="String" Name="TherapeuticKeyNivel2" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="TherapeuticOMSIdNivel1" Nullable="true" />
+    <Property Type="Int32" Name="ParentIdNivel1" Nullable="true" />
+    <Property Type="String" Name="SpanishDescriptionNivel1" Nullable="true" MaxLength="255" />
+    <Property Type="Boolean" Name="ActiveNivel1" Nullable="true" />
+    <Property Type="String" Name="TherapeuticKeyNivel1" Nullable="true" MaxLength="10" />
+  </ComplexType>
+</Schema>

@@ -1,0 +1,759 @@
+﻿@model IEnumerable<AgroNet.Models.plm_vwProductsByEdition>
+@using AgroNet.Models;
+@{
+    DEAQ db = new DEAQ();
+    Newproducts Nprod = new Newproducts();
+    Products product = new Products();
+}
+@{
+    ViewBag.Title = "Index";
+    sessionParticipantProductsClasification session = (sessionParticipantProductsClasification)Session["sessionParticipantProductsClasification"];
+    WebGrid DataGridC;
+    if (session != null)
+    {
+        TypeInEditionn ST = (TypeInEditionn)Session["TypeInEdition"];
+        string num = session.Values;
+
+        int count;
+
+        if (num == "all")
+        {
+
+            if (ST != null)
+            {
+                count = Convert.ToInt32(Model.LongCount());
+                if (count == 0)
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: 10);
+                }
+                else
+                { 
+                DataGridC = new WebGrid(Model, rowsPerPage: count);
+                }
+            }
+            else
+            {
+                count = Convert.ToInt32(Model.LongCount());
+                if(count == 0)
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: 10);
+                }
+                else
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: count);
+                }
+            }
+        }
+        else
+        {
+            if (num == "selection")
+            {
+                int nums = 10;
+
+                DataGridC = new WebGrid(Model, rowsPerPage: nums);
+            }
+            else
+            {
+                count = int.Parse(session.Values);
+                DataGridC = new WebGrid(Model, rowsPerPage: count);
+            }
+        }
+    }
+    else
+    {
+        int num = 10;
+
+        DataGridC = new WebGrid(Model, rowsPerPage: num);
+    }
+}
+<html>
+<head>
+    <title></title>
+    @*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>*@
+    <script>
+        function getvalues() {
+            var SelectList = $('select#rowsperpages');
+            var selectedValue = $('option:selected', SelectList).val();
+            $("#bloqueo").show();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Clasification/participantproductsclasif",
+                traditional: true,
+                data: { Values: selectedValue },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout('document.location.reload()');
+                    }
+                    else {
+                    }
+                }
+            })
+        }
+    </script>
+
+    <script>
+        $(function () {
+            $(".editindex").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".option").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".searchoproducts").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    @*CHARGE DIVISIONS BY COUNTRY*@
+    <script>
+        $(function () {
+            $("#division").hide();
+            $("#pais").change(function () {
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var coun = idcountry;
+                document.getElementById("CountryId").value = coun;
+                if (idcountry != nulls) {
+                    coun = (idcountry);
+                    $("#bookn").show();
+                    $("#lblbook").show();
+
+                }
+                else if (idcountry == nulls) {
+                    $("#bookn").show();
+                    $("#lblbook").show();
+                    $("#division").hide();
+                    $("#lbldiv").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Clasification/books",
+                    traditional: true,
+                    data: { country: idcountry },
+                    success: function (data) {
+                        $('#bookn').empty();
+                        $('#bookn')
+                           .append($("<option></option>")
+                           .attr("value", 0)
+                           .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#bookn')
+                            .append($("<option></option>")
+                            .attr("value", val.BookId)
+                            .text(val.ShortName));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+    @*CHARGE DIVISION BY BOOK*@
+    <script>
+        $(function () {
+            $("#InsertProducts").hide();
+            $("#bookn").change(function () {
+                //var iddivision = $(this).val();
+                var idcountry = $("#pais").val();
+                var nulls = $(".null").val();
+                var book = $("#bookn").val();
+
+                var coun = book;
+                document.getElementById("BookId").value = coun;
+
+                if (idcountry != nulls) {
+                    $("#division").show();
+                    $("#lbldiv").show();
+                    //$("#Edition").show();
+                    //$("#lblEdition").show();
+                    $("#InsertProducts").hide();
+                    $("#InsertProducts").hide();
+                }
+                else if (idcountry == nulls) {
+                    $("#division").hide();
+                    $("#lbldiv").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Clasification/Divisions",
+                    traditional: true,
+                    data: { country: idcountry },
+                    success: function (data) {
+                        $('#division').empty();
+                        $('#division')
+                            .append($("<option></option>")
+                            .attr("value", 0)
+                            .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#division')
+                            .append($("<option></option>")
+                            .attr("value", val.DivisionId)
+                            .text(val.DivisionName));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+    @*CHARGE EDITION BY DIVISION*@
+    <script>
+        $(function () {
+            $("#InsertProducts").hide();
+            $("#division").change(function () {
+                //var iddivision = $(this).val();
+                var idcountry = $("#pais").val();
+                var nulls = $(".null").val();
+                var Division = $("#division").val();
+                var book = $("#bookn").val();
+
+                var coun = Division;
+                document.getElementById("DivisionId").value = coun;
+
+                if (idcountry != nulls) {
+                    $("#division").show();
+                    $("#lbldiv").show();
+                    $("#Edition").show();
+                    $("#lblEdition").show();
+                    $("#InsertProducts").hide();
+                    $("#InsertProducts").hide();
+                }
+                else if (idcountry == nulls) {
+                    $("#division").hide();
+                    $("#lbldiv").hide();
+                    $("#Edition").hide();
+                    $("#lblEdition").hide();
+                    $("#InsertProducts").hide();
+                }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Clasification/Edition",
+                    traditional: true,
+                    data: { country: idcountry, bookid: book },
+                    success: function (data) {
+                        $('#Edition').empty();
+                        $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", 0)
+                            .text("Seleccione..."));
+                        $.each(data, function (index, val) {
+                            $('#Edition')
+                            .append($("<option></option>")
+                            .attr("value", val.EditionId)
+                            .text(val.NumberEdition));
+                        });
+                    }
+                });
+            })
+        })
+    </script>
+    @*END*@
+    @*SHOW FORM WHEN CHANGE DIVISION*@
+    <script>
+        $(function () {
+            $("#Edition").change(function () {
+                var idcountry = $("#Edition").val();
+
+                var Division = $("#division").val();
+                var Edition = $("#Edition").val();
+                var Prod = $("#Product").val();
+                var coun = Division;
+                document.getElementById("DivisionId").value = coun;
+                document.getElementById("EditionId").value = Edition;
+                document.getElementById("ProductId").value = Prod;
+                $('#InsertParam').trigger('click');
+                $("#bloqueo").show();
+            })
+            $("#bloqueo").hide();
+        })
+    </script>
+    @*END*@
+
+    <script>
+        $(function () {
+            $(".SDA").change(function () {
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var typeid = $(this).val();
+                document.getElementById("TypeId").value = typeid;
+                $('#ADFASD').trigger('click');
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <br /><br />
+    @using (Html.BeginForm())
+    {<div style="text-align:right;display:none">
+        <p>
+            <input id="CountryId" name="CountryId" type="text" value="">
+            <input id="DivisionId" name="DivisionId" type="text" value=""><input id="EditionId" name="EditionId" type="text" value=""><input id="ProductId" name="ProductId" type="text" value=""><input id="BookId" name="BookId" type="text" value="">
+            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+
+        </p>
+    </div>
+    }
+    @using (Html.BeginForm())
+    {
+        <div style="display:none">
+            <input id="TypeId" name="TypeId" type="text" value="">
+            <button type="submit" id="filterprods" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+        </div>
+    }
+    <table style="width:100%; ">
+
+        <tr>
+            <td>
+                @using (Html.BeginForm())
+                {
+                <div style="text-align:left">
+                    <form method="post">
+                        <fieldset>
+                            <div>
+                                <label class="lblcountrywhite">País:<label style="color:red">&nbsp;&nbsp;*</label></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select name="pais" id="pais" class="country form-focus" style="text-align:left; width:800px; font-size:16px;height:35px">
+                                    <option class="null">Seleccione...</option>
+                                    @{
+                    CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                    if (p != null)
+                    {
+                        List<string> d = p.var;
+                        foreach (string f in d)
+                        {
+                            var countries = (from country in db.Countries
+                                             where country.ID == f
+                                             select country);
+                            foreach (Countries w in countries)
+                            {
+                                    <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                            }
+                        }
+                    }
+                                    }
+                                </select><br /><br />
+                                <label for="bookname" id="lblbook" style="display:none">Obra:<label style="color:red">&nbsp;&nbsp;*</label></label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                                <select name="book" id="bookn" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select><br /><br />
+                                <label for="DivisionName" id="lbldiv" style="display:none">Nombre de Division: <label style="color:red">&nbsp;&nbsp;*</label></label>&nbsp;
+                                <select name="pais" id="division" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select>
+                                <br />
+                                <br />
+                                <label for="Edition" id="lblEdition" style="display:none">Edición: <label style="color:red">&nbsp;&nbsp;*</label></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select name="Edition" id="Edition" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select>
+                                <br />
+                                <br />
+                                <label for="Product" id="lblProduct" style="display:none">Producto: <label style="color:red">&nbsp;&nbsp;*</label></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <select name="Product" id="Product" class="insert form-focus" style="text-align:left;display:none; width:500px;font-size:16px;height:35px"></select>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                }
+            </td>
+        </tr>
+    </table>
+    @using (Html.BeginForm())
+    {
+        SearchClass S = (SearchClass)Session["SearchClass"];
+        if (S != null)
+        {
+            var CountId = S.CId;
+            int Coun = int.Parse(CountId);
+            var DivId = S.DId;
+            int Div = int.Parse(DivId);
+            var EDitId = S.EId;
+            int Edit = int.Parse(EDitId);
+            var BId = S.BId;
+            int BookId = int.Parse(BId);
+
+            var EditionId = from ED in db.Editions
+                            where ED.EditionId == Edit
+                            select ED;
+            foreach (Editions E in EditionId)
+            {
+                <label style="font-size:16px; color:orangered">Edición:&nbsp;&nbsp;</label> <label style="font-style:italic">@E.NumberEdition</label> <input id="EditionIdN" name="EditionIdN" type="text" style="display: none" value="@E.EditionId"><br />
+            }
+
+            var Book = from BK in db.Books
+                       where BK.BookId == BookId
+                       select BK;
+            foreach (Books B in Book)
+            {
+                if (B.BookId == 2)
+                {
+                    <label style="font-size:16px; color:orangered">Obra:&nbsp;&nbsp;</label> <label style="font-style:italic">DIPO</label> <input id="EditionIdN" name="EditionIdN" type="text" style="display: none" value="@B.BookId"><br />
+                }
+                else
+                {
+                    <label style="font-size:16px; color:orangered">Obra:&nbsp;&nbsp;</label> <label style="font-style:italic">DEAQ</label> <input id="EditionIdN" name="EditionIdN" type="text" style="display: none" value="@B.BookId"><br />
+                }
+            }
+
+            var CountryName = from CN in db.Countries
+                              where CN.CountryId == Coun
+                              select CN;
+            foreach (Countries C in CountryName)
+            {
+                <label style="font-size: 16px; color: orangered">País:&nbsp;&nbsp;</label><label style="font-style:italic">@C.CountryName</label><input id="CountryIdN" name="CountryId" style="display:none" type="text" value="@C.CountryId"><br />
+            }
+            var DivisionName = from Dn in db.Divisions
+                               where Dn.DivisionId == Div
+                               select Dn;
+            foreach (Divisions D in DivisionName)
+            {
+                <label style="font-size: 16px; color: orangered">Laboratorio:&nbsp;&nbsp;</label> <label style="font-style:italic">@D.DivisionName</label><input id="DivisionIdN" name="DivisionIdN" type="text" style="display:none" value="@D.DivisionId"><br />
+            }
+
+            <table style="width:100%" border="0">
+                <tr>
+                    <td>
+                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:left" class="btn return" onclick="history.back();">
+                    </td>
+                    <td style="text-align:center">
+                        @using (Html.BeginForm("Index", "Clasification"))
+                        {
+                            <p style="">
+                                <label>Mostrar:</label>
+                                @{
+                            TypeInEditionn t = (TypeInEditionn)Session["TypeInEdition"];
+                            if (t != null)
+                            {
+
+
+                                bool Participant = false;
+                                bool New = false;
+                                bool Changes = false;
+                                if (t.TypeInEdition == "P")
+                                {
+                                    Participant = true;
+                                }
+                                if (t.TypeInEdition == "N")
+                                {
+                                    New = true;
+                                }
+                                if (t.TypeInEdition == "C/C")
+                                {
+                                    Changes = true;
+                                }
+
+                                @Html.DropDownListFor(model => model.FirstOrDefault().TypeInEdition,
+                  new List<SelectListItem> {
+                      new SelectListItem  { Value = "P" ,    Text = "Todos los Productos",Selected = Participant  },
+                       new SelectListItem { Value = "N" ,   Text = "Productos Nuevos",Selected = New },
+                       new SelectListItem { Value = "C/C" , Text = "Productos Con Cambios",Selected = Changes }
+                    },
+                    new { @class = "form-focus SDA FILTERPP" })
+                                if (Participant == true)
+                                {
+                                    <br />
+                                    <br />
+                                    <label style="color:red;font-size:16px">SELECCIÓN DE TODOS LOS PRODUCTOS</label>
+                                }
+                                if (New == true)
+                                {
+                                    <br />
+                                    <br />
+                                    <label style="color:red;font-size:16px">SELECCIÓN DE PRODUCTOS NUEVOS</label>
+                                }
+                                if (Changes == true)
+                                {
+                                    <br />
+                                    <br />
+                                    <label style="color:red;font-size:16px">SELECCIÓN DE PRODUCTOS CON CAMBIOS</label>
+                                }
+                            }
+                                }
+                                @{
+                            if (t == null)
+                            {
+                                @Html.DropDownListFor(model => model.FirstOrDefault().TypeInEdition,
+                  new List<SelectListItem> {
+                      new SelectListItem  { Value = "P" ,    Text = "Todos los Productos" },
+                       new SelectListItem { Value = "N" ,   Text = "Productos Nuevos"},
+                       new SelectListItem { Value = "C/C" , Text = "Productos Con Cambios"}
+                    },
+                    new { @class = "form-focus SDA FILTERPP" })
+                            }
+                                }
+                                <button type="submit" id="ADFASD" value="" class="btn btn-warning searchoproducts" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button><br />
+                            </p>
+                        }
+                    </td>
+                    <td>
+                        <div>
+                            <label>Resultados:&nbsp;</label>
+                            <select id="rowsperpages" class="form-control" style="width:120px" onchange="getvalues(this);">
+
+                                @{
+                        sessionParticipantProductsClasification sessionParticipantProductsClasification = (sessionParticipantProductsClasification)Session["sessionParticipantProductsClasification"];
+                        if (sessionParticipantProductsClasification != null)
+                        {
+                            if (sessionParticipantProductsClasification.Values == "selection")
+                            {
+                                <option value="selection" selected>Seleccione...</option>
+                                    <option value="10" class="option">10</option>
+                                    <option value="50" class="option">50</option>
+                                    <option value="100" class="option">100</option>
+                                    <option value="all" class="option">Ilimitado</option>
+                            }
+                            if (sessionParticipantProductsClasification.Values == "10")
+                            {
+                                <option value="selection">Seleccione...</option>
+                                    <option value="10" class="option" selected>10</option>
+                                    <option value="50" class="option">50</option>
+                                    <option value="100" class="option">100</option>
+                                    <option value="all" class="option">Ilimitado</option>
+                            }
+                            if (sessionParticipantProductsClasification.Values == "50")
+                            {
+                                <option value="selection">Seleccione...</option>
+                                    <option value="10" class="option">10</option>
+                                    <option value="50" class="option" selected>50</option>
+                                    <option value="100" class="option">100</option>
+                                    <option value="all" class="option">Ilimitado</option>
+                            }
+                            if (sessionParticipantProductsClasification.Values == "100")
+                            {
+                                <option value="selection">Seleccione...</option>
+                                    <option value="10" class="option">10</option>
+                                    <option value="50" class="option">50</option>
+                                    <option value="100" class="option" selected>100</option>
+                                    <option value="all" class="option">Ilimitado</option>
+                            }
+                            if (sessionParticipantProductsClasification.Values == "all")
+                            {
+                                <option value="selection">Seleccione...</option>
+                                    <option value="10" class="option">10</option>
+                                    <option value="50" class="option">50</option>
+                                    <option value="100" class="option">100</option>
+                                    <option value="all" class="option" selected>Ilimitado</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="selection" selected>Seleccione...</option>
+                                    <option value="10" class="option">10</option>
+                                    <option value="50" class="option">50</option>
+                                    <option value="100" class="option">100</option>
+                                    <option value="all" class="option">Ilimitado</option>
+                        }
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Index", "Clasification"))
+                        {
+
+                            <p style="text-align:right">
+                                <label>Buscar:</label> @Html.TextBox("ProductName", "", new { @class = "form-focus" })
+                                <button type="submit" id="searchp" value="searchprod" class="btn btn-warning searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button><br />
+                                @{
+                            var count = ViewData["Count"];
+                            var countprod = ViewData["CountProds"];
+                            if ((count != null) && (countprod == null))
+                            {
+                                <label id="result" style="display:normal; color:red">Se han Encontrado: @ViewData["Count"] Resultados &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            }
+                                }
+                            </p><br />
+                        }
+                    </td>
+                </tr>
+            </table>
+                        var countprod1 = ViewData["CountProds"];
+                        var count1 = ViewData["Count"];
+                        if ((countprod1 == null) && (count1 == null))
+                        {
+                            <p style="text-align:center"><label id="result" style="display:normal; color:red;text-align:center">No se Han Encontrado Productos Participantes en esta Edición para el Laboratorio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></p>
+                        }
+        }
+    }
+    <div id="grid" style="text-align:left">
+        @DataGridC.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+
+                DataGridC.Column("", header: "Producto", format: @<text>
+                    <span class="display-mode"> <label id="lblName">@item.ProductName</label> </span>
+                    <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="Name" value="@item.ProductName" class="edit-mode" />
+                    <input id="lblProductid" style="visibility: hidden" value="@item.ProductId" />
+                </text>),
+                DataGridC.Column("", header: "Forma Farmacéutica", format: @<text>
+            <span class="display-mode"> <label id="lblName">@item.PharmaForm</label> </span>
+            <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="Name" value="@item.PharmaForm" class="edit-mode" />
+            <input id="lblProductid" style="visibility: hidden" value="@item.PharmaFormId" />
+                </text>),
+                 DataGridC.Column("", header: "Categoría", format: @<text>
+            <span class="display-mode"> <label id="lblName">@item.CategoryName</label> </span>
+            <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="Name" value="@item.CategoryName" class="edit-mode" />
+            <input id="lblProductid" style="visibility: hidden" value="@item.CategoryId" />
+                </text>),
+
+                DataGridC.Column("",header:"Sustancias Activas", format:@<text>
+            @{
+                        SearchClass S = (SearchClass)Session["SearchClass"];
+                if (S != null)
+                {
+                    var EDitId = S.EId;
+                    int Edit = int.Parse(EDitId);
+                    var DivId = S.DId;
+                    int Div = int.Parse(DivId);
+                    var CountId = S.CId;
+                    int Coun = int.Parse(CountId);
+                    int ProductId = item.ProductId;
+                                   var ACT = false;
+                                   var ActS = (from view in db.plm_vwProductsByEdition
+                                              where view.DivisionId == Div
+                                              && view.EditionId == Edit
+                                              && view.CountryId == Coun
+                                              && view.TypeInEdition =="P"
+                                              && view.ProductId == ProductId
+                                              select view).Distinct().ToList();
+                                   foreach (plm_vwProductsByEdition PPS in ActS)
+                                   {
+                                       if ((@item.ProductId == PPS.ProductId) && (PPS.NumberOfActiveSubstances != 0))
+                                       {
+                                           ACT = true;
+                                       }
+                                   }
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACT" disabled /></p>
+                }
+            }
+                </text>,style: "column"),
+                DataGridC.Column("",header:"Cultivos", format:@<text>
+            @{
+                        SearchClass S = (SearchClass)Session["SearchClass"];
+                if (S != null)
+                {
+                    var EDitId = S.EId;
+                    int Edit = int.Parse(EDitId);
+                    var DivId = S.DId;
+                    int Div = int.Parse(DivId);
+                    var CountId = S.CId;
+                    int Coun = int.Parse(CountId);
+                    var ACTC = false;
+                    int ProductId = item.ProductId;
+                    var ActS = from view in db.plm_vwProductsByEdition
+                               where view.DivisionId == Div
+                               && view.EditionId == Edit
+                               && view.CountryId == Coun
+                               && view.ProductId == ProductId
+                               select view;
+                    foreach (plm_vwProductsByEdition PPS in ActS)
+                    {
+                        if ((@item.ProductId == PPS.ProductId) && (PPS.NumberOfCrops != 0))
+                                       {
+                                           ACTC = true;
+                                       }
+                                   }
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACTC" disabled /></p>
+                }
+            }
+                </text>,style: "column"),
+                 DataGridC.Column("",header:"Usos Agroquimicos", format:@<text>
+            @{
+                        SearchClass S = (SearchClass)Session["SearchClass"];
+                if (S != null)
+                {
+                    var EDitId = S.EId;
+                    int Edit = int.Parse(EDitId);
+                    var DivId = S.DId;
+                    int Div = int.Parse(DivId);
+                    var CountId = S.CId;
+                    int Coun = int.Parse(CountId);
+                    var ACT = false;
+                    int ProductId = item.ProductId;
+                    var ActS = from view in db.plm_vwProductsByEdition
+                               where view.DivisionId == Div
+                               && view.EditionId == Edit
+                               && view.CountryId == Coun
+                               && view.ProductId == ProductId
+                               select view;
+                    foreach (plm_vwProductsByEdition PPS in ActS)
+                    {
+                        if ((@item.ProductId == PPS.ProductId) && (PPS.NumberOfAgrochemicalUses != 0))
+                                       {
+                                           ACT = true;
+                                       }
+                                   }
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACT" disabled /></p>
+                }
+
+            }
+                </text>,style: "column3"),
+                DataGridC.Column("",header:"Semillas", format:@<text>
+            @{
+                        SearchClass S = (SearchClass)Session["SearchClass"];
+                if (S != null)
+                {
+                    var EDitId = S.EId;
+                    int Edit = int.Parse(EDitId);
+                    var DivId = S.DId;
+                    int Div = int.Parse(DivId);
+                    var CountId = S.CId;
+                    int Coun = int.Parse(CountId);
+                    var ACT = false;
+                    int ProductId = item.ProductId;
+                    var ActS = from view in db.plm_vwProductsByEdition
+                               where view.DivisionId == Div
+                               && view.EditionId == Edit
+                               && view.CountryId == Coun
+                               && view.ProductId == ProductId
+                               select view;
+                    foreach (plm_vwProductsByEdition PPS in ActS)
+                    {
+                        if ((@item.ProductId == PPS.ProductId) && (PPS.NumberOfSeeds != 0))
+                                       {
+                                           ACT = true;
+                                       }
+                                   }
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACT" disabled /></p>
+                }
+            }
+                </text>,style: "column"),
+                DataGridC.Column("",header:"Editar Indices", format:@<text>
+            @{
+                <button class="btn btn-success editindex" id="Classification" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("Clasification", "Clasification", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId })';return false;"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+            }
+                </text>)
+})
+    </div>
+</body>
+</html>

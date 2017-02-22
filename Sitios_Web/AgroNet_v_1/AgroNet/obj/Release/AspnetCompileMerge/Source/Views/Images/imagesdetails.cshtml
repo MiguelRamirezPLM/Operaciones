@@ -1,0 +1,45 @@
+﻿@model IEnumerable <AgroNet.Models.joinDivisionImageSizes>
+@{
+    ViewBag.Title = "imagesdetails";
+    WebGrid DataGridImagesDetails = new WebGrid(Model);
+}
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <br />
+    <br />
+    <h2 style="text-align:center">Detalle de Imagen</h2>
+    <br />
+    <br />
+    <br />
+    <div>
+        @DataGridImagesDetails.GetHtml(
+    headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table",
+            mode: WebGridPagerModes.All,
+                            columns: new[] {
+                                  DataGridImagesDetails.Column("",header:"Imagen",format:@<text>
+            @{
+                <img src="@Url.Action("showimagesdetails", "Images", new { image = item.DivisionImages.ImageName, DivisionImageId = item.DivisionImagesSizes.DivisionImageId, DivisionId = item.DivisionImages.DivisionId, Size = item.DivisionImagesSizes.ImageSizeId })" alt="" style="height:120px;width:120px;" />
+            }
+        </text>,style: "column6"),
+                                DataGridImagesDetails.Column("",header:"Nombre de Imagen",format:@<text>
+                                    <span class="display-mode"> <label id="lblLaboratoryName">@item.DivisionImages.ImageName</label> </span>                                    
+                                    @*<input id="lblDivisionImageId" style="visibility: hidden;display:none" value="@item.DivisionImageId" />*@
+                                </text>),
+          DataGridImagesDetails.Column("",header:"Tamaño",format:@<text>
+            @{
+                   <span class="display-mode"> <label id="lblLaboratoryName">@item.ImageSizes.Size</label> </span>               
+            }
+        </text>,style: "column6")
+})
+    </div>
+</body>
+</html>

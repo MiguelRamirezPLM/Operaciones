@@ -1,0 +1,30 @@
+﻿<script type="text/javascript" src="@Url.Content("~/Scripts/main.js")"></script>
+@helper GetTreeView(List<PillBooks.Models.Therapeutics> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId == (ParentId)))
+    {
+        <li>
+            @{var subitem = tree.Where(a => a.ParentId == (i.TherapeuticId)).Count();}
+
+            @if (subitem > 0)
+            {
+                <span class="collapse1 collapsible">&nbsp;</span>
+            }
+            else
+            {
+                <span style="display:inline-block">&nbsp;<input type="checkbox" value="@i.TherapeuticId" id="@i.TherapeuticId" onclick="addpillbookatc($(this).val())" />&nbsp;</span>
+            }
+            <span>
+                <a href="/SalesModule/insertclientcategoriess/@i.TherapeuticId" class="insertau" style="color:black"><label style="color: #065977;">@i.TherapeuticKey - </label>@i.SpanishDescription.ToUpper()</a>
+            </span>
+            @if (subitem > 0)
+            {
+                tree = tree.OrderBy(x => x.SpanishDescription).ToList();
+                
+                <ul>
+                    @TreeviewTherapeutics.GetTreeView(tree, i.TherapeuticId)
+                </ul>
+            }
+        </li>
+    }
+}

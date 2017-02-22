@@ -1,0 +1,322 @@
+﻿@model IEnumerable<MediVet.Models.Equipment>
+@using MediVet.Models;
+@{
+    ViewBag.Title = "clasificationProductEquipment";
+    PEV db = new PEV();
+    sessionEquipmentAsoc sessionEquipmentAsoc = (sessionEquipmentAsoc)Session["sessionEquipmentAsoc"];
+    WebGrid _datagrid;
+    if (sessionEquipmentAsoc != null)
+    {
+        int leng = sessionEquipmentAsoc.EquipmentName.Length;
+        if (leng <= 3)
+        {
+            var mdl = Model.Where(x => x.EquipmentName.ToUpper().Trim().StartsWith(sessionEquipmentAsoc.EquipmentName.ToUpper().Trim())).ToList();
+            _datagrid = new WebGrid(mdl, rowsPerPage: 20);
+        }
+        if (leng > 3)
+        {
+            var mdl = Model.Where(x => x.EquipmentName.ToUpper().Trim().Contains(sessionEquipmentAsoc.EquipmentName.ToUpper().Trim())).ToList();
+            _datagrid = new WebGrid(mdl, rowsPerPage: 20);
+        }
+        else
+        {
+            _datagrid = new WebGrid(Model, rowsPerPage: 20);
+        }
+    }
+    else
+    {
+        _datagrid = new WebGrid(Model, rowsPerPage: 20);
+    }
+
+    searchEquipment searchEquipment = (searchEquipment)Session["searchEquipment"];
+}
+<html>
+<head>
+    <title></title>
+    <script>
+        $(function () {
+            $('#equipmentasociate').keyup(function () {
+                var min = 2;
+                var br = $(this).val();
+
+                var longs = parseInt(br.length);
+
+                if (longs >= min) {
+                    $(function () {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Veterinary/searchequipmentasoc/",
+                            traditional: true,
+                            data: { EquipmentName: br },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                            }
+                        });
+                    })
+                }
+                if (longs == 0) {
+                    $(function () {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Veterinary/searchequipmentasoc/",
+                            traditional: true,
+                            data: { EquipmentName: br },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                            }
+                        });
+                    })
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(function () {
+            $('#equipment').keyup(function () {
+                var min = 2;
+                var br = $(this).val();
+
+                var Pid = 0;
+
+                var longs = parseInt(br.length);
+
+                if (longs >= min) {
+                    $(function () {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Veterinary/searchequipment/",
+                            traditional: true,
+                            data: { EquipmentName: br},
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                            }
+                        });
+                    })
+                }
+                if (longs == 0) {
+                    $(function () {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "../Veterinary/searchequipment/",
+                            traditional: true,
+                            data: { EquipmentName: br},
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                            }
+                        });
+                    })
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <ol class="breadcrumb">
+        <li><a href="../Veterinary/Index/" class="cpe">Veterinario</a></li>
+        <li><a href="../Veterinary/Index/" class="cpe">Productos</a></li>
+        <li class="active">Clasificación por Equipos</li>
+    </ol>
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width: 10%;"><label class="labels">País:</label></td>
+            <td style="width: 1%;"></td>
+            <td>
+                @{
+                    <label>@ViewData["CountryNameV"]</label>
+                }
+            </td>
+            <td style="width:10%"><label class="labels">Producto:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["ProductNameV"]</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Libro:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["BookNameV"]</label>
+                }
+            </td>
+            <td style="width:15%"><label class="labels">Forma Farmacéutica:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["PharmaFormV"]</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Edición:</label></td>
+            <td></td>
+            <td>
+                @{
+                    <label>@ViewData["NumberEditionV"]</label>
+                }
+            </td>
+            <td style="width:10%"><label class="labels">Categoría:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["CategoryNameV"]</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">División:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["DivisionNameV"]</label>
+                }
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <div style="height:100%;width:100%; border-bottom:none">
+        <div style="width:100%;height:100%"></div>
+        <br />
+        <label id="Equipos" class="labelin cpe" onclick="location.href='@Url.Action("clasificationProductEquipment", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Equipos</label>
+        <label id="Especies" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductSpecies", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Especies</label>
+        <label id="Sustancias" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductSubstances", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Sustancias Activas</label>
+        <label id="Usos" class="labelout cpe" onclick="location.href='@Url.Action("clasificationTherapeuticUses", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Usos Terapéuticos</label>
+    </div>
+
+    <div style="width: 100%; height: 100%; display: normal; border-top: 1px solid #ddd;" id="divequipos">
+        <br />
+        <div style="border:none; width:100%">
+            <table style=" width: 100%" border="0">
+                <tr>
+                    @using (Html.BeginForm("searchequipmentasoc", "Veterinary"))
+                    {
+                        if (searchEquipment != null)
+                        {
+                            <td style="text-align:left">
+                                <label class="labels">Buscar: </label> @Html.TextBox("EquipmentName", searchEquipment.EquipmentName, new { @class = "form-focus", id = "equipmentasociate" })
+                                <button type="submit" id="searchequipmentasoc" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: left">
+                                <label class="labels">Buscar: </label> @Html.TextBox("EquipmentName", "", new { @class = "form-focus", id = "equipmentasociate" })
+                                <button type="submit" id="searchequipmentasoc" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            </td>
+                        }
+                    }
+                    @using (Html.BeginForm("searchequipment", "Veterinary"))
+                    {
+                        if (sessionEquipmentAsoc != null)
+                        {
+                            <td style="text-align:right">
+                                <label class="labels">Buscar: </label> @Html.TextBox("EquipmentName", sessionEquipmentAsoc.EquipmentName, new { @class = "form-focus", id = "equipment" })
+                                <button type="submit" id="searchequipment" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: right">
+                                <label class="labels">Buscar: </label> @Html.TextBox("EquipmentName", "", new { @class = "form-focus", id = "equipment" })
+                                <button type="submit" id="searchequipment" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                            </td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    <td style="height:15px"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center"><label class="labels">Equipos Disponibles</label> </td>
+                    <td style="text-align:center"><label class="labels">Equipos Asociadas</label> </td>
+                </tr>
+                <tr>
+                    <td style="height:15px"></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        @{
+            int ProductId = Convert.ToInt32(ViewData["ProductIdV"]);
+
+            WebGrid _datagridAS;
+            if (searchEquipment != null)
+            {
+                var equip = db.Database.SqlQuery<Equipment>("plm_spGetProductsEquipmentSearch @productid=" + ProductId + ", @param='" + searchEquipment.EquipmentName + "'").OrderBy(x => x.EquipmentName).ToList();
+
+                _datagridAS = new WebGrid(equip, rowsPerPage: 20);
+            }
+            else
+            {
+                var equip = db.Database.SqlQuery<Equipment>("plm_spGetProductsEquipment @productid=" + ProductId).ToList();
+
+                _datagridAS = new WebGrid(equip, rowsPerPage: 20);
+            }
+        }
+        <div style="width: 40%; float: left; height: 100%">
+            @_datagridAS.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagridAS.Column("", header: "Nombre de Equipo", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblProductName">@item.EquipmentName.ToUpper()</label> </span>
+                                    <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.EquipmentId" />
+                                }
+                        </text>),
+             _datagridAS.Column("", header: "Agregar", format: @<text>
+                @{
+                    <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("insertProductEquipment", "Veterinary", new { EquipmentId = item.EquipmentId, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/expand.png")" style="height:20px;width:20px"></button>
+                }
+            </text>, style:"buton")
+        })
+        </div>
+        <div style="width:40%; float:right; height:100%">
+            @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Equipo", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblProductName">@item.EquipmentName.ToUpper()</label> </span>
+                                    <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.EquipmentId" />
+                                }
+                        </text>),
+             _datagrid.Column("", header: "Eliminar", format: @<text>
+                @{
+                    <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteProductEquipment", "Veterinary", new { EquipmentId = item.EquipmentId, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                }
+            </text>, style:"buton")
+        })
+        </div>
+    </div>
+</body>
+</html>

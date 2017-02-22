@@ -1,0 +1,213 @@
+﻿@model IEnumerable<AgroNet.Models.joinproductimagessizes>
+@using AgroNet.Models;
+@{
+    ViewBag.Title = "images";
+    var s = Model;
+    DEAQ db = new DEAQ();
+    WebGrid _datagrid = new WebGrid(Model);
+}
+
+<html>
+<head>
+    <title></title>
+
+    <script>
+        $(function () {
+            $(".upload").change(function () {
+                var tr = $(this).parents("tr:first");
+
+                var uplbtn = tr.find("#uploadBtn").val();
+                var ufile = tr.find("#uploadFile").val(uplbtn);
+            })
+        });
+    </script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script>
+        $(function () {
+            $("#insertimage").click(function () {
+                var size = $("#selectf").val();
+                var prodid = $("#ProductId").val();
+                var pform = $("#PharmaFormId").val();
+                var cat = $("#CategoryId").val();
+                var divid = $("#DivisionId").val();
+                var filed = $("#uploadBtn").val();
+                var edt = $("#EditionId").val();
+                var nulls = $(".null").val();
+                console.log(filed);
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (size == nulls) {
+                    d += "<li style='text-align:justify;font-style:italic'>Antes de Insertar debe seleccionar un Tamaño</li>"
+                    apprise("" + d + "", { 'animate': true });
+                }
+                else {
+                    if (!filed.trim() == true) {
+                        d += "<li style='text-align:justify;font-style:italic'>Para Insertar debe seleccionar un Archivo de Imagen</li>"
+                        apprise("" + d + "", { 'animate': true });
+                    }
+                    else {
+                        $("#sendimages").ajaxSubmit({
+                            type: "POST",
+                            url: "/Production/newimages",
+                            data: { size: size, Product: prodid, PharmaF: pform, Category: cat, Division: divid, Edition: edt },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                else if (data == "El archivo se ha Modificado Exitosamente") {
+                                    d += "<p> </p>"
+                                    d += "<li style='text-align:justify;color:#05606d;font-style:italic'>" + data + "</li>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $(".edit-mode").hide();
+                                    $(".display-mode").show();
+                                    $("#bloqueo").hide();
+                                }
+                            },
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <br />
+    <table border="0" style="width:100%">
+        <tr>
+            <td style="width:15%">
+                <label style="color: orangered; font-size:16px">Producto: </label>
+            </td>
+            <td>
+                <label>@ViewData["ProductNameI"]</label>
+                <input type="text" value="@ViewData["ProductIdI"]" style="display:none" id="ProductId" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label style="color: orangered; font-size: 16px">Forma Farmacéutica: </label>
+            </td>
+            <td>
+                <label>@ViewData["PharmaFormI"]</label>
+                <input type="text" value="@ViewData["PharmaFormIdI"]" style="display:none" id="PharmaFormId" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label style="color: orangered; font-size: 16px; ">Categoría: </label>
+            </td>
+            <td>
+                <label>@ViewData["CategoryName"]</label>
+                <input type="text" value="@ViewData["CategoryId"]" style="display:none" id="CategoryId" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label style="color: orangered; font-size: 16px; ">Laboratorio: </label>
+            </td>
+            <td>
+                <label>@ViewData["DivisionNameI"]</label>
+                <input type="text" value="@ViewData["DivisionIdI"]" style="display:none" id="DivisionId" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label style="color: orangered; font-size: 16px; ">Edición: </label>
+            </td>
+            <td>
+                <label>@ViewData["NumberEditionI"]</label>
+                <input type="text" value="@ViewData["EditionIdI"]" style="display:none" id="EditionId" />
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <br />
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width:20%"></td>
+            <td style="width:20%;">
+                <label class="labels">Seleccionar Tamaño</label>
+            </td>
+            <td style="width: 40%;">
+                <select class="form-focus" id="selectf">
+                    <option value="0" class="null">Seleccione...</option>
+                    @{
+                        var ims = (from images in db.ImageSizes
+                                   orderby images.ImageSizeId ascending
+                                   select images);
+                        foreach (ImageSizes _ims in ims)
+                        {
+                            <option value="@_ims.ImageSizeId">@_ims.Size</option>
+                        }
+
+                    }
+
+                </select>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="height:15px"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><label class="labels">Seleccionar Imagen</label></td>
+            <td>
+                <input type="text" style="height:35px;display:none" id="text" />
+                <form enctype="multipart/form-data" method="post" id="sendimages">
+                    <input id="uploadFile" placeholder="Seleccione Archivo..." style="width:500px" disabled="disabled" class="form-focus" accept="image/png" />
+                    <div class="fileUpload btn btn-warning buton" style="text-align:center">
+                        <span>
+                            Seleccione...
+                        </span>
+                        <input id="uploadBtn" type="file" class="upload" accept="image/png" name="file" />
+                    </div><br />
+                    <div style="text-align:center">
+                    </div>
+                </form>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="text-align: center; height: 40px"><button class="btn btn-warning" id="insertimage">Insertar</button> </td>
+            <td></td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <div style="width:100%">
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Imagen", format: @<text>
+                                @{
+                                    <span class=""> <label id="lblName" style="width:180px">@item.ProductImages.ProductShot</label> </span>
+                                }
+                        </text>),
+            _datagrid.Column("", header: "Tamaño", format: @<text>
+            @{
+                <span class=""> <label id="lblName" style="width:180px">@item.ImageSizes.Size</label> </span>
+            }
+            </text>,style:"buton"),
+         _datagrid.Column("", header: "Imagen", format: @<text>
+            @{
+                <img src="@Url.Action("showimages", "Production", new { image = @item.ProductImages.ProductShot, ProductImageId = @item.ProductImages.ProductImageId, size = @item.ImageSizes.ImageSizeId })" style="color: #333; width: 50px;height:50px" />
+            }
+        </text>,style:"buton")
+  })
+    </div>
+</body>
+</html>

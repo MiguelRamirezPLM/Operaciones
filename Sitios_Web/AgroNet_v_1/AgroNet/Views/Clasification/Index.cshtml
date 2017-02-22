@@ -1,0 +1,777 @@
+﻿@model IEnumerable<AgroNet.Models.plm_vwProductsByEdition>
+@using AgroNet.Models;
+@{
+    DEAQ db = new DEAQ();
+    Newproducts Nprod = new Newproducts();
+    Products product = new Products();
+
+    SearchClass S = (SearchClass)Session["SearchClass"];
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (S != null)
+    {
+        ClientIdss = Convert.ToInt32(S.DId);
+        EditionIds = Convert.ToInt32(S.EId);
+        BookIds = Convert.ToInt32(S.BId);
+        CountryIdss = Convert.ToInt32(S.CId);
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+@{
+    ViewBag.Title = "Index";
+    sessionParticipantProductsClasification session = (sessionParticipantProductsClasification)Session["sessionParticipantProductsClasification"];
+    WebGrid DataGridC;
+    if (session != null)
+    {
+        TypeInEditionn ST = (TypeInEditionn)Session["TypeInEdition"];
+        string num = session.Values;
+
+        int count;
+
+        if (num == "all")
+        {
+
+            if (ST != null)
+            {
+                count = Convert.ToInt32(Model.LongCount());
+                if (count == 0)
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: 10);
+                }
+                else
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: count);
+                }
+            }
+            else
+            {
+                count = Convert.ToInt32(Model.LongCount());
+                if (count == 0)
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: 10);
+                }
+                else
+                {
+                    DataGridC = new WebGrid(Model, rowsPerPage: count);
+                }
+            }
+        }
+        else
+        {
+            if (num == "selection")
+            {
+                int nums = 10;
+
+                DataGridC = new WebGrid(Model, rowsPerPage: nums);
+            }
+            else
+            {
+                count = int.Parse(session.Values);
+                DataGridC = new WebGrid(Model, rowsPerPage: count);
+            }
+        }
+    }
+    else
+    {
+        int num = 10;
+
+        DataGridC = new WebGrid(Model, rowsPerPage: num);
+    }
+}
+<html>
+<head>
+    <title></title>
+    <script>
+        function getvalues() {
+            var SelectList = $('select#rowsperpages');
+            var selectedValue = $('option:selected', SelectList).val();
+            $("#bloqueo").show();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "../Clasification/participantproductsclasif/",
+                traditional: true,
+                data: { Values: selectedValue },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout('document.location.reload()');
+                    }
+                    else {
+                    }
+                }
+            })
+        }
+    </script>
+
+    <script>
+        $(function () {
+            $(".editindex").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".option").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".searchoproducts").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".SDA").change(function () {
+
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var typeid = $(this).val();
+                console.log(typeid);
+                $('#ADFASD').trigger('click');
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <br />
+    <table border="0" style="width:100%; height:100%">
+        <tr>
+            <td colspan="4">
+                <ol class="breadcrumb">
+                    <li><a href=@Url.Content("~/Clasification/Index") class="cpe">Clasificación</a></li>
+                    <li class="active">Productos</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @using (Html.BeginForm())
+                {
+                    <div style="text-align:right;display:none">
+                        <p>
+                            @{
+                    if (S != null)
+                    {
+
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="@S.CId">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="@S.BId">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@S.EId">
+                                <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="@S.DId">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+
+                    }
+                    else
+                    {
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                                <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                    }
+                            }
+                        </p>
+                    </div>
+                }
+                @{
+                    if (S == null)
+                    {
+                        <div style="width: 100%; float: left">
+                            <table style="width:50%" border="0">
+                                <tr>
+                                    <td width="100px">
+                                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <div style="text-align:left;">
+                                            @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = w.CountryId;
+                                                            <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                        }
+                                                    }
+                                                }
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="DivisionName" id="lblclient" style="display: normal">División:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="divisions" id="divisions" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="width: 100%;">
+                            <table style="width:50%" border="0">
+                                <tr>
+                                    <td width="100px">
+                                        <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <div style="text-align:left;">
+                                            @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = Convert.ToInt32(S.CId);
+                                                            if (w.CountryId == CountryId)
+                                                            {
+                                                                <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                                    }
+                                                </select>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px; height: 30px">
+                                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int BookId = Convert.ToInt32(S.BId);
+
+                                            var bk = (from book in db.Books
+                                                      select book).ToList();
+                                            foreach (Books _book in bk)
+                                            {
+                                                if (_book.BookId == BookId)
+                                                {
+                                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_book.BookId">@_book.BookName</option>
+                                                }
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int EditionId = Convert.ToInt32(S.EId);
+                                            int CountryIds = Convert.ToInt32(S.CId);
+                                            var ed = (from _ed in db.Editions
+                                                      where _ed.CountryId == CountryIds
+                                                      && _ed.BookId == BookId
+                                                      select _ed).ToList();
+
+                                            foreach (Editions _ed in ed)
+                                            {
+                                                if (_ed.EditionId == EditionId)
+                                                {
+                                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                                }
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 30px;">
+                                        <label for="DivisionName" id="lblclient" style="display: normal">División:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                                    </td>
+                                    <td style="line-height: 30px;width:15px"></td>
+                                    <td style="line-height: 30px;">
+                                        <select name="divisions" id="divisions" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                                            <option>Seleccione...</option>
+                                            @{
+                                            int ClientId = Convert.ToInt32(S.DId);
+                                            int _CountryId = Convert.ToInt32(S.CId);
+                                            var _labs = (from l in db.Laboratories
+                                                         join d in db.Divisions
+                                                             on l.LaboratoryId equals d.LaboratoryId
+                                                         where d.CountryId == _CountryId
+                                                         orderby d.DivisionName ascending
+                                                         select d).ToList();
+                                            foreach (Divisions _cl in _labs)
+                                            {
+                                                <option value="@_cl.DivisionId">@_cl.DivisionName</option>
+                                            }
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        @{
+            if (S != null)
+            {
+                <tr>
+                    <td style="width: 10%;"><label style="font-size:16px; color:orangered; font-style:italic">País:</label></td>
+                    <td style="width: 1%;"></td>
+                    <td>
+                        @{
+                var cts = (from _ct in db.Countries
+                           where _ct.CountryId == CountryIdss
+                           select _ct).ToList();
+                foreach (Countries _ct in cts)
+                {
+                    <label>@_ct.CountryName</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label style="font-size:16px; color:orangered; font-style:italic">Libro:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                var bks = (from _bk in db.Books
+                           where _bk.BookId == BookIds
+                           select _bk).ToList();
+                foreach (Books _bks in bks)
+                {
+                    <label>@_bks.BookName</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label style="font-size:16px; color:orangered; font-style:italic">Edición:</label></td>
+                    <td></td>
+                    <td>
+                        @{
+                var eds = (from _ed in db.Editions
+                           where _ed.EditionId == EditionIds
+                           select _ed).ToList();
+                foreach (Editions _eds in eds)
+                {
+                    <label>@_eds.NumberEdition</label>
+                }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label style="font-size:16px; color:orangered; font-style:italic">División:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                var cl = (from _cl in db.Divisions
+                          where _cl.DivisionId == ClientIdss
+                          select _cl).ToList();
+                foreach (Divisions _cl in cl)
+                {
+                    <label>@_cl.DivisionName</label>
+                }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @{
+                    if (S != null)
+                    {
+                        <table style="width:100%" border="0">
+                            <tr>
+                                <td>
+                                </td>
+                                <td></td>
+                                <td style="text-align:center"><label>Mostrar</label></td>
+                                <td></td>
+                                <td style="text-align:center"><label>Resultados</label> </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">
+                                    <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:left" class="btn return" onclick="history.back();">
+                                </td>
+                                <td style="width:5%">
+                                </td>
+                                <td style="text-align:center;width:25%">
+                                    @using (Html.BeginForm("Index", "Clasification"))
+                                    {
+                                        <p style="">
+                                            @{
+                                        TypeInEditionn t = (TypeInEditionn)Session["TypeInEdition"];
+                                        if (t != null)
+                                        {
+
+
+                                                    bool Participant = false;
+                                                    bool New = false;
+                                                    bool Changes = false;
+                                                    if (t.TypeInEdition == "P")
+                                                    {
+                                                        Participant = true;
+                                                    }
+                                                    if (t.TypeInEdition == "N")
+                                                    {
+                                                        New = true;
+                                                    }
+                                                    if (t.TypeInEdition == "C/C")
+                                                    {
+                                                        Changes = true;
+                                                    }
+
+                                                    @Html.DropDownListFor(model => model.FirstOrDefault().TypeInEdition,
+                                                    new List<SelectListItem> {
+                                                        new SelectListItem  { Value = "P",    Text = "Todos los Productos",Selected = Participant  },
+                                                        new SelectListItem { Value = "N" ,   Text = "Productos Nuevos",Selected = New },
+                                                        new SelectListItem { Value = "C/C" , Text = "Productos Con Cambios",Selected = Changes }
+                                                    },
+                                                         new { @class = "form-focus SDA FILTERPP" })
+                                                    if (Participant == true)
+                                                    {
+                                                        <br />
+                                                        <br />
+                                                        <label style="color:red;font-size:16px">SELECCIÓN DE TODOS LOS PRODUCTOS</label>
+                                                    }
+                                                    if (New == true)
+                                                    {
+                                                        <br />
+                                                        <br />
+                                                        <label style="color:red;font-size:16px">SELECCIÓN DE PRODUCTOS NUEVOS</label>
+                                                    }
+                                                    if (Changes == true)
+                                                    {
+                                                        <br />
+                                                        <br />
+                                                        <label style="color:red;font-size:16px">SELECCIÓN DE PRODUCTOS CON CAMBIOS</label>
+                                                    }
+                                                }
+                                            }
+                                            @{
+                                                if (t == null)
+                                                {
+                                                    @Html.DropDownListFor(model => model.FirstOrDefault().TypeInEdition,
+                                                    new List<SelectListItem> {
+                                                        new SelectListItem  { Value = "P" ,    Text = "Todos los Productos" },
+                                                        new SelectListItem { Value = "N" ,   Text = "Productos Nuevos"},
+                                                        new SelectListItem { Value = "C/C" , Text = "Productos Con Cambios"}
+                                                    },
+                                                    new { @class = "form-focus SDA FILTERPP" })
+                                                }
+                                            }
+                                            <button type="submit" id="ADFASD" value="" class="btn btn-warning searchoproducts" style="color: #333; width: 40px; font-size: 18px;display:none"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button><br />
+                                        </p>
+                                    }
+                                </td>
+                                <td style="width:5%">
+                                </td>
+                                <td style="text-align:center">
+                                        @*<label>Resultados:&nbsp;</label>*@
+                                    <p style="text-align:center">
+                                        <select id="rowsperpages" class="form-focus" style="width:120px" onchange="getvalues(this);">
+
+                                            @{
+                                                sessionParticipantProductsClasification sessionParticipantProductsClasification = (sessionParticipantProductsClasification)Session["sessionParticipantProductsClasification"];
+                                                if (sessionParticipantProductsClasification != null)
+                                                {
+                                                    if (sessionParticipantProductsClasification.Values == "selection")
+                                                    {
+                                                <option value="selection" selected>Seleccione...</option>
+                                                <option value="10" class="option">10</option>
+                                                <option value="50" class="option">50</option>
+                                                <option value="100" class="option">100</option>
+                                                <option value="all" class="option">Ilimitado</option>
+                                                    }
+                                                    if (sessionParticipantProductsClasification.Values == "10")
+                                                    {
+                                                <option value="selection">Seleccione...</option>
+                                                <option value="10" class="option" selected>10</option>
+                                                <option value="50" class="option">50</option>
+                                                <option value="100" class="option">100</option>
+                                                <option value="all" class="option">Ilimitado</option>
+                                                    }
+                                                    if (sessionParticipantProductsClasification.Values == "50")
+                                                    {
+                                                <option value="selection">Seleccione...</option>
+                                                <option value="10" class="option">10</option>
+                                                <option value="50" class="option" selected>50</option>
+                                                <option value="100" class="option">100</option>
+                                                <option value="all" class="option">Ilimitado</option>
+                                                    }
+                                                    if (sessionParticipantProductsClasification.Values == "100")
+                                                    {
+                                                <option value="selection">Seleccione...</option>
+                                                <option value="10" class="option">10</option>
+                                                <option value="50" class="option">50</option>
+                                                <option value="100" class="option" selected>100</option>
+                                                <option value="all" class="option">Ilimitado</option>
+                                                    }
+                                                    if (sessionParticipantProductsClasification.Values == "all")
+                                                    {
+                                                <option value="selection">Seleccione...</option>
+                                                <option value="10" class="option">10</option>
+                                                <option value="50" class="option">50</option>
+                                                <option value="100" class="option">100</option>
+                                                <option value="all" class="option" selected>Ilimitado</option>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                <option value="selection" selected>Seleccione...</option>
+                                                <option value="10" class="option">10</option>
+                                                <option value="50" class="option">50</option>
+                                                <option value="100" class="option">100</option>
+                                                <option value="all" class="option">Ilimitado</option>
+                                                }
+                                            }
+                                        </select>
+                                    </p>
+                                </td>
+                                <td style="text-align:center;width:30%">
+                                    <p>
+                                        @using (Html.BeginForm("Index", "Clasification"))
+                                        {
+                                                <label>Buscar:</label> @Html.TextBox("ProductName", "", new { @class = "form-textsearch" })
+                                                <button type="submit" id="searchp" value="searchprod" class="btn btn-warning searchoproducts" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button><br />
+                             
+                                            var count = ViewData["Count"];
+                                            var countprod = ViewData["CountProds"];
+                                            if ((count != null) && (countprod == null))
+                                            {
+                                                <label id="result" style="display:normal; color:red">Se han Encontrado: @ViewData["Count"] Resultados &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                            }
+                                        }
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                                    var countprod1 = ViewData["CountProds"];
+                                    var count1 = ViewData["Count"];
+                                    if ((countprod1 == null) && (count1 == null))
+                                    {
+                                        <p style="text-align:center"><label id="result" style="display:normal; color:red;text-align:center">No se Han Encontrado Productos Participantes en esta Edición para el Laboratorio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></p>
+                                    }
+
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div id="grid" style="text-align:left">
+        @DataGridC.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+
+                DataGridC.Column("", header: "Producto", format: @<text>
+                    <span class="display-mode"> <label id="lblName">@item.ProductName</label> </span>
+                    <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="Name" value="@item.ProductName" class="edit-mode" />
+                    <input id="lblProductid" style="visibility: hidden" value="@item.ProductId" />
+                </text>),
+                DataGridC.Column("", header: "Forma Farmacéutica", format: @<text>
+            <span class="display-mode"> <label id="lblName">@item.PharmaForm</label> </span>
+            <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="Name" value="@item.PharmaForm" class="edit-mode" />
+            <input id="lblProductid" style="visibility: hidden" value="@item.PharmaFormId" />
+                </text>),
+                 DataGridC.Column("", header: "Categoría", format: @<text>
+            <span class="display-mode"> <label id="lblName">@item.CategoryName</label> </span>
+            <input type="text" style="display:none; width:200px; color:red; font-size: 12px;" maxlength="200" id="Name" value="@item.CategoryName" class="edit-mode" />
+            <input id="lblProductid" style="visibility: hidden" value="@item.CategoryId" />
+                </text>),
+
+                DataGridC.Column("",header:"Sustancias Activas", format:@<text>
+            @{
+                if (S != null)
+                {
+                    int ProductId = item.ProductId;
+
+                    var ACT = false;
+                    var fds = db.PProductSubstances.Where(x => x.ProductId == ProductId).ToList();
+                    if (fds.LongCount() > 0)
+                    {
+                        ACT = true;
+                    }
+                    
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACT" disabled /></p>
+                }
+            }
+                </text>,style: "column"),
+                DataGridC.Column("",header:"Cultivos", format:@<text>
+            @{
+                if (S != null)
+                {
+
+                    var ACTC = false;
+                    int ProductId = item.ProductId;
+
+                    var pc = db.ProductCrops.Where(x => x.ProductId == ProductId).ToList();
+                    if (pc.LongCount() > 0)
+                    {
+                        ACTC = true;
+                    }
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACTC" disabled /></p>
+                }
+            }
+                </text>,style: "column"),
+                 DataGridC.Column("",header:"Usos Agroquimicos", format:@<text>
+            @{
+                if (S != null)
+                {
+
+                    var ACT = false;
+                    int ProductId = item.ProductId;
+
+                    var pau = db.PProductAgrochemicalUsesSet.Where(x => x.ProductId == ProductId).ToList();
+                    if (pau.LongCount() > 0)
+                    {
+                        ACT = true;
+                    }
+
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACT" disabled /></p>
+                }
+
+            }
+                </text>,style: "column3"),
+                DataGridC.Column("",header:"Semillas", format:@<text>
+            @{
+                if (S != null)
+                {
+
+                    var ACT = false;
+                    int ProductId = item.ProductId;
+
+                    var ps = db.PProductSeeds.Where(x => x.ProductId == ProductId).ToList();
+                    if (ps.LongCount() > 0)
+                    {
+                        ACT = true;
+                    }
+                    <p style="text-align:center"><input type="checkbox" id="New" class="New" name="New" checked="@ACT" disabled /></p>
+                }
+            }
+                </text>,style: "column"),
+                DataGridC.Column("",header:"Editar Indices", format:@<text>
+            @{
+                <button class="btn btn-success editindex" id="Classification" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("Clasification", "Clasification", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId })';return false;"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+            }
+                </text>, style:"buton")
+})
+    </div>
+</body>
+</html>

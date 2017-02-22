@@ -1,0 +1,781 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{314385E9-010C-4CE5-AE17-5B4E8406C755}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AgroNet</RootNamespace>
+    <AssemblyName>AgroNet</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.0.5\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="PLMCryptographyComponent">
+      <HintPath>..\PLMCryptography\PLMCryptographyComponent.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorPDF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorPDF.1.0.0\lib\net45\RazorPDF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.30506.0\lib\net40\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.30506.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.30506.0\lib\net40\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.30506\lib\net40\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Clasificacion\ClasificationController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Laboratories\DivisionInformationController.cs" />
+    <Compile Include="Controllers\Laboratories\DivisionsController.cs" />
+    <Compile Include="Controllers\Laboratories\DivsController.cs" />
+    <Compile Include="Controllers\Laboratories\ImagesController.cs" />
+    <Compile Include="Controllers\Laboratories\LaboratoriesController.cs" />
+    <Compile Include="Controllers\Login\LoginController.cs" />
+    <Compile Include="Controllers\Produccion\ProductionController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\Ventas\VentasController.cs" />
+    <Compile Include="DEAQDataSet.cs">
+      <DependentUpon>DEAQDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DEAQDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DEAQDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ActiveSubstances.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityLog.cs" />
+    <Compile Include="Models\ActivityLogs.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivitySessions.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Advertisements.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AgrochemicalUses.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Applications.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ApplicationUsers.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Books.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Categories.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cities.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ClasificationProds.cs" />
+    <Compile Include="Models\ContentTypes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Countries.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CountriesSs.cs" />
+    <Compile Include="Models\CountriesUser.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CountriesUsers.cs" />
+    <Compile Include="Models\CountryLab.cs" />
+    <Compile Include="Models\CreateDiv.cs" />
+    <Compile Include="Models\CreateDivisionInformation.cs" />
+    <Compile Include="Models\CreateLab.cs" />
+    <Compile Include="Models\CreateProducts.cs" />
+    <Compile Include="Models\Crops.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEAQ.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DEAQ.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEAQ.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEAQ.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DEAQ.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivInfoId.cs" />
+    <Compile Include="Models\DivisionCategories.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivisionCities.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivisionCountries.cs" />
+    <Compile Include="Models\DivisionImages.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivisionImagesSizes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivisionInformation.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Divisions.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivisionsbyCountry.cs" />
+    <Compile Include="Models\DivisionsInf.cs" />
+    <Compile Include="Models\EditionDivisionAds.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EditionDivisionProducts.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EditionProductShots.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Editions.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Functions.cs" />
+    <Compile Include="Models\ImageSizes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImagesSizes.cs" />
+    <Compile Include="Models\ImageTypes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImageView.cs" />
+    <Compile Include="Models\insertimage.cs" />
+    <Compile Include="Models\InsertPAU.cs" />
+    <Compile Include="Models\JoinActiveSubstancesPS.cs" />
+    <Compile Include="Models\JoinClasification.cs" />
+    <Compile Include="Models\joinDivisionImageSizes.cs" />
+    <Compile Include="Models\joinDivisionImagesSizes.cs" />
+    <Compile Include="Models\joinDivisionsCountries.cs" />
+    <Compile Include="Models\joinProductEditions.cs" />
+    <Compile Include="Models\joinproductimagessizes.cs" />
+    <Compile Include="Models\JoinProducts.cs" />
+    <Compile Include="Models\JSON.cs" />
+    <Compile Include="Models\Laboratories.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LeftJoin.cs" />
+    <Compile Include="Models\MentionatedProds.cs" />
+    <Compile Include="Models\MentionatedProducts.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Newproducts.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OperationRoles.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Operations.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pagessearch.cs" />
+    <Compile Include="Models\ParticipantProds.cs" />
+    <Compile Include="Models\ParticipantProducts.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PharmaForms.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\plm_vwProductsByEdition.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PProductAgrochemicalUses.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PProductSeeds.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PProductSubstances.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductCategories.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductContents.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductCrops.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductImages.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductImageSizes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductPharmaForms.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Products.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductShotTypes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductsState.cs" />
+    <Compile Include="Models\CountPages.cs" />
+    <Compile Include="Models\RenderImage.cs" />
+    <Compile Include="Models\ReplacesImageNames.cs" />
+    <Compile Include="Models\Roles.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalesModule_Result.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sales_Result.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\SearchClass.cs" />
+    <Compile Include="Models\SearchCrop.cs" />
+    <Compile Include="Models\SearchDiv.cs" />
+    <Compile Include="Models\SearchLab.cs" />
+    <Compile Include="Models\SearchPages.cs" />
+    <Compile Include="Models\SearchSeeds.cs" />
+    <Compile Include="Models\SearchSubstance.cs" />
+    <Compile Include="Models\Seeds.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sessionParticipantProductsClasification.cs" />
+    <Compile Include="Models\SessionSearchUse.cs" />
+    <Compile Include="Models\States.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tables.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TypeInEditionn.cs" />
+    <Compile Include="Models\Types.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserCountries.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Users.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Users.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Ventas_Result.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebPages.cs">
+      <DependentUpon>Users.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\apprise.min.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <EntityDeploy Include="Models\Users.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Users.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Images\131.GIF" />
+    <Content Include="Images\active.png" />
+    <Content Include="Images\AgroNetR.png" />
+    <Content Include="Images\alerta.png" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\collapsepng.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\error.jpg" />
+    <Content Include="Images\expand.png" />
+    <Content Include="Images\home-verdura.png" />
+    <Content Include="Images\Image1.png" />
+    <Content Include="Images\Image2.png" />
+    <Content Include="Images\Image3.png" />
+    <Content Include="Images\Image4.png" />
+    <Content Include="Images\Image5.png" />
+    <Content Include="Images\Image6.png" />
+    <Content Include="Images\pdf.png" />
+    <Content Include="Images\pdflab.png" />
+    <Content Include="Images\PLM-LogotipoAzul.png" />
+    <Content Include="Images\return.png" />
+    <Content Include="Images\save.png" />
+    <Content Include="Images\ui-icons_454545_256x240.png" />
+    <Content Include="Images\ui-icons_454545_256x2401.png" />
+    <Content Include="Images\venomsp.png" />
+    <Content Include="Models\Users.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Users.edmx</DependentUpon>
+      <LastGenOutput>Users.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Users.edmx.diagram">
+      <DependentUpon>Users.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Users.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Users.edmx</DependentUpon>
+      <LastGenOutput>Users1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <EntityDeploy Include="Models\DEAQ.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DEAQ.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EntityDeploy>
+    <Content Include="Models\DEAQ.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DEAQ.edmx</DependentUpon>
+      <LastGenOutput>DEAQ.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\DEAQ.edmx.diagram">
+      <DependentUpon>DEAQ.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\DEAQ.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DEAQ.edmx</DependentUpon>
+      <LastGenOutput>DEAQ.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_Code\Treeview.cshtml" />
+    <Content Include="DEAQDataSet.xsc">
+      <DependentUpon>DEAQDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="DEAQDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DEAQDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DEAQDataSet.xss">
+      <DependentUpon>DEAQDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\AgroNet.pubxml" />
+    <Content Include="Scripts\apprise-1.5.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\codebeautify.js" />
+    <Content Include="Scripts\Filters.js" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.3.2.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.autocomplete.js" />
+    <Content Include="Scripts\jquery.bpopup.js" />
+    <Content Include="Scripts\jquery.bpopup.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\prodCol.JS" />
+    <Content Include="Scripts\prodEcu.JS" />
+    <Content Include="Scripts\prodMex.JS" />
+    <Content Include="Scripts\prodPeru.JS" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ScriptsSalesModule.js" />
+    <Content Include="System.Web.Http.WebHost.dll" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Home\products.cshtml" />
+    <Content Include="Views\Home\productspage.cshtml" />
+    <Content Include="Views\Ventas\Index.cshtml" />
+    <Content Include="Views\Home\laboratories.cshtml" />
+    <Content Include="Views\Clasification\Index.cshtml" />
+    <Content Include="Views\Clasification\Clasification.cshtml" />
+    <Content Include="Views\Clasification\activesubstances.cshtml" />
+    <Content Include="Views\Clasification\productcrops.cshtml" />
+    <Content Include="Views\Shared\Clasification.cshtml" />
+    <Content Include="Views\Clasification\substances.cshtml" />
+    <Content Include="Views\Clasification\productseeds.cshtml" />
+    <Content Include="Views\Clasification\agrochemicaluses.cshtml" />
+    <Content Include="Views\Production\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Laboratories\Index.cshtml" />
+    <Content Include="Views\Divisions\Index.cshtml" />
+    <Content Include="Views\DivisionInformation\Index.cshtml" />
+    <Content Include="Views\Images\Index.cshtml" />
+    <Content Include="Views\Images\imagesdetails.cshtml" />
+    <Content Include="Views\Divs\Index.cshtml" />
+    <Content Include="Views\Production\images.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\uploads\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GetReport\ReportGeneralDIPO.rdlc">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetReport\ReportProductsDIPO.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetReport\ReportProducts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetReport\ReportGeneral.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49581</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:57399/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

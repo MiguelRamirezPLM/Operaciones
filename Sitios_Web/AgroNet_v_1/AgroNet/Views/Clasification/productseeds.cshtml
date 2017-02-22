@@ -1,0 +1,280 @@
+﻿@model IEnumerable<AgroNet.Models.Seeds>
+@using AgroNet.Models;
+@{
+    DEAQ db = new DEAQ();
+    Newproducts Nprod = new Newproducts();
+    Products product = new Products();
+}
+
+@{
+    ViewBag.Title = "productseeds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebGrid DGSeeds = new WebGrid(Model,rowsPerPage:20);
+}
+<html>
+<head>
+    <title></title>
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".deleteps").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".insertps").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".Act").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".cult").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".uses").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".seeds").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+</head>
+<body>
+    <br />
+    @*<h2 style="text-align:center">Clasificación de Productos</h2>*@
+    @*@{*@
+    <table style="width:100%">
+        <tr>
+            <td style="text-align:left">
+                @{
+                    SearchClass S = (SearchClass)Session["SearchClass"];
+                    ClasificationProds CP = (ClasificationProds)Session["ClasificationProds"];
+                    if (S != null)
+                    {
+                        if (CP != null)
+                        {
+                            var CountId = S.CId;
+                            int Coun = int.Parse(CountId);
+                            var DivId = S.DId;
+                            int Div = int.Parse(DivId);
+                            var EDitId = S.EId;
+                            int Edit = int.Parse(EDitId);
+                            int? ProductId = CP.PId;
+                            int? PharmaFormId = CP.PFId;
+                            int? CategoryId = CP.CatId;
+
+                            var Prods = from Product in db.Products
+                                        where Product.ProductId == ProductId
+                                        select Product;
+                            var PID = ProductId;
+                            foreach (Products P in Prods)
+                            {
+                                <label style="font-size:16px; color:orangered">Nombre de Producto:&nbsp;&nbsp;</label> <label style="font-style:italic">@P.ProductName</label><input id="ProductIdN" name="ProductIdN" type="text" style="display: none" value="@P.ProductId"><br />
+                            }
+
+                            var PF = from PharmaF in db.PharmaForms
+                                     where PharmaF.PharmaFormId == PharmaFormId
+                                     select PharmaF;
+                            foreach (PharmaForms PHF in PF)
+                            {
+                                <label style="font-size:16px; color:orangered">Forma Farmacéutica:&nbsp;&nbsp;</label> <label style="font-style:italic">@PHF.PharmaForm</label><input id="PharmaFormIdN" name="PharmaFormIdN" type="text" style="display: none" value="@PHF.PharmaFormId"><br />
+                            }
+
+                            var Cat = from Category in db.Categories
+                                      where Category.CategoryId == CategoryId
+                                      select Category;
+                            foreach (Categories C in Cat)
+                            {
+                                <label style="font-size:16px; color:orangered">Categoría:&nbsp;&nbsp;</label> <label style="font-style:italic">@C.CategoryName</label> <input id="CategoryIdN" name="CategoryIdN" type="text" style="display: none" value="@C.CategoryId"><br />
+                            }
+                        }
+                    }
+                }
+            </td>
+            <td style="text-align:left">
+                @{
+                    //Search S = (Search)Session["Search"];
+                    if (S != null)
+                    {
+                        var CountId = S.CId;
+                        int Coun = int.Parse(CountId);
+                        var DivId = S.DId;
+                        int Div = int.Parse(DivId);
+                        var EDitId = S.EId;
+                        int Edit = int.Parse(EDitId);
+                        var BId = S.BId;
+                        int BookId = int.Parse(BId);
+
+                        var EditionId = from ED in db.Editions
+                                        where ED.EditionId == Edit
+                                        select ED;
+                        foreach (Editions E in EditionId)
+                        {
+                            <label style="font-size:16px; color:orangered">Edición:&nbsp;&nbsp;</label> <label style="font-style:italic">@E.NumberEdition</label> <input id="EditionIdN" name="EditionIdN" type="text" style="display: none" value="@E.EditionId"><br />
+                        }
+
+                        var Book = from BK in db.Books
+                                   where BK.BookId == BookId
+                                   select BK;
+                        foreach (Books B in Book)
+                        {
+                            if (B.BookId == 2)
+                            {
+                                <label style="font-size:16px; color:orangered">Obra:&nbsp;&nbsp;</label> <label style="font-style:italic">DIPO</label> <input id="EditionIdN" name="EditionIdN" type="text" style="display: none" value="@B.BookId"><br />
+                            }
+                            else
+                            {
+                                <label style="font-size:16px; color:orangered">Obra:&nbsp;&nbsp;</label> <label style="font-style:italic">DEAQ</label> <input id="EditionIdN" name="EditionIdN" type="text" style="display: none" value="@B.BookId"><br />
+                            }
+                        }
+
+                        var CountryName = from CN in db.Countries
+                                          where CN.CountryId == Coun
+                                          select CN;
+                        foreach (Countries C in CountryName)
+                        {
+                            <label style="font-size: 16px; color: orangered">País:&nbsp;&nbsp;</label><label style="font-style:italic">@C.CountryName</label><input id="CountryIdN" name="CountryId" style="display:none" type="text" value="@C.CountryId"><br />
+                        }
+                        var DivisionName = from Dn in db.Divisions
+                                           where Dn.DivisionId == Div
+                                           select Dn;
+                        foreach (Divisions D in DivisionName)
+                        {
+                            <label style="font-size: 16px; color: orangered">Laboratorio:&nbsp;&nbsp;</label> <label style="font-style:italic">@D.DivisionName</label><input id="DivisionIdN" name="DivisionIdN" type="text" style="display:none" value="@D.DivisionId"><br />
+                        }
+
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+    <br />
+    <p style="text-align:center">
+        <button class="btn btn-warning Act" style="color: #333; height: 35px; width: 150px" id="Act" onclick="location.href='@Url.Action("substances", "Clasification")';return false;">Sustancias Activas</button>
+        <button class="btn btn-warning cult" style="color: #333; height: 35px; width:150px" id="cult" onclick="location.href='@Url.Action("productcrops", "Clasification")';return false;">Cultivos</button>
+        <button class="btn btn-warning uses" style="color: #333; height: 35px; width: 150px" onclick="location.href='@Url.Action("agrochemicaluses", "Clasification")';return false;">Usos Agroquimicos</button>
+        <button class="btn btn-warning seeds" style="color: #333; height: 35px; width: 150px" onclick="location.href='@Url.Action("productseeds", "Clasification")';return false;">Semillas</button>
+    </p>
+    <br />
+    @using (Html.BeginForm("searchs", "Clasification"))
+    {
+        <p style="text-align: left">
+            <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn return" onclick="location.href = '@Url.Action("Index", "Clasification")'; return false;">
+            <label>Buscar Semilla:</label> @Html.TextBox("SeedName", "", new { @class = "form-search" })
+            <button type="submit" id="searchp" value="searchseeds" class="btn btn-warning" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button><br />
+            @{
+        var count = ViewData["Count"];
+        if (count != null)
+        {
+            <label id="result" style="display:normal; color:green">Se han Encontrado: @ViewData["Count"] Resultados &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        }
+            }
+        </p><br />
+    }
+    <table id="cultivos" style="display:normal; width:100%" border="0">
+        <tr style="text-align: center">
+            <td style="width:100px"></td>
+            <td><label style="font-size: 16px; color: orangered">Semillas</label></td>
+            <td></td>
+            <td><label style="font-size: 16px; color: orangered">Semillas Asociadas al Producto</label></td>
+        </tr>
+        <tr>
+            <td style="width:100px"></td>
+            <td style="width:40%">
+                <div class="scrollbar" id="scrollbar">
+                    @DGSeeds.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+                              tableStyle: "webgrid-table ",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+
+                  DGSeeds.Column("", header: "Nombre de Especie", format: @<text>
+                    <span class="display-mode"> <label id="lblActiveSubstanceNameIns">@item.SeedName</label> </span>
+                    <input id="lblinsertActive" style="visibility: hidden; display: none" value="@item.SeedId" />
+                </text>),
+         DGSeeds.Column("", header: "Agregar", format: @<text>
+                        <button class="btn btn-default insertps" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("InsertProductSeeds", "Clasification", new { SeedId = item.SeedId })';return false;"><img src="@Url.Content("~/Images/active.png")" style="height:20px;width:20px"></button>
+        </text>, style:"buton"),
+            })
+                </div>
+            </td>
+            <td ></td>
+            @{
+                ClasificationProds CP11 = (ClasificationProds)Session["ClasificationProds"];
+                int? ProdId1 = CP11.PId;
+                var Active1 = (from A in db.PProductSeeds
+                               join AS in db.Seeds
+                               on A.SeedId equals AS.SeedId
+                               join P in db.Products
+                               on A.ProductId equals P.ProductId
+                               where A.ProductId == ProdId1
+                               orderby AS.SeedName ascending
+                               select AS);
+
+                WebGrid ProdsAsc1 = new WebGrid(Active1);
+            }
+
+            <td style="vertical-align:top;width:40%">
+                <div class="scrollbar" id="scrollbar">
+                    @ProdsAsc1.GetHtml(
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table ",
+            mode: WebGridPagerModes.All,
+            columns: new[] {
+
+                  ProdsAsc1.Column("", header: "Nombre de Especie", format: @<text>
+                    @{
+                        <span class="display-mode"> <label id="lblName">@item.SeedName</label> </span>
+                        <input id="lblActive" style="visibility: hidden; display: none" value="@item.SeedId" />
+                    }
+                </text>),
+         ProdsAsc1.Column("", header: "Eliminar", format: @<text>
+                        <button class="btn btn-default deleteps" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("DeleteProductSeeds", "Clasification", new { SeedId = item.SeedId })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+        </text>, style:"buton"),
+            })
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,306 @@
+﻿@model IEnumerable<ActiveSubstances>
+@using Agronet.Models;
+@{
+    ViewBag.Title = "ActiveSubstances";
+    Agronet.Models.Sessions.ClasificationProds indC = (Agronet.Models.Sessions.ClasificationProds)Session["ClasificationProds"];
+    Agronet.Models.Sessions.sessionVM ind = (Agronet.Models.Sessions.sessionVM)Session["sessionVM"];
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 25);
+    DEAQ db = new DEAQ();
+
+    int DivisionId, EditionId, BookId, CountryId, ProductId, PharmaFormId, CategoryId;
+
+    if (indC != null)
+    {
+        ProductId = Convert.ToInt32(indC.PId);
+        PharmaFormId = Convert.ToInt32(indC.PFId);
+        CategoryId = Convert.ToInt32(indC.CatId);
+    }
+    else
+    {
+        ProductId = 0;
+        PharmaFormId = 0;
+        CategoryId = 0;
+    }
+
+    if (ind != null)
+    {
+        DivisionId = ind.DivisionId;
+        EditionId = ind.EditionId;
+        BookId = ind.BookId;
+        CountryId = ind.CountryId;
+    }
+    else
+    {
+        DivisionId = 0;
+        EditionId = 0;
+        BookId = 0;
+        CountryId = 0;
+    }
+
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Clasification/Index")" class="ldr">Agroquimico</a></li>
+    <li><a href="@Url.Content("~/Clasification/Index")" class="ldr">Productos</a></li>
+    <li class="active">Clasificación</li>
+</ol>
+@{
+    if (ind != null)
+    {
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="widthtable table-hover">
+                    <tr>
+                        <td><label class="title-filter">País:</label></td>
+                        <td>
+                            @{
+        var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+        if (c.LongCount() > 0)
+        {
+            <span style="font-style: oblique; font-weight: bold">@c[0].CountryName</span>
+        }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Obra:</label></td>
+                        <td>
+                            @{
+        var b = db.Books.Where(x => x.BookId == BookId).ToList();
+
+        if (b.LongCount() > 0)
+        {
+            <span style="font-style: oblique; font-weight: bold">@b[0].BookName</span>
+        }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Edición:</label></td>
+                        <td>
+                            @{
+        var ed = db.Editions.Where(x => x.EditionId == EditionId).ToList();
+
+        if (ed.LongCount() > 0)
+        {
+            <span style="font-style: oblique; font-weight: bold">@ed[0].NumberEdition</span>
+        }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Laboratorio:</label></td>
+                        <td>
+                            @{
+        var dv = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+
+        if (dv.LongCount() > 0)
+        {
+            <span style="font-style:oblique; font-weight:bold">@dv[0].DivisionName</span>
+        }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <table class="widthtable table-hover" border="0">
+                    <tr>
+                        <td style="width:25%">
+                            <label class="title-filter">Producto:</label>
+                        </td>
+                        <td>
+                            @{
+                                var p = db.Products.Where(x => x.ProductId == ProductId).ToList();
+
+                                if (p.LongCount() > 0)
+                                {
+                                    <span style="font-style: oblique; font-weight: bold">@p[0].ProductName</span>
+                                    <input type="text" value="@ProductId" id="ProductId" style="display:none"/>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Forma Farmacéutica:</label></td>
+                        <td>
+                            @{
+        var pf = db.PharmaForms.Where(x => x.PharmaFormId == PharmaFormId).ToList();
+
+                                if (pf.LongCount() > 0)
+                                {
+                                    <span style="font-style: oblique; font-weight: bold">@pf[0].PharmaForm</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="title-filter">Categoría:</label></td>
+                        <td>
+                            @{
+        var ct = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
+
+                                if (ct.LongCount() > 0)
+                                {
+                                    <span style="font-style: oblique; font-weight: bold">@ct[0].CategoryName</span>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+}
+<br />
+<br />
+
+<div class="row">
+    <div class="col-lg-3" style="text-align:center">
+        <button class="btn btn-success ldr" onclick="location.href='@Url.Action("ActiveSubstances", "Clasification", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+            <span class="glyphicon glyphicon-tint"></span>
+            <span>&nbsp; Sustancias Activas</span>
+        </button>
+    </div>
+    <div class="col-lg-3" style="text-align:center">
+        <button class="btn btn-warning ldr" onclick="location.href='@Url.Action("Crops", "Clasification", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+            <span class="glyphicon glyphicon-grain"></span>
+            <span>&nbsp; Cultivos</span>
+        </button>
+    </div>
+    <div class="col-lg-3" style="text-align:center">
+        <button class="btn btn-warning ldr" onclick="location.href='@Url.Action("AgrochemicalUses", "Clasification", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+            <span class="glyphicon glyphicon-tree-deciduous"></span>
+            <span>&nbsp; Usos Agroquímicos</span>
+        </button>
+    </div>
+    <div class="col-lg-3" style="text-align:center">
+        <button class="btn btn-warning ldr" onclick="location.href='@Url.Action("Seeds", "Clasification", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+            <span class="glyphicon glyphicon-leaf"></span>
+            <span>&nbsp; Semillas</span>
+        </button>
+    </div>
+</div>
+
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-6" style="text-align: center; border: none">
+        @using (Html.BeginForm("ActiveSubstances", "Clasification"))
+        {
+            <div class="input-group stylish-input-group" style="text-align: center; border: none;float:right; font-style:normal">
+                @*@{
+     Agronet.Models.Sessions.SearchProductNameSM SearchProductNameSM = (Agronet.Models.Sessions.SearchProductNameSM)Session["SearchProductNameSM"];
+     if (SearchProductNameSM != null)
+     {
+         @Html.TextBox("ActiveSubstanceName", SearchProductNameSM.ProductName, new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
+     }
+     else
+     {
+         
+    // }
+         }*@
+                @Html.TextBox("ActiveSubstanceName", "", new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
+
+                <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
+                    <button type="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        }
+    </div>
+    <div class="col-lg-6" style="text-align:right">
+        <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Content("~/Clasification/Index")';return false;">
+            <span class="glyphicon glyphicon-home"></span>
+            <span>&nbsp; Regresar</span>
+        </button>
+    </div>
+</div>
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-6">
+
+        <h3 class="spans title-filter text-center"> Sustancias activas</h3>
+
+        <div class="widthtable table-responsive">
+            @_datagrid.GetHtml(
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "webgrid-table",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                                _datagrid.Column("", header: "Sustancia", format: @<text>
+                                @{
+                                    <span>@item.ActiveSubstanceName</span>
+    <input type="text" value="@item.ActiveSubstanceId" id="ActiveSubstanceId" style="display:none" />
+}
+                                </text>),
+
+                                _datagrid.Column("", header: "Agregar", format: @<text>
+                @{
+                    <button class="btn btn-success btn-sm" onclick="AddProductSubstances($(this))">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                }
+                                </text>, style:"column9 text-center")
+                                }
+                                                                                                                                                                                                                                                                                     )
+        </div>
+    </div>
+    <div class="col-lg-6">
+
+        <h3 class="spans title-filter text-center"> Sustancias activas asociadas</h3>
+
+        <div class="widthtable table-responsive">
+
+            @{
+
+                List<ActiveSubstances> LS = (from ps in db.ProductSubstances
+                                             join s in db.ActiveSubstances
+                                                 on ps.ActiveSubstanceId equals s.ActiveSubstanceId
+                                             where ps.ProductId == ProductId
+                                             select s).OrderBy(x => x.ActiveSubstanceName).ToList();
+
+                WebGrid _datagridAsc = new WebGrid(LS, rowsPerPage: 25);
+            }
+
+
+            @_datagridAsc.GetHtml(
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "webgrid-table",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                                _datagridAsc.Column("", header: "Sustancia", format: @<text>
+                                @{
+                                    <span>@item.ActiveSubstanceName</span>
+                                    <input type="text" value="@item.ActiveSubstanceId" id="ActiveSubstanceIdAsc" style="display:none"/>
+                                }
+                                </text>),
+
+                                _datagridAsc.Column("", header: "Eliminar", format: @<text>
+                @{
+    <button class="btn btn-danger btn-sm" onclick="DeleteProductSubstances($(this))">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+}
+                                </text>, style:"column9 text-center")
+                                }
+                                                                                                                                                                                                                                                                                              )
+        </div>
+    </div>
+</div>
+<br />

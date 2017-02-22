@@ -1,0 +1,185 @@
+﻿@model IEnumerable<AgroNet.Models.Laboratories>
+@using AgroNet.Models;
+@{
+    ViewBag.Title = "Index";
+    WebGrid DataGridLabs = new WebGrid(Model, rowsPerPage: 25);
+    DEAQ db = new DEAQ();
+}
+<html>
+<head>
+    <title>
+
+    </title>
+
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var LaboratoryName = tr.find("#LaboratoryName").val();
+                var LaboratoryId = tr.find("#lblLaboratoryid").val();
+                tr.find("#lblLaboratoryName").text(LaboratoryName);
+                if (!LaboratoryName.trim()) {
+                    apprise("<div align='center'><img src='/Images/alerta.png' /> </div>-" + "El Nombre de Laboratorio no puede quedar Vacío", { 'animate': true });
+                }
+                else {
+                    tr.find(".edit-mode, .display-mode").toggle();
+                    $("#bloqueo").show();
+                    $.ajax({
+                        url: "/Laboratories/editlab",
+                        type: "POST",
+                        dataType: "json",
+                        data: { LaboratoryN: LaboratoryName, LabId: LaboratoryId },
+                        success: function (data) {
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+    @*SHOW FORM WHEN CHANGE DIVISION*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#pais").change(function () {
+                var idcountry = $(this).val();
+                var nulls = $(".null").val();
+                var coun = idcountry;
+                document.getElementById("CountryId").value = coun;
+                $('#InsertParam').trigger('click');
+                $("#bloqueo").show();
+            })
+            $("#bloqueo").hide();
+        })
+    </script>
+    @*END*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script>
+        $(function () {
+            $(".inslab").click(function () {
+                var tr = $(this).parents("tr:first");
+                var LabName = $(".LabNameInp").val();
+                var d = "";
+                console.log(LabName);
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                if (!LabName.trim()) {
+                    d += "<div><li> El campo Nombre de Laboratorio NO puede quedar Vacío</div>";
+                    apprise("" + d + "", { 'animate': true });
+                }
+                else {
+                    $.ajax({
+                        url: "/Laboratories/createlab",
+                        type: "POST",
+                        dataType: "json",
+                        data: { LabName: LabName },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                            else {
+                                d += "<div><li> El Laboratorio YA Existe!!!</div>";
+                                apprise("" + d + "", { 'animate': true });
+                            }
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".editindex").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <br />
+    @using (Html.BeginForm())
+    {
+        <div style="text-align:right;display:none">
+            <p>
+                <input id="CountryId" name="CountryId" type="text" value="">
+                <button type="submit" id="InsertParam" value="Index" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+
+            </p>
+        </div>
+    }
+    <table style="width:100%;height:100%">
+        <tr>
+            <td style="width:200px"></td>
+            <td style="width:200px"></td>
+            <td>
+                <p style="text-align: center; font-size: 17px; font-style: italic; color: #000000">   <label class="label-warning " style="height:25px; width:100%; "> AGREGAR LABORATORIO</label><br /></p>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="line-height: 40px;">
+                <label id="fname" for="LabName" style="line-height:30px;">Nombre Laboratorio:</label>
+                <input type="text" name="LabName" id="LabName" class="LabNameInp form-focus" style="text-align:left; width:500px; font-size:13px; " maxlength="200" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="submit" id="inslab" value="inslab" class="btn btn-warning inslab" style="color: #333; font-size: 18px;float:right">Insertar</button><br />
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    @{
+        using (Html.BeginForm("searchlabs", "Laboratories"))
+        {
+            <p style="text-align:left">
+                <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn" id="search" onclick="history.back();">
+                <label>Buscar:</label>  @Html.TextBox("LaboratoryName", "", new { @class = "form-focus" })
+                <button type="submit" id="searchp" value="searchprod" class="btn btn-warning searchodivs" style="color: #333; width: 40px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button><br />
+                @{
+            var count = ViewData["Count"];
+            var countprod = ViewData["CountProds"];
+            if ((count != null) && (countprod == null))
+            {
+                <label id="result" style="display:normal; color:red">Se han Encontrado: @ViewData["Count"] Resultados &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            }
+                }
+            </p><br />
+        }
+    }
+    <br />
+    <div>
+        @DataGridLabs.GetHtml(
+    headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table",
+            mode: WebGridPagerModes.All,
+                            columns: new[] {
+                                DataGridLabs.Column("",header:"Nombre de Laboratorio",format:@<text>
+                                    <span class="display-mode"> <label id="lblLaboratoryName">@item.LaboratoryName</label> </span>
+                                    <input type="text" style="display:none; width:500px; color:red; font-size: 12px;" maxlength="200" id="LaboratoryName" value="@item.LaboratoryName" class="edit-mode" />
+                                    <input id="lblLaboratoryid" style="visibility: hidden;display:none" value="@item.LaboratoryId" />
+                                </text>),
+         DataGridLabs.Column("",header:"Editar", format: @<text>
+            <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-success"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+            <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+            <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+        </text>,  style: "buton column5"),
+         DataGridLabs.Column("",header:"Editar Divisiones",format:@<text>
+            <button class="btn btn-success editindex" id="Divisions" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("Index", "Divisions", new { Id = item.LaboratoryId })';return false;"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+        </text>,style: "buton column3")
+})
+    </div>
+</body>
+</html>

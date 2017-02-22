@@ -1,0 +1,389 @@
+﻿@model IEnumerable<AgroNet.Models.DivisionInformation>
+@using AgroNet.Models;
+@{
+    ViewBag.Title = "Index";
+    WebGrid DataGridDI = new WebGrid(Model);
+    DEAQ db = new DEAQ();
+}
+<html>
+<head>
+    <title>
+
+    </title>
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var JSAddress = tr.find("#Address").val();
+                var JSSuburb = tr.find("#Suburb").val();
+                var JSLocation = tr.find("#Location").val();
+                var JSZipCode = tr.find("#ZipCode").val();
+                var JSTelephone = tr.find("#Telephone").val();
+                var JSLada = tr.find("#Lada").val();
+                var JSFax = tr.find("#Fax").val();
+                var JSWeb = tr.find("#Web").val();
+                var JSCity = tr.find("#City").val();
+                var JSState = tr.find("#State").val();
+                var JSEmail = tr.find("#Email").val();
+                var ID = tr.find("#lblDivisionId").val();
+                var Country = $("#CountryIdN").val();
+                var Div = $("#DivisionIdN").val();
+                var DivInf = tr.find("#lblDivisionInformationId").val();
+                tr.find("#lblAddress").text(JSAddress);
+                tr.find("#lblSuburb").text(JSSuburb);
+                tr.find("#lblLocation").text(JSLocation);
+                tr.find("#lblZipCode").text(JSZipCode);
+                tr.find("#lblTelephone").text(JSTelephone);
+                tr.find("#lblLada").text(JSLada);
+                tr.find("#lblFax").text(JSFax);
+                tr.find("#lblWeb").text(JSWeb);
+                tr.find("#lblCity").text(JSCity);
+                tr.find("#lblState").text(JSState);
+                tr.find("#lblEmail").text(JSEmail);
+                if (!JSAddress.trim()) {
+                    apprise("<div align='center'><img src='/Images/alerta.png' /> </div>-" + "La dirección no puede quedar Vacía", { 'animate': true });
+                }
+                else {
+                    tr.find(".edit-mode, .display-mode").toggle();
+                    $("#bloqueo").show();
+                    $.ajax({
+                        url: "../DivisionInformation/editinfo/",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            Address: JSAddress, Suburb: JSSuburb, Location: JSLocation, ZipCode: JSZipCode, Telephone: JSTelephone, Lada: JSLada, Fax: JSFax,
+                            Web: JSWeb, City: JSCity, State: JSState, Email: JSEmail, DivisionId: ID, DivisionInformation: DivInf
+                        },
+                        success: function (data) {
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script>
+        $(function () {
+            $(".submitins").click(function () {
+                var AddressIns = $("#AddressInp").val();
+                var SuburbIns = $(".suburbInp").val();
+                var LocationIns = $(".locationInp").val();
+                var ZipCodeIns = $(".ZipCodeInp").val();
+                var TelephoneIns = $(".TelephoneInp").val();
+                var LadaIns = $(".ladaInp").val();
+                var FaxIns = $(".faxInp").val();
+                var WebIns = $(".webInp").val();
+                var CityIns = $(".cityInp").val();
+                var StateIns = $(".stateInp").val();
+                var EmailIns = $(".emailInp").val();
+                var ID = $("#DivisionIdN").val();
+                var d = "";
+                d += "<div align='center'><img src='/Images/alerta.png' /> </div>";
+                console.log(ID);
+                if ((!AddressIns.trim()) && (!SuburbIns.trim()) && (!LocationIns.trim()) && (!ZipCodeIns.trim()) && (!TelephoneIns.trim()) && (!LadaIns.trim()) &&
+                    (!FaxIns.trim()) && (!WebIns.trim()) && (!CityIns.trim()) && (!StateIns.trim()) && (!EmailIns.trim())) {
+                    d += "<div>- NO pueden quedar todos los campos Vacíos</div>";
+                    apprise("" + d + "", { 'animate': true });
+                }
+                else {
+                    $("#bloqueo").show();
+
+                    $.ajax({
+                        url: "../DivisionInformation/insertinfordiv/",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            Address: AddressIns, Suburb: SuburbIns, Location: LocationIns, ZipCode: ZipCodeIns, Telephone: TelephoneIns, Lada: LadaIns, Fax: FaxIns,
+                            Web: WebIns, City: CityIns, State: StateIns, Email: EmailIns, DivisionId: ID
+                        },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout('document.location.reload()');
+                            }
+                        }
+                    })
+                    $("#bloqueo").hide();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".return").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".insimages").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+</head>
+<body>
+    <br />
+    <ol class="breadcrumb">
+        <li><a href=@Url.Content("~/Divs/Index") class="cpe">Divisiones</a></li>
+        <li class="active">Información de División</li>
+    </ol>
+    <br />
+    @{
+        DivisionsInf D = (DivisionsInf)Session["DivisionsInf"];
+        if (D != null)
+        {
+            var Div = from Divs in db.Divisions
+                      where Divs.DivisionId == D.Id
+                      select Divs;
+            foreach (Divisions Di in Div)
+            {
+                <table border="0" style="width:100%">
+                    <tr>
+                        <td style="line-height: 40px;width:10%">
+                            <label style="font-size:16px; color:orangered">Nombre División:&nbsp;&nbsp;</label>
+                        </td>
+                        <td style=" width: 30%">
+                            <label style="font-style:italic">@Di.DivisionName</label><input id="DivisionIdN" name="DivisionIdN" type="text" style="display: none" value="@Di.DivisionId">
+                        </td>
+                        <td rowspan="2" style="text-align:right">
+                            <button class="btn btn-success" style="width:150px; height:40px" onclick="open_popup_createaddress();">Agregar Dirección</button>
+                        </td>
+                        <td rowspan="2">
+                            @{
+                                bool flag = D.flag;
+                                if (flag == true)
+                                {
+                                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn return" onclick="location.href = '@Url.Action("Index", "Divs")'; return false;">
+                                }
+                                else
+                                {
+                                        <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;float:right" class="btn return" onclick="location.href = '@Url.Action("Index", "Divisions")'; return false;">
+                                }
+                            }
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 40px;">
+                            <label style="font-size:16px; color:orangered">Nombre Corto:&nbsp;&nbsp;</label>
+                        </td>
+                        <td>
+                            <label style="font-style:italic">@Di.ShortName</label><input id="DivisionIdN" name="DivisionIdN" type="text" style="display: none" value="@Di.DivisionId"><br />
+                        </td>
+                    </tr>
+                </table>
+            }
+        }
+    }
+    <br />
+    <div id="insertaddressSMD" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="close" onclick="close_popup_createaddress();"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Agregar Dirección</h2>
+                <br />
+                <br />
+                <table style="width:100%;height:100%" border="0">
+                    <tr>
+                        <td>
+                            <label id="fname" for="Address" class="labelsforms">Dirección:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="AddressInp" class="AddressInp form-focus" style="text-align:left; font-size:13px; " maxlength="200" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="lada" class="labelsforms">Lada:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="ladaInp" class="ladaInp form-focus" style="text-align: left;font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="suburb" class="labelsforms">Colonia:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="suburbInp" class="suburbInp form-focus" style="text-align: left;font-size: 13px" maxlength="500" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="fax" class="labelsforms">Fax:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="faxInp" class="faxInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="location" class="labelsforms">Locación:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="locationInp" class="locationInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="web" class="labelsforms">Web:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="webInp" class="webInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="ZipCode" class="labelsforms">Código Postal:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="ZipCodeInp" class="ZipCodeInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="city" class="labelsforms">Ciudad:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="cityInp" class="cityInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="Telephone" class="labelsforms">Teléfono:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="TelephoneInp" class="TelephoneInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                        </tr>
+                    <tr>
+                        <td>
+                            <label for="state" class="labelsforms">Estado:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="stateInp" class="stateInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="email" class="labelsforms">Email:</label>&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" id="emailInp" class="emailInp form-focus" style="text-align: left; font-size: 13px" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center" colspan="2"><br />
+                            <button type="submit" id="Insert" value="Insertar" class="submitins btn btn-warning" style="color: #333; font-size: 17px; width: 85px; height: 35px">Insertar</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+
+
+    <div id="gridContent" style="text-align:left;height:100%;width:100%">
+        @DataGridDI.GetHtml(
+                   headerStyle: "headertbl",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style",
+            tableStyle: "webgrid-table",
+            mode: WebGridPagerModes.All,
+                              columns: new[] {
+                             DataGridDI.Column("",header:"Dirección",format:@<text>
+                                    <span class="display-mode"> <label id="lblAddress">@item.Address</label> </span>
+                                    <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="Address" class="edit-mode form-focus">@item.Address</textarea>
+                                    <input id="lblDivisionId" style="display:none; width: 25px" value="@item.DivisionId" />
+                                    <input id="lblDivisionInformationId" style=" display: none; width: 25px; " value="@item.DivisionInformationId" />
+                            </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Suburbio",format:@<text>
+            <span class="display-mode"> <label id="lblSuburb">@item.Suburb</label> </span>
+            <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="Suburb" class="edit-mode form-focus">@item.Suburb</textarea>
+            <input id="lblDivisionId" style="display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Locacion",format:@<text>
+            <span class="display-mode"> <label id="lblLocation">@item.Location</label> </span>
+        <textarea style="display:none;height:50px; color:red; font-size: 12px;" maxlength="200" id="Location" class="edit-mode form-focus">@item.Location</textarea>
+            <input id="lblDivisionId" style="display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Codigo Postal",format:@<text>
+            <span class="display-mode"> <label id="lblZipCode">@item.ZipCode</label> </span>
+        <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="ZipCode" class="edit-mode form-focus">@item.ZipCode</textarea>
+            <input id="lblDivisionId" style="display: none; width: 25px" value="@item.DivisionId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Telefono",format:@<text>
+            <span class="display-mode"> <label id="lblTelephone">@item.Telephone</label> </span>
+        <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="Telephone" class="edit-mode form-focus">@item.Telephone</textarea>
+            <input id="lblDivisionId" style="display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Lada",format:@<text>
+            <span class="display-mode"> <label id="lblLada">@item.Lada</label> </span>
+        <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="Lada" class="edit-mode form-focus">@item.Lada</textarea>
+            <input id="lblDivisionId" style="display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:""),
+                                     DataGridDI.Column("",header:"Fax",format:@<text>
+            <span class="display-mode"> <label id="lblFax">@item.Fax</label> </span>
+        <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="Fax" class="edit-mode form-focus">@item.Fax</textarea>
+            <input id="lblDivisionId" style=" display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Web",format:@<text>
+            <span class="display-mode"> <label id="lblWeb">@item.Web</label> </span>
+        <textarea style="display:none;height:50px; color:red; font-size: 12px;" maxlength="200" id="Web" class="edit-mode form-focus">@item.Web</textarea>
+            <input id="lblDivisionId" style=" display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Ciudad",format:@<text>
+            <span class="display-mode"> <label id="lblCity">@item.City</label> </span>
+        <textarea style="display:none; height:50px; color:red; font-size: 12px;" maxlength="200" id="City" class="edit-mode form-focus">@item.City</textarea>
+            <input id="lblDivisionId" style=" display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Estado",format:@<text>
+            <span class="display-mode"> <label id="lblState">@item.State</label> </span>
+        <textarea style="display:none;height:50px; color:red; font-size: 12px;" maxlength="200" id="State" class="edit-mode form-focus">@item.State</textarea>
+            <input id="lblDivisionId" style=" display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+                                     DataGridDI.Column("",header:"Email",format:@<text>
+            <span class="display-mode"> <label id="lblEmail">@item.Email</label> </span>
+        <textarea style="display:none; color:red;height:50px; font-size: 12px;" maxlength="200" id="Email" class="edit-mode form-focus">@item.Email</textarea>
+            <input id="lblDivisionId" style=" display: none; width: 25px" value="@item.DivisionId" />
+            <input id="lblDivisionInformationId" style="display:none; width: 25px" value="@item.DivisionInformationId" />
+                                    </text>,style:"column4"),
+        DataGridDI.Column("",header:"Editar", format: @<text>
+            <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-success"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+            <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+            <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+        </text>,  style: "buton column5"),
+        DataGridDI.Column("",header:"Imagenes", format: @<text>
+            <button style="color: #333; width: 45px;height:35px" class="btn btn-success insimages" id="insimages" onclick="location.href='@Url.Action("Index", "Images", new { Id = item.DivisionId, divinf = item.DivisionInformationId, flag = false })';return false;"><img src="@Url.Content("~/Images/Image5.png")" style="height: 23px; width: 23px; float: right"></button>
+        </text>,  style: "buton column5"),
+        })
+
+    </div>
+</body>
+</html>

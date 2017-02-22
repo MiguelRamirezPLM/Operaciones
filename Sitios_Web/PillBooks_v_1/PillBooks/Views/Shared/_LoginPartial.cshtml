@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li style="vertical-align:bottom">
+            <div class="dropdown" style="border:none;vertical-align:top">
+                <img src="~/Images/user.png" class="dropbtn" />
+                <div class="dropdown-content">
+                    <a href="~/Login/Logout/" class="ldr">Cerrar sesión</a>
+                </div>
+            </div>
+            @*<img src="~/Images/user.png" style="width:50px; height:50px;vertical-align:middle" />&ensp;<label class="" style="color:white;vertical-align:bottom; line-height:50px">Bienvenid&#64: <label style="text-transform: uppercase; color: #fff; ">@User.Identity.Name</label> </label>&ensp;*@
+            <label class="" style="color:white;vertical-align:bottom; line-height:50px">Bienvenid&#64: <label style="text-transform: uppercase; color: #fff; ">@User.Identity.Name</label> </label>&ensp;
+        </li>
+        @*<li style="color: white; line-height: 50px; font-size:20px;"><b>|</b>&ensp;</li>*@
+        @*<li>
+            @*<label onclick="location.href='@Url.Action("Logout", "Login")';return false;" class="ldr" style="color: white; vertical-align: bottom; cursor: pointer; line-height: 50px">Cerrar sesión</label>
+        </li>*@
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li style="display:none">@Html.ActionLink("Iniciar sesión", "Login", "Login", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

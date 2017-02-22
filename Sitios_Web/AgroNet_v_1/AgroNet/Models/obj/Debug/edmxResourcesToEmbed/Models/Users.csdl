@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UsersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SecondLastName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NickName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AddedDate" Type="DateTime" Precision="3" />
+    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActivitySessions" Relationship="UsersModel.FKUSER_AS" FromRole="Users" ToRole="ActivitySessions" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="UsersModel.FK_ApplicationUsers_Users" FromRole="Users" ToRole="ApplicationUsers" />
+  </EntityType>
+  <EntityContainer Name="PLMUsers_20111213Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="ActivitySessions" EntityType="UsersModel.ActivitySessions" />
+    <EntitySet Name="Applications" EntityType="UsersModel.Applications" />
+    <EntitySet Name="ApplicationUsers" EntityType="UsersModel.ApplicationUsers" />
+    <EntitySet Name="WebPages" EntityType="UsersModel.WebPages" />
+    <AssociationSet Name="FKAPPLICATION_AS" Association="UsersModel.FKAPPLICATION_AS">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="FKUSER_AS" Association="UsersModel.FKUSER_AS">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Applications" Association="UsersModel.FK_ApplicationUsers_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WebPages_Applications" Association="UsersModel.FK_WebPages_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="WebPages" EntitySet="WebPages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Users" Association="UsersModel.FK_ApplicationUsers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ActivitySessions">
+    <Key>
+      <PropertyRef Name="ActivitySessionId" />
+    </Key>
+    <Property Name="ActivitySessionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Applications" Relationship="UsersModel.FKAPPLICATION_AS" FromRole="ActivitySessions" ToRole="Applications" />
+    <NavigationProperty Name="Users" Relationship="UsersModel.FKUSER_AS" FromRole="ActivitySessions" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Applications">
+    <Key>
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HashKey" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="URL" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="RootUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Version" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="DocumentFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ActivitySessions" Relationship="UsersModel.FKAPPLICATION_AS" FromRole="Applications" ToRole="ActivitySessions" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="UsersModel.FK_ApplicationUsers_Applications" FromRole="Applications" ToRole="ApplicationUsers" />
+    <NavigationProperty Name="WebPages" Relationship="UsersModel.FK_WebPages_Applications" FromRole="Applications" ToRole="WebPages" />
+  </EntityType>
+  <EntityType Name="ApplicationUsers">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Applications" Relationship="UsersModel.FK_ApplicationUsers_Applications" FromRole="ApplicationUsers" ToRole="Applications" />
+    <NavigationProperty Name="Users" Relationship="UsersModel.FK_ApplicationUsers_Users" FromRole="ApplicationUsers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="WebPages">
+    <Key>
+      <PropertyRef Name="WebPageId" />
+    </Key>
+    <Property Name="WebPageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="PageDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Applications" Relationship="UsersModel.FK_WebPages_Applications" FromRole="WebPages" ToRole="Applications" />
+  </EntityType>
+  <Association Name="FKAPPLICATION_AS">
+    <End Type="UsersModel.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="UsersModel.ActivitySessions" Role="ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKUSER_AS">
+    <End Type="UsersModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="UsersModel.ActivitySessions" Role="ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Applications">
+    <End Type="UsersModel.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="UsersModel.ApplicationUsers" Role="ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WebPages_Applications">
+    <End Type="UsersModel.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="UsersModel.WebPages" Role="WebPages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="WebPages">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Users">
+    <End Type="UsersModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="UsersModel.ApplicationUsers" Role="ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

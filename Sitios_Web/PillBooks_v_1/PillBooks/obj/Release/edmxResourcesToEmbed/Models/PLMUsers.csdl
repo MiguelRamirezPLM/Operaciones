@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SecondLastName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NickName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AddedDate" Type="DateTime" Precision="3" />
+    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActivitySessions" Relationship="Model.FKUSER_AS" FromRole="Users" ToRole="ActivitySessions" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="Model.FK_ApplicationUsers_Users" FromRole="Users" ToRole="ApplicationUsers" />
+    <NavigationProperty Name="UserCountries" Relationship="Model.UsersUserCountries" FromRole="Users" ToRole="UserCountries" />
+    <NavigationProperty Name="CountriesUser" Relationship="Model.CountriesUserUsers" FromRole="Users" ToRole="CountriesUser" />
+  </EntityType>
+  <EntityContainer Name="PLMUsers" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="ActivityLogs" EntityType="Model.ActivityLogs" />
+    <EntitySet Name="ActivitySessions" EntityType="Model.ActivitySessions" />
+    <EntitySet Name="Applications" EntityType="Model.Applications" />
+    <EntitySet Name="ApplicationUsers" EntityType="Model.ApplicationUsers" />
+    <EntitySet Name="CountriesUser" EntityType="Model.CountriesUser" />
+    <EntitySet Name="Operations" EntityType="Model.Operations" />
+    <EntitySet Name="Roles" EntityType="Model.Roles" />
+    <EntitySet Name="Tables" EntityType="Model.Tables" />
+    <AssociationSet Name="FKAPPLICATION_AS" Association="Model.FKAPPLICATION_AS">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="FKUSER_AS" Association="Model.FKUSER_AS">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="AppTableId_FK" Association="Model.AppTableId_FK">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="Tables" EntitySet="Tables" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Applications" Association="Model.FK_ApplicationUsers_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Roles" Association="Model.FK_ApplicationUsers_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Users" Association="Model.FK_ApplicationUsers_Users">
+      <End EntitySet="Users" Role="Users" />
+      <End EntitySet="ApplicationUsers" Role="ApplicationUsers" />
+    </AssociationSet>
+    <EntitySet Name="UserCountries" EntityType="Model.UserCountries" />
+    <AssociationSet Name="CountriesUserCountries" Association="Model.CountriesUserCountries">
+      <End Role="Countries" EntitySet="CountriesUser" />
+      <End Role="UserCountries" EntitySet="UserCountries" />
+    </AssociationSet>
+    <AssociationSet Name="UsersUserCountries" Association="Model.UsersUserCountries">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserCountries" EntitySet="UserCountries" />
+    </AssociationSet>
+    <AssociationSet Name="CountriesUserUsers" Association="Model.CountriesUserUsers">
+      <End Role="CountriesUser" EntitySet="CountriesUser" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ActivityLogs">
+    <Key>
+      <PropertyRef Name="ActivityLogId" />
+    </Key>
+    <Property Name="ActivityLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="TableId" Type="Int32" Nullable="false" />
+    <Property Name="OperationId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PrimaryKeyAffected" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="FieldsAffected" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ActivitySessions">
+    <Key>
+      <PropertyRef Name="ActivitySessionId" />
+    </Key>
+    <Property Name="ActivitySessionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Applications" Relationship="Model.FKAPPLICATION_AS" FromRole="ActivitySessions" ToRole="Applications" />
+    <NavigationProperty Name="Users" Relationship="Model.FKUSER_AS" FromRole="ActivitySessions" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Applications">
+    <Key>
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HashKey" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="URL" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="RootUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Version" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="LastUpdate" Type="DateTime" Precision="3" />
+    <Property Name="DocumentFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ActivitySessions" Relationship="Model.FKAPPLICATION_AS" FromRole="Applications" ToRole="ActivitySessions" />
+    <NavigationProperty Name="Tables" Relationship="Model.AppTableId_FK" FromRole="Applications" ToRole="Tables" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="Model.FK_ApplicationUsers_Applications" FromRole="Applications" ToRole="ApplicationUsers" />
+  </EntityType>
+  <EntityType Name="ApplicationUsers">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Applications" Relationship="Model.FK_ApplicationUsers_Applications" FromRole="ApplicationUsers" ToRole="Applications" />
+    <NavigationProperty Name="Roles" Relationship="Model.FK_ApplicationUsers_Roles" FromRole="ApplicationUsers" ToRole="Roles" />
+    <NavigationProperty Name="Users" Relationship="Model.FK_ApplicationUsers_Users" FromRole="ApplicationUsers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="CountriesUser">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="UserCountries" Relationship="Model.CountriesUserCountries" FromRole="Countries" ToRole="UserCountries" />
+    <NavigationProperty Name="Users" Relationship="Model.CountriesUserUsers" FromRole="CountriesUser" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Operations">
+    <Key>
+      <PropertyRef Name="OperationId" />
+    </Key>
+    <Property Name="OperationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ApplicationUsers" Relationship="Model.FK_ApplicationUsers_Roles" FromRole="Roles" ToRole="ApplicationUsers" />
+  </EntityType>
+  <EntityType Name="Tables">
+    <Key>
+      <PropertyRef Name="TableId" />
+    </Key>
+    <Property Name="TableId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Applications" Relationship="Model.AppTableId_FK" FromRole="Tables" ToRole="Applications" />
+  </EntityType>
+  <Association Name="FKAPPLICATION_AS">
+    <End Type="Model.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="Model.ActivitySessions" Role="ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKUSER_AS">
+    <End Type="Model.Users" Role="Users" Multiplicity="1" />
+    <End Type="Model.ActivitySessions" Role="ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AppTableId_FK">
+    <End Type="Model.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="Model.Tables" Role="Tables" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="Tables">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Applications">
+    <End Type="Model.Applications" Role="Applications" Multiplicity="1" />
+    <End Type="Model.ApplicationUsers" Role="ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Roles">
+    <End Type="Model.Roles" Role="Roles" Multiplicity="1" />
+    <End Type="Model.ApplicationUsers" Role="ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Users">
+    <End Type="Model.Users" Multiplicity="1" Role="Users" />
+    <End Type="Model.ApplicationUsers" Multiplicity="*" Role="ApplicationUsers" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="UserCountries">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Countries" Relationship="Model.CountriesUserCountries" FromRole="UserCountries" ToRole="Countries" />
+    <NavigationProperty Name="Users" Relationship="Model.UsersUserCountries" FromRole="UserCountries" ToRole="Users" />
+  </EntityType>
+  <Association Name="CountriesUserCountries">
+    <End Type="Model.CountriesUser" Role="Countries" Multiplicity="1" />
+    <End Type="Model.UserCountries" Role="UserCountries" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="UserCountries">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsersUserCountries">
+    <End Type="Model.Users" Role="Users" Multiplicity="1" />
+    <End Type="Model.UserCountries" Role="UserCountries" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserCountries">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CountriesUserUsers">
+    <End Type="Model.CountriesUser" Role="CountriesUser" Multiplicity="1" />
+    <End Type="Model.Users" Role="Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountriesUser">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

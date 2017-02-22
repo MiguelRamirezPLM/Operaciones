@@ -1,0 +1,214 @@
+﻿@using AgroNet.Models;
+@{
+    PLMUsers PLMUsers = new PLMUsers();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - AgroNet</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/Site.css")
+
+    <script src="~/Scripts/Filters.js"></script>
+    <script src="~/Scripts/ScriptsSalesModule.js"></script>
+
+    <link href="@Url.Content("~/Content/jquery-ui.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/jquery-ui.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    @*<link href="@Url.Content("~/Content/bootstrap.css.map")" rel="stylesheet" />*@
+    @*<script src="@Url.Content("~/Scripts/jquery-1.9.1.js")"></script>*@
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
+
+    <script>
+        $(function () {
+            $(".menu").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".ldr").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    
+</head>
+<body style="background-color: #effcd7">
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador">
+            <img src="~/Images/131.GIF">
+        </div>
+    </div>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: #398104">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src=@Url.Content("~/Images/AgroNet.png") style="float:left; width:220px; height:50px;vertical-align:bottom" />
+                @{
+                    string version = System.Configuration.ConfigurationManager.AppSettings["Version"];
+
+                    <label style="color: white;font-size:12px; font-style: italic;">@version</label>
+                }
+            </div>
+            @if (Request.IsAuthenticated)
+            {
+                <div class="navbar-collapse collapse" style="text-align: center; border: none; border-color: red; ">
+                    @{
+                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                        if (p != null)
+                        {
+                            var user = p.userId;
+                            var app = p.ApplicationId;
+                            var userid = (from UR in PLMUsers.ApplicationUsers
+                                          where UR.UserId == user
+                                          && UR.ApplicationId == app
+                                          join rol in PLMUsers.Roles
+                                          on UR.RoleId equals rol.RoleId
+                                          select rol).ToList();
+                            foreach (AgroNet.Models.Roles a in userid)
+                            {
+                                if (a.Description == "Administrador")
+                                {
+                                    <div class="btn-group" style="width: 50%; border: none; border-color: blue; ">
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Ventas")';return false;">
+                                                    Ventas
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Clasification")';return false;">
+                                                    Clasificación
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Production")';return false;">
+                                                    Producción
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Laboratories")';return false;">
+                                                    Laboratorios
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Divs")';return false;">
+                                                    Divisiones
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                if (a.Description == "Vendedor")
+                                {
+                                    <div class="btn-group" style="width: 50%; border: none; border-color: blue; ">
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Ventas")';return false;">
+                                                    Ventas
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Clasification")';return false;">
+                                                    Clasificación
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Divs")';return false;">
+                                                    Divisiones
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (a.Description == "Diagramador")
+                                {
+                                    <div class="btn-group" style="width: 50%; border: none; border-color: blue; ">
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Production")';return false;">
+                                                    Producción
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                                if (a.Description == "Agroquimico")
+                                {
+                                    <div class="btn-group" style="width: 50%; border: none; border-color: blue; ">
+                                        <div class="btn-group" style="width: 18%; border: none; ">
+                                            <div style="border: none; ">
+                                                <br />
+                                                <button type="button" class="btn btn-warning menu" style="vertical-align:middle;border-radius:10px;font-style:italic" onclick="location.href='@Url.Action("Index", "Clasification")';return false;">
+                                                    Clasificación
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+
+                    @Html.Partial("_LoginPartial")
+                </div>
+            }
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,216 @@
+﻿@model IEnumerable<MediVet.Models.JoinProductShots>
+@using MediVet.Models;
+@{
+    ViewBag.Title = "productshots";
+    PEV db = new PEV();
+    WebGrid _datagrid = new WebGrid(Model);
+}
+
+<html>
+<head>
+    <title></title>
+    <script>
+        $(function () {
+            $(".upload").change(function () {
+                var tr = $(this).parents("tr:first");
+
+                var uplbtn = tr.find("#uploadBtn").val();
+                var ufile = tr.find("#uploadFile").val(uplbtn);
+            })
+        });
+    </script>
+
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/apprise-1.5.min.js")"></script>
+    <link rel="stylesheet" href="~/Content/apprise.min.css" type="text/css" />
+    <script>
+        $(function () {
+            $("#insertimage").click(function () {
+                var dsize = $("#selectf").val();
+                var prodid = $("#ProductId").val();
+                var did = $("#DivisionIdImg").val();
+                var pf = $("#PharmaFormIdImg").val();
+                var cat = $("#CategoryIdImg").val();
+                var eid = $("#EditionIdImg").val();
+
+                var img = $("#uploadFile").val();
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (dsize == "0") {
+                    var message = "Para insertar, Debe seleccionar un tamaño de Imagen";
+                    d += "<p> </p>"
+                    d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+                else {
+                    if (!img.trim() == true) {
+                        var message = "Para insertar, Debe seleccionar una Imagen";
+                        d += "<p> </p>"
+                        d += "<p style='width:300px;text-align:center;color:#05606d;font-style:italic; font-size:20px'>Ocurrio un Error !!!</p>"
+                        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>" + message + "</p>"
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        $("#sendimages").ajaxSubmit({
+                            type: "POST",
+                            url: "../Production/newimages/",
+                            data: { size: dsize, Product: prodid, DivisionIdImg: did, PharmaFormIdImg: pf, CategoryIdImg: cat, EditionIdImg: eid },
+                            success: function (data) {
+                                if (data == true) {
+                                    setTimeout('document.location.reload()');
+                                }
+                                else if (data == "El archivo se ha Modificado Exitosamente") {
+                                    d += "<p> </p>"
+                                    d += "<li style='text-align:justify;color:#05606d;font-style:italic'>" + data + "</li>"
+                                    apprise("" + d + "", { 'animate': true });
+                                    $(".edit-mode").hide();
+                                    $(".display-mode").show();
+                                    $("#bloqueo").hide();
+                                }
+                            },
+                        });
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <ol class="breadcrumb">
+        <li><a href="../Production/Index/" class="cpe">Producción</a></li>
+        <li><a href="../Production/Index/" class="cpe">Producción</a></li>
+        <li class="active">Imagenes</li>
+    </ol>
+    <br />
+    <br />
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width:20%"></td>
+            <td style="width:20%;">
+                <label class="labels">Seleccionar Tamaño</label>
+            </td>
+            <td style="width: 40%;">
+                <select class="form-control1" id="selectf">
+                    <option value="0">Seleccione...</option>
+                    @{
+                        var ims = (from images in db.ImageSizes
+                                   orderby images.ImageSize ascending
+                                   select images);
+                        foreach (ImageSizes _ims in ims)
+                        {
+                    <option value="@_ims.ImageSizeId">@_ims.ImageSize</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td rowspan="4" style="text-align:right">
+                <img src="@Url.Content("~/Images/return.png")" style="height:60px;width:80px;position:relative" class="btn return cpe" onclick="location.href = '@Url.Action("Index", "Production")'; return false;"><br />
+                <label>Regresar...</label>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:15px"></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><label class="labels">Seleccionar Imagen</label></td>
+            <td>
+                <input type="text" style="height:35px;display:none" id="text" />
+                <form enctype="multipart/form-data" method="post" id="sendimages">
+                    <input id="uploadFile" placeholder="Seleccione Archivo..." style="width:500px" disabled="disabled" class="form-focus" accept="image/png" />
+                    <div class="fileUpload btn btn-info buton" style="text-align:center">
+                        <span>
+                            Seleccione...
+                        </span>
+                        <input id="uploadBtn" type="file" class="upload" accept="image/png" name="file" />
+                    </div><br />
+                    <div style="text-align:center">
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="text-align: center; height: 40px"><button class="btn btn-info cpe" id="insertimage">Insertar</button> </td>
+        </tr>
+    </table>
+    <br />
+    <table border="0" style="width:100%">
+        <tr>
+            <td style="width:12%">
+                <label class="labels"> Nombre del Producto:</label>
+            </td>
+            <td>
+                <label> @ViewData["ProductNameImg"]</label><input type="text" value="@ViewData["ProductIdImg"]" style="display:none" id="ProductId" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="labels"> Forma Farmacéutica:</label>
+            </td>
+            <td>
+                <label> @ViewData["PharmaFormImg"]</label><input type="text" value="@ViewData["PharmaFormIdImg"]" style="display:none" id="PharmaFormIdImg" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="labels"> Categoría:</label>
+            </td>
+            <td>
+                <label> @ViewData["CategoryNameImg"]</label><input type="text" value="@ViewData["CategoryIdImg"]" style="display:none" id="CategoryIdImg" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="labels"> Nombre de División:</label>
+            </td>
+            <td>
+                <label> @ViewData["DivisionNameImg"]</label><input type="text" value="@ViewData["DivisionIdImg"]" style="display:none" id="DivisionIdImg" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="labels"> Edición:</label>
+            </td>
+            <td>
+                <label> @ViewData["NumberEditionImg"]</label><input type="text" value="@ViewData["EditionIdImg"]" style="display:none" id="EditionIdImg" />
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <div style="width:100%">
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Imagen", format: @<text>
+                                @{
+                                    <span class=""> <label id="lblName" style="width:180px">@item.EditionProductShots.ProductShot</label> </span>
+                                }
+                        </text>),
+            _datagrid.Column("", header: "Tamaño", format: @<text>
+            @{
+                <span class=""> <label id="lblName" style="width:180px">@item.ImageSizes.ImageSize</label> </span>
+            }
+            </text>,style:"buton"),
+         _datagrid.Column("", header: "Imagen", format: @<text>
+            @{
+                <img src="@Url.Action("showimages", "Production", new { image = @item.EditionProductShots.ProductShot, EditionProductShotId = @item.EditionProductShots.EditionProductShotId, size = @item.ImageSizes.ImageSizeId })" style="color: #333; width: 50px;height:50px" />
+            }
+        </text>,style:"buton"),
+  })
+    </div>
+</body>
+</html>

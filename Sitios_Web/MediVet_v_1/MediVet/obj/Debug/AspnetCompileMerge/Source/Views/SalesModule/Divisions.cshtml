@@ -1,0 +1,646 @@
+﻿@model IEnumerable<MediVet.Models.DivisionInformation>
+@using MediVet.Models;
+@{
+    ViewBag.Title = "Divisions";
+    PEV db = new PEV();
+
+    _indexDivisions _indexDivisions = (_indexDivisions)Session["_indexDivisions"];
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 20);
+
+    int ClientIdss, EditionIds, BookIds, CountryIdss;
+    if (_indexDivisions != null)
+    {
+        ClientIdss = _indexDivisions.DId;
+        EditionIds = _indexDivisions.EId;
+        BookIds = _indexDivisions.BId;
+        CountryIdss = _indexDivisions.CId;
+    }
+    else
+    {
+        ClientIdss = 0;
+        EditionIds = 0;
+        BookIds = 0;
+        CountryIdss = 0;
+    }
+}
+<html>
+<head>
+    <title></title>
+    @*UPDATE PRODUCT FIELDS*@
+    <script type="text/javascript">
+        $(function () {
+            $(".edit-mode").hide();
+            $(".edit-user, .cancel-user").click(function (evento) {
+                var tr = $(this).parents("tr:first");
+                tr.find(".edit-mode, .display-mode").toggle();
+            });
+
+            $(".save-user").click(function (e) {
+                var tr = $(this).parents("tr:first");
+                var ID = tr.find("#DivisionInfId").val();
+                var addr = tr.find("#editAddress").val();
+                var sub = tr.find("#editSuburb").val();
+                var zip = tr.find("#editZipCode").val();
+                var cty = tr.find("#editCity").val();
+                var st = tr.find("#editState").val();
+                var tl = tr.find("#editTelephone").val();
+                var fax = tr.find("#editFax").val();
+                var wb = tr.find("#editWeb").val();
+                var mail = tr.find("#editEmail").val();
+                var ld = tr.find("#editLada").val();
+
+                var Coun = $("#CountryId").val();
+                var Div = $("#DivisionId").val();
+                //tr.find("#lblProductName").text(name);
+                //tr.find("#lblDescription").text(descript);
+
+                var d = "";
+                d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                if (!addr.trim() == true) {
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>->  Ningun Campo puede quedar vacío</p>"
+                    apprise("" + d + "", { 'animate': true });
+                }
+                else {
+                    $("#bloqueo").show();
+                    $.ajax({
+                        url: "../SalesModule/editdivisioninformation/",
+                        type: "POST",
+                        dataType: "json",
+                        data: { DivisionInfId: ID, Address: addr, Suburb: sub, ZipCode: zip, City: cty, State: st, Telephone: tl, Fax: fax, Web: wb, Email: mail, Country: Coun, Division: Div, Lada: ld },
+                        success: function (data) {
+                            setTimeout('document.location.reload()');
+                        }
+                    })
+                }
+                $("#bloqueo").hide();
+            });
+        });
+    </script>
+    @*END*@
+
+    <script>
+        $(function () {
+            $(".deleteaddress").click(function () {
+                $("#bloqueo").show();
+            })
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <div id="insertaddressSMD" style="display: none;">
+        <div class="content-popup">
+            <div class="close"><a href="#" id="closediv" onclick="close_popup_createdivision();"><img src="~/images/cancel.png" style="float: right; width: 30px; height: 30px;" /></a></div>
+            <div>
+                <h2 class="classh2" style="color: #345869">Agregar Dirección</h2>
+                <br />
+                <br />
+                <table border="0" style="width:100%;height:100%">
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Calle:</label><br />
+                        </td>
+                        <td style="line-height: 30px;">
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertstreetSM" maxlength="255" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Colonia:</label>
+                        </td>
+                        <td style="line-height: 30px;"></td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertsuburbSM" maxlength="200" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">CP:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertcpSM" maxlength="50" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Municipio:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertcitySM" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Estado:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertstateSM" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Lada:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+      
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertladaSM" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Teléfono:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+         
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="inserttelephoneSM" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Fax:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+                      
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertfaxSM" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Web:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+                  
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertwebSM" maxlength="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height: 30px;">
+                            <label class="labels">Email:</label>
+                        </td>
+                        <td style="line-height: 30px;">
+  
+                        </td>
+                        <td style="line-height: 30px;">
+                            <input type="text" class="form-control1" id="insertemailSM" maxlength="255" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:15px" colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align:center">
+                            <button type="submit" onclick="createdivisioninformation($(this).val());" class="btnds btn btn-warning" style="color: #333; font-size: 17px; width: 45px; height: 35px">
+                                <img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;" />
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <table border="0" style="width:100%; height:100%">
+        <tr>
+            <td colspan="4">
+                <ol class="breadcrumb">
+                    <li><a href="../SalesModule/Index/" class="cpe">Ventas</a></li>
+                    <li class="active">Divisiones</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @using (Html.BeginForm())
+                {
+                <div style="text-align:right;display:none">
+                    <p>
+                        @{
+                    if (_indexDivisions != null)
+                    {
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="@_indexDivisions.CId">
+                        <label>book</label><input id="BookId" name="BookId" type="text" value="@_indexDivisions.BId">
+                        <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@_indexDivisions.EId">
+                        <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="@_indexDivisions.DId">
+                        <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+                    }
+                    else
+                    {
+                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                        <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                        <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                        <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="">
+                        <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                    }
+                        }
+                    </p>
+                </div>
+                }
+                @{
+                    if (_indexDivisions == null)
+                    {
+                <div style="width: 100%; float: left">
+                    <table style="width:100%" border="0">
+                        <tr>
+                            <td width="100px">
+                                <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <div style="text-align:left;">
+                                    @using (Html.BeginForm())
+                                            {
+                                                <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                                    <option class="null">Seleccione...</option>
+                                                    @{
+                                                            CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                            if (Session["CountriesUsers"] == null)
+                                                            {
+                                                                Session.Abandon();
+                                                                Response.Redirect(Url.Action("Logout", "Login"));
+                                                                Response.End();
+                                                            }
+                                                            else if (p != null)
+                                                            {
+                                                                List<string> d = p.var;
+                                                                foreach (var f in d)
+                                                                {
+                                                                    var countries = (from country in db.Countries
+                                                                                     where country.ID == f
+                                                                                     select country);
+                                                                    foreach (Countries w in countries)
+                                                                    {
+                                                                        int CountryId = w.CountryId;
+                                                            <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                                    }
+                                                                }
+                                                            }
+                                                    }
+                                                </select>
+                                            }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="DivisionName" id="lblclient" style="display: normal">División:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="divisions" id="divisions" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                    }
+                    else
+                    {
+                <div style="width: 100%;">
+                    <table style="width:100%" border="0">
+                        <tr>
+                            <td width="100px">
+                                <label class="lblcountrywhite">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <div style="text-align:left;">
+                                    @using (Html.BeginForm())
+                                            {
+                                    <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                        <option class="null">Seleccione...</option>
+                                        @{
+                                                CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                                if (Session["CountriesUsers"] == null)
+                                                {
+                                                    Session.Abandon();
+                                                    Response.Redirect(Url.Action("Logout", "Login"));
+                                                    Response.End();
+                                                }
+                                                else if (p != null)
+                                                {
+                                                    List<string> d = p.var;
+                                                    foreach (var f in d)
+                                                    {
+                                                        var countries = (from country in db.Countries
+                                                                         where country.ID == f
+                                                                         select country);
+                                                        foreach (Countries w in countries)
+                                                        {
+                                                            int CountryId = _indexDivisions.CId;
+                                                            if (w.CountryId == CountryId)
+                                                            {
+                                                                <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                        }
+                                    </select>
+                                            }
+                                </div>
+                            </td>
+                            <td rowspan="4"></td>
+                            <td rowspan="4" style="width:10%">
+                                    <button class="btn btn-warning" id="addproductSM" onclick="open_popup_createdivision();">Agregar Dirección</button>
+                                </td>
+                            <td rowspan="4"></td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="bookname" id="lblbook" style="display:normal">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px; height: 30px">
+                                <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                    <option>Seleccione...</option>
+                                    @{
+                                            int BookId = _indexDivisions.BId;
+
+                                            var bk = (from book in db.Books
+                                                      select book).ToList();
+                                            foreach (Books _book in bk)
+                                            {
+                                                if (_book.BookId == BookId)
+                                                {
+                                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_book.BookId">@_book.BookName</option>
+                                                }
+                                            }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="Edition" id="lblEdition" style="display: normal">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                                    <option>Seleccione...</option>
+                                    @{
+                                            int EditionId = _indexDivisions.EId;
+                                            int CountryIds = _indexDivisions.CId;
+                                            int BookIdss = _indexDivisions.BId;
+                                            var ed = (from _ed in db.Editions
+                                                      where _ed.CountryId == CountryIds
+                                                      && _ed.BookId == BookIdss
+                                                      select _ed).ToList();
+
+                                            foreach (Editions _ed in ed)
+                                            {
+                                                if (_ed.EditionId == EditionId)
+                                                {
+                                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                                }
+                                            }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 30px;">
+                                <label for="DivisionName" id="lblclient" style="display: normal">División:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                            </td>
+                            <td style="line-height: 30px;width:15px"></td>
+                            <td style="line-height: 30px;">
+                                <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                                    <option>Seleccione...</option>
+                                    @{
+                                            int ClientId = _indexDivisions.DId;
+                                            int _CountryId = _indexDivisions.CId;
+                                            var _labs = (from l in db.Laboratories
+                                                         join d in db.Divisions
+                                                             on l.LaboratoryId equals d.LaboratoryId
+                                                         where d.CountryId == _CountryId
+                                                         orderby d.DivisionName ascending
+                                                         select d).ToList();
+                                            foreach (Divisions _cl in _labs)
+                                            {
+                                                <option value="@_cl.DivisionId">@_cl.DivisionName</option>
+                                            }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        @{
+            if (_indexDivisions != null)
+            {
+                <tr>
+                    <td style="width: 10%;"><label class="labels">País:</label></td>
+                    <td style="width: 1%;"></td>
+                    <td>
+                        @{
+                            var cts = (from _ct in db.Countries
+                                       where _ct.CountryId == CountryIdss
+                                       select _ct).ToList();
+                            foreach (Countries _ct in cts)
+                            {
+                                <label>@_ct.CountryName</label>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Libro:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                            var bks = (from _bk in db.Books
+                                       where _bk.BookId == BookIds
+                                       select _bk).ToList();
+                            foreach (Books _bks in bks)
+                            {
+                                <label>@_bks.BookName</label>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">Edición:</label></td>
+                    <td></td>
+                    <td>
+                        @{
+                            var eds = (from _ed in db.Editions
+                                       where _ed.EditionId == EditionIds
+                                       select _ed).ToList();
+                            foreach (Editions _eds in eds)
+                            {
+                                <label>@_eds.NumberEdition</label>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%"><label class="labels">División:</label></td>
+                    <td style="width:1%"></td>
+                    <td>
+                        @{
+                            var cl = (from _cl in db.Divisions
+                                      where _cl.DivisionId == ClientIdss
+                                      select _cl).ToList();
+                            foreach (Divisions _cl in cl)
+                            {
+                                <label>@_cl.DivisionName</label>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="3"><label></label></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div style="text-align: center; width: 100%; height: 100%; ">
+
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div style="width:100%">
+        @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Calle", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblAddress" style="width:143px">@item.Address</label> </span>
+                                    <textarea style="display: none; color: red; font-size: 12px; width: 143px" maxlength="200" id="editAddress" class="edit-mode">@item.Address</textarea>
+                                    <input id="DivisionInfId" style="visibility: visible;display:none; width:20px" value="@item.DivisionInfId" />
+                                }
+                        </text>,style:"columntable150"),
+          _datagrid.Column("", header: "Colonia", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblSuburb" style="width:138px">@item.Suburb</label> </span>
+                <textarea style="display: none; color: red; font-size: 12px; width: 138px" maxlength="200" id="editSuburb" class="edit-mode columntable150">@item.Suburb</textarea>
+            }
+        </text>,style:"columntable150"),
+         _datagrid.Column("", header: "CP", format: @<text>
+            @{
+                <span class="display-mode"> <label id="lblZipCode" style="width:100px">@item.ZipCode</label> </span>
+                <textarea style="display: none; color: red; font-size: 12px; width: 100px" maxlength="200" id="editZipCode" class="edit-mode columntable150">@item.ZipCode</textarea>
+            }
+        </text>,style:"columntable150"),
+                         _datagrid.Column("", header: "Municipio", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblCity" style="width:138px">@item.City</label></span>
+                <textarea id="editCity" style="display: none; width: 138px; color: red; font-size: 12px;" class="edit-mode columntable150">@item.City</textarea>
+            }
+                        </text>,style:"columntable150"),
+                 _datagrid.Column("", header: "Estado", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblState" style="width:138px">@item.State</label></span>
+                <textarea id="editState" style="display: none; width: 138px; color: red; font-size: 12px;" class="edit-mode columntable150">@item.State</textarea>
+            }
+                </text>,style:"columntable150"),
+                 _datagrid.Column("", header: "Lada", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblLada" style="width:80px">@item.Lada</label></span>
+                <textarea id="editLada" style="display: none; width: 80px; color: red; font-size: 12px;" class="edit-mode columntable150">@item.Lada</textarea>
+            }
+                </text>,style:"columntable150"),
+                 _datagrid.Column("", header: "Teléfono", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblTelephone" style="width:136px">@item.Telephone</label></span>
+                <textarea id="editTelephone" style="display: none; width: 136px; color: red; font-size: 12px;" class="edit-mode columntable150">@item.Telephone</textarea>
+            }
+                </text>,style:"columntable150"),
+                 _datagrid.Column("", header: "Fax", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblFax" style="width:138px">@item.Fax</label></span>
+                <textarea id="editFax" style="display: none; width: 138px; color: red; font-size: 12px;" class="edit-mode">@item.Fax</textarea>
+            }
+                </text>,style:"columntable150"),
+                 _datagrid.Column("", header: "Web", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblWeb" style="width:125px">@item.Web</label></span>
+                <textarea id="editWeb" style="display: none; width: 125px; color: red; font-size: 12px;" class="edit-mode">@item.Web</textarea>
+            }
+                </text>,style:"columntable150"),
+                 _datagrid.Column("", header: "Email", format: @<text>
+            @{
+                <span class="display-mode"><label id="lblEmail" style="width: 131px">@item.Email</label></span>
+                <textarea id="editEmail" style="display: none; width: 131px; color: red; font-size: 12px;" class="edit-mode">@item.Email </textarea>
+            }
+                </text>,style:"columntable150"),
+
+                                  _datagrid.Column("", header: "Editar", format: @<text>
+            @{
+                <button style="color: #333; width: 45px;height:35px" class="edit-user display-mode btn btn-warning"><img src="@Url.Content("~/Images/edit.png")" style="height:25px;width:25px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="save-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/save.png")" style="height:25px;width:20px;"></button>
+                <button style="color: #333; display: none; width: 45px; height: 35px; " class="cancel-user edit-mode btn btn-warning"><img src="@Url.Content("~/Images/cancel.png")" style="height:25px;width:20px;"></button>
+            }
+                                </text>,style:"buton"),
+        _datagrid.Column("", header: "Eliminar", format: @<text>
+            @{
+    <button class="btn btn-default deleteaddress" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deletedivisioninformation", "SalesModule", new { DivisionInformationId = item.DivisionInfId })';return false;" ><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+}
+                                </text>,style:"buton")
+        })
+    </div>
+</body>
+</html>

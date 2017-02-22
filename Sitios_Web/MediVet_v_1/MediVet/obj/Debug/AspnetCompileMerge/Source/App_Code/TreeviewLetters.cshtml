@@ -1,0 +1,30 @@
+﻿@helper GetTreeView(List<MediVet.Models.Letters> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId == (ParentId)))
+    {
+        <li>
+            @{
+                var subitem = tree.Where(a => a.ParentId == (i.Therapeutic)).Count();
+
+                if (subitem > 0)
+                {
+                    <span class="expand1 collapsible cpe" id="@i.Letter" onclick="getletter($(this).attr('Id'))">&nbsp;</span>
+                }
+                else
+                {
+                    <span class="expand1 collapsible cpe" id="@i.Letter" onclick="getletter($(this).attr('Id'))">&nbsp;</span>
+                }
+                <span>
+                    <label class="recategory" id="@i.Letter.ToUpper()" style="color:black;font-size:11px">@i.Letter.ToUpper()</label>
+                </span>
+
+                if (subitem > 0)
+                {
+                    <ul>
+                        @TreeviewLetters.GetTreeView(tree, i.TherapeuticId)
+                    </ul>
+                }
+            }
+        </li>
+    }
+}

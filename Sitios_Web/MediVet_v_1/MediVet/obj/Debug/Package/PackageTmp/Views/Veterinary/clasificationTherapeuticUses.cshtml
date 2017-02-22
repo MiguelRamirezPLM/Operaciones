@@ -1,0 +1,392 @@
+﻿@model List<MediVet.Models.TherapeuticUsesStructure>
+@using MediVet.Models;
+@{
+    ViewBag.Title = "clasificationTherapeuticUses";
+    PEV db = new PEV();
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 10);
+    SessionTherapeuticUsesTree SessionTherapeuticUsesTree = (SessionTherapeuticUsesTree)Session["SessionTherapeuticUsesTree"];
+
+}
+
+<html>
+<head>
+    <title></title>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".treeview li>ul").css('display', 'none');
+            $(".collapsible").click(function (e) {
+                e.preventDefault();
+                $(this).toggleClass("collapse1 expand1");
+                $(this).closest('li').children('ul').slideToggle();
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $("#searchuse").click(function () {
+                $("#bloqueo").show();
+                var ter = $("#TherapeuticNameas").val();
+                var pid = $("#ProductIdV").val();
+                var pf = $("#PharmaFormIdV").val();
+                var cat = $("#CategoryIdV").val();
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "../Veterinary/searchtherapeuticuses/",
+                    traditional: true,
+                    data: { TherapeuticName: ter, Product: pid, PharmaForm: pf, Category: cat },
+                    success: function (data) {
+                        if (data == true) {
+                            setTimeout('document.location.reload()');
+                        }
+                    }
+                });
+            })
+        })
+    </script>
+
+    <script>
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                $("#searchuse").trigger("click");
+            }
+        })
+    </script>
+</head>
+<body>
+    <br />
+    <ol class="breadcrumb">
+        <li><a href="../Veterinary/Index/" class="cpe">Veterinario</a></li>
+        <li><a href="../Veterinary/Index/" class="cpe">Productos</a></li>
+        <li class="active">Clasificación por Usos Terapéuticos</li>
+    </ol>
+
+    <table style="width:100%" border="0">
+        <tr>
+            <td style="width: 10%;"><label class="labels">País:</label></td>
+            <td style="width: 1%;"></td>
+            <td>
+                @{
+
+                    <label>@ViewData["CountryNameV"]</label>
+                }
+            </td>
+            <td style="width:10%"><label class="labels">Producto:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["ProductNameV"]</label>
+                    <input type="text" value="@ViewData["ProductIdV"]" id="ProductIdV" style="display:none" />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Libro:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["BookNameV"]</label>
+                }
+            </td>
+            <td style="width:15%"><label class="labels">Forma Farmacéutica:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["PharmaFormV"]</label>
+                    <input type="text" value="@ViewData["PharmaFormIdV"]" id="PharmaFormIdV" style="display:none" />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">Edición:</label></td>
+            <td></td>
+            <td>
+                @{
+                    <label>@ViewData["NumberEditionV"]</label>
+                }
+            </td>
+            <td style="width:10%"><label class="labels">Categoría:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["CategoryNameV"]</label>
+                    <input type="text" value="@ViewData["CategoryIdV"]" id="CategoryIdV" style="display:none" />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="width:10%"><label class="labels">División:</label></td>
+            <td style="width:1%"></td>
+            <td>
+                @{
+                    <label>@ViewData["DivisionNameV"]</label>
+                }
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div style="height:100%;width:100%; border-bottom:none">
+        <div style="width:100%;height:100%"></div>
+        <br />
+        <label id="Equipos" style="cursor:pointer" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductEquipment", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Equipos</label>
+        <label id="Especies" style="cursor: pointer" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductSpecies", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Especies</label>
+        <label id="Sustancias" style="cursor: pointer" class="labelout cpe" onclick="location.href='@Url.Action("clasificationProductSubstances", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Sustancias Activas</label>
+        <label id="Usos" style="cursor: pointer" class="labelin cpe" onclick="location.href='@Url.Action("clasificationTherapeuticUses", "Veterinary", new { ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;">Usos Terapéuticos</label>
+    </div>
+    <div style="width: 100%; height: 100%; display: normal; border-top: 1px solid #ddd;" id="divequipos">
+        <br />
+        <div style="border:none; width:100%">
+            <table style=" width: 100%">
+                <tr>
+                    <td style="text-align:center"><label class="labels">Usos Terapéuticos Disponibles</label> </td>
+                    <td style="text-align:center"><label class="labels">Usos Terapéuticos Asociadas</label> </td>
+                </tr>
+                <tr>
+                    <td style="height:15px"></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        @{
+            int ProductId = Convert.ToInt32(ViewData["ProductIdV"]);
+            var equip = db.Database.SqlQuery<ActiveSubstances>("plm_spGetProductsSubstances @productid=" + ProductId).ToList();
+            WebGrid _datagridAS = new WebGrid(equip, rowsPerPage: 10);
+        }
+        <br />
+        @*<div style="width: 100%;border:none">
+            <table style="width:100%;" border="1">
+                <tr>
+                    <td style="text-align:left; width:50%">
+                        @{
+                            if (SessionTherapeuticUsesTree != null)
+                            {
+                                SessionsearchTherapeuticUses ssearch = (SessionsearchTherapeuticUses)Session["SessionsearchTherapeuticUses"];
+                                if (ssearch != null)
+                                {
+                                    <label>Buscar:</label> @Html.TextBox("TherapeuticName", ssearch.TherapeuticName, new { @class = "form-focus", id = "TherapeuticNameas" })
+                                    <button type="submit" id="searchuse" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:normal"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                                else
+                                {
+                                    <label>Buscar:</label> @Html.TextBox("TherapeuticName", "", new { @class = "form-focus", id = "TherapeuticNameas" })
+                                    <button type="submit" id="searchuse" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:normal"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                                }
+                                 <button onclick="cleanletter()" class="btn btn-info cpe" style="float:right">Regresar a Letras</button>
+                                 <br />
+                            }
+                        }
+
+                    </td>
+                    <td style="text-align: center; width: 50%">
+                        @*<label>Buscar:</label> <input type="text" class="form-control1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:20px"></td>
+                </tr>
+            </table>
+        </div>*@
+        <div style="width: 40%; float: left; height: 100%">
+            @{
+                if (SessionTherapeuticUsesTree != null)
+                {
+                    SessionsearchTherapeuticUses ssearch = (SessionsearchTherapeuticUses)Session["SessionsearchTherapeuticUses"];
+                    if (ssearch != null)
+                    {
+                        <label>Buscar:</label> @Html.TextBox("TherapeuticName", ssearch.TherapeuticName, new { @class = "form-focus", id = "TherapeuticNameas" })
+                        <button type="submit" id="searchuse" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:normal"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                    }
+                    else
+                    {
+                        <label>Buscar:</label> @Html.TextBox("TherapeuticName", "", new { @class = "form-focus", id = "TherapeuticNameas" })
+                        <button type="submit" id="searchuse" value="searchprod" class="btn btn-info" style="color: #333; width: 40px; font-size: 18px;display:normal"><img src="@Url.Content("~/Images/buscar.png")" style=" height:20px;width:20px;"></button>
+                    }
+                    <button onclick="cleanletter()" class="btn btn-info cpe" style="float:right">Regresar a Letras</button>
+                    <br />
+                }
+            }
+            <br />
+            <div class="treeview scrollbar1" id="scrollbar">
+                @{
+                    var tu = db.TherapeuticUses.Where(x => x.ParentId == null && x.Active == true).OrderBy(x => x.TherapeuticName).ToList();
+
+                    if (SessionTherapeuticUsesTree == null)
+                    {
+                        Letters T = new Letters();
+                        List<Letters> LT = new List<Letters>();
+
+                        foreach (TherapeuticUses _tu in tu)
+                        {
+                            String Letter = _tu.TherapeuticName.ToUpper().Substring(0, 1).Replace("Á", "A").Replace("É", "E").Replace("Í", "I").Replace("Ó", "O").Replace("Ú", "U").Replace("Ü", "U");
+
+                            var lt = LT.Where(x => x.Letter == Letter).ToList();
+
+                            if (lt.LongCount() == 0)
+                            {
+                                T = new Letters();
+
+                                T.Letter = Letter;
+
+                                LT.Add(T);
+                            }
+                        }
+
+                        if (LT != null && LT.Count() > 0)
+                        {
+                            <ul>
+                                @TreeviewLetters.GetTreeView(LT, LT.FirstOrDefault().ParentId)
+                            </ul>
+                        }
+                    }
+
+                    if (SessionTherapeuticUsesTree != null)
+                    {
+                        SessionsearchTherapeuticUses SessionsearchTherapeuticUses = (SessionsearchTherapeuticUses)Session["SessionsearchTherapeuticUses"];
+                        if (SessionsearchTherapeuticUses != null)
+                        {
+                            var pe = db.Database.SqlQuery<TherapeuticUses>("plm_spGetTherapeuticsTreeSearch @param='" + SessionsearchTherapeuticUses.TherapeuticName + "'").ToList();
+                            
+                            if (pe != null && pe.Count() > 0)
+                            {
+                                <ul>
+                                    @Treeview.GetTreeView(pe, pe.FirstOrDefault().ParentId)
+                                </ul>
+                            }
+                        }
+                        else
+                        {
+                            var pe = (from t in db.TherapeuticUses
+                                      where t.TherapeuticName.ToUpper().Substring(0, 1).Replace("Á", "A").Replace("É", "E").Replace("Í", "I").Replace("Ó", "O").Replace("Ú", "U").Replace("Ü", "U").StartsWith(SessionTherapeuticUsesTree.Letter)
+                                      && t.ParentId == null
+                                      select t).Union(from t1 in db.TherapeuticUses
+                                                      where t1.ParentId != null
+                                                      select t1).ToList();
+                            if (pe != null && pe.Count() > 0)
+                            {
+                                <ul>
+                                    @Treeview.GetTreeView(pe, pe.FirstOrDefault().ParentId)
+                                </ul>
+                            }
+                        }
+
+                    }
+                }
+            </div>
+        </div>
+        <div style="width:55%; float:right;border:none; height:100%">
+            @_datagrid.GetHtml(
+                          headerStyle: "webgrid-header",
+                          footerStyle: "webgrid-footer",
+                          alternatingRowStyle: "webgrid-alternating-row",
+                          selectedRowStyle: "webgrid-selected-row",
+                          rowStyle: "webgrid-row-style",
+                          tableStyle: "webgrid-table ",
+                          mode: WebGridPagerModes.All,
+                          columns: new[] {
+                          _datagrid.Column("", header: "Nombre de Uso", format: @<text>
+                                @{
+                                    if (item.TherapeuticName4 != null)
+                                    {
+                                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName4.ToUpper()</label> </span>
+                                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId4" />   
+                                    }
+                                    else
+                                    {
+                                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName4</label> </span>
+                                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId4" />
+                                    }
+                                }
+                        </text>),
+             _datagrid.Column("", header: "Nombre de Uso1", format: @<text>
+                @{
+                    if (item.TherapeuticName3 != null)
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName3.ToUpper()</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId3" />
+                    }
+                    else
+                    { 
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName3</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId3" />
+                    }
+                }
+            </text>),
+                         _datagrid.Column("", header: "Nombre de Uso2", format: @<text>
+                @{
+                    if (item.TherapeuticName2 != null)
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName2.ToUpper()</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId2" />
+                    }
+                    else
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName2</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId2" />
+                    }
+
+                }
+                        </text>),
+                         _datagrid.Column("", header: "Nombre de Uso3", format: @<text>
+                @{
+                    if (item.TherapeuticName1 != null)
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName1.ToUpper()</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId1" />   
+                    }
+                    else
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName1</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId1" />
+                    }
+                }
+                        </text>),
+                         _datagrid.Column("", header: "Nombre de Uso4", format: @<text>
+                @{
+                    if (item.TherapeuticName != null)
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName.ToUpper()</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId" />   
+                    }
+                    else
+                    {
+                        <span class="display-mode"> <label id="lblProductName">@item.TherapeuticName</label> </span>
+                        <input id="lblProductid" style="visibility: visible;display:none; width:20px" value="@item.TherapeuticId" />
+                    }
+                }
+                        </text>),
+             _datagrid.Column("", header: "Eliminar", format: @<text>
+                @{
+                    int? thera = item.TherapeuticId;
+                    int? thera1 = item.TherapeuticId1;
+                    int? thera2 = item.TherapeuticId2;
+                    int? thera3 = item.TherapeuticId3;
+                    int? thera4 = item.TherapeuticId4;
+                    if (thera != null)
+                    {
+                        <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteTherapeuticUses", "Veterinary", new { TherapeuticId = item.TherapeuticId, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                    }
+                    else if (thera1 != null)
+                    {
+                        <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteTherapeuticUses", "Veterinary", new { TherapeuticId = item.TherapeuticId1, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                    }
+                    else if (thera2 != null)
+                    {
+                        <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteTherapeuticUses", "Veterinary", new { TherapeuticId = item.TherapeuticId2, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                    }
+                    else if (thera3 != null)
+                    {
+                        <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteTherapeuticUses", "Veterinary", new { TherapeuticId = item.TherapeuticId3, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                    }
+                    else if (thera4 != null)
+                    {
+                        <button class="btn btn-default cpe" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("deleteTherapeuticUses", "Veterinary", new { TherapeuticId = item.TherapeuticId4, ProductId = Convert.ToInt32(ViewData["ProductIdV"]), PharmaFormId = Convert.ToInt32(ViewData["PharmaFormIdV"]), CategoryId = Convert.ToInt32(ViewData["CategoryIdV"]) })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px"></button>
+                    }
+                }
+            </text>, style:"buton")
+        })
+        </div>
+    </div>
+</body>
+</html>

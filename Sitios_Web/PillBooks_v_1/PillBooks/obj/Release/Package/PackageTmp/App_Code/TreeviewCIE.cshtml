@@ -1,0 +1,30 @@
+﻿<script type="text/javascript" src="@Url.Content("~/Scripts/main.js")"></script>
+@helper GetTreeView(List<PillBooks.Models.ICD> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId == (ParentId)))
+    {
+        <li>
+            @{var subitem = tree.Where(a => a.ParentId == (i.ICDId)).Count();}
+
+            @if (subitem > 0)
+            {
+                <span class="collapse1 collapsible">&nbsp;</span>
+            }
+            else
+            {
+                <span style="display:inline-block">&nbsp;<input type="checkbox" value="@i.ICDId" id="@i.SpanishDescription" onclick="addpillbookatc($(this).val())" />&nbsp;</span>
+            }
+            <span>
+                <a href="/SalesModule/insertclientcategoriess/@i.ICDId" class="insertau" style="color:black"><label style="color: #065977;">@i.ICDKey - </label>@i.SpanishDescription.ToUpper()</a>
+            </span>
+            @if (subitem > 0)
+            {
+                tree = tree.OrderBy(x => x.SpanishDescription).ToList();
+                
+                <ul>
+                    @TreeviewCIE.GetTreeView(tree, i.ICDId)
+                </ul>
+            }
+        </li>
+    }
+}

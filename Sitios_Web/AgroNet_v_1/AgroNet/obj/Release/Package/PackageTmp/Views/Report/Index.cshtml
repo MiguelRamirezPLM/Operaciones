@@ -1,0 +1,71 @@
+﻿@model IEnumerable<AgroNet.Models.plm_vwProductsByEdition>
+@using AgroNet.Models;
+@{
+    DEAQ d = new DEAQ();
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div style="text-align:center">
+    <table>
+        <tr>
+            <th class="column">
+                Division
+            </th>
+            <th class="column">
+                Categoria
+            </th>
+            <th class="column">
+                Nombre de Producto
+            </th>
+            <th class="column">
+                Descripción
+            </th>
+            <th class="column">
+                Registro
+            </th>
+            <th class="column">
+                Forma Farmacéutica
+            </th>
+            <th class="column">
+                Edición
+            </th>
+            <th class="column">
+                Tipo en Edición
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DivisionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Register)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PharmaForm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberEdition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeInEdition)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<button class="btn btn-default deletepc" style="color: #333; width: 45px; height: 35px" onclick="location.href='@Url.Action("GetReport", new { id = "PDF" })';return false;"><img src="@Url.Content("~/Images/cancel.png")" style="height:20px;width:20px">PDF</button>

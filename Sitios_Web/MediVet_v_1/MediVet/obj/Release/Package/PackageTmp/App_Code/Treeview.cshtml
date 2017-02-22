@@ -1,0 +1,64 @@
+﻿@helper GetTreeView(List<MediVet.Models.Letters> tree, int? ParentId)
+{
+    foreach (var i in tree.Where(a => a.ParentId == (ParentId)))
+    {
+        <li>
+            @*@{var subitem = tree.Where(a => a.ParentId == (i.Therapeutic)).Count();}*@
+
+            @{
+                String Letter = "";
+
+                if (i.TherapeuticName != null)
+                {
+                    Letter = i.TherapeuticName.ToUpper().Substring(0, 1).Replace("Á", "A").Replace("É", "E").Replace("Í", "I").Replace("Ó", "O").Replace("Ú", "U").Replace("Ü", "U");
+
+                    var subitem = tree.Where(a => a.TherapeuticName.Replace("Á", "A").Replace("É", "E").Replace("Í", "I").Replace("Ó", "O").Replace("Ú", "U").Replace("Ü", "U").StartsWith(Letter)).Take(1).Count();
+
+                    if (subitem > 0)
+                    {
+                        <span class="expand1 collapsible idnt" id="@i.TherapeuticName" onclick="GetTherapeuticUsesByLetter($(this).attr('Id'))">&nbsp;</span>
+                    }
+                    else
+                    {
+                        <span style="display:inline-block">&nbsp;</span>
+                        @*<span class="expand1 collapsible idnt" id="@i.Letter" onclick="GetTherapeuticUsesByLetter($(this).attr('Id'))">&nbsp;</span>*@
+                    }
+                    <span>
+                        <label class="recategory" id="@i.TherapeuticId" style="color:black;font-size:11px">@i.TherapeuticName.ToUpper()</label>
+                    </span>
+                
+                    if (subitem > 0)
+                    {
+                        <ul>
+                            @Treeview.GetTreeView(tree, i.TherapeuticId)
+                        </ul>
+                    }
+                }
+                else
+                {
+                    var subitem = tree.Where(a => a.ParentId == (i.Therapeutic)).Count();
+            
+                    if (subitem > 0)
+                    {
+                        <span class="expand1 collapsible idnt" id="@i.Letter" onclick="GetTherapeuticUsesByLetter($(this).attr('Id'))">&nbsp;</span>
+                    }
+                    else
+                    {
+                        @*<span style="display:inline-block">&nbsp;</span>*@
+                        <span class="expand1 collapsible idnt" id="@i.Letter" onclick="GetTherapeuticUsesByLetter($(this).attr('Id'))">&nbsp;</span>
+                    }
+                    <span>
+                        <label class="recategory" id="@i.Letter.ToUpper()" style="color:black;font-size:11px">@i.Letter.ToUpper()</label>
+                    </span>
+                
+                    if (subitem > 0)
+                    {
+                        <ul>
+                            @Treeview.GetTreeView(tree, i.TherapeuticId)
+                        </ul>
+                    }
+                }
+            }
+        </li>
+    }
+}

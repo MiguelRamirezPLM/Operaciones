@@ -1,0 +1,141 @@
+﻿@using AgroNet.Models;
+@{
+        PLMUsers PLMUsers = new PLMUsers();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - AgroNet</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+    <link href="@Url.Content("~/Content/jquery-ui.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/jquery-ui.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css.map")" rel="stylesheet" />
+    @*<script src="@Url.Content("~/Scripts/jquery-1.9.1.js")"></script>*@
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
+    <script>
+        $(function () {
+            $("#Sales").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#Classification").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#Production").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#Labs").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#Divs").click(function () {
+                $("#bloqueo").show();
+            });
+            $("#bloqueo").hide();
+        });
+    </script>
+</head>
+<body>
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador">
+            <img src="~/Images/131.GIF">
+        </div>
+    </div>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: #398104">
+
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <label style="font-size:35px;font-family:'Lucida Calligraphy'">AgroNet&nbsp;</label>
+            </div>
+            @if (Request.IsAuthenticated)
+{
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @{
+    CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+    if (p != null)
+    {
+        var user = p.userId;
+        var app = p.ApplicationId;
+        var userid = from UR in PLMUsers.ApplicationUsers
+                     where UR.UserId == user
+                     && UR.ApplicationId == app
+                     select UR;
+        foreach (ApplicationUsers a in userid)
+        {
+            if (a.RoleId == 1)
+            {
+                <li class="icon-bar" id="Sales">@Html.ActionLink("Ventas", "Index", "Ventas")</li>
+                        <li id="Classification">@Html.ActionLink("Clasificacion", "Index", "Clasification")</li>
+                        <li id="Production">@Html.ActionLink("Produccion", "Index", "Production")</li>
+                        <li class="icon-bar" id="Labs">@Html.ActionLink("Laboratorios", "Index", "Laboratories")</li>
+                        <li class="icon-bar" id="Divs">@Html.ActionLink("Divisiones", "Index", "Divs")</li>
+            }
+            if(a.RoleId == 5)
+            {
+                <li class="icon-bar" id="Sales">@Html.ActionLink("Ventas", "Index", "Ventas")</li>
+    <li class="icon-bar" id="Divs">@Html.ActionLink("Divisiones", "Index", "Divs")</li>
+            }
+        }
+
+    }
+}
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+            }
+        </div>
+            
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    <div class="container body-content">
+        @RenderBody()        
+        <hr />      
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

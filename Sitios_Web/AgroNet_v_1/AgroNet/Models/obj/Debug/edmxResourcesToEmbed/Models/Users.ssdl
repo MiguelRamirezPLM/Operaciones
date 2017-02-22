@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UsersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActivitySessions">
+    <Key>
+      <PropertyRef Name="ActivitySessionId" />
+    </Key>
+    <Property Name="ActivitySessionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ApplicationId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Applications">
+    <Key>
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="ApplicationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="HashKey" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="URL" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="RootUrl" Type="varchar" MaxLength="255" />
+    <Property Name="Version" Type="varchar" MaxLength="15" />
+    <Property Name="LastUpdate" Type="datetime" />
+    <Property Name="DocumentFile" Type="varchar" MaxLength="255" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ApplicationUsers">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="ApplicationId" Type="int" Nullable="false" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="SecondLastName" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="NickName" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Password" Type="varchar(max)" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AddedDate" Type="datetime" />
+    <Property Name="ExpirationDate" Type="datetime" />
+    <Property Name="LastUpdate" Type="datetime" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WebPages">
+    <Key>
+      <PropertyRef Name="WebPageId" />
+    </Key>
+    <Property Name="WebPageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="ApplicationId" Type="int" Nullable="false" />
+    <Property Name="PageDescription" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Url" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <Association Name="FK_ApplicationUsers_Applications">
+    <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+    <End Role="ApplicationUsers" Type="Self.ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ApplicationUsers_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ApplicationUsers" Type="Self.ApplicationUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ApplicationUsers">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WebPages_Applications">
+    <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+    <End Role="WebPages" Type="Self.WebPages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="WebPages">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKAPPLICATION_AS">
+    <End Role="Applications" Type="Self.Applications" Multiplicity="1" />
+    <End Role="ActivitySessions" Type="Self.ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FKUSER_AS">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ActivitySessions" Type="Self.ActivitySessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="ActivitySessions">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="UsersModelStoreContainer">
+    <EntitySet Name="ActivitySessions" EntityType="Self.ActivitySessions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ApplicationUsers" EntityType="Self.ApplicationUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebPages" EntityType="Self.WebPages" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ApplicationUsers_Applications" Association="Self.FK_ApplicationUsers_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ApplicationUsers_Users" Association="Self.FK_ApplicationUsers_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ApplicationUsers" EntitySet="ApplicationUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WebPages_Applications" Association="Self.FK_WebPages_Applications">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="WebPages" EntitySet="WebPages" />
+    </AssociationSet>
+    <AssociationSet Name="FKAPPLICATION_AS" Association="Self.FKAPPLICATION_AS">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+    <AssociationSet Name="FKUSER_AS" Association="Self.FKUSER_AS">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ActivitySessions" EntitySet="ActivitySessions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

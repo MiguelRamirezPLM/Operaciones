@@ -1,0 +1,72 @@
+﻿@model MediVet.Models.Users
+@{
+    ViewBag.Title = "Login";
+}
+<br />
+<img src="/Images/PLM-LogotipoAzul.png" style="float:right; width:18%; height:9%;" />
+<div class="row" style="width:100%;text-align:center">
+    <div class="col-md-8" style="width:100%">
+        <section id="loginForm" style="width:100%">
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.ValidationSummary(true)
+                <br />
+                <br />
+                <div class="centerTable1 div" style="width:100%">
+                    <div style="width: 50%;height:20%; background-color: #fff; border: groove;border-radius:17px;" class="centerTable2 div">
+                        <table style="width: 100%; " border="0" class="centerTable2 table">
+                            <tr>
+                                @{
+                string Version = System.Configuration.ConfigurationManager.AppSettings["Version"];
+                <td style="font-style: italic; font-size: 25px; text-align: center; border: none; background-color: #932e02; color: white;" colspan="3" class="form-control3" height="50px" width="100%">Iniciar sesión<label style="float:right; font-size:12px;vertical-align:bottom">@Version</label></td>
+                                }
+                            </tr>
+                            <tr class="">
+                                <td style="width:10px;border:none"></td>
+                                <td style="text-align: left; background-color: #fff; width: 5%; border: none; ">
+                                    <br />
+                                    <br />
+                                    @Html.LabelFor(m => m.NickName, new { @class = "col-md-21 control-label" })
+                                </td>
+                                <td style="text-align: left; background-color: #fff; border: none; width:100%">
+                                    <br />
+                                    <br />
+                                    @Html.TextBoxFor(m => m.NickName, new { @class = "form-control1" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.NickName)
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td style="width:10px;border:none"></td>
+                                <td style="text-align: left; width: 35%; background-color: #fff; border: none; ">
+                                    <br />
+                                    @Html.LabelFor(m => m.Password, new { @class = "col-md-21 control-label" })
+                                </td>
+                                <td style="text-align: left; background-color: #fff; border: none; ">
+                                    <br />
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control1" })
+                                    <br />
+                                    @Html.ValidationMessageFor(m => m.Password)
+                                </td>
+                            </tr>
+                            <tr class="" style="height:50px">
+                                <td colspan="3" style="background-color: #fff; text-align: center; border: none; ">
+                                    <br />
+                                    <br />
+                                    <input type="submit" value="Iniciar sesión" class="btn btn-warning" id="login" onclick="load($(this))" />
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+                <br />
+            }
+        </section>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

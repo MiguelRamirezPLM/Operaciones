@@ -1,0 +1,1539 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DeaqModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActiveSubstanceName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PProductSubstances" Relationship="DeaqModel.ActiveSubstancesPProductSubstances" FromRole="ActiveSubstances" ToRole="PProductSubstances" />
+  </EntityType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdId" />
+    </Key>
+    <Property Name="AdId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AdFile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionDivisionAds" Relationship="Self.FK_EditionDivisionAds_Advertisements" FromRole="Advertisements" ToRole="EditionDivisionAds" />
+  </EntityType>
+  <EntityType Name="AgrochemicalUses">
+    <Key>
+      <PropertyRef Name="AgrochemicalUseId" />
+    </Key>
+    <Property Name="AgrochemicalUseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AgrochemicalUseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="UseKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="AgrochemicalUses1" Relationship="Self.R_17" FromRole="AgrochemicalUses" ToRole="AgrochemicalUses1" />
+    <NavigationProperty Name="AgrochemicalUses2" Relationship="Self.R_17" FromRole="AgrochemicalUses1" ToRole="AgrochemicalUses" />
+    <NavigationProperty Name="PProductAgrochemicalUses" Relationship="DeaqModel.AgrochemicalUsesPProductAgrochemicalUses" FromRole="AgrochemicalUses" ToRole="PProductAgrochemicalUses" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_8" FromRole="Books" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionCategories" Relationship="Self.R_39" FromRole="Categories" ToRole="DivisionCategories" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionCities" Relationship="Self.R_34" FromRole="Cities" ToRole="DivisionCities" />
+    <NavigationProperty Name="Countries" Relationship="DeaqModel.R_33" FromRole="Cities" ToRole="Countries" />
+  </EntityType>
+  <EntityType Name="Crops">
+    <Key>
+      <PropertyRef Name="CropId" />
+    </Key>
+    <Property Name="CropId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CropName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ProductCrops" Relationship="Self.R_22" FromRole="Crops" ToRole="ProductCrops" />
+  </EntityType>
+  <EntityType Name="DivisionCategories">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Categories" Relationship="Self.R_39" FromRole="DivisionCategories" ToRole="Categories" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_38" FromRole="DivisionCategories" ToRole="Divisions" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_44" FromRole="DivisionCategories" ToRole="ProductCategories" />
+  </EntityType>
+  <EntityType Name="DivisionCities">
+    <Key>
+      <PropertyRef Name="CityId" />
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="LaboratoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Cities" Relationship="Self.R_34" FromRole="DivisionCities" ToRole="Cities" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_35" FromRole="DivisionCities" ToRole="Divisions" />
+  </EntityType>
+  <EntityType Name="DivisionImages">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageTypeId" Type="Byte" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="ImageName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Divisions" Relationship="Self.DivisionImages_DivisionId_FK" FromRole="DivisionImages" ToRole="Divisions" />
+    <NavigationProperty Name="ImageTypes" Relationship="Self.DivisionImages_ImageTypeId_FK" FromRole="DivisionImages" ToRole="ImageTypes" />
+    <Property Name="ImageSizeId" Type="Byte" />
+    <NavigationProperty Name="DivisionImagesSizes" Relationship="DeaqModel.DivisionImagesDivisionImagesSizes" FromRole="DivisionImages" ToRole="DivisionImagesSizes" />
+  </EntityType>
+  <EntityType Name="DivisionInformation">
+    <Key>
+      <PropertyRef Name="DivisionInformationId" />
+    </Key>
+    <Property Name="DivisionInformationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Suburb" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Location" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Telephone" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Lada" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_25" FromRole="DivisionInformation" ToRole="Divisions" />
+  </EntityType>
+  <EntityType Name="Divisions">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="DivisionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="DivisionName" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="LaboratoryId" Type="Int32" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionCategories" Relationship="Self.R_38" FromRole="Divisions" ToRole="DivisionCategories" />
+    <NavigationProperty Name="DivisionCities" Relationship="Self.R_35" FromRole="Divisions" ToRole="DivisionCities" />
+    <NavigationProperty Name="DivisionImages" Relationship="Self.DivisionImages_DivisionId_FK" FromRole="Divisions" ToRole="DivisionImages" />
+    <NavigationProperty Name="DivisionInformation" Relationship="Self.R_25" FromRole="Divisions" ToRole="DivisionInformation" />
+    <NavigationProperty Name="EditionDivisionAds" Relationship="Self.FK_EditionDivisionAds_Divisions" FromRole="Divisions" ToRole="EditionDivisionAds" />
+    <NavigationProperty Name="Laboratories" Relationship="Self.R_23" FromRole="Divisions" ToRole="Laboratories" />
+    <NavigationProperty Name="Countries" Relationship="DeaqModel.R_24" FromRole="Divisions" ToRole="Countries" />
+  </EntityType>
+  <EntityType Name="EditionDivisionAds">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="AdId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="AdId" Type="Int32" Nullable="false" />
+    <Property Name="BaseUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Advertisements" Relationship="Self.FK_EditionDivisionAds_Advertisements" FromRole="EditionDivisionAds" ToRole="Advertisements" />
+    <NavigationProperty Name="Divisions" Relationship="Self.FK_EditionDivisionAds_Divisions" FromRole="EditionDivisionAds" ToRole="Divisions" />
+    <NavigationProperty Name="Editions" Relationship="Self.FK_EditionDivisionAds_Editions" FromRole="EditionDivisionAds" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionDivisionProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EditionProductShots" Relationship="Self.EditionProductShots_EditionDivisionProducts_FK" FromRole="EditionDivisionProducts" ToRole="EditionProductShots" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_45" FromRole="EditionDivisionProducts" ToRole="ProductCategories" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_46" FromRole="EditionDivisionProducts" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionProductShots">
+    <Key>
+      <PropertyRef Name="EditionProductShotId" />
+    </Key>
+    <Property Name="EditionProductShotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EditionId" Type="Int32" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="PharmaFormId" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="PSTypeId" Type="Byte" />
+    <Property Name="ProductShot" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="QtyCells" Type="Byte" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionDivisionProducts" Relationship="Self.EditionProductShots_EditionDivisionProducts_FK" FromRole="EditionProductShots" ToRole="EditionDivisionProducts" />
+    <NavigationProperty Name="ProductShotTypes" Relationship="Self.EditionProductShots_ProductShotTypes_FK" FromRole="EditionProductShots" ToRole="ProductShotTypes" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="BookId" Type="Int32" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Books" Relationship="Self.R_8" FromRole="Editions" ToRole="Books" />
+    <NavigationProperty Name="EditionDivisionAds" Relationship="Self.FK_EditionDivisionAds_Editions" FromRole="Editions" ToRole="EditionDivisionAds" />
+    <NavigationProperty Name="EditionDivisionProducts" Relationship="Self.R_46" FromRole="Editions" ToRole="EditionDivisionProducts" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_13" FromRole="Editions" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="Editions1" Relationship="Self.R_37" FromRole="Editions" ToRole="Editions1" />
+    <NavigationProperty Name="MentionatedProducts" Relationship="DeaqModel.EditionsMentionatedProducts" FromRole="Editions" ToRole="MentionatedProducts" />
+    <NavigationProperty Name="Newproducts" Relationship="DeaqModel.EditionsNewproducts" FromRole="Editions" ToRole="Newproducts" />
+    <NavigationProperty Name="Countries" Relationship="DeaqModel.R_7" FromRole="Editions" ToRole="Countries" />
+  </EntityType>
+  <EntityType Name="ImageTypes">
+    <Key>
+      <PropertyRef Name="ImageTypeId" />
+    </Key>
+    <Property Name="ImageTypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionImages" Relationship="Self.DivisionImages_ImageTypeId_FK" FromRole="ImageTypes" ToRole="DivisionImages" />
+  </EntityType>
+  <EntityType Name="Laboratories">
+    <Key>
+      <PropertyRef Name="LaboratoryId" />
+    </Key>
+    <Property Name="LaboratoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LaboratoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Divisions" Relationship="Self.R_23" FromRole="Laboratories" ToRole="Divisions" />
+    <NavigationProperty Name="Products" Relationship="Self.R_36" FromRole="Laboratories" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_13" FromRole="ParticipantProducts" ToRole="Editions" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_47" FromRole="ParticipantProducts" ToRole="ProductCategories" />
+    <Property Name="ContentTypeId" Type="Byte" />
+    <NavigationProperty Name="ContentTypes" Relationship="DeaqModel.R_121" FromRole="ParticipantProducts" ToRole="ContentTypes" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="ProductContents" Relationship="DeaqModel.ProductContents_ParticipantProducts_FK" FromRole="ParticipantProducts" ToRole="ProductContents" />
+  </EntityType>
+  <EntityType Name="PharmaForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PharmaForm" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_2" FromRole="PharmaForms" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <EntityType Name="ProductCategories">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DivisionCategories" Relationship="Self.R_44" FromRole="ProductCategories" ToRole="DivisionCategories" />
+    <NavigationProperty Name="EditionDivisionProducts" Relationship="Self.R_45" FromRole="ProductCategories" ToRole="EditionDivisionProducts" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_47" FromRole="ProductCategories" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_43" FromRole="ProductCategories" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="MentionatedProducts" Relationship="DeaqModel.ProductCategoriesMentionatedProducts" FromRole="ProductCategories" ToRole="MentionatedProducts" />
+    <NavigationProperty Name="Newproducts" Relationship="DeaqModel.ProductCategoriesNewproducts" FromRole="ProductCategories" ToRole="Newproducts" />
+    <NavigationProperty Name="ProductImages" Relationship="DeaqModel.R_132" FromRole="ProductCategories" ToRole="ProductImages" />
+  </EntityType>
+  <EntityType Name="ProductCrops">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CropId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CropId" Type="Int32" Nullable="false" />
+    <Property Name="Substance" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Crops" Relationship="Self.R_22" FromRole="ProductCrops" ToRole="Crops" />
+    <NavigationProperty Name="Products" Relationship="Self.R_21" FromRole="ProductCrops" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PharmaForms" Relationship="Self.R_2" FromRole="ProductPharmaForms" ToRole="PharmaForms" />
+    <NavigationProperty Name="ProductCategories" Relationship="Self.R_43" FromRole="ProductPharmaForms" ToRole="ProductCategories" />
+    <NavigationProperty Name="Products" Relationship="Self.R_1" FromRole="ProductPharmaForms" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Register" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="LaboratoryId" Type="Int32" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AccessId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Laboratories" Relationship="Self.R_36" FromRole="Products" ToRole="Laboratories" />
+    <NavigationProperty Name="ProductCrops" Relationship="Self.R_21" FromRole="Products" ToRole="ProductCrops" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_1" FromRole="Products" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="Types" Relationship="Self.ProductTypes" FromRole="Products" ToRole="Types" />
+    <NavigationProperty Name="Countries" Relationship="DeaqModel.R_4" FromRole="Products" ToRole="Countries" />
+    <NavigationProperty Name="PProductSubstances" Relationship="DeaqModel.ProductsPProductSubstances" FromRole="Products" ToRole="PProductSubstances" />
+    <NavigationProperty Name="PProductSeeds" Relationship="DeaqModel.ProductsPProductSeeds" FromRole="Products" ToRole="PProductSeeds" />
+    <NavigationProperty Name="PProductAgrochemicalUses" Relationship="DeaqModel.ProductsPProductAgrochemicalUses" FromRole="Products" ToRole="PProductAgrochemicalUses" />
+  </EntityType>
+  <EntityType Name="ProductShotTypes">
+    <Key>
+      <PropertyRef Name="PSTypeId" />
+    </Key>
+    <Property Name="PSTypeId" Type="Byte" Nullable="false" />
+    <Property Name="TypeName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionProductShots" Relationship="Self.EditionProductShots_ProductShotTypes_FK" FromRole="ProductShotTypes" ToRole="EditionProductShots" />
+  </EntityType>
+  <EntityType Name="Seeds">
+    <Key>
+      <PropertyRef Name="SeedId" />
+    </Key>
+    <Property Name="SeedId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SeedName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ScientificName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PProductSeeds" Relationship="DeaqModel.SeedsPProductSeeds" FromRole="Seeds" ToRole="PProductSeeds" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" />
+    <NavigationProperty Name="Countries" Relationship="DeaqModel.FK_States_Countries" FromRole="States" ToRole="Countries" />
+  </EntityType>
+  <EntityType Name="Types">
+    <Key>
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="TypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.ProductTypes" FromRole="Types" ToRole="Products" />
+  </EntityType>
+  <Association Name="FK_EditionDivisionAds_Advertisements">
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Advertisements">
+        <PropertyRef Name="AdId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="AdId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_17">
+    <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="1" />
+    <End Role="AgrochemicalUses1" Type="Self.AgrochemicalUses" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Principal>
+      <Dependent Role="AgrochemicalUses1">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_8">
+    <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_39">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="DivisionCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_34">
+    <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+    <End Role="DivisionCities" Type="Self.DivisionCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cities">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="DivisionCities">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_22">
+    <End Role="Crops" Type="Self.Crops" Multiplicity="1" />
+    <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Crops">
+        <PropertyRef Name="CropId" />
+      </Principal>
+      <Dependent Role="ProductCrops">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_38">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionCategories">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_44">
+    <End Type="Self.DivisionCategories" Multiplicity="1" Role="DivisionCategories" />
+    <End Type="Self.ProductCategories" Multiplicity="*" Role="ProductCategories" />
+    <ReferentialConstraint>
+      <Principal Role="DivisionCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_35">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="DivisionCities" Type="Self.DivisionCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionCities">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImages_DivisionId_FK">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImages_ImageTypeId_FK">
+    <End Role="ImageTypes" Type="Self.ImageTypes" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageTypes">
+        <PropertyRef Name="ImageTypeId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="ImageTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_25">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionInformation" Type="Self.DivisionInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionInformation">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Divisions">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="0..1" />
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Laboratories">
+        <PropertyRef Name="LaboratoryId" />
+      </Principal>
+      <Dependent Role="Divisions">
+        <PropertyRef Name="LaboratoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Editions">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionProductShots_EditionDivisionProducts_FK">
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="0..1" />
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionDivisionProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_45">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionDivisionProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_46">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionProductShots_ProductShotTypes_FK">
+    <End Role="ProductShotTypes" Type="Self.ProductShotTypes" Multiplicity="0..1" />
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductShotTypes">
+        <PropertyRef Name="PSTypeId" />
+      </Principal>
+      <Dependent Role="EditionProductShots">
+        <PropertyRef Name="PSTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_13">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_37">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_36">
+    <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Laboratories">
+        <PropertyRef Name="LaboratoryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="LaboratoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_47">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_2">
+    <End Role="PharmaForms" Type="Self.PharmaForms" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_43">
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductCrops">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_1">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductTypes">
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <End Role="Types" Type="Self.Types" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="DEAQ" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" />
+    <EntitySet Name="Advertisements" EntityType="Self.Advertisements" />
+    <EntitySet Name="AgrochemicalUses" EntityType="Self.AgrochemicalUses" />
+    <EntitySet Name="Books" EntityType="Self.Books" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" />
+    <EntitySet Name="Cities" EntityType="Self.Cities" />
+    <EntitySet Name="Crops" EntityType="Self.Crops" />
+    <EntitySet Name="DivisionCategories" EntityType="Self.DivisionCategories" />
+    <EntitySet Name="DivisionCities" EntityType="Self.DivisionCities" />
+    <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" />
+    <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" />
+    <EntitySet Name="Divisions" EntityType="Self.Divisions" />
+    <EntitySet Name="EditionDivisionAds" EntityType="Self.EditionDivisionAds" />
+    <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" />
+    <EntitySet Name="EditionProductShots" EntityType="Self.EditionProductShots" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" />
+    <EntitySet Name="ImageTypes" EntityType="Self.ImageTypes" />
+    <EntitySet Name="Laboratories" EntityType="Self.Laboratories" />
+    <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" />
+    <EntitySet Name="PharmaForms" EntityType="Self.PharmaForms" />
+    <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" />
+    <EntitySet Name="ProductCrops" EntityType="Self.ProductCrops" />
+    <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" />
+    <EntitySet Name="Products" EntityType="Self.Products" />
+    <EntitySet Name="ProductShotTypes" EntityType="Self.ProductShotTypes" />
+    <EntitySet Name="Seeds" EntityType="Self.Seeds" />
+    <EntitySet Name="States" EntityType="Self.States" />
+    <EntitySet Name="Types" EntityType="Self.Types" />
+    <AssociationSet Name="FK_EditionDivisionAds_Advertisements" Association="Self.FK_EditionDivisionAds_Advertisements">
+      <End Role="Advertisements" EntitySet="Advertisements" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="R_17" Association="Self.R_17">
+      <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+      <End Role="AgrochemicalUses1" EntitySet="AgrochemicalUses" />
+    </AssociationSet>
+    <AssociationSet Name="R_8" Association="Self.R_8">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_39" Association="Self.R_39">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_34" Association="Self.R_34">
+      <End Role="Cities" EntitySet="Cities" />
+      <End Role="DivisionCities" EntitySet="DivisionCities" />
+    </AssociationSet>
+    <AssociationSet Name="R_22" Association="Self.R_22">
+      <End Role="Crops" EntitySet="Crops" />
+      <End Role="ProductCrops" EntitySet="ProductCrops" />
+    </AssociationSet>
+    <AssociationSet Name="R_38" Association="Self.R_38">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_44" Association="Self.R_44">
+      <End EntitySet="DivisionCategories" Role="DivisionCategories" />
+      <End EntitySet="ProductCategories" Role="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_35" Association="Self.R_35">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionCities" EntitySet="DivisionCities" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImages_DivisionId_FK" Association="Self.DivisionImages_DivisionId_FK">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImages_ImageTypeId_FK" Association="Self.DivisionImages_ImageTypeId_FK">
+      <End Role="ImageTypes" EntitySet="ImageTypes" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="R_25" Association="Self.R_25">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionInformation" EntitySet="DivisionInformation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Divisions" Association="Self.FK_EditionDivisionAds_Divisions">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="Self.R_23">
+      <End Role="Laboratories" EntitySet="Laboratories" />
+      <End Role="Divisions" EntitySet="Divisions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Editions" Association="Self.FK_EditionDivisionAds_Editions">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="EditionProductShots_EditionDivisionProducts_FK" Association="Self.EditionProductShots_EditionDivisionProducts_FK">
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_45" Association="Self.R_45">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_46" Association="Self.R_46">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+    </AssociationSet>
+    <AssociationSet Name="EditionProductShots_ProductShotTypes_FK" Association="Self.EditionProductShots_ProductShotTypes_FK">
+      <End Role="ProductShotTypes" EntitySet="ProductShotTypes" />
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_13" Association="Self.R_13">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_37" Association="Self.R_37">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_36" Association="Self.R_36">
+      <End Role="Laboratories" EntitySet="Laboratories" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_47" Association="Self.R_47">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_2" Association="Self.R_2">
+      <End Role="PharmaForms" EntitySet="PharmaForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_43" Association="Self.R_43">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="Self.R_21">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductCrops" EntitySet="ProductCrops" />
+    </AssociationSet>
+    <AssociationSet Name="R_1" Association="Self.R_1">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="ProductTypes" Association="Self.ProductTypes">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Types" EntitySet="Types" />
+    </AssociationSet>
+    <EntitySet Name="MentionatedProducts" EntityType="DeaqModel.MentionatedProducts" />
+    <AssociationSet Name="EditionsMentionatedProducts" Association="DeaqModel.EditionsMentionatedProducts">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+    </AssociationSet>
+    <AssociationSet Name="ProductCategoriesMentionatedProducts" Association="DeaqModel.ProductCategoriesMentionatedProducts">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+    </AssociationSet>
+    <EntitySet Name="Newproducts" EntityType="DeaqModel.Newproducts" />
+    <AssociationSet Name="EditionsNewproducts" Association="DeaqModel.EditionsNewproducts">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Newproducts" EntitySet="Newproducts" />
+    </AssociationSet>
+    <AssociationSet Name="ProductCategoriesNewproducts" Association="DeaqModel.ProductCategoriesNewproducts">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="Newproducts" EntitySet="Newproducts" />
+    </AssociationSet>
+    <EntitySet Name="Countries" EntityType="DeaqModel.Countries" />
+    <AssociationSet Name="R_33" Association="DeaqModel.R_33">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Cities" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_States_Countries" Association="DeaqModel.FK_States_Countries">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="DeaqModel.R_24">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Divisions" EntitySet="Divisions" />
+    </AssociationSet>
+    <AssociationSet Name="R_4" Association="DeaqModel.R_4">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_7" Association="DeaqModel.R_7">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <FunctionImport Name="Ventas" ReturnType="Collection(DeaqModel.Ventas_Result)">
+      <Parameter Name="CountryId" Mode="In" Type="Int32" />
+      <Parameter Name="DivisionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sales" ReturnType="Collection(DeaqModel.sales_Result)">
+      <Parameter Name="CountryId" Mode="In" Type="Int32" />
+      <Parameter Name="DivisionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="SalesModule" ReturnType="Collection(DeaqModel.SalesModule_Result)">
+      <Parameter Name="CountryId" Mode="In" Type="Int32" />
+      <Parameter Name="DivisionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="PProductSubstances" EntityType="DeaqModel.PProductSubstances" />
+    <AssociationSet Name="ProductsPProductSubstances" Association="DeaqModel.ProductsPProductSubstances">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="PProductSubstances" EntitySet="PProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="ActiveSubstancesPProductSubstances" Association="DeaqModel.ActiveSubstancesPProductSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="PProductSubstances" EntitySet="PProductSubstances" />
+    </AssociationSet>
+    <EntitySet Name="PProductSeeds" EntityType="DeaqModel.PProductSeeds" />
+    <AssociationSet Name="SeedsPProductSeeds" Association="DeaqModel.SeedsPProductSeeds">
+      <End Role="Seeds" EntitySet="Seeds" />
+      <End Role="PProductSeeds" EntitySet="PProductSeeds" />
+    </AssociationSet>
+    <AssociationSet Name="ProductsPProductSeeds" Association="DeaqModel.ProductsPProductSeeds">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="PProductSeeds" EntitySet="PProductSeeds" />
+    </AssociationSet>
+    <EntitySet Name="PProductAgrochemicalUsesSet" EntityType="DeaqModel.PProductAgrochemicalUses" />
+    <AssociationSet Name="AgrochemicalUsesPProductAgrochemicalUses" Association="DeaqModel.AgrochemicalUsesPProductAgrochemicalUses">
+      <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+      <End Role="PProductAgrochemicalUses" EntitySet="PProductAgrochemicalUsesSet" />
+    </AssociationSet>
+    <AssociationSet Name="ProductsPProductAgrochemicalUses" Association="DeaqModel.ProductsPProductAgrochemicalUses">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="PProductAgrochemicalUses" EntitySet="PProductAgrochemicalUsesSet" />
+    </AssociationSet>
+    <EntitySet Name="ContentTypes" EntityType="DeaqModel.ContentTypes" />
+    <AssociationSet Name="R_121" Association="DeaqModel.R_121">
+      <End Role="ContentTypes" EntitySet="ContentTypes" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <EntitySet Name="plm_vwProductsByEdition" EntityType="DeaqModel.plm_vwProductsByEdition" />
+    <EntitySet Name="ImageSizes" EntityType="DeaqModel.ImageSizes" />
+    <EntitySet Name="DivisionImagesSizes" EntityType="DeaqModel.DivisionImagesSizes" />
+    <AssociationSet Name="DivisionImagesDivisionImagesSizes" Association="DeaqModel.DivisionImagesDivisionImagesSizes">
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+      <End Role="DivisionImagesSizes" EntitySet="DivisionImagesSizes" />
+    </AssociationSet>
+    <AssociationSet Name="ImageSizesDivisionImagesSizes" Association="DeaqModel.ImageSizesDivisionImagesSizes">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="DivisionImagesSizes" EntitySet="DivisionImagesSizes" />
+    </AssociationSet>
+    <EntitySet Name="ProductImages" EntityType="DeaqModel.ProductImages" />
+    <AssociationSet Name="R_132" Association="DeaqModel.R_132">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="ProductImages" EntitySet="ProductImages" />
+    </AssociationSet>
+    <EntitySet Name="ProductImageSizes" EntityType="DeaqModel.ProductImageSizes" />
+    <AssociationSet Name="ProductImagesProductImageSizes" Association="DeaqModel.ProductImagesProductImageSizes">
+      <End Role="ProductImages" EntitySet="ProductImages" />
+      <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="ImageSizesProductImageSizes" Association="DeaqModel.ImageSizesProductImageSizes">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
+    <EntitySet Name="ProductContents" EntityType="DeaqModel.ProductContents" />
+    <AssociationSet Name="ProductContents_ParticipantProducts_FK" Association="DeaqModel.ProductContents_ParticipantProducts_FK">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="MentionatedProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Editions" Relationship="DeaqModel.EditionsMentionatedProducts" FromRole="MentionatedProducts" ToRole="Editions" />
+    <NavigationProperty Name="ProductCategories" Relationship="DeaqModel.ProductCategoriesMentionatedProducts" FromRole="MentionatedProducts" ToRole="ProductCategories" />
+  </EntityType>
+  <Association Name="EditionsMentionatedProducts">
+    <End Type="DeaqModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="DeaqModel.MentionatedProducts" Role="MentionatedProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="MentionatedProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductCategoriesMentionatedProducts">
+    <End Type="DeaqModel.ProductCategories" Role="ProductCategories" Multiplicity="1" />
+    <End Type="DeaqModel.MentionatedProducts" Role="MentionatedProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="MentionatedProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Newproducts">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Editions" Relationship="DeaqModel.EditionsNewproducts" FromRole="Newproducts" ToRole="Editions" />
+    <NavigationProperty Name="ProductCategories" Relationship="DeaqModel.ProductCategoriesNewproducts" FromRole="Newproducts" ToRole="ProductCategories" />
+  </EntityType>
+  <Association Name="EditionsNewproducts">
+    <End Type="DeaqModel.Editions" Role="Editions" Multiplicity="1" />
+    <End Type="DeaqModel.Newproducts" Role="Newproducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Newproducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductCategoriesNewproducts">
+    <End Type="DeaqModel.ProductCategories" Role="ProductCategories" Multiplicity="1" />
+    <End Type="DeaqModel.Newproducts" Role="Newproducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="Newproducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CountryCode" Type="Byte" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Cities" Relationship="DeaqModel.R_33" FromRole="Countries" ToRole="Cities" />
+    <NavigationProperty Name="States" Relationship="DeaqModel.FK_States_Countries" FromRole="Countries" ToRole="States" />
+    <NavigationProperty Name="Divisions" Relationship="DeaqModel.R_24" FromRole="Countries" ToRole="Divisions" />
+    <NavigationProperty Name="Products" Relationship="DeaqModel.R_4" FromRole="Countries" ToRole="Products" />
+    <NavigationProperty Name="Editions" Relationship="DeaqModel.R_7" FromRole="Countries" ToRole="Editions" />
+  </EntityType>
+  <Association Name="R_33">
+    <End Type="DeaqModel.Countries" Role="Countries" Multiplicity="0..1" />
+    <End Type="DeaqModel.Cities" Role="Cities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Cities">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_States_Countries">
+    <End Type="DeaqModel.Countries" Role="Countries" Multiplicity="0..1" />
+    <End Type="DeaqModel.States" Role="States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Type="DeaqModel.Countries" Role="Countries" Multiplicity="0..1" />
+    <End Type="DeaqModel.Divisions" Role="Divisions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Divisions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_4">
+    <End Type="DeaqModel.Countries" Role="Countries" Multiplicity="0..1" />
+    <End Type="DeaqModel.Products" Role="Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_7">
+    <End Type="DeaqModel.Countries" Role="Countries" Multiplicity="0..1" />
+    <End Type="DeaqModel.Editions" Role="Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="Ventas_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Register" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="DivisionName" Nullable="false" MaxLength="300" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="DivisionId" Nullable="false" />
+    <Property Type="String" Name="PharmaForm" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="ParticipantProducts" Nullable="true" />
+    <Property Type="Int32" Name="MentionatedProducts" Nullable="true" />
+    <Property Type="Int32" Name="NewProducts" Nullable="true" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sales_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Register" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="DivisionName" Nullable="false" MaxLength="300" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="DivisionId" Nullable="false" />
+    <Property Type="String" Name="PharmaForm" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="ParticipantProducts" Nullable="true" />
+    <Property Type="Int32" Name="MentionatedProducts" Nullable="true" />
+    <Property Type="Int32" Name="NewProducts" Nullable="true" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Int32" Name="CountryId" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SalesModule_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="String" Name="ProductName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Register" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="DivisionName" Nullable="false" MaxLength="300" />
+    <Property Type="String" Name="ShortName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="DivisionId" Nullable="false" />
+    <Property Type="String" Name="PharmaForm" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="ParticipantProducts" Nullable="true" />
+    <Property Type="Int32" Name="MentionatedProducts" Nullable="true" />
+    <Property Type="Int32" Name="NewProducts" Nullable="true" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="Int32" Name="CountryId" Nullable="true" />
+    <Property Type="Int32" Name="PharmaFormId" Nullable="false" />
+    <Property Type="Int32" Name="CategoryId" Nullable="false" />
+    <Property Type="Int32" Name="EditionId" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="PProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Products" Relationship="DeaqModel.ProductsPProductSubstances" FromRole="PProductSubstances" ToRole="Products" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="DeaqModel.ActiveSubstancesPProductSubstances" FromRole="PProductSubstances" ToRole="ActiveSubstances" />
+  </EntityType>
+  <Association Name="ProductsPProductSubstances">
+    <End Type="DeaqModel.Products" Role="Products" Multiplicity="1" />
+    <End Type="DeaqModel.PProductSubstances" Role="PProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="PProductSubstances">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ActiveSubstancesPProductSubstances">
+    <End Type="DeaqModel.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="DeaqModel.PProductSubstances" Role="PProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="PProductSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PProductSeeds">
+    <Key>
+      <PropertyRef Name="SeedId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="SeedId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Seeds" Relationship="DeaqModel.SeedsPProductSeeds" FromRole="PProductSeeds" ToRole="Seeds" />
+    <NavigationProperty Name="Products" Relationship="DeaqModel.ProductsPProductSeeds" FromRole="PProductSeeds" ToRole="Products" />
+  </EntityType>
+  <Association Name="SeedsPProductSeeds">
+    <End Type="DeaqModel.Seeds" Role="Seeds" Multiplicity="1" />
+    <End Type="DeaqModel.PProductSeeds" Role="PProductSeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seeds">
+        <PropertyRef Name="SeedId" />
+      </Principal>
+      <Dependent Role="PProductSeeds">
+        <PropertyRef Name="SeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductsPProductSeeds">
+    <End Type="DeaqModel.Products" Role="Products" Multiplicity="1" />
+    <End Type="DeaqModel.PProductSeeds" Role="PProductSeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="PProductSeeds">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PProductAgrochemicalUses">
+    <Key>
+      <PropertyRef Name="AgrochemicalUseId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="AgrochemicalUseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AgrochemicalUses" Relationship="DeaqModel.AgrochemicalUsesPProductAgrochemicalUses" FromRole="PProductAgrochemicalUses" ToRole="AgrochemicalUses" />
+    <NavigationProperty Name="Products" Relationship="DeaqModel.ProductsPProductAgrochemicalUses" FromRole="PProductAgrochemicalUses" ToRole="Products" />
+  </EntityType>
+  <Association Name="AgrochemicalUsesPProductAgrochemicalUses">
+    <End Type="DeaqModel.AgrochemicalUses" Role="AgrochemicalUses" Multiplicity="1" />
+    <End Type="DeaqModel.PProductAgrochemicalUses" Role="PProductAgrochemicalUses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Principal>
+      <Dependent Role="PProductAgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductsPProductAgrochemicalUses">
+    <End Type="DeaqModel.Products" Role="Products" Multiplicity="1" />
+    <End Type="DeaqModel.PProductAgrochemicalUses" Role="PProductAgrochemicalUses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="PProductAgrochemicalUses">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ContentTypes">
+    <Key>
+      <PropertyRef Name="ContentTypeId" />
+    </Key>
+    <Property Name="ContentTypeId" Type="Byte" Nullable="false" />
+    <Property Name="ContentType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="DeaqModel.R_121" FromRole="ContentTypes" ToRole="ParticipantProducts" />
+  </EntityType>
+  <Association Name="R_121">
+    <End Type="DeaqModel.ContentTypes" Role="ContentTypes" Multiplicity="0..1" />
+    <End Type="DeaqModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContentTypes">
+        <PropertyRef Name="ContentTypeId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ContentTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="plm_vwProductsByEdition">
+    <Key>
+      <PropertyRef Name="CountryId" />
+      <PropertyRef Name="CountryName" />
+      <PropertyRef Name="LaboratoryId" />
+      <PropertyRef Name="LaboratoryName" />
+      <PropertyRef Name="LabActive" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="DivisionName" />
+      <PropertyRef Name="DivisionActive" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="CategoryName" />
+      <PropertyRef Name="CategoryActive" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="Register" />
+      <PropertyRef Name="ProductActive" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="PharmaForm" />
+      <PropertyRef Name="PharmaActive" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="NumberEdition" />
+      <PropertyRef Name="ISBN" />
+      <PropertyRef Name="EditionActive" />
+      <PropertyRef Name="BookId" />
+      <PropertyRef Name="BookName" />
+      <PropertyRef Name="BookActive" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+    <Property Name="LaboratoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="LabActive" Type="Boolean" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="DivisionShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DivisionActive" Type="Boolean" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CategoryActive" Type="Boolean" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ProductDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Register" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ProductActive" Type="Boolean" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaForm" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PharmaActive" Type="Boolean" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="EditionActive" Type="Boolean" Nullable="false" />
+    <Property Name="TypeInEdition" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="BookName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BookActive" Type="Boolean" Nullable="false" />
+    <Property Name="NewProduct" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="ContentType" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="NumberOfActiveSubstances" Type="Int32" />
+    <Property Name="NumberOfCrops" Type="Int32" />
+    <Property Name="NumberOfSeeds" Type="Int32" />
+    <Property Name="NumberOfAgrochemicalUses" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ImageSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <Property Name="Size" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DivisionImagesSizes" Relationship="DeaqModel.ImageSizesDivisionImagesSizes" FromRole="ImageSizes" ToRole="DivisionImagesSizes" />
+    <NavigationProperty Name="ProductImageSizes" Relationship="DeaqModel.ImageSizesProductImageSizes" FromRole="ImageSizes" ToRole="ProductImageSizes" />
+  </EntityType>
+  <EntityType Name="DivisionImagesSizes">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="DivisionImages" Relationship="DeaqModel.DivisionImagesDivisionImagesSizes" FromRole="DivisionImagesSizes" ToRole="DivisionImages" />
+    <NavigationProperty Name="ImageSizes" Relationship="DeaqModel.ImageSizesDivisionImagesSizes" FromRole="DivisionImagesSizes" ToRole="ImageSizes" />
+  </EntityType>
+  <Association Name="DivisionImagesDivisionImagesSizes">
+    <End Type="DeaqModel.DivisionImages" Role="DivisionImages" Multiplicity="1" />
+    <End Type="DeaqModel.DivisionImagesSizes" Role="DivisionImagesSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DivisionImages">
+        <PropertyRef Name="DivisionImageId" />
+      </Principal>
+      <Dependent Role="DivisionImagesSizes">
+        <PropertyRef Name="DivisionImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ImageSizesDivisionImagesSizes">
+    <End Type="DeaqModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+    <End Type="DeaqModel.DivisionImagesSizes" Role="DivisionImagesSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="DivisionImagesSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductImages">
+    <Key>
+      <PropertyRef Name="ProductImageId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductShot" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductCategories" Relationship="DeaqModel.R_132" FromRole="ProductImages" ToRole="ProductCategories" />
+    <NavigationProperty Name="ProductImageSizes" Relationship="DeaqModel.ProductImagesProductImageSizes" FromRole="ProductImages" ToRole="ProductImageSizes" />
+  </EntityType>
+  <Association Name="R_132">
+    <End Type="DeaqModel.ProductCategories" Role="ProductCategories" Multiplicity="1" />
+    <End Type="DeaqModel.ProductImages" Role="ProductImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductImages">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductImageSizes">
+    <Key>
+      <PropertyRef Name="ProductImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ProductImages" Relationship="DeaqModel.ProductImagesProductImageSizes" FromRole="ProductImageSizes" ToRole="ProductImages" />
+    <NavigationProperty Name="ImageSizes" Relationship="DeaqModel.ImageSizesProductImageSizes" FromRole="ProductImageSizes" ToRole="ImageSizes" />
+  </EntityType>
+  <Association Name="ProductImagesProductImageSizes">
+    <End Type="DeaqModel.ProductImages" Role="ProductImages" Multiplicity="1" />
+    <End Type="DeaqModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductImages">
+        <PropertyRef Name="ProductImageId" />
+      </Principal>
+      <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ProductImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ImageSizesProductImageSizes">
+    <End Type="DeaqModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+    <End Type="DeaqModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PlainContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="HTMLContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="DeaqModel.ProductContents_ParticipantProducts_FK" FromRole="ProductContents" ToRole="ParticipantProducts" />
+  </EntityType>
+  <Association Name="ProductContents_ParticipantProducts_FK">
+    <End Type="DeaqModel.ParticipantProducts" Role="ParticipantProducts" Multiplicity="1" />
+    <End Type="DeaqModel.ProductContents" Role="ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

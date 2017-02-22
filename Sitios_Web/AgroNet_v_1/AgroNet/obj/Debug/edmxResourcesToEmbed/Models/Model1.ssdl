@@ -1,0 +1,2891 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActiveSubstanceName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdId" />
+    </Key>
+    <Property Name="AdId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdFile" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AgrochemicalUses">
+    <Key>
+      <PropertyRef Name="AgrochemicalUseId" />
+    </Key>
+    <Property Name="AgrochemicalUseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AgrochemicalUseName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="UseKey" Type="varchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AttributeGroupName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="varchar" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BookName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ShortName" Type="varchar" MaxLength="200" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Carousel">
+    <Key>
+      <PropertyRef Name="CarouselId" />
+    </Key>
+    <Property Name="CarouselId" Type="tinyint" Nullable="false" />
+    <Property Name="CarName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CarouselProductShots">
+    <Key>
+      <PropertyRef Name="CarouselId" />
+      <PropertyRef Name="EditionProductShotId" />
+    </Key>
+    <Property Name="CarouselId" Type="tinyint" Nullable="false" />
+    <Property Name="EditionProductShotId" Type="int" Nullable="false" />
+    <Property Name="Link" Type="varchar" MaxLength="255" />
+    <Property Name="Order" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="int" Nullable="false" />
+    <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="CountryCode" Type="tinyint" />
+    <Property Name="ID" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropDiseaseImages">
+    <Key>
+      <PropertyRef Name="CropDiseaseImageId" />
+    </Key>
+    <Property Name="CropDiseaseImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="DiseaseId" Type="int" Nullable="false" />
+    <Property Name="ImageName" Type="varchar" MaxLength="100" />
+    <Property Name="BaseUrl" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropDiseaseImageSizes">
+    <Key>
+      <PropertyRef Name="CropDiseaseImageId" />
+      <PropertyRef Name="OutputImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="CropDiseaseImageId" Type="int" Nullable="false" />
+    <Property Name="OutputImageId" Type="tinyint" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropDiseases">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="DiseaseId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="DiseaseId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropFightDiseases">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="DiseaseId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="DiseaseId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="Description" Type="text" Nullable="false" />
+    <Property Name="FightTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropFightPests">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="PestId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="PestId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="Description" Type="text" Nullable="false" />
+    <Property Name="FightTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropFightWeeds">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="WeedId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="WeedId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="Description" Type="text" Nullable="false" />
+    <Property Name="FightTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropPestImages">
+    <Key>
+      <PropertyRef Name="CropPestImageId" />
+    </Key>
+    <Property Name="CropPestImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="PestId" Type="int" Nullable="false" />
+    <Property Name="ImageName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="BaseUrl" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropPestImageSizes">
+    <Key>
+      <PropertyRef Name="CropPestImageId" />
+      <PropertyRef Name="OutputImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="CropPestImageId" Type="int" Nullable="false" />
+    <Property Name="OutputImageId" Type="tinyint" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropPests">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="PestId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="PestId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Crops">
+    <Key>
+      <PropertyRef Name="CropId" />
+    </Key>
+    <Property Name="CropId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CropName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ScientificName" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="CropWeedImages">
+    <Key>
+      <PropertyRef Name="CropWeedImageId" />
+    </Key>
+    <Property Name="CropWeedImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="WeedId" Type="int" Nullable="false" />
+    <Property Name="ImageName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="BaseUrl" Type="varchar" MaxLength="100" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropWeedImageSizes">
+    <Key>
+      <PropertyRef Name="CropWeedImageId" />
+      <PropertyRef Name="OutputImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="CropWeedImageId" Type="int" Nullable="false" />
+    <Property Name="OutputImageId" Type="tinyint" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CropWeeds">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+      <PropertyRef Name="WeedId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+    <Property Name="WeedId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.DEAQEcuador2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="DEAQEcuador2015">
+          <Property Name="DivisionId" Type="int" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="EditionId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="PharmaFormId" Type="int" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="HTMLcontent" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <EntityType Name="Diseases">
+    <Key>
+      <PropertyRef Name="DiseaseId" />
+    </Key>
+    <Property Name="DiseaseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DiseaseName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ScientificName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DivisionCategories">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DivisionCities">
+    <Key>
+      <PropertyRef Name="CityId" />
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="LaboratoryName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Address" Type="text" />
+    <Property Name="Description" Type="varchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DivisionImages">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageTypeId" Type="tinyint" />
+    <Property Name="DivisionId" Type="int" />
+    <Property Name="ImageName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DivisionInformation">
+    <Key>
+      <PropertyRef Name="DivisionInformationId" />
+    </Key>
+    <Property Name="DivisionInformationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DivisionId" Type="int" />
+    <Property Name="Image" Type="varchar" MaxLength="200" />
+    <Property Name="Address" Type="text" />
+    <Property Name="Suburb" Type="varchar" MaxLength="250" />
+    <Property Name="Location" Type="varchar" MaxLength="150" />
+    <Property Name="ZipCode" Type="varchar" MaxLength="10" />
+    <Property Name="Telephone" Type="varchar" MaxLength="200" />
+    <Property Name="Lada" Type="varchar" MaxLength="150" />
+    <Property Name="Fax" Type="varchar" MaxLength="50" />
+    <Property Name="Web" Type="varchar" MaxLength="100" />
+    <Property Name="City" Type="varchar" MaxLength="100" />
+    <Property Name="State" Type="varchar" MaxLength="100" />
+    <Property Name="Email" Type="varchar" MaxLength="150" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Divisions">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+    </Key>
+    <Property Name="DivisionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="DivisionName" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="ShortName" Type="varchar" MaxLength="200" />
+    <Property Name="LaboratoryId" Type="int" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributeGroup">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="AttributeGroupId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionDivisionAds">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="AdId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="AdId" Type="int" Nullable="false" />
+    <Property Name="BaseUrl" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionDivisionProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionProductShots">
+    <Key>
+      <PropertyRef Name="EditionProductShotId" />
+    </Key>
+    <Property Name="EditionProductShotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EditionId" Type="int" />
+    <Property Name="DivisionId" Type="int" />
+    <Property Name="CategoryId" Type="int" />
+    <Property Name="PharmaFormId" Type="int" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="PSTypeId" Type="tinyint" />
+    <Property Name="ProductShot" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="QtyCells" Type="tinyint" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="BookId" Type="int" />
+    <Property Name="NumberEdition" Type="int" Nullable="false" />
+    <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="BarCode" Type="varchar" MaxLength="80" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FightTypes">
+    <Key>
+      <PropertyRef Name="FightTypeId" />
+    </Key>
+    <Property Name="FightTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="FightName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Images">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="ImageFile" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ImageSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+    <Property Name="Size" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ImageTypes">
+    <Key>
+      <PropertyRef Name="ImageTypeId" />
+    </Key>
+    <Property Name="ImageTypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Laboratories">
+    <Key>
+      <PropertyRef Name="LaboratoryId" />
+    </Key>
+    <Property Name="LaboratoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LaboratoryName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MentionatedProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NewProducts">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OutputImages">
+    <Key>
+      <PropertyRef Name="OutputImageId" />
+    </Key>
+    <Property Name="OutputImageId" Type="tinyint" Nullable="false" />
+    <Property Name="OutputName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OutputImageSizes">
+    <Key>
+      <PropertyRef Name="OutputImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="OutputImageId" Type="tinyint" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="HTMLContent" Type="text" />
+    <Property Name="Page" Type="varchar" MaxLength="50" />
+    <Property Name="XMLContent" Type="text" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.ParticipantProductsDEAQ25' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="Pests">
+    <Key>
+      <PropertyRef Name="PestId" />
+    </Key>
+    <Property Name="PestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PestName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ScientificName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Image" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="PharmaForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PharmaForm" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductAgrochemicalUses">
+    <Key>
+      <PropertyRef Name="AgrochemicalUseId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="AgrochemicalUseId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductCategories">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="Content" Type="text" Nullable="false" />
+    <Property Name="PlainContent" Type="text" Nullable="false" />
+    <Property Name="HTMLContent" Type="text" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductCrops">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CropId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="Substance" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="ProductImages">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="ImageId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="Register" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="LaboratoryId" Type="int" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AccessId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductSeeds">
+    <Key>
+      <PropertyRef Name="SeedId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="SeedId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductShotTypes">
+    <Key>
+      <PropertyRef Name="PSTypeId" />
+    </Key>
+    <Property Name="PSTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="TypeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Seeds">
+    <Key>
+      <PropertyRef Name="SeedId" />
+    </Key>
+    <Property Name="SeedId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SeedName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ScientificName" Type="varchar" MaxLength="100" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StateCrops">
+    <Key>
+      <PropertyRef Name="CropId" />
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="CropId" Type="int" Nullable="false" />
+    <Property Name="StateId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StateName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ShortName" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryId" Type="int" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpAttribute' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpAttributes' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpAttributes1' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpAttributesREG' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpDEAQ25DIPO5' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpDeaqPeru2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpDeaqPeru2015">
+          <Property Name="CountryID" Type="nvarchar" MaxLength="255" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LaboratoryID" Type="nvarchar" MaxLength="255" />
+          <Property Name="LaboratoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionID" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionShortName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="Suburb" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="255" />
+          <Property Name="E-mail" Type="nvarchar" MaxLength="255" />
+          <Property Name="Web" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductID" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaFormID" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryID" Type="nvarchar" MaxLength="255" />
+          <Property Name="Category" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_24" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_24" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_25" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_25" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_26" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_26" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_27" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_27" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_28" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_28" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_29" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_29" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_30" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_30" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_31" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_31" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_32" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_32" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_33" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_33" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_34" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_34" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_35" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_35" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_36" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_36" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_37" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_37" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_38" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_38" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_39" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_39" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_40" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_40" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_41" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_41" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_42" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_42" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_43" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_43" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_44" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_44" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_45" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_45" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_46" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_46" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_47" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_47" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_48" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_48" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_49" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_49" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_50" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_50" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_51" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_51" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_52" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_52" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_53" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_53" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_54" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_54" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_55" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_55" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_56" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_56" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_57" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_57" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_58" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_58" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_59" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_59" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_60" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_60" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_61" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_61" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_62" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_62" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_63" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_63" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_64" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_64" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_65" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_65" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_66" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_66" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_67" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_67" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_68" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_68" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_69" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_69" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_70" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_70" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_71" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_71" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_72" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_72" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_73" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_73" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_74" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_74" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_75" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_75" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_76" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_76" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_77" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_77" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_78" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_78" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_79" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_79" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_80" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_26" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_27" Type="nvarchar" MaxLength="255" />
+          <Property Name="Registro" Type="nvarchar" MaxLength="255" />
+          <Property Name="DEAQ Participante en Edición 2015" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpDEAQPERU20150616' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpDEAQPERU20150616">
+          <Property Name="EditionId" Type="float" />
+          <Property Name="DivisionId" Type="float" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryId" Type="float" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Productid" Type="float" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaFormId" Type="float" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="HTML" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpDiseases' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpDivisionEcuador' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpDivisionEcuador">
+          <Property Name="DivisionId" Type="float" />
+          <Property Name="DivisionName" Type="nvarchar(max)" />
+          <Property Name="DivisionShortName" Type="nvarchar(max)" />
+          <Property Name="DivisionImages" Type="nvarchar(max)" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpEditionDivisionProductsUpdate' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpEmpateAttribute2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpEmpateAttribute2015">
+          <Property Name="AttributeId" Type="float" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="AttributeGroupId" Type="nvarchar" MaxLength="255" />
+          <Property Name="ID" Type="float" />
+          <Property Name="F5" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpEmpateDEAQCol25' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpEmpateDEAQCol25">
+          <Property Name="CountryId" Type="float" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LaboratoryId" Type="float" />
+          <Property Name="LaboratoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionId" Type="float" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionShortName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryId" Type="float" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductId" Type="float" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaFormId" Type="float" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="EditionId" Type="float" />
+          <Property Name="HTML" Type="nvarchar" MaxLength="255" />
+          <Property Name="F16" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpempatedipo5' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpempatedipo5">
+          <Property Name="LaboratoryId" Type="float" />
+          <Property Name="LaboratoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionId" Type="float" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionShortName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryId" Type="float" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductId" Type="float" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="Register" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaFormId" Type="float" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="EditionId" Type="float" />
+          <Property Name="NumberEdition" Type="float" />
+          <Property Name="Page" Type="float" />
+          <Property Name="html1" Type="nvarchar" MaxLength="255" />
+          <Property Name="html" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpListadodeProductos' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpListadodeProductos">
+          <Property Name="CountryID" Type="nvarchar" MaxLength="255" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LaboratoryID" Type="nvarchar" MaxLength="255" />
+          <Property Name="LaboratoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionID" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionShortName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="Suburb" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="255" />
+          <Property Name="E-mail" Type="nvarchar" MaxLength="255" />
+          <Property Name="Web" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductID" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaFormID" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryID" Type="nvarchar" MaxLength="255" />
+          <Property Name="Category" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="UseID_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="Use_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_24" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_24" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_25" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_25" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_26" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_26" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_27" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_27" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_28" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_28" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_29" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_29" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_30" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_30" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_31" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_31" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_32" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_32" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_33" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_33" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_34" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_34" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_35" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_35" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_36" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_36" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_37" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_37" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_38" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_38" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_39" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_39" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_40" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_40" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_41" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_41" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_42" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_42" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_43" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_43" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_44" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_44" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_45" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_45" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_46" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_46" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_47" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_47" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_48" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_48" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_49" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_49" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_50" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_50" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_51" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_51" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_52" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_52" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_53" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_53" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_54" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_54" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_55" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_55" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_56" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_56" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_57" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_57" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_58" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_58" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_59" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_59" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_60" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_60" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_61" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_61" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_62" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_62" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_63" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_63" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_64" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_64" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_65" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_65" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_66" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_66" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_67" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_67" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_68" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_68" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_69" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_69" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_70" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_70" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_71" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_71" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_72" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_72" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_73" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_73" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_74" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_74" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_75" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_75" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_76" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_76" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_77" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_77" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_78" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_78" Type="nvarchar" MaxLength="255" />
+          <Property Name="CropID_79" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_79" Type="nvarchar" MaxLength="255" />
+          <Property Name="Crops_80" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_1" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_2" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_3" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_4" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_5" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_6" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_7" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_8" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_9" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_10" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_11" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_12" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_13" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_14" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_15" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_16" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_17" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_18" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_19" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_20" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_21" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_22" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_23" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_24" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstance_24" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveSubstanceID_25" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpMaqyRiegoEcu2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpMaqyRiegoEcu2015">
+          <Property Name="DISTRIBUIDO" Type="nvarchar" MaxLength="255" />
+          <Property Name="USO" Type="nvarchar" MaxLength="255" />
+          <Property Name="EQUIPO" Type="nvarchar" MaxLength="255" />
+          <Property Name="F4" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionIdBD" Type="int" />
+          <Property Name="LaboratoryIdBD" Type="int" />
+          <Property Name="AgroUseIdBD" Type="int" />
+          <Property Name="ProductIdBD" Type="int" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpNuevaTablaEmpateDeaq2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpNuevaTablaEmpateDeaq2015">
+          <Property Name="LaboratoryId" Type="float" />
+          <Property Name="LaboratoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionId" Type="float" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DivisionShortName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoryId" Type="float" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductId" Type="float" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="Register" Type="nvarchar" MaxLength="255" />
+          <Property Name="PharmaFormId" Type="float" />
+          <Property Name="PharmaForm" Type="nvarchar" MaxLength="255" />
+          <Property Name="HTML" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpNuevosAtributos' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpNuevosAtributos">
+          <Property Name="AttributeId" Type="float" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="F3" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpParticipantProducts' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpParticipantProducts2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpParticipantProductsDEAQ25' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpParticipantProductsUpdate' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmppests' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpPProducts' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpPPXML25' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProdsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProductContents' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProductContents_RegS_Usos' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProductContents19' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProductContentsDEAQ25BasePropaganda' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProductInformation_DEAQ8' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpProductosEcu2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpProductosEcu2015">
+          <Property Name="Distribuidores" Type="nvarchar" MaxLength="255" />
+          <Property Name="Formuladores" Type="nvarchar" MaxLength="255" />
+          <Property Name="Nombre Comercial" Type="nvarchar" MaxLength="255" />
+          <Property Name="Formulación" Type="nvarchar" MaxLength="255" />
+          <Property Name="Uso" Type="nvarchar" MaxLength="255" />
+          <Property Name="LaboratoryIdBD" Type="int" />
+          <Property Name="DivisionIdBD" Type="int" />
+          <Property Name="PharmaFormIdBD" Type="int" />
+          <Property Name="CategoryIdBD" Type="int" />
+          <Property Name="ProductIdBD" Type="int" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpProductosSeeds_Deaq' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmprespaldoDEAFPERU2015' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpRubrosDEAQ' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpsemillas2013' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpsemillas2013">
+          <Property Name="DivisionId" Type="float" />
+          <Property Name="DivisionName" Type="nvarchar(max)" />
+          <Property Name="CategoryId" Type="float" />
+          <Property Name="CategoryName" Type="nvarchar(max)" />
+          <Property Name="ProductId" Type="float" />
+          <Property Name="ProductName" Type="nvarchar(max)" />
+          <Property Name="SeedId" Type="nvarchar(max)" />
+          <Property Name="SeedName" Type="nvarchar(max)" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'DEAQ 20141007.dbo.tmpSemillasEcu2015' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpSemillasEcu2015">
+          <Property Name="USO" Type="nvarchar" MaxLength="255" />
+          <Property Name="NOMBRE COMERCIAL" Type="nvarchar" MaxLength="255" />
+          <Property Name="CULTIVO" Type="nvarchar" MaxLength="255" />
+          <Property Name="DISTRIBUIDOR" Type="nvarchar" MaxLength="255" />
+          <Property Name="AgroUseIdBD" Type="int" />
+          <Property Name="ProductIdBD" Type="int" />
+          <Property Name="CropsIdBD" Type="int" />
+          <Property Name="DivisionIdBD" Type="int" />
+          <Property Name="LaboratoryIdBD" Type="int" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.TMPTABLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.TMPTABLE1' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpUpdateSeeds' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DEAQ 20141007.dbo.tmpWeeds' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="Types">
+    <Key>
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="TypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="20" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Weeds">
+    <Key>
+      <PropertyRef Name="WeedId" />
+    </Key>
+    <Property Name="WeedId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WeedName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ScientificName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="WeedTypeId" Type="int" />
+  </EntityType>
+  <EntityType Name="WeedTypes">
+    <Key>
+      <PropertyRef Name="WeedTypeId" />
+    </Key>
+    <Property Name="WeedTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="CarouselProductShots_Carousel_FK">
+    <End Role="Carousel" Type="Self.Carousel" Multiplicity="1" />
+    <End Role="CarouselProductShots" Type="Self.CarouselProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Carousel">
+        <PropertyRef Name="CarouselId" />
+      </Principal>
+      <Dependent Role="CarouselProductShots">
+        <PropertyRef Name="CarouselId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CarouselProductShots_EditionProductShots_FK">
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="1" />
+    <End Role="CarouselProductShots" Type="Self.CarouselProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionProductShots">
+        <PropertyRef Name="EditionProductShotId" />
+      </Principal>
+      <Dependent Role="CarouselProductShots">
+        <PropertyRef Name="EditionProductShotId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImages_DivisionId_FK">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImages_ImageTypeId_FK">
+    <End Role="ImageTypes" Type="Self.ImageTypes" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageTypes">
+        <PropertyRef Name="ImageTypeId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="ImageTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionAttributeGroup_AttributeGroup_FK">
+    <End Role="AttributeGroup" Type="Self.AttributeGroup" Multiplicity="1" />
+    <End Role="EditionAttributeGroup" Type="Self.EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AttributeGroup">
+        <PropertyRef Name="AttributeGroupId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="AttributeGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionAttributeGroup_EditionAttributes_FK">
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="1" />
+    <End Role="EditionAttributeGroup" Type="Self.EditionAttributeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributeGroup">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionAttributes_Editions_FK">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionProductShots_EditionDivisionProducts_FK">
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="0..1" />
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionDivisionProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EditionProductShots_ProductShotTypes_FK">
+    <End Role="ProductShotTypes" Type="Self.ProductShotTypes" Multiplicity="0..1" />
+    <End Role="EditionProductShots" Type="Self.EditionProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductShotTypes">
+        <PropertyRef Name="PSTypeId" />
+      </Principal>
+      <Dependent Role="EditionProductShots">
+        <PropertyRef Name="PSTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropDiseaseImageSizes_CropDiseaseImages">
+    <End Role="CropDiseaseImages" Type="Self.CropDiseaseImages" Multiplicity="1" />
+    <End Role="CropDiseaseImageSizes" Type="Self.CropDiseaseImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropDiseaseImages">
+        <PropertyRef Name="CropDiseaseImageId" />
+      </Principal>
+      <Dependent Role="CropDiseaseImageSizes">
+        <PropertyRef Name="CropDiseaseImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropDiseaseImageSizes_OutputImageSizes">
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="1" />
+    <End Role="CropDiseaseImageSizes" Type="Self.CropDiseaseImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OutputImageSizes">
+        <PropertyRef Name="OutputImageId" />
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="CropDiseaseImageSizes">
+        <PropertyRef Name="OutputImageId" />
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropDiseases_Diseases">
+    <End Role="Diseases" Type="Self.Diseases" Multiplicity="1" />
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Diseases">
+        <PropertyRef Name="DiseaseId" />
+      </Principal>
+      <Dependent Role="CropDiseases">
+        <PropertyRef Name="DiseaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropDiseases_StateCrops">
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="1" />
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StateCrops">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="CropDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightDiseases_ActiveSubstances">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="CropFightDiseases" Type="Self.CropFightDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="CropFightDiseases">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightDiseases_CropDiseases">
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="1" />
+    <End Role="CropFightDiseases" Type="Self.CropFightDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Principal>
+      <Dependent Role="CropFightDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightDiseases_FightTypes">
+    <End Role="FightTypes" Type="Self.FightTypes" Multiplicity="1" />
+    <End Role="CropFightDiseases" Type="Self.CropFightDiseases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FightTypes">
+        <PropertyRef Name="FightTypeId" />
+      </Principal>
+      <Dependent Role="CropFightDiseases">
+        <PropertyRef Name="FightTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightPests_ActiveSubstances">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="CropFightPests" Type="Self.CropFightPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="CropFightPests">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightPests_CropPests">
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="1" />
+    <End Role="CropFightPests" Type="Self.CropFightPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Principal>
+      <Dependent Role="CropFightPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightPests_FightTypes">
+    <End Role="FightTypes" Type="Self.FightTypes" Multiplicity="1" />
+    <End Role="CropFightPests" Type="Self.CropFightPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FightTypes">
+        <PropertyRef Name="FightTypeId" />
+      </Principal>
+      <Dependent Role="CropFightPests">
+        <PropertyRef Name="FightTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightWeeds_ActiveSubstances">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="CropFightWeeds" Type="Self.CropFightWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="CropFightWeeds">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightWeeds_CropWeeds">
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="1" />
+    <End Role="CropFightWeeds" Type="Self.CropFightWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Principal>
+      <Dependent Role="CropFightWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropFightWeeds_FightTypes">
+    <End Role="FightTypes" Type="Self.FightTypes" Multiplicity="1" />
+    <End Role="CropFightWeeds" Type="Self.CropFightWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FightTypes">
+        <PropertyRef Name="FightTypeId" />
+      </Principal>
+      <Dependent Role="CropFightWeeds">
+        <PropertyRef Name="FightTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropId_StateId_DiseaseId">
+    <End Role="CropDiseases" Type="Self.CropDiseases" Multiplicity="1" />
+    <End Role="CropDiseaseImages" Type="Self.CropDiseaseImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropDiseases">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Principal>
+      <Dependent Role="CropDiseaseImages">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="DiseaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropId_StateId_PestId_CropPestImages_CropPests">
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="1" />
+    <End Role="CropPestImages" Type="Self.CropPestImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Principal>
+      <Dependent Role="CropPestImages">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="PestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropId_StateId_WeedId">
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="1" />
+    <End Role="CropWeedImages" Type="Self.CropWeedImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Principal>
+      <Dependent Role="CropWeedImages">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+        <PropertyRef Name="WeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropPestImageSizes_CropPestImages">
+    <End Role="CropPestImages" Type="Self.CropPestImages" Multiplicity="1" />
+    <End Role="CropPestImageSizes" Type="Self.CropPestImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropPestImages">
+        <PropertyRef Name="CropPestImageId" />
+      </Principal>
+      <Dependent Role="CropPestImageSizes">
+        <PropertyRef Name="CropPestImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropPestImageSizes_OutputImageSizes">
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="1" />
+    <End Role="CropPestImageSizes" Type="Self.CropPestImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OutputImageSizes">
+        <PropertyRef Name="OutputImageId" />
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="CropPestImageSizes">
+        <PropertyRef Name="OutputImageId" />
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropPests_Pests">
+    <End Role="Pests" Type="Self.Pests" Multiplicity="1" />
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pests">
+        <PropertyRef Name="PestId" />
+      </Principal>
+      <Dependent Role="CropPests">
+        <PropertyRef Name="PestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropPests_StateCrops">
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="1" />
+    <End Role="CropPests" Type="Self.CropPests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StateCrops">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="CropPests">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropWeedImageSizes_CropWeedImages">
+    <End Role="CropWeedImages" Type="Self.CropWeedImages" Multiplicity="1" />
+    <End Role="CropWeedImageSizes" Type="Self.CropWeedImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CropWeedImages">
+        <PropertyRef Name="CropWeedImageId" />
+      </Principal>
+      <Dependent Role="CropWeedImageSizes">
+        <PropertyRef Name="CropWeedImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropWeedImageSizes_OutputImageSizes">
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="1" />
+    <End Role="CropWeedImageSizes" Type="Self.CropWeedImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OutputImageSizes">
+        <PropertyRef Name="OutputImageId" />
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="CropWeedImageSizes">
+        <PropertyRef Name="OutputImageId" />
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropWeeds_StateCrops">
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="1" />
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StateCrops">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="CropWeeds">
+        <PropertyRef Name="CropId" />
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CropWeeds_Weeds">
+    <End Role="Weeds" Type="Self.Weeds" Multiplicity="1" />
+    <End Role="CropWeeds" Type="Self.CropWeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Weeds">
+        <PropertyRef Name="WeedId" />
+      </Principal>
+      <Dependent Role="CropWeeds">
+        <PropertyRef Name="WeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionAttributes_Attributes">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Advertisements">
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Advertisements">
+        <PropertyRef Name="AdId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="AdId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Divisions">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EditionDivisionAds_Editions">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionDivisionAds" Type="Self.EditionDivisionAds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionAds">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ImageSizeId_OutputImageSizes_ImageSizes">
+    <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="OutputImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OutputImageId_OutputImageSizes_OutputImages">
+    <End Role="OutputImages" Type="Self.OutputImages" Multiplicity="1" />
+    <End Role="OutputImageSizes" Type="Self.OutputImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OutputImages">
+        <PropertyRef Name="OutputImageId" />
+      </Principal>
+      <Dependent Role="OutputImageSizes">
+        <PropertyRef Name="OutputImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductImages_Images">
+    <End Role="Images" Type="Self.Images" Multiplicity="1" />
+    <End Role="ProductImages" Type="Self.ProductImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Images">
+        <PropertyRef Name="ImageId" />
+      </Principal>
+      <Dependent Role="ProductImages">
+        <PropertyRef Name="ImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductImages_Producs">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductImages" Type="Self.ProductImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductImages">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StateCrops_Crops">
+    <End Role="Crops" Type="Self.Crops" Multiplicity="1" />
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Crops">
+        <PropertyRef Name="CropId" />
+      </Principal>
+      <Dependent Role="StateCrops">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StateCrops_States">
+    <End Role="States" Type="Self.States" Multiplicity="1" />
+    <End Role="StateCrops" Type="Self.StateCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="StateCrops">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_States_Countries">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="States" Type="Self.States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Weeds_WeedTypes">
+    <End Role="WeedTypes" Type="Self.WeedTypes" Multiplicity="0..1" />
+    <End Role="Weeds" Type="Self.Weeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WeedTypes">
+        <PropertyRef Name="WeedTypeId" />
+      </Principal>
+      <Dependent Role="Weeds">
+        <PropertyRef Name="WeedTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductContents_Attributes_FK">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="AttributeId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductContents_ParticipantProducts_FK">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_1">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_12">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="MentionatedProducts" Type="Self.MentionatedProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="MentionatedProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_123">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="NewProducts" Type="Self.NewProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="NewProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_124">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="NewProducts" Type="Self.NewProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="NewProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_13">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_16">
+    <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="1" />
+    <End Role="ProductAgrochemicalUses" Type="Self.ProductAgrochemicalUses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Principal>
+      <Dependent Role="ProductAgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_17">
+    <End Role="AgrochemicalUses" Type="Self.AgrochemicalUses" Multiplicity="1" />
+    <End Role="AgrochemicalUses1" Type="Self.AgrochemicalUses" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="AgrochemicalUses">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Principal>
+      <Dependent Role="AgrochemicalUses1">
+        <PropertyRef Name="AgrochemicalUseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_18">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductAgrochemicalUses" Type="Self.ProductAgrochemicalUses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductAgrochemicalUses">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_19">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_2">
+    <End Role="PharmaForms" Type="Self.PharmaForms" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_20">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductCrops">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_22">
+    <End Role="Crops" Type="Self.Crops" Multiplicity="1" />
+    <End Role="ProductCrops" Type="Self.ProductCrops" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Crops">
+        <PropertyRef Name="CropId" />
+      </Principal>
+      <Dependent Role="ProductCrops">
+        <PropertyRef Name="CropId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="0..1" />
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Laboratories">
+        <PropertyRef Name="LaboratoryId" />
+      </Principal>
+      <Dependent Role="Divisions">
+        <PropertyRef Name="LaboratoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Divisions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_25">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionInformation" Type="Self.DivisionInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionInformation">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_31">
+    <End Role="Seeds" Type="Self.Seeds" Multiplicity="1" />
+    <End Role="ProductSeeds" Type="Self.ProductSeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seeds">
+        <PropertyRef Name="SeedId" />
+      </Principal>
+      <Dependent Role="ProductSeeds">
+        <PropertyRef Name="SeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_32">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductSeeds" Type="Self.ProductSeeds" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductSeeds">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_33">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Cities">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_34">
+    <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+    <End Role="DivisionCities" Type="Self.DivisionCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cities">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="DivisionCities">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_35">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="DivisionCities" Type="Self.DivisionCities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionCities">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_36">
+    <End Role="Laboratories" Type="Self.Laboratories" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Laboratories">
+        <PropertyRef Name="LaboratoryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="LaboratoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_37">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_38">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="1" />
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionCategories">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_39">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="DivisionCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_4">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_43">
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_44">
+    <End Role="DivisionCategories" Type="Self.DivisionCategories" Multiplicity="1" />
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DivisionCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ProductCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_45">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionDivisionProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_46">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionDivisionProducts" Type="Self.EditionDivisionProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionDivisionProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_47">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_48">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="MentionatedProducts" Type="Self.MentionatedProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="MentionatedProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_49">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductTypes">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_50">
+    <End Role="Types" Type="Self.Types" Multiplicity="1" />
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Types">
+        <PropertyRef Name="TypeId" />
+      </Principal>
+      <Dependent Role="ProductTypes">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_7">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="0..1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_8">
+    <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Advertisements" EntityType="Self.Advertisements" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AgrochemicalUses" EntityType="Self.AgrochemicalUses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Carousel" EntityType="Self.Carousel" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CarouselProductShots" EntityType="Self.CarouselProductShots" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropDiseaseImages" EntityType="Self.CropDiseaseImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropDiseaseImageSizes" EntityType="Self.CropDiseaseImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropDiseases" EntityType="Self.CropDiseases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropFightDiseases" EntityType="Self.CropFightDiseases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropFightPests" EntityType="Self.CropFightPests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropFightWeeds" EntityType="Self.CropFightWeeds" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropPestImages" EntityType="Self.CropPestImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropPestImageSizes" EntityType="Self.CropPestImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropPests" EntityType="Self.CropPests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Crops" EntityType="Self.Crops" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropWeedImages" EntityType="Self.CropWeedImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropWeedImageSizes" EntityType="Self.CropWeedImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CropWeeds" EntityType="Self.CropWeeds" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Diseases" EntityType="Self.Diseases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DivisionCategories" EntityType="Self.DivisionCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DivisionCities" EntityType="Self.DivisionCities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionAttributeGroup" EntityType="Self.EditionAttributeGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionAttributes" EntityType="Self.EditionAttributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionDivisionAds" EntityType="Self.EditionDivisionAds" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionProductShots" EntityType="Self.EditionProductShots" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FightTypes" EntityType="Self.FightTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ImageTypes" EntityType="Self.ImageTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MentionatedProducts" EntityType="Self.MentionatedProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NewProducts" EntityType="Self.NewProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OutputImages" EntityType="Self.OutputImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OutputImageSizes" EntityType="Self.OutputImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pests" EntityType="Self.Pests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PharmaForms" EntityType="Self.PharmaForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductAgrochemicalUses" EntityType="Self.ProductAgrochemicalUses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductContents" EntityType="Self.ProductContents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductCrops" EntityType="Self.ProductCrops" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductSeeds" EntityType="Self.ProductSeeds" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductShotTypes" EntityType="Self.ProductShotTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductSubstances" EntityType="Self.ProductSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Seeds" EntityType="Self.Seeds" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StateCrops" EntityType="Self.StateCrops" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Weeds" EntityType="Self.Weeds" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WeedTypes" EntityType="Self.WeedTypes" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="CarouselProductShots_Carousel_FK" Association="Self.CarouselProductShots_Carousel_FK">
+      <End Role="Carousel" EntitySet="Carousel" />
+      <End Role="CarouselProductShots" EntitySet="CarouselProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="CarouselProductShots_EditionProductShots_FK" Association="Self.CarouselProductShots_EditionProductShots_FK">
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+      <End Role="CarouselProductShots" EntitySet="CarouselProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImages_DivisionId_FK" Association="Self.DivisionImages_DivisionId_FK">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImages_ImageTypeId_FK" Association="Self.DivisionImages_ImageTypeId_FK">
+      <End Role="ImageTypes" EntitySet="ImageTypes" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="EditionAttributeGroup_AttributeGroup_FK" Association="Self.EditionAttributeGroup_AttributeGroup_FK">
+      <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="EditionAttributeGroup_EditionAttributes_FK" Association="Self.EditionAttributeGroup_EditionAttributes_FK">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="EditionAttributeGroup" EntitySet="EditionAttributeGroup" />
+    </AssociationSet>
+    <AssociationSet Name="EditionAttributes_Editions_FK" Association="Self.EditionAttributes_Editions_FK">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="EditionProductShots_EditionDivisionProducts_FK" Association="Self.EditionProductShots_EditionDivisionProducts_FK">
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="EditionProductShots_ProductShotTypes_FK" Association="Self.EditionProductShots_ProductShotTypes_FK">
+      <End Role="ProductShotTypes" EntitySet="ProductShotTypes" />
+      <End Role="EditionProductShots" EntitySet="EditionProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropDiseaseImageSizes_CropDiseaseImages" Association="Self.FK_CropDiseaseImageSizes_CropDiseaseImages">
+      <End Role="CropDiseaseImages" EntitySet="CropDiseaseImages" />
+      <End Role="CropDiseaseImageSizes" EntitySet="CropDiseaseImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropDiseaseImageSizes_OutputImageSizes" Association="Self.FK_CropDiseaseImageSizes_OutputImageSizes">
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+      <End Role="CropDiseaseImageSizes" EntitySet="CropDiseaseImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropDiseases_Diseases" Association="Self.FK_CropDiseases_Diseases">
+      <End Role="Diseases" EntitySet="Diseases" />
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropDiseases_StateCrops" Association="Self.FK_CropDiseases_StateCrops">
+      <End Role="StateCrops" EntitySet="StateCrops" />
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightDiseases_ActiveSubstances" Association="Self.FK_CropFightDiseases_ActiveSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="CropFightDiseases" EntitySet="CropFightDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightDiseases_CropDiseases" Association="Self.FK_CropFightDiseases_CropDiseases">
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+      <End Role="CropFightDiseases" EntitySet="CropFightDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightDiseases_FightTypes" Association="Self.FK_CropFightDiseases_FightTypes">
+      <End Role="FightTypes" EntitySet="FightTypes" />
+      <End Role="CropFightDiseases" EntitySet="CropFightDiseases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightPests_ActiveSubstances" Association="Self.FK_CropFightPests_ActiveSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="CropFightPests" EntitySet="CropFightPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightPests_CropPests" Association="Self.FK_CropFightPests_CropPests">
+      <End Role="CropPests" EntitySet="CropPests" />
+      <End Role="CropFightPests" EntitySet="CropFightPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightPests_FightTypes" Association="Self.FK_CropFightPests_FightTypes">
+      <End Role="FightTypes" EntitySet="FightTypes" />
+      <End Role="CropFightPests" EntitySet="CropFightPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightWeeds_ActiveSubstances" Association="Self.FK_CropFightWeeds_ActiveSubstances">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="CropFightWeeds" EntitySet="CropFightWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightWeeds_CropWeeds" Association="Self.FK_CropFightWeeds_CropWeeds">
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+      <End Role="CropFightWeeds" EntitySet="CropFightWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropFightWeeds_FightTypes" Association="Self.FK_CropFightWeeds_FightTypes">
+      <End Role="FightTypes" EntitySet="FightTypes" />
+      <End Role="CropFightWeeds" EntitySet="CropFightWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropId_StateId_DiseaseId" Association="Self.FK_CropId_StateId_DiseaseId">
+      <End Role="CropDiseases" EntitySet="CropDiseases" />
+      <End Role="CropDiseaseImages" EntitySet="CropDiseaseImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropId_StateId_PestId_CropPestImages_CropPests" Association="Self.FK_CropId_StateId_PestId_CropPestImages_CropPests">
+      <End Role="CropPests" EntitySet="CropPests" />
+      <End Role="CropPestImages" EntitySet="CropPestImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropId_StateId_WeedId" Association="Self.FK_CropId_StateId_WeedId">
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+      <End Role="CropWeedImages" EntitySet="CropWeedImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropPestImageSizes_CropPestImages" Association="Self.FK_CropPestImageSizes_CropPestImages">
+      <End Role="CropPestImages" EntitySet="CropPestImages" />
+      <End Role="CropPestImageSizes" EntitySet="CropPestImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropPestImageSizes_OutputImageSizes" Association="Self.FK_CropPestImageSizes_OutputImageSizes">
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+      <End Role="CropPestImageSizes" EntitySet="CropPestImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropPests_Pests" Association="Self.FK_CropPests_Pests">
+      <End Role="Pests" EntitySet="Pests" />
+      <End Role="CropPests" EntitySet="CropPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropPests_StateCrops" Association="Self.FK_CropPests_StateCrops">
+      <End Role="StateCrops" EntitySet="StateCrops" />
+      <End Role="CropPests" EntitySet="CropPests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropWeedImageSizes_CropWeedImages" Association="Self.FK_CropWeedImageSizes_CropWeedImages">
+      <End Role="CropWeedImages" EntitySet="CropWeedImages" />
+      <End Role="CropWeedImageSizes" EntitySet="CropWeedImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropWeedImageSizes_OutputImageSizes" Association="Self.FK_CropWeedImageSizes_OutputImageSizes">
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+      <End Role="CropWeedImageSizes" EntitySet="CropWeedImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropWeeds_StateCrops" Association="Self.FK_CropWeeds_StateCrops">
+      <End Role="StateCrops" EntitySet="StateCrops" />
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CropWeeds_Weeds" Association="Self.FK_CropWeeds_Weeds">
+      <End Role="Weeds" EntitySet="Weeds" />
+      <End Role="CropWeeds" EntitySet="CropWeeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionAttributes_Attributes" Association="Self.FK_EditionAttributes_Attributes">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Advertisements" Association="Self.FK_EditionDivisionAds_Advertisements">
+      <End Role="Advertisements" EntitySet="Advertisements" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Divisions" Association="Self.FK_EditionDivisionAds_Divisions">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EditionDivisionAds_Editions" Association="Self.FK_EditionDivisionAds_Editions">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionDivisionAds" EntitySet="EditionDivisionAds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ImageSizeId_OutputImageSizes_ImageSizes" Association="Self.FK_ImageSizeId_OutputImageSizes_ImageSizes">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OutputImageId_OutputImageSizes_OutputImages" Association="Self.FK_OutputImageId_OutputImageSizes_OutputImages">
+      <End Role="OutputImages" EntitySet="OutputImages" />
+      <End Role="OutputImageSizes" EntitySet="OutputImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductImages_Images" Association="Self.FK_ProductImages_Images">
+      <End Role="Images" EntitySet="Images" />
+      <End Role="ProductImages" EntitySet="ProductImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductImages_Producs" Association="Self.FK_ProductImages_Producs">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductImages" EntitySet="ProductImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StateCrops_Crops" Association="Self.FK_StateCrops_Crops">
+      <End Role="Crops" EntitySet="Crops" />
+      <End Role="StateCrops" EntitySet="StateCrops" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StateCrops_States" Association="Self.FK_StateCrops_States">
+      <End Role="States" EntitySet="States" />
+      <End Role="StateCrops" EntitySet="StateCrops" />
+    </AssociationSet>
+    <AssociationSet Name="FK_States_Countries" Association="Self.FK_States_Countries">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Weeds_WeedTypes" Association="Self.FK_Weeds_WeedTypes">
+      <End Role="WeedTypes" EntitySet="WeedTypes" />
+      <End Role="Weeds" EntitySet="Weeds" />
+    </AssociationSet>
+    <AssociationSet Name="ProductContents_Attributes_FK" Association="Self.ProductContents_Attributes_FK">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="ProductContents_ParticipantProducts_FK" Association="Self.ProductContents_ParticipantProducts_FK">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_1" Association="Self.R_1">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_12" Association="Self.R_12">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_123" Association="Self.R_123">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="NewProducts" EntitySet="NewProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_124" Association="Self.R_124">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="NewProducts" EntitySet="NewProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_13" Association="Self.R_13">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_16" Association="Self.R_16">
+      <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+      <End Role="ProductAgrochemicalUses" EntitySet="ProductAgrochemicalUses" />
+    </AssociationSet>
+    <AssociationSet Name="R_17" Association="Self.R_17">
+      <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
+      <End Role="AgrochemicalUses1" EntitySet="AgrochemicalUses" />
+    </AssociationSet>
+    <AssociationSet Name="R_18" Association="Self.R_18">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductAgrochemicalUses" EntitySet="ProductAgrochemicalUses" />
+    </AssociationSet>
+    <AssociationSet Name="R_19" Association="Self.R_19">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_2" Association="Self.R_2">
+      <End Role="PharmaForms" EntitySet="PharmaForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_20" Association="Self.R_20">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="Self.R_21">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductCrops" EntitySet="ProductCrops" />
+    </AssociationSet>
+    <AssociationSet Name="R_22" Association="Self.R_22">
+      <End Role="Crops" EntitySet="Crops" />
+      <End Role="ProductCrops" EntitySet="ProductCrops" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="Self.R_23">
+      <End Role="Laboratories" EntitySet="Laboratories" />
+      <End Role="Divisions" EntitySet="Divisions" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="Self.R_24">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Divisions" EntitySet="Divisions" />
+    </AssociationSet>
+    <AssociationSet Name="R_25" Association="Self.R_25">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionInformation" EntitySet="DivisionInformation" />
+    </AssociationSet>
+    <AssociationSet Name="R_31" Association="Self.R_31">
+      <End Role="Seeds" EntitySet="Seeds" />
+      <End Role="ProductSeeds" EntitySet="ProductSeeds" />
+    </AssociationSet>
+    <AssociationSet Name="R_32" Association="Self.R_32">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductSeeds" EntitySet="ProductSeeds" />
+    </AssociationSet>
+    <AssociationSet Name="R_33" Association="Self.R_33">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Cities" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="R_34" Association="Self.R_34">
+      <End Role="Cities" EntitySet="Cities" />
+      <End Role="DivisionCities" EntitySet="DivisionCities" />
+    </AssociationSet>
+    <AssociationSet Name="R_35" Association="Self.R_35">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionCities" EntitySet="DivisionCities" />
+    </AssociationSet>
+    <AssociationSet Name="R_36" Association="Self.R_36">
+      <End Role="Laboratories" EntitySet="Laboratories" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_37" Association="Self.R_37">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_38" Association="Self.R_38">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_39" Association="Self.R_39">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_4" Association="Self.R_4">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_43" Association="Self.R_43">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_44" Association="Self.R_44">
+      <End Role="DivisionCategories" EntitySet="DivisionCategories" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_45" Association="Self.R_45">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_46" Association="Self.R_46">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionDivisionProducts" EntitySet="EditionDivisionProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_47" Association="Self.R_47">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_48" Association="Self.R_48">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_49" Association="Self.R_49">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+    </AssociationSet>
+    <AssociationSet Name="R_50" Association="Self.R_50">
+      <End Role="Types" EntitySet="Types" />
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+    </AssociationSet>
+    <AssociationSet Name="R_7" Association="Self.R_7">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_8" Association="Self.R_8">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
