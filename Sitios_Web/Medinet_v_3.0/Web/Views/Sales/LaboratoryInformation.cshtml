@@ -1,0 +1,762 @@
+﻿@model IEnumerable<DivisionInformation>
+@using Web.Models;
+@{
+    ViewBag.Title = "LaboratoryInformation";
+    Web.Models.Sessions.SessionM _Session1 = (Web.Models.Sessions.SessionM)Session["SessionM"];
+    Medinet db = new Medinet();
+    SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
+
+    int DivisionId, EditionId, BookId, CountryId;
+    if (_Session != null)
+    {
+        DivisionId = _Session.DivisionId;
+        EditionId = _Session.EditionId;
+        BookId = _Session.BookId;
+        CountryId = _Session.CountryId;
+
+    }
+    else
+    {
+        DivisionId = 0;
+        EditionId = 0;
+        BookId = 0;
+        CountryId = 0;
+    }
+
+    var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+}
+
+@*Para activar la casilla de editar*@
+<script>
+    function activatefieldstoeditdivision() {
+        $('.show-division').hide();
+        $('.edit-division').show();
+
+        var desc = $("#lblDescription").text();
+        var sn = $("#lblShortName").text();
+
+        sessionStorage.lblDescription = desc;
+        sessionStorage.lblShortName = sn;
+
+    }
+</script>
+@*Editar datos de laboratorio*@
+<script>
+    function savechangeseditdivision() {
+
+        var desc = $("#DVSDescription").val();
+        var sn = $("#DVSShortName").val();
+        var DId = $("#DivisionId").val();
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "@Url.Content("~/Sales/EditDivision")",
+            data: { Division: DId, Description: desc, ShortName: sn },
+            success: function (data) {
+                if (data == true) {
+                    $("#lblDescription").text(desc);
+                    $("#lblShortName").text(sn);
+
+                    $('.show-division').show();
+                    $('.edit-division').hide();
+                }
+            }
+        })
+    }
+</script>
+<script>
+    function disablefieldstoeditdivision() {
+        $('.show-division').show();
+        $('.edit-division').hide();
+
+        $("#DVSDescription").val(sessionStorage.lblDescription);
+        $("#DVSShortName").val(sessionStorage.lblShortName);
+    }
+</script>
+
+
+@*direcciones*@
+<script>
+    function activatefieldstoeditaddress(item) {
+
+        var tr = $(item).parents("tr:first");
+
+        tr.find('.show-address').hide();
+        tr.find('.edit-address').show();
+
+        sessionStorage.Address = tr.find("#lblAddress").text();
+        sessionStorage.Suburb = tr.find("#lblSuburb").text();
+        sessionStorage.ZipCode = tr.find("#lblZipCode").text();
+        sessionStorage.Telephone = tr.find("#lblTelephone").text();
+        sessionStorage.Fax = tr.find("#lblFax").text();
+
+        sessionStorage.Web = tr.find("#lblWeb").text();
+        sessionStorage.Email = tr.find("#lblEmail").text();
+        sessionStorage.City = tr.find("#lblCity").text();
+        sessionStorage.State = tr.find("#lblState").text();
+        sessionStorage.Contact = tr.find("#lblContact").text();
+
+    }
+</script>
+<script>
+    function disablefieldstoeditaddress(item) {
+
+        var tr = $(item).parents("tr:first");
+
+        tr.find('.show-address').show();
+        tr.find('.edit-address').hide();
+
+        tr.find("#txtAddress").val(sessionStorage.Address);
+        tr.find("#txtSuburb").val(sessionStorage.Suburb);
+        tr.find("#txtZipCode").val(sessionStorage.ZipCode);
+        tr.find("#txtTelephone").val(sessionStorage.Telephone);
+        tr.find("#txtFax").val(sessionStorage.Fax);
+
+        tr.find("#txtWeb").val(sessionStorage.Web);
+        tr.find("#txtEmail").val(sessionStorage.Email);
+        tr.find("#txtCity").val(sessionStorage.City);
+        tr.find("#txtState").val(sessionStorage.State);
+        tr.find("#txtContact").val(sessionStorage.Contact);
+
+    }
+</script>
+<script>
+    function savechangeseditaddress(item) {
+
+
+        var tr = $(item).parents("tr:first");
+
+        var AId = tr.find("#DivisionInfId").val();
+        var addr = tr.find("#txtAddress").val();
+        var sub = tr.find("#txtSuburb").val();
+        var cp = tr.find("#txtZipCode").val();
+        var tl = tr.find("#txtTelephone").val();
+        var fx = tr.find("#txtFax").val();
+        var wb = tr.find("#txtWeb").val();
+        var mail = tr.find("#txtEmail").val();
+        var cty = tr.find("#txtCity").val();
+        var st = tr.find("#txtState").val();
+        var ct = tr.find("#txtContact").val();
+
+        var content = "";
+
+        content += "<h3 style='text-align:center'><span class='glyphicon glyphicon-remove'></span> <i><span>&nbsp; ERROR. </span></i></h3>";
+
+        if ((!addr.trim() == true) &&
+            (!mail.trim() == true) &&
+            (!cty.trim() == true) &&
+            (!sub.trim() == true) &&
+            (!cp.trim() == true) &&
+            (!tl.trim() == true) &&
+            (!fx.trim() == true) &&
+            (!wb.trim() == true) &&
+            (!st.trim() == true) &&
+            (!ct.trim() == true)) {
+
+
+            content += "Ningun campo puede quedar vac&iacute;o";
+
+            apprise("" + content + "", { 'animate': true })
+        }
+        else {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "@Url.Content("~/Sales/EditLaboratoryInformation")",
+                data: {
+                    AddressI: AId,
+                    Address: addr,
+                    Email: mail,
+                    City: cty,
+                    Suburb: sub,
+                    ZipCode: cp,
+                    Phone: tl,
+                    Fax: fx,
+                    Web: wb,
+                    State: st,
+                    Contact: ct
+                },
+                success: function (data) {
+                    if (data == true) {
+                        tr.find("#lblAddress").text(addr);
+                        tr.find("#lblSuburb").text(sub);
+                        tr.find("#lblZipCode").text(cp);
+                        tr.find("#lblTelephone").text(tl);
+                        tr.find("#lblFax").text(fx);
+
+                        tr.find("#lblWeb").text(wb);
+                        tr.find("#lblEmail").text(mail);
+                        tr.find("#lblCity").text(cty);
+                        tr.find("#lblState").text(st);
+                        tr.find("#lblContact").text(ct);
+
+                        $('.show-address').show();
+                        $('.edit-address').hide();
+                    }
+                }
+            })
+        }
+    }
+</script>
+<script>
+    function AddAddress() {
+
+        var DId = $("#DivisionId").val();
+        var addr = $("#Address").val();
+        var sub = $("#Suburb").val();
+        var zc = $("#ZipCode").val();
+        var ph = $("#Thelephone").val();
+        var fx = $("#Fax").val();
+        var wb = $("#Web").val();
+        var mail = $("#Email").val();
+        var ct = $("#City").val();
+        var st = $("#State").val();
+        var cnt = $("#Contact").val();
+
+        if ((!addr.trim() == true) &&
+            (!sub.trim() == true) &&
+            (!zc.trim() == true) &&
+            (!ph.trim() == true) &&
+            (!fx.trim() == true) &&
+            (!wb.trim() == true) &&
+            (!mail.trim() == true) &&
+            (!ct.trim() == true) &&
+            (!st.trim() == true) &&
+            (!cnt.trim() == true)) {
+
+            swal({ title: "¡Atención!", type: "error", text: "Ningun campo puede quedar vacío" });
+            
+
+        }
+        else {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "@Url.Content("~/Sales/AddAddress")",
+                data: {
+                    Address: addr,
+                    Suburb: sub,
+                    ZipCode: zc,
+                    Phone: ph,
+                    Fax: fx,
+                    Web: wb,
+                    Email: mail,
+                    City: ct,
+                    State: st,
+                    Contact: cnt,
+                    Division: DId
+                },
+                success: function (data) {
+                    if (data == true)
+                    {
+                        swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                        setTimeout("document.location.reload()");
+                    }
+                    else
+                    {
+                        swal({ title: "¡Atención!", type: "error", text: "dirección no valida" });
+                    }
+                }
+            })
+        }
+
+    }
+</script>
+<script>
+    function cancelAddAddress() {
+
+        $("#Address").val('');
+        $("#Suburb").val('');
+        $("#ZipCode").val('');
+        $("#Thelephone").val('');
+        $("#Fax").val('');
+        $("#Web").val('');
+        $("#Email").val('');
+        $("#City").val('');
+        $("#State").val('');
+        $("#Contact").val('');
+
+    }
+</script>
+<script>
+    function DeleteAddress(item) {
+
+        $("#bloqueo").show();
+
+        var tr = $(item).parents("tr:first");
+
+        var DId = tr.find("#DivisionInfId").val();
+
+        swal({
+            title: '¿Desea eliminar la Dirección ',
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Aceptar",
+            closeOnConfirm: false
+        },
+
+        function () {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "@Url.Content("~/Sales/DeleteAddress")",
+                data: {
+                    Division: DId
+                },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout("document.location.reload()");
+                    }
+                }
+            });
+        });
+    }
+</script>
+
+
+<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+
+
+
+<div class="row col-md-10">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Ventas</strong> | Editar Laboratorio</div>
+        </div>
+    </div>
+    <br />
+    <nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default">
+        <div style="margin-left: 15px;" class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                @{
+
+                    CountriesUsers _CountriesUsers = (CountriesUsers)Session["CountriesUsers"];
+                    if (_CountriesUsers.country.LongCount() >= 1)
+                    {
+                        <a href="@Url.Content("~/Sales/Index")" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Content("~/Production/FilterIndex/" + _Session.id)" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+                        </a>
+                    }
+                }
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i style="color:#324887" class="glyphicon glyphicon-arrow-left"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i style="color:#324887;" class="glyphicon glyphicon-arrow-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+        <div class="message-item" id="m16">
+            <div class="message-inner">
+                <div class="avatar pull-left"></div>
+                <div class="user-detail">
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var cts = (from _ct in db.Countries
+                                                       where _ct.CountryId == CountryId
+                                                       select _ct).ToList();
+                                            foreach (Countries _ct in cts)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">País: <span style="color: #de5145">@_ct.CountryName</span> </span>
+                                                <input type="text" value="@CountryId" id="CountryId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var bkss = (from _bk in db.Books
+                                                        where _bk.BookId == BookId
+                                                        select _bk).ToList();
+                                            foreach (Books _bks in bkss)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Obra: <span style="color: #de5145">@_bks.Description</span> </span>
+                                                <input type="text" value="@BookId" id="BookId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var eds = (from _ed in db.Editions
+                                                       where _ed.EditionId == EditionId
+                                                       select _ed).ToList();
+                                            foreach (Editions _eds in eds)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Edición: <span style="color: #de5145">@_eds.NumberEdition</span> </span>
+                                                <input type="text" value="@EditionId" id="EditionId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Versión: <span style="color: #de5145">@ViewData["TypeName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var cl = (from _cl in db.Divisions
+                                                      where _cl.DivisionId == DivisionId
+                                                      select _cl).ToList();
+                                            foreach (Divisions _cl in cl)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@_cl.ShortName</span></span>
+                                                <input type="text" value="@DivisionId" id="DivisionId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="row col-md-12" align="center">
+    <span class="Titles">Editar Laboratorio</span>
+</div>
+<br />
+
+<div class="row col-md-12">
+    <div class="col-lg-12">
+        <div class="row col-md-12 table-responsive">
+            <table style="font-size:14px;" class="display table table-bordered table-hover" cellspacing="0">
+                <thead class="webgrid-header">
+                    <tr>
+                        <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Razón Social</h4></th>
+                        <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Nombre Corto</h4></th>
+                        <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Editar</h4></th>
+                        <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Agregar Dirección</h4></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label class="labelsgnr show-division" id="lblDescription">@d[0].Description.Trim()</label>
+                            <textarea class="form-control edit-division" style="color:red; display:none" id="DVSDescription">@d[0].Description.Trim()</textarea>
+                        </td>
+                        <td>
+                            <label class="labelsgnr show-division" id="lblShortName">@d[0].ShortName.Trim()</label>
+                            <textarea class="form-control edit-division" style="color: red; display: none" id="DVSShortName">@d[0].ShortName.Trim()</textarea>
+                        </td>
+                        <td class="column9  text-center">
+
+                            <button class="btn btn-warning btn-sm show-division" onclick="activatefieldstoeditdivision()">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                            <button class="btn btn-primary btn-sm edit-division" onclick="savechangeseditdivision()" style="display:none">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                            <button class="btn btn-danger btn-sm edit-division" onclick="disablefieldstoeditdivision()" style="display:none">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                        <td class="column11 text-center">
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#AddAddressProd">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row col-md-12">
+    <div class="col-lg-12">
+        <div class="row col-md-12 table-responsive">
+            <div class="table-responsive">
+                <table class="display table table-bordered table-hover" cellspacing="0">
+                    <thead class="webgrid-header">
+                        <tr>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Dirección</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Colonia</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">CP</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Telefóno</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Fax</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Web</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Email</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Ciudad</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Estado</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Contacto</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Editar</h4></th>
+                            <th align="center" style="vertical-align:middle" class="tdback"><h4 class="labels">Eliminar</h4></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (DivisionInformation item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblAddress">@item.Address</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size:12px" id="txtAddress">@item.Address</textarea>
+                                        <input type="text" value="@item.DivisionInfId" id="DivisionInfId" style="display:none" />
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblSuburb">@item.Suburb</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtSuburb">@item.Suburb</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblZipCode">@item.ZipCode</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtZipCode">@item.ZipCode</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblTelephone">@item.Telephone</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtTelephone">@item.Telephone</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblFax">@item.Fax</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtFax">@item.Fax</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblWeb">@item.Web</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtWeb">@item.Web</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblEmail">@item.Email</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtEmail">@item.Email</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblCity">@item.City</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtCity">@item.City</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblState">@item.State</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtState">@item.State</textarea>
+                                    </td>
+                                    <td>
+                                        <label class="labelsgnr show-address" id="lblContact">@item.Contact</label>
+                                        <textarea class="form-control edit-address" style="color: red; display: none; font-size: 12px" id="txtContact">@item.Contact</textarea>
+                                    </td>
+                                    <td class="column5 text-center">
+                                        <button class="btn btn-warning btn-sm show-address" onclick="activatefieldstoeditaddress($(this))">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </button>
+                                        <button class="btn btn-primary btn-sm edit-address" onclick="savechangeseditaddress($(this))" style="display:none">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm edit-address" onclick="disablefieldstoeditaddress($(this))" style="display:none">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                    <td class="column5 text-center">
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteAddress($(this))">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+@*Agregar dirección*@
+<div class="modal fade" id="AddAddressProd" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal" onclick="cancelAddAddress()">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Dirección.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <table class="widthtable" border="0">
+
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Dirección: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Dirección..." class="form-control" maxlength="255" id="Address" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Colonia: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Colonia..." class="form-control" maxlength="255" id="Suburb" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Código Postal: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Código Postal..." class="form-control" maxlength="15" id="ZipCode" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Teléfono: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Teléfono..." class="form-control" maxlength="100" id="Thelephone" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Fax: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Fax..." class="form-control" maxlength="255" id="Fax" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Web: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Web..." class="form-control" maxlength="100" id="Web" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Email: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Email..." class="form-control" maxlength="100" id="Email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Ciudad: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Ciudad..." class="form-control" maxlength="100" id="City" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Estado: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Estado..." class="form-control" maxlength="100" id="State" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%; font-size:14px">
+                            <label class="labels">Contacto: </label>
+                        </td>
+                        <td style="width: 75%; font-size: 14px">
+                            <input type="text" placeholder="Contacto..." class="form-control" maxlength="100" id="Contact" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="AddAddress()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn" data-dismiss="modal" onclick="cancelAddAddress()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,2378 @@
+﻿function ChangeProductType(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var PTId = tr.find("#ProductTypeId").val();
+    var PId = tr.find("#ProductId").val();
+    var vl = $(item).val();
+
+    var Message = "";
+
+    Message += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+    Message += "<label> ¿Esta seguro que desea cambiar el tipo de Producto? </label>";
+
+    apprise("" + Message + "", { 'verify': true }, function (r) {
+
+        if (r) {
+
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "../Medical/UpdateProductType",
+                data: { Product: PId, ProductType: vl },
+                success: function (data) {
+                    if (data == true) {
+
+                        $("#messageheader").text("Tipo de Producto");
+
+                        $("#lblMessageModal").text("El tipo de Producto se actualizo correctamente.");
+
+                        $("#btnProductType").trigger("click");
+
+                    }
+                    else if (data == false) {
+
+                        var Id = "O_" + PTId;
+
+                        var itm = document.getElementById(Id);
+
+                        tr.find("#ProductTypes").val($(itm).val());
+                    }
+                }
+            })
+        }
+        else {
+
+            var Id = "O_" + PTId;
+
+            var itm = document.getElementById(Id);
+
+            tr.find("#ProductTypes").val($(itm).val());
+
+        }
+    });
+}
+
+function getlevel2SM(TherapeuticId) {
+
+    var ListId = "#ListL2_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelTwoATCEphMRA",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            //$(ListId).empty();
+            //$.each(data, function (index, val) {
+            //    $(ListId).append($("<li></li>")
+            //        .append("<span class='glyphicon glyphicon-plus' id='Expand_" + val.TherapeuticId + "' onclick='getlevel3SM(" + val.TherapeuticId + ")' style='cursor:pointer'></span>" +
+            //                        "<span class='glyphicon glyphicon-minus' style='display:none' id='Collapse_" + val.TherapeuticId + "' onclick='collapselevel3(" + val.TherapeuticId + ")'></span>" +
+            //                        "&nbsp;&nbsp;&nbsp;<span style='font-weight:bold'><b>" + val.TherapeuticKey + "</b></span> - <span style='font-weight:100'>" + val.SpanishDescription + "</span>" +
+            //                        "<ul id='ListL3_" + val.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>"));
+            //});
+
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+        }
+    })
+}
+
+function collapselevel2(TherapeuticId) {
+    var ListId = "#ListL2_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+function getlevel3SM(TherapeuticId) {
+
+    var ListId = "#ListL3_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelThreeATCEphMRA",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            //$(ListId).empty();
+            //$.each(data, function (index, val) {
+            //    $(ListId).append($("<li></li>")
+            //        .append("<span class='glyphicon glyphicon-plus' id='Expand_" + val.TherapeuticId + "' onclick='getlevel4SM(" + val.TherapeuticId + ")' style='cursor:pointer'></span>" +
+            //                        "<span class='glyphicon glyphicon-minus' style='display:none' id='Collapse_" + val.TherapeuticId + "' onclick='collapselevel3(" + val.TherapeuticId + ")'></span>" +
+            //                        "<span style='font-weight:bold'><b>" + val.TherapeuticKey + "</b></span> - <span style='font-weight:100'>" + val.SpanishDescription + "</span>" +
+            //                        "<ul id='ListL4_" + val.TherapeuticId + "' style='list-style: none;margin-left:50px'></ul>"));
+            //});
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+        }
+    })
+}
+
+function collapselevel3(TherapeuticId) {
+    var ListId = "#ListL3_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+
+function getlevel4SM(TherapeuticId) {
+
+    var ListId = "#ListL4_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelFourATCEphMRA",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+
+        }
+    })
+}
+
+function collapselevel4(TherapeuticId) {
+    var ListId = "#ListL4_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+
+function getlevel5SM(TherapeuticId) {
+
+    var ListId = "#ListL5_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelFiveATCEphMRA",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+
+        }
+    })
+}
+
+function collapselevel5(TherapeuticId) {
+    var ListId = "#ListL5_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+
+var ListAddATCEphMRA = [];
+
+var ListRemoveATCEphMRA = [];
+
+function AddATCEphMRA(item) {
+
+    var TId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddATCEphMRA.push({
+            'TId': TId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListAddATCEphMRA);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListAddATCEphMRA, "TId", "PId", "PFId", TId, PId, PFId);
+
+        if (index == null) {
+        } else if (index >= 0) {
+
+            ListAddATCEphMRA.splice(index, 1);
+
+        }
+    }
+}
+
+function AddATCEphMRARemove(item) {
+
+    var TId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListRemoveATCEphMRA.push({
+            'TId': TId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListRemoveATCEphMRA);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListRemoveATCEphMRA, "TId", "PId", "PFId", TId, PId, PFId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+            ListRemoveATCEphMRA.splice(index, 1);
+            console.log(ListRemoveATCEphMRA);
+        }
+    }
+}
+
+function functiontofindIndexByKeyValue(arraytosearch, TId, PId, PFId, valuetTId, valuePId, valuePFId) {
+    for (var i = 0; i < arraytosearch.length; i++) {
+
+        if (arraytosearch[i][TId] == valuetTId) {
+            if (arraytosearch[i][PId] == valuePId) {
+                if (arraytosearch[i][PFId] == valuePFId) {
+                    return i;
+                }
+            }
+        }
+    }
+    return null;
+};
+
+function SaveAddATCEphMRA() {
+    // alert("click");
+    $("#myBar").css("background-color", "#286090");
+
+    var Size = $(ListAddATCEphMRA).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddATCEphMRA);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveAddATCEphMRA",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    console.log(s);
+
+                    console.log(Size);
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+function RemoveATCEphMRA() {
+
+    $("#myBar").css("background-color", "#f7726e");
+
+    var Size = $(ListRemoveATCEphMRA).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListRemoveATCEphMRA);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/RemoveATCEphMRA",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                    d += "<br/>";
+                    d += "<ul style='list-style:none'>";
+                    $.each(data, function (index, val) {
+                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                    });
+                    d += "</ul>";
+
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+
+
+}
+
+
+/*              CONTRAINDICATIONS           */
+
+function GetPhysiologicalContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId, EditionId) {
+
+    //$.ajax({
+    //    Type: "POST",
+    //    dataType: "Json",
+    //    url: "../Medical/GetPhysiologicalContraindications",
+    //    data: { Division: DivisionId, Category: CategoryId, PharmaForm: PharmaFormId, Product: ProductId, ActiveSubstance: ActiveSubstanceId },
+    //    success: function (data) {
+
+    //    }
+    //})
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetPhysiologicalContraindicationsAsoc",
+        data: { Division: DivisionId[0], Category: CategoryId[0], PharmaForm: PharmaFormId[0], Product: ProductId[0], ActiveSubstance: ActiveSubstanceId[0], Edition: EditionId[0] },
+        success: function (data) {
+            $("#PhysiologicalContraindicationsAsoc").empty();
+
+            $("#PhysiologicalContraindicationsAsoc").append("<tr>" +
+                                                            "<td>" +
+                                                            "<span>Sustancia</span>" +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                            "<span>Contraindicacion</span>" +
+                                                            "</td>" +
+                                                            "<td class=\"text-center\">" +
+                                                            "<button class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\"></span></button>" +
+                                                            "</td>" +
+                                                            "</tr>");
+        }
+    })
+}
+
+
+
+
+/*              CIE - 10           */
+
+
+function GetLevelTwoICD(ICDId) {
+
+    $("#bloqueo").show();
+
+    var ListId = "#ListL2_" + ICDId;
+    var ExpandBTN = "#Expand_" + ICDId;
+    var CollapseBTN = "#Collapse_" + ICDId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelTwoICD",
+        data: { ICD: ICDId },
+        success: function (data) {
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+            $("#bloqueo").hide();
+        }
+    })
+}
+
+function GetLevelThreeICD(ICDId) {
+
+    $("#bloqueo").show();
+
+    var ListId = "#ListL3_" + ICDId;
+    var ExpandBTN = "#Expand_" + ICDId;
+    var CollapseBTN = "#Collapse_" + ICDId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelThreeICD",
+        data: { ICD: ICDId },
+        success: function (data) {
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+            $("#bloqueo").hide();
+        }
+    })
+
+}
+
+var ListAddCIE = [];
+
+var ListRemoveCIE = [];
+
+function AddCIE10(item) {
+
+    var ICDId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddCIE.push({
+            'TId': ICDId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListAddCIE);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListAddCIE, "TId", "PId", "PFId", ICDId, PId, PFId);
+
+        if (index == null) {
+        } else if (index >= 0) {
+
+            ListAddCIE.splice(index, 1);
+
+            console.log(ListAddCIE);
+        }
+    }
+}
+
+function AddCIE10Remove(item) {
+
+    var ICDId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListRemoveCIE.push({
+            'TId': ICDId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListRemoveCIE);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListRemoveCIE, "TId", "PId", "PFId", ICDId, PId, PFId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+            ListRemoveCIE.splice(index, 1);
+            console.log(ListRemoveCIE);
+        }
+    }
+}
+
+function SaveCIE10() {
+
+    var Size = $(ListAddCIE).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddCIE);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveCIE10",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+function RemoveCIE10() {
+
+    var Size = $(ListRemoveCIE).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListRemoveCIE);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/RemoveCIE10",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                    d += "<br/>";
+                    d += "<ul style='list-style:none'>";
+                    $.each(data, function (index, val) {
+                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                    });
+                    d += "</ul>";
+
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+
+
+/*              ATC OMS           */
+
+
+function getlevel2OMS(TherapeuticId) {
+
+    var ListId = "#ListL2_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelTwoATCOMS",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            //$(ListId).empty();
+            //$.each(data, function (index, val) {
+            //    $(ListId).append($("<li></li>")
+            //        .append("<span class='glyphicon glyphicon-plus' id='Expand_" + val.TherapeuticId + "' onclick='getlevel3SM(" + val.TherapeuticId + ")' style='cursor:pointer'></span>" +
+            //                        "<span class='glyphicon glyphicon-minus' style='display:none' id='Collapse_" + val.TherapeuticId + "' onclick='collapselevel3(" + val.TherapeuticId + ")'></span>" +
+            //                        "&nbsp;&nbsp;&nbsp;<span style='font-weight:bold'><b>" + val.TherapeuticKey + "</b></span> - <span style='font-weight:100'>" + val.SpanishDescription + "</span>" +
+            //                        "<ul id='ListL3_" + val.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>"));
+            //});
+
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+        }
+    })
+}
+
+function collapselevel2OMS(TherapeuticId) {
+    var ListId = "#ListL2_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+function getlevel3OMS(TherapeuticId) {
+
+    var ListId = "#ListL3_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelThreeATCOMS",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            //$(ListId).empty();
+            //$.each(data, function (index, val) {
+            //    $(ListId).append($("<li></li>")
+            //        .append("<span class='glyphicon glyphicon-plus' id='Expand_" + val.TherapeuticId + "' onclick='getlevel4SM(" + val.TherapeuticId + ")' style='cursor:pointer'></span>" +
+            //                        "<span class='glyphicon glyphicon-minus' style='display:none' id='Collapse_" + val.TherapeuticId + "' onclick='collapselevel3(" + val.TherapeuticId + ")'></span>" +
+            //                        "<span style='font-weight:bold'><b>" + val.TherapeuticKey + "</b></span> - <span style='font-weight:100'>" + val.SpanishDescription + "</span>" +
+            //                        "<ul id='ListL4_" + val.TherapeuticId + "' style='list-style: none;margin-left:50px'></ul>"));
+            //});
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+        }
+    })
+}
+
+function collapselevel3OMS(TherapeuticId) {
+    var ListId = "#ListL3_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+function getlevel4OMS(TherapeuticId) {
+
+    var ListId = "#ListL4_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelFourATCOMS",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+
+        }
+    })
+}
+
+function collapselevel4OMS(TherapeuticId) {
+    var ListId = "#ListL4_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+function getlevel5OMS(TherapeuticId) {
+
+    var ListId = "#ListL5_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelFiveATCOMS",
+        data: { Therapeutic: TherapeuticId },
+        success: function (data) {
+
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+
+
+        }
+    })
+}
+
+function collapselevel5OMS(TherapeuticId) {
+    var ListId = "#ListL5_" + TherapeuticId;
+    var ExpandBTN = "#Expand_" + TherapeuticId;
+    var CollapseBTN = "#Collapse_" + TherapeuticId;
+
+    $(ListId).empty();
+    $(ExpandBTN).show();
+    $(CollapseBTN).hide();
+
+}
+
+var ListAddATCOMS = [];
+
+var ListRemoveATCOMS = [];
+
+function AddATCOMS(item) {
+
+    var TId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddATCOMS.push({
+            'TId': TId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListAddATCOMS);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListAddATCOMS, "TId", "PId", "PFId", TId, PId, PFId);
+
+        if (index == null) {
+        } else if (index >= 0) {
+
+            ListAddATCOMS.splice(index, 1);
+
+            console.log(ListAddATCOMS);
+
+        }
+    }
+}
+
+function AddATCOMSRemove(item) {
+
+    var TId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListRemoveATCOMS.push({
+            'TId': TId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListRemoveATCOMS);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListRemoveATCOMS, "TId", "PId", "PFId", TId, PId, PFId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+            ListRemoveATCOMS.splice(index, 1);
+
+            console.log(ListRemoveATCOMS);
+        }
+    }
+}
+
+function SaveAddATCOMS() {
+
+    var Size = $(ListAddATCOMS).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddATCOMS);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveAddATCOMS",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    console.log(s);
+
+                    console.log(Size);
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+function RemoveATCOMS() {
+
+    var Size = $(ListRemoveATCOMS).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListRemoveATCOMS);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/RemoveATCOMS",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                    d += "<br/>";
+                    d += "<ul style='list-style:none'>";
+                    $.each(data, function (index, val) {
+                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                    });
+                    d += "</ul>";
+
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+
+
+/*              INTERACTIONS           */
+
+function GetRowsPerPageInteractions() {
+
+    $("#bloqueo").show();
+
+    var AS = $("#RowsPerPageActiveSubstances").val();
+    var PG = $("#RowsPerPagePharmacologicalGroups").val();
+    var OE = $("#RowsPerPageOtherElements").val();
+
+    sessionStorage.AS = AS;
+    sessionStorage.PG = PG;
+    sessionStorage.OE = OE;
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/Pager",
+        data: { Page: AS, PagePG: PG, PageOE: OE },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function GetInteracionMenu(item) {
+
+    var Id = $(item).attr("Id");
+
+    sessionStorage.InteractionMenu = Id;
+
+}
+
+function load() {
+
+    var Id = sessionStorage.InteractionMenu;
+
+    if ((Id != null) && (Id != undefined)) {
+
+        Id = "#" + Id;
+
+        $(Id).trigger("click");
+    }
+
+    var AS = sessionStorage.AS;
+    var PG = sessionStorage.PG;
+    var OE = sessionStorage.OE;
+    var Ind = sessionStorage.Ind;
+
+    if ((AS != null) && (AS != undefined)) {
+
+        AS = "#IdAS_" + AS;
+
+        $("#RowsPerPageActiveSubstances").val($(AS).val());
+    }
+
+    if ((PG != null) && (PG != undefined)) {
+
+        PG = "#IdPG_" + PG;
+
+        $("#RowsPerPagePharmacologicalGroups").val($(PG).val());
+
+    }
+
+    if ((OE != null) && (OE != undefined)) {
+
+        OE = "#IdOE_" + OE;
+
+        $("#RowsPerPageOtherElements").val($(OE).val());
+    }
+
+    if ((Ind != null) && (Ind != undefined)) {
+
+        Ind = "#IdInd_" + Ind;
+
+        $("#RowsPerPageIndications").val($(Ind).val());
+    }
+}
+
+function AddProductSubstanceInteractions(value, SubstanceInteract) {
+
+    $("#bloqueo").show();
+
+    var size = $(".SubstanceInteract").size();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CategoryId").val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    var JsonList = [];
+
+    if ((SubstanceInteract == null) || (SubstanceInteract == undefined)) {
+        for (var i = 0; i <= size - 1; i++) {
+            if ((i != 0) || (i != undefined)) {
+                var item = $(".SubstanceInteract")[i];
+
+                var SubstanceInteract = $(item).find("#inpActiveSubstanceId").val();
+
+                JsonList.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": SubstanceInteract,
+                        "ActiveSubstance": value
+                    });
+            }
+        }
+    }
+    else {
+        JsonList.push(
+                        {
+                            "Division": DId,
+                            "Category": CId,
+                            "PharmaForm": PFId,
+                            "Product": PId,
+                            "SubstanceInteract": SubstanceInteract,
+                            "ActiveSubstance": value
+                        });
+    }
+
+
+
+    var jsonresponse = JSON.stringify(JsonList);
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/AddProductSubstanceInteractions",
+        data: { Size: size, SubstanceInteractions: jsonresponse },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else {
+
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                d += "<label> Ya existe asociacion entre elementos.</label> <br/>"
+                d += "<br/>"
+                d += "<div>"
+                d += "<ul>"
+
+                $.each(data, function (index, val) {
+                    d += "<li><span style=\"font-weight:bold\">" + val.Element + "</span> ya esta asociado a la sustancia <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span></li>";
+                });
+
+                d += "</ul>"
+                d += "</div>"
+
+                apprise("" + d + "", { 'animate': true });
+
+                JsonList = [];
+                JsonListTI = [];
+
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+function CheckActiveSubstancesByProduct(item) {
+
+    var tr = $(item).parents("tr:first");
+
+
+    var value = tr.find("#lblActiveSubstanceId").val();
+    var Substance = tr.find("#spnDescription").text()
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    CancelAddASINT();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/CheckActiveSubstancesByProduct",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, ActiveSubstance: value },
+        success: function (data) {
+            if (data.Data == true) {
+                $("#messageheaderASINT").text("Aviso");
+
+                var Content = "";
+                Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductId\" />";
+                Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryId\"/>";
+                Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionId\"/>";
+                Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormId\"/>";
+                Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceId\"/></div>";
+                Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con la sustancia: <label style='font-weight:bold'>" + Substance + "</label></span><br /><br />";
+
+                $.each(data.Items, function (index, val) {
+                    Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddSubstancestoInteractions($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
+                });
+
+                $("#DivASINT").append(Content);
+                $("#btnASINT").trigger("click");
+            }
+            else if (data.Data == false) {
+                AddProductSubstanceInteractions(value, null);
+            }
+        }
+    })
+}
+
+function CancelAddASINT() {
+
+    $("#DivASINT").empty();
+
+}
+
+var JsonListTI = [];
+
+function AddSubstancestoInteractions(item) {
+
+    var ASId = $("#MdlActiveSubstanceId").val();
+    var value = $(item).val();
+    var PId = $("#MdlProductId").val();
+    var CId = $("#MdlCategoryId").val();
+    var DId = $("#MdlDivisionId").val();
+    var PFId = $("#MdlPharmaFormId").val();
+
+    if ($(item).is(":checked")) {
+
+        JsonListTI.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": value,
+                        "ActiveSubstance": ASId
+                    });
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = RemoveItemOfJsonListTI(JsonListTI, "Division", "Category", "PharmaForm", "Product", "SubstanceInteract", "ActiveSubstance", DId, CId, PFId, PId, value, ASId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+
+            JsonListTI.splice(index, 1);
+        }
+    }
+}
+
+function RemoveItemOfJsonListTI(arraytosearch, Division, Category, PharmaForm, Product, SubstanceInteract, ActiveSubstance, DId, CId, PFId, PId, value, ASId) {
+    for (var i = 0; i < arraytosearch.length; i++) {
+        if (arraytosearch[i][Division] == DId) {
+            if (arraytosearch[i][Category] == CId) {
+                if (arraytosearch[i][PharmaForm] == PFId) {
+                    if (arraytosearch[i][Product] == PId) {
+                        if (arraytosearch[i][SubstanceInteract] == value) {
+                            if (arraytosearch[i][ActiveSubstance] == ASId) {
+                                return i;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return null;
+};
+
+function AddSubstanceInteractionsTI() {
+
+    $("#bloqueo").show();
+
+    var size = $(JsonListTI).size();
+    var jsonresponse = JSON.stringify(JsonListTI);
+
+    if ((size != 0) || (size != "0")) {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/AddProductSubstanceInteractions",
+            data: { Size: size, SubstanceInteractions: jsonresponse },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+                    d += "<label> Ya existe asociacion entre elementos.</label> <br/>"
+                    d += "<br/>"
+                    d += "<div>"
+                    d += "<ul>"
+
+                    $.each(data, function (index, val) {
+                        d += "<li><span style=\"font-weight:bold\">" + val.Element + "</span> ya esta asociado a la sustancia <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span></li>";
+                    });
+
+                    d += "</ul>"
+                    d += "</div>"
+
+                    apprise("" + d + "", { 'animate': true });
+
+                    JsonList = [];
+                    JsonListTI = [];
+
+                    $("#bloqueo").hide();
+                }
+            }
+        })
+    } else {
+
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+}
+
+function DeleteSubstanceInteracions(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = tr.find("#lblSubstanceInteractionIdAsoc").val();
+    var value = tr.find("#lblActiveSubstanceIdAsoc").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteProductSubstanceInteractions",
+        data: { ActiveSubstance: value, SubstanceInteraction: ASId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+
+/*              PHARMACOLOGICAL GROUPS              */
+
+function ChecktPharmacologicalGroupsByProduct(item) {
+
+    var tr = $(item).parents("tr:first");
+
+
+    var value = tr.find("#lblPharmaGroupId").val();
+    var Group = tr.find("#lblGroupName").text()
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    CancelAddAPGNT();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/CheckPharmacologicalGroupsByProduct",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, PharmacologicalGroup: value },
+        success: function (data) {
+            if (data.Data == true) {
+                $("#messageheaderPGINT").text("Aviso");
+
+                var Content = "";
+                Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdPG\" />";
+                Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdPG\"/>";
+                Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdPG\"/>";
+                Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdPG\"/>";
+                Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceIdPG\"/></div>";
+                Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con la sustancia: <label style='font-weight:bold'>" + Group + "</label></span><br /><br />";
+
+                $.each(data.Items, function (index, val) {
+                    Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddPharmaGroupInteractionsTI($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
+                    console.log(val.Description);
+
+                });
+
+                $("#DivPGINT").append(Content);
+                $("#btnPGINT").trigger("click");
+            }
+            else if (data.Data == false) {
+                AddProductPharmacologicalGroupsInteractions(value, null);
+            }
+        }
+    })
+}
+
+function AddProductPharmacologicalGroupsInteractions(value, SubstanceInteract) {
+
+    $("#bloqueo").show();
+
+    var size = $(".SubstanceInteract").size();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CategoryId").val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    var JsonList = [];
+
+
+    if ((SubstanceInteract == null) || (SubstanceInteract == undefined)) {
+        for (var i = 0; i <= size - 1; i++) {
+            if ((i != 0) || (i != undefined)) {
+                var item = $(".SubstanceInteract")[i];
+
+                var SubstanceInteract = $(item).find("#inpActiveSubstanceId").val();
+
+                JsonList.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": SubstanceInteract,
+                        "ActiveSubstance": value
+                    });
+            }
+        }
+    }
+    else {
+
+        JsonList.push(
+                        {
+                            "Division": DId,
+                            "Category": CId,
+                            "PharmaForm": PFId,
+                            "Product": PId,
+                            "SubstanceInteract": SubstanceInteract,
+                            "PharmaGroupId": value
+                        });
+    }
+
+    var jsonresponse = JSON.stringify(JsonList);
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/AddProductPharmacologicalGroupsInteractions",
+        data: { Size: size, SubstanceInteractions: jsonresponse },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else {
+
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+                d += "<label> Ya existe asociacion entre elementos.</label> <br/>"
+                d += "<br/>"
+                d += "<div>"
+                d += "<ul>"
+
+                $.each(data, function (index, val) {
+                    d += "<li><span style=\"font-weight:bold\">" + val.Element + "</span> ya esta asociado a la sustancia <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span></li>";
+                });
+
+                d += "</ul>"
+                d += "</div>"
+                apprise("" + d + "", { 'animate': true });
+
+                JsonList = [];
+                JsonListTI = [];
+
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+var JsonListTIPG = [];
+
+function AddPharmaGroupInteractionsTI(item) {
+
+    var ASId = $("#MdlActiveSubstanceIdPG").val();
+    var value = $(item).val();
+    var PId = $("#MdlProductIdPG").val();
+    var CId = $("#MdlCategoryIdPG").val();
+    var DId = $("#MdlDivisionIdPG").val();
+    var PFId = $("#MdlPharmaFormIdPG").val();
+
+    if ($(item).is(":checked")) {
+
+        JsonListTIPG.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": value,
+                        "ActiveSubstance": ASId
+                    });
+
+        console.log(JsonListTIPG);
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = RemoveItemOfJsonListTI(JsonListTIPG, "Division", "Category", "PharmaForm", "Product", "SubstanceInteract", "ActiveSubstance", DId, CId, PFId, PId, value, ASId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+
+            JsonListTIPG.splice(index, 1);
+
+            console.log(JsonListTIPG);
+        }
+    }
+
+}
+
+function AddPharmaGroupInteractions() {
+
+    $("#bloqueo").show();
+
+    var size = $(JsonListTIPG).size();
+    var jsonresponse = JSON.stringify(JsonListTIPG);
+
+    if ((size != 0) || (size != "0")) {
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/AddProductPharmacologicalGroupsInteractions",
+            data: { Size: size, SubstanceInteractions: jsonresponse },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+                    d += "<label> Ya existe asociacion entre elementos.</label> <br/>"
+                    d += "<br/>"
+                    d += "<div>"
+                    d += "<ul>"
+
+                    $.each(data, function (index, val) {
+                        d += "<li><span style=\"font-weight:bold\">" + val.Element + "</span> ya esta asociado a la sustancia <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span></li>";
+                    });
+
+                    d += "</ul>"
+                    d += "</div>"
+                    apprise("" + d + "", { 'animate': true });
+
+                    JsonList = [];
+                    JsonListTIPG = [];
+
+                    $("#bloqueo").hide();
+
+                }
+            }
+        })
+
+    } else {
+
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+}
+
+function DeletePharmaGroupInteractions(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = tr.find("#lblPharmaGroupIdPG").val();
+    var value = tr.find("#lblActiveSubstanceIdPG").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteProductSubstanceInteractions",
+        data: { ActiveSubstance: value, SubstanceInteraction: ASId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function CancelAddAPGNT() {
+
+    $("#DivPGINT").empty();
+
+}
+
+function DeletePharmacologicalInteracions(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = tr.find("#lblPharmaGroupIdPG").val();
+    var value = tr.find("#lblActiveSubstanceIdPG").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeletePharmacologicalInteracions",
+        data: { ActiveSubstance: value, PharmacologicalInteraction: ASId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+
+/*          OTHER ELEMENTS      */
+
+function CheckOtherElementsByProduct(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var value = tr.find("#lblElementId").val();
+    var Element = tr.find("#lblElementName").text()
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    CancelAddAOENT();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/CheckOtherElementsByProduct",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, OtherElement: value },
+        success: function (data) {
+            if (data.Data == true) {
+
+                $("#messageheaderOEINT").text("Aviso");
+
+                var Content = "";
+                Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdOE\" />";
+                Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdOE\"/>";
+                Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdOE\"/>";
+                Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdOE\"/>";
+                Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceIdOE\"/></div>";
+                Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con el Elemento: <label style='font-weight:bold'>" + Element + "</label></span><br /><br />";
+
+                $.each(data.Items, function (index, val) {
+                    Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddOtherElementsInteractionsTI($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
+                    console.log(val.Description);
+
+                });
+
+                $("#DivOEINT").append(Content);
+                $("#btnOEINT").trigger("click");
+            }
+            else if (data.Data == false) {
+                AddProductOtherElementInteractions(value, null);
+            }
+        }
+    })
+}
+
+function AddProductOtherElementInteractions(value, SubstanceInteract) {
+
+    var size = $(".SubstanceInteract").size();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CategoryId").val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    var JsonList = [];
+
+
+    if ((SubstanceInteract == null) || (SubstanceInteract == undefined)) {
+        for (var i = 0; i <= size - 1; i++) {
+            if ((i != 0) || (i != undefined)) {
+                var item = $(".SubstanceInteract")[i];
+
+                var SubstanceInteract = $(item).find("#inpActiveSubstanceId").val();
+
+                JsonList.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": SubstanceInteract,
+                        "ActiveSubstance": value
+                    });
+            }
+        }
+    }
+    else {
+
+        JsonList.push(
+                        {
+                            "Division": DId,
+                            "Category": CId,
+                            "PharmaForm": PFId,
+                            "Product": PId,
+                            "SubstanceInteract": SubstanceInteract,
+                            "PharmaGroupId": value
+                        });
+    }
+
+    var jsonresponse = JSON.stringify(JsonList);
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/AddProductOtherElementInteractions",
+        data: { Size: size, OtherElementInteractions: jsonresponse },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else {
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+                d += "<label> Ya existe asociacion entre elementos.</label> <br/>"
+                d += "<br/>"
+                d += "<div>"
+                d += "<ul>"
+
+                $.each(data, function (index, val) {
+                    d += "<li><span style=\"font-weight:bold\">" + val.Element + "</span> ya esta asociado a la sustancia <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span></li>";
+                });
+
+                d += "</ul>"
+                d += "</div>"
+                apprise("" + d + "", { 'animate': true });
+
+                JsonList = [];
+                JsonListTIOE = [];
+
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+var JsonListTIOE = [];
+
+function AddOtherElementsInteractionsTI(item) {
+
+    var ASId = $("#MdlActiveSubstanceIdOE").val();
+    var value = $(item).val();
+    var PId = $("#MdlProductIdOE").val();
+    var CId = $("#MdlCategoryIdOE").val();
+    var DId = $("#MdlDivisionIdOE").val();
+    var PFId = $("#MdlPharmaFormIdOE").val();
+
+    if ($(item).is(":checked")) {
+
+        JsonListTIOE.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": value,
+                        "ActiveSubstance": ASId
+                    });
+
+        console.log(JsonListTIOE);
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = RemoveItemOfJsonListTI(JsonListTIOE, "Division", "Category", "PharmaForm", "Product", "SubstanceInteract", "ActiveSubstance", DId, CId, PFId, PId, value, ASId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+
+            JsonListTIOE.splice(index, 1);
+
+            console.log(JsonListTIOE);
+        }
+    }
+
+}
+
+function AddOtherElementsInteractions() {
+
+    $("#bloqueo").show();
+
+    var size = $(JsonListTIOE).size();
+    var jsonresponse = JSON.stringify(JsonListTIOE);
+
+    if ((size != 0) || (size != "0")) {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/AddProductOtherElementInteractions",
+            data: { Size: size, OtherElementInteractions: jsonresponse },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+                    d += "<label> Ya existe asociacion entre elementos.</label> <br/>"
+                    d += "<br/>"
+                    d += "<div>"
+                    d += "<ul>"
+
+                    $.each(data, function (index, val) {
+                        d += "<li><span style=\"font-weight:bold\">" + val.Element + "</span> ya esta asociado a la sustancia <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span></li>";
+                    });
+
+                    d += "</ul>"
+                    d += "</div>"
+
+                    apprise("" + d + "", { 'animate': true });
+
+                    JsonList = [];
+                    JsonListTIOE = [];
+
+                    $("#bloqueo").hide();
+
+                }
+            }
+        })
+    } else {
+
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+}
+
+function CancelAddAOENT() {
+
+    $("#DivOEINT").empty();
+
+}
+
+function DeleteOtherElementInteracions(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = tr.find("#lblElementIdAsoc").val();
+    var value = tr.find("#lblActiveSubstanceIdOE").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteOtherElementInteracions",
+        data: { ActiveSubstance: value, OtherElement: ASId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function NoInteractions() {
+
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    var d = "";
+    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+    d += "<label> Ser&aacute;n eliminados los registros asociados al producto.</label> <br/>"
+    d += "<br/>"
+    d += "<p style='text-align:center'> ¿Desea continuar con la operaci&oacute;n?</> <br/>"
+
+    apprise("" + d + "", { 'verify': true }, function (r) {
+        if (r) {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "../Medical/NoInteractions",
+                data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout("document.location.reload()");
+                    } else {
+                        $("#bloqueo").hide();
+                    }
+                }
+            })
+        } else {
+            $("#bloqueo").hide();
+        }
+    })
+}
+
+
+
+/*              CIE - 10           */
+
+
+function GetLevelTwoCICD(ICDId) {
+
+    $("#bloqueo").show();
+
+    var ListId = "#ListL2_" + ICDId;
+    var ExpandBTN = "#Expand_" + ICDId;
+    var CollapseBTN = "#Collapse_" + ICDId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelTwoCICD",
+        data: { ICD: ICDId },
+        success: function (data) {
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+            $("#bloqueo").hide();
+        }
+    })
+}
+
+function GetLevelThreeCICD(ICDId) {
+
+    $("#bloqueo").show();
+
+    var ListId = "#ListL3_" + ICDId;
+    var ExpandBTN = "#Expand_" + ICDId;
+    var CollapseBTN = "#Collapse_" + ICDId;
+
+    $(ListId).empty();
+    $(ExpandBTN).hide();
+    $(CollapseBTN).show();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetLevelThreeCICD",
+        data: { ICD: ICDId },
+        success: function (data) {
+            $(ListId).empty();
+            $.each(data, function (index, val) {
+                $(ListId).append($("<li>" + val + "</li>"));
+            });
+            $("#bloqueo").hide();
+        }
+    })
+
+}
+
+var ListAddCCIE = [];
+
+var ListRemoveCCIE = [];
+
+function AddCCIE10(item) {
+
+    var ICDId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddCIE.push({
+            'TId': ICDId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListAddCIE);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListAddCIE, "TId", "PId", "PFId", ICDId, PId, PFId);
+
+        if (index == null) {
+        } else if (index >= 0) {
+
+            ListAddCIE.splice(index, 1);
+
+            console.log(ListAddCIE);
+        }
+    }
+}
+
+function AddCCIE10Remove(item) {
+
+    var ICDId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListRemoveCIE.push({
+            'TId': ICDId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListRemoveCIE);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListRemoveCIE, "TId", "PId", "PFId", ICDId, PId, PFId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+            ListRemoveCIE.splice(index, 1);
+            console.log(ListRemoveCIE);
+        }
+    }
+}
+
+function SaveCCIE10() {
+
+    var Size = $(ListAddCIE).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddCIE);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveCIE10",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+function RemoveCCIE10() {
+
+    var Size = $(ListRemoveCIE).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListRemoveCIE);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/RemoveCIE10",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+                    var d = "";
+                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                    d += "<br/>";
+                    d += "<ul style='list-style:none'>";
+                    $.each(data, function (index, val) {
+                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                    });
+                    d += "</ul>";
+
+                    apprise("" + d + "", { 'animate': true });
+                    $("#bloqueo").hide();
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+
+/*          INDICATIONS         */
+
+function AddProductIndications(value) {
+
+    $("#bloqueo").show();
+
+    var PId = $("#ProductId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/AddProductIndications",
+        data: { Product: PId, Indication: value },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function RemoveProductIndications(value) {
+
+    $("#bloqueo").show();
+
+    var PId = $("#ProductId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/RemoveProductIndications",
+        data: { Product: PId, Indication: value },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function GetRowsPerPageIndications() {
+
+    $("#bloqueo").show();
+
+    var Ind = $("#RowsPerPageIndications").val();
+
+    sessionStorage.Ind = Ind;
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/PagerInd",
+        data: { Page: Ind },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+
+
+/*      CONTRAINDICATIONS       */
+
+function CheckCIE10Contraindications(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var value = tr.find("#lblElementId").val();
+    var Element = tr.find("#lblElementName").text();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    CancelAddAOENT();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/CheckOtherElementsByProduct",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, OtherElement: value },
+        success: function (data) {
+            if (data.Data == true) {
+
+                $("#messageheaderOEINT").text("Aviso");
+
+                var Content = "";
+                Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdOE\" />";
+                Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdOE\"/>";
+                Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdOE\"/>";
+                Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdOE\"/>";
+                Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceIdOE\"/></div>";
+                Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con el Elemento: <label style='font-weight:bold'>" + Element + "</label></span><br /><br />";
+
+                $.each(data.Items, function (index, val) {
+                    Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddOtherElementsInteractionsTI($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
+                    console.log(val.Description);
+
+                });
+
+                $("#DivOEINT").append(Content);
+                $("#btnOEINT").trigger("click");
+            }
+            else if (data.Data == false) {
+                AddProductOtherElementInteractions(value, null);
+            }
+        }
+    })
+
+}
+
+function AddCIE10Contraindications(item) {
+
+    var ICDId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddCIE.push({
+            'TId': ICDId,
+            'PFId': PFId,
+            'PId': PId
+        });
+
+        console.log(ListAddCIE);
+
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = functiontofindIndexByKeyValue(ListAddCIE, "TId", "PId", "PFId", ICDId, PId, PFId);
+
+        if (index == null) {
+        } else if (index >= 0) {
+
+            ListAddCIE.splice(index, 1);
+
+            console.log(ListAddCIE);
+        }
+    }
+}
