@@ -1,0 +1,371 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="medinet.master.cs" Inherits="medinet" %>
+<%@ Register TagPrefix="myc" Namespace="WebApplication4" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/> 
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <meta name="description" content="Accordion with CSS3" />
+        <meta name="keywords" content="accordion, css3, sibling selector, radio buttons, input, pseudo class" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico"/> 
+
+		<script type="text/javascript" src="js/modernizr.custom.29473.js"></script>
+    <title>Medinet</title>
+     
+    <script src="Scripts/jquery.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.alerts.js" type="text/javascript"></script>
+    <link href="Scripts/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="México/estilos.css" rel="stylesheet" type="text/css" media="screen" /> 
+    <style type="text/css">
+
+/* CSS reset */
+
+section, header{
+	display: block;
+}
+
+        .container{
+	width: 100%;
+	position: relative;
+	text-align: center;
+}
+.clr{
+	clear: both;
+}
+.container > header{
+	padding: 20px 30px 10px 30px;
+	margin: 0px 20px 10px 20px;
+	position: relative;
+	display: block;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.container > header h1{
+	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+	font-size: 35px;
+	line-height: 35px;
+	position: relative;
+	font-weight: 400;
+	color: #3d7489;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    padding: 0px 0px 5px 0px;
+}
+.container > header h1 span{
+	color: #80B8CE;
+	text-shadow: 0px 1px 1px rgba(255,255,255,0.8);
+}
+.container > header h2{
+	font-size: 16px;
+	font-style: italic;
+	color: #82858e;
+	text-shadow: 0px 1px 1px rgba(255,255,255,0.8);
+}
+.ac-container{
+	width: 400px;
+	margin: 10px auto 30px auto;
+	text-align: left;
+}
+.ac-container label{
+	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+	padding: 5px 20px;
+	position: relative;
+	z-index: 20;
+	display: block;
+	height: 30px;
+	cursor: pointer;
+	color: #777;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+	line-height: 33px;
+	font-size: 19px;
+	background: #ffffff;
+	background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
+	background: -webkit-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: -o-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+	box-shadow: 
+		0px 0px 0px 1px rgba(155,155,155,0.3), 
+		1px 0px 0px 0px rgba(255,255,255,0.9) inset, 
+		0px 2px 2px rgba(0,0,0,0.1);
+}
+.ac-container label:hover{
+	background: #fff;
+}
+.ac-container input:checked + label,
+.ac-container input:checked + label:hover{
+	background: #c6e1ec;
+	color: #3d7489;
+	text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+	box-shadow: 
+		0px 0px 0px 1px rgba(155,155,155,0.3), 
+		0px 2px 2px rgba(0,0,0,0.1);
+}
+.ac-container label:hover:after,
+.ac-container input:checked + label:hover:after{
+	content: '';
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	right: 13px;
+	top: 7px;
+	background: transparent url(../images/arrow_down.png) no-repeat center center;	
+}
+.ac-container input:checked + label:hover:after{
+	background-image: url(../images/arrow_up.png);
+}
+.ac-container input{
+	display: none;
+}
+.ac-container article{
+	background: rgba(255, 255, 255, 0.5);
+	margin-top: -1px;
+	overflow: hidden;
+	height: 0px;
+	position: relative;
+	z-index: 10;
+	-webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+}
+.ac-container article p{
+	font-style: italic;
+	color: #777;
+	line-height: 23px;
+	font-size: 14px;
+	padding: 20px;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+}
+.ac-container input:checked ~ article{
+	-webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3);
+}
+.ac-container input:checked ~ article.ac-small{
+	height: 140px;
+}
+.ac-container input:checked ~ article.ac-medium{
+	height: 180px;
+}
+.ac-container input:checked ~ article.ac-large{
+	height: 230px;
+}
+        td
+        {
+            vertical-align: top;
+        }
+        .draggingStyle
+        {
+            background-color: lightblue;
+        }
+        .targetGrid
+        {
+            background-color: lightgreen;
+        }
+        div.upload {
+            width: 20px;
+            height: 20px;
+            background: url("Images/add1.png"), no-repeat center center;
+            z-index:2; 
+        }
+        div.classname1 {
+	        -moz-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	        -webkit-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	        box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf) );
+	        background:-moz-linear-gradient( center top, #63b8ee 5%, #468ccf 100% );
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf');
+	        background-color:#63b8ee;
+	        -webkit-border-top-left-radius:20px;
+	        -moz-border-radius-topleft:20px;
+	        border-top-left-radius:20px;
+	        -webkit-border-top-right-radius:20px;
+	        -moz-border-radius-topright:20px;
+	        border-top-right-radius:20px;
+	        -webkit-border-bottom-right-radius:20px;
+	        -moz-border-radius-bottomright:20px;
+	        border-bottom-right-radius:20px;
+	        -webkit-border-bottom-left-radius:20px;
+	        -moz-border-radius-bottomleft:20px;
+	        border-bottom-left-radius:20px;
+	        text-indent:0;
+	        border:1px solid #3866a3;
+	        display:inline-block;
+	        color:#14396a;
+	        font-family:Arial;
+	        font-size:15px;
+	        font-weight:bold;
+	        font-style:normal;
+	        height:23px;
+	        line-height:23px;
+	        width:122px;
+	        text-decoration:none;
+	        text-align:center;
+	        text-shadow:1px 1px 0px #7cacde;
+    
+        }
+        div.classname1 input {
+            z-index:2;
+            display: block !important;
+            width: 122px !important;
+            height: 20px !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+         }
+         div.upload input {
+            z-index:2;
+            display: block !important;
+            width: 20px !important;
+            height: 20px !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            box-shadow:
+            /* Sombras externa */
+            inset 0 10px 15px rgba(255,255,255,.35), inset 0 -10px 15px rgba(0,0,0,.05), inset 10px 0 15px rgba(0,0,0,.05), inset -10px 0 15px rgba(0,0,0,.05),
+            /* Sombra interna */
+            0 5px 20px rgba(0,0,0,.1);
+        }
+        div.uploadEdit {
+            width: 15px;
+            height: 16px;
+            background: url("editar.gif");
+            overflow: hidden;
+        }
+        div.upload:active {
+            box-shadow: inset 0 5px 30px rgba(0,0,0,.2); /* Sombra interior */
+  
+        }
+        div.uploadEdit input {
+            display: block !important;
+            width: 16px !important;
+            height: 16px !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+        }
+        #accordion {
+float: left;
+
+display: block;
+height: 170px;
+width: 50px;
+padding: 15px 0;
+overflow: hidden;
+color: #fff;
+text-decoration: none;
+font-size: 16px;
+line-height: 1.5em;
+border-left: 1px solid #fff;}
+ 
+#accordion img {
+border: none;
+border-right: 1px solid #fff;
+float: left;
+margin: -15px 15px 0 0;
+}
+ 
+#accordion.active {
+width: 450px;
+}
+
+
+.primaryNav{
+	margin: 0 5px 0 0;
+	padding: 5px 0;
+	display:inline-block;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	color: black;	
+    width:120px;
+	background: #c3eafb url('images/white-highlight.png');
+	border: 2px solid #b5d9ea;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+	-moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */	
+}
+.primaryNav:hover {
+	background-color: #e2f4fd;
+	border-color: #97bdcf;
+}
+
+    </style>
+
+
+</head>
+<body>
+<img  src="Images/Encabezado.JPG" width="100%"/>
+    
+    <form id="form1" runat="server">
+        <div>
+          <asp:ScriptManager id="ScriptManagerMaster" runat="server" EnablePageMethods="true"/>
+          <%-- <ajaxToolkit:ToolkitScriptManager id="ScriptManagerMaster1" runat="server" ></ajaxToolkit:ToolkitScriptManager>--%>
+            <asp:Table runat="server" Width="100%">
+                
+                <asp:TableRow>
+                    <asp:TableCell>
+                        <h1>Medinet</h1>
+                        <div>
+                         <myc:MySiteMapPath ID="ss" runat="server" OnItemCreated="SiteMapPath_ItemCreated" NodeStyle-CssClass="primaryNav">
+                             <PathSeparatorTemplate>  
+                <asp:Image runat="server" ID="Image1" ImageUrl="~/Images/vertical-line.png" Width="20px"  />  
+             </PathSeparatorTemplate>  
+                           </myc:MySiteMapPath>
+                        </div>
+                        <br />
+                    </asp:TableCell>
+                    <asp:TableCell HorizontalAlign="Right">
+                        <asp:Label ID="lbl" runat="server" Text="Versión:  " Font-Size="Medium" Font-Bold="true" />
+                        <asp:Label ID="lblVersion" runat="server"  Font-Size="Medium" Font-Bold="true" /><br />
+                        <asp:Label runat="server" Text="Usuario:  " Font-Size="X-Large" Font-Bold="true" />
+                        <asp:Label ID="lblUserName" runat="server" Font-Size="X-Large" />
+                        <br />
+                        <asp:Button ID="btnCloseSession" runat="server" Text="Cerrar sesión" TabIndex="2" OnClick="btnCloseSession_OnClick" />
+                    </asp:TableCell>
+                </asp:TableRow>
+
+                <asp:TableRow>
+                    <asp:TableCell>
+                        <asp:Label ID="lblCountrylabel" Text="País: " runat="server" Font-Size="Large" Font-Bold="true" Visible="false" />
+                        <asp:Label ID="lblCountryName" runat="server" Font-Size="Large" Font-Bold="true" />
+                    </asp:TableCell>
+                </asp:TableRow>
+
+                <asp:TableRow>
+                    <asp:TableCell>
+                        <asp:Label ID="lblBookLabel" Text="Obra: " runat="server" Font-Size="Large" Font-Bold="true" Visible="false" />
+                        <asp:Label ID="lblBookShortName" runat="server" Font-Size="Large" Font-Bold="true" />
+                    </asp:TableCell>
+                </asp:TableRow>
+
+                <asp:TableRow>
+                    <asp:TableCell>
+                        <asp:Label ID="lblEditionLabel" Text="Edición: " runat="server" Font-Size="Large" Font-Bold="true" Visible="false" />
+                        <asp:Label ID="lblNumberEdition" runat="server" Font-Size="Large" Font-Bold="true" />
+                    </asp:TableCell>
+                </asp:TableRow>
+
+                <asp:TableRow>
+                    <asp:TableCell>
+                        <asp:Label ID="lblDivisionLabel" Text="Laboratorio: " runat="server" Font-Size="Large" Font-Bold="true" Visible="false" />
+                        <asp:Label ID="lblDivisionName" runat="server" Font-Size="Large" Font-Bold="true" />
+                        <br />
+                        <br />
+                    </asp:TableCell>
+                </asp:TableRow>
+            </asp:Table>
+            <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" />
+        </div>
+        <%--<asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" />--%>
+    </form>
+</body>
+</html>
