@@ -1,0 +1,66 @@
+﻿@using Web.Models;
+@{
+    PLMUsers_20111213Entities2 PLMUsers = new PLMUsers_20111213Entities2();
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title> @ViewBag.Title |DEACI</title>
+    <link href="~/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <script src="~/Bootstrap/js/JavaScript1.js"></script>
+
+</head>
+
+<body style="background-color:rgba(254, 248, 182, 0.06)">
+    @*<nav id="header" class="navbar  navbar-default loading">
+        <div>
+
+        </div>
+    </nav>*@
+    <img src="/Images/PLM-LogotipoAzul.png" style="float:right; width:12%; height:6%;" />
+    <img src="/Images/logg.png" style="float:left; width:24%; height:24%;" />
+    @*style="background-image: url(/Images/fondo.jpg); "*@
+    <div>
+        @*@if (Request.IsAuthenticated)
+        {
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @{
+            CountriesUsers p = (CountriesUsers)Session["Login"];
+            if (p != null)
+            {
+                var user = p.userId;
+                var app = p.ApplicationId;
+                var userid = from UR in PLMUsers.ApplicationUsers
+                             where UR.UserId == user
+                             && UR.ApplicationId == app
+                             select UR;
+                foreach (ApplicationUsers a in userid)
+                {
+                    if (a.RoleId == 1)
+                    {
+                        <li class="icon-bar">@Html.ActionLink("FiltroVentas", "País", "Ventas")</li>
+                        <li>@Html.ActionLink("FiltroProducción", "País", "Producción")</li>
+                    }
+                }
+            }
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        }*@
+    </div>
+
+    <div class="container">
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    <div class="container-fluid" style="background-color:rgba(0, 0, 0, 0.001)">
+        @RenderBody()
+    </div>
+
+    <script src="~/Bootstrap/js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+
+    </html>

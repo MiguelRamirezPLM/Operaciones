@@ -1,0 +1,2358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Guia_nuevaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActiveSubstance" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="ZipCode" Type="varchar" MaxLength="30" />
+    <Property Name="City" Type="varchar" MaxLength="100" />
+    <Property Name="Email" Type="varchar" MaxLength="255" />
+    <Property Name="Web" Type="varchar" MaxLength="100" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="AddressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Suburb" Type="varchar" MaxLength="255" />
+    <Property Name="StateId" Type="int" />
+  </EntityType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdvertId" />
+    </Key>
+    <Property Name="AdvertId" Type="int" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AdvertName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="BaseUrl" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="AdvertTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdvertTypes">
+    <Key>
+      <PropertyRef Name="AdvertTypeId" />
+    </Key>
+    <Property Name="AdvertTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Alphabet">
+    <Key>
+      <PropertyRef Name="AlphabetId" />
+    </Key>
+    <Property Name="AlphabetId" Type="tinyint" Nullable="false" />
+    <Property Name="Letter" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="AttributeGroupOrder" Type="int" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="varchar" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BookName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BrandName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Logo" Type="varchar" MaxLength="60" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="100" />
+    <Property Name="AlphabetId" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="tinyint" />
+    <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="IdArbol" Type="int" />
+  </EntityType>
+  <EntityType Name="ClientAddresses">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="AddressId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientBrands">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="BrandId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="tinyint" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="50" />
+    <Property Name="ExpireDescription" Type="varchar" MaxLength="100" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="BrandId" Type="int" Nullable="false" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientBrandTypes">
+    <Key>
+      <PropertyRef Name="ClientBrandTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientHeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.ClientPhones' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="ClientPhones">
+    <Key>
+      <PropertyRef Name="Number" />
+      <PropertyRef Name="ClientPhoneId" />
+      <PropertyRef Name="PhoneTypeId" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Number" Type="varchar(max)" Nullable="false" />
+    <Property Name="Lada" Type="varchar" MaxLength="10" />
+    <Property Name="ClientPhoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PhoneTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="AddressId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProductCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProductHeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientIdParent" Type="int" />
+    <Property Name="ClientCode" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Image" Type="varchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ShortName" Type="varchar" MaxLength="200" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="AlphabetId" Type="tinyint" />
+    <Property Name="ANUNCIANTEID" Type="int" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ClientTypes">
+    <Key>
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryCode" Type="tinyint" />
+    <Property Name="ID" Type="varchar" MaxLength="3" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="int" Nullable="false" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientCategories">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientMedicalProducts">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="EditionClientProductShots">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ProductShot" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClients">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="100" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionClientSpecialities">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="SpecialityId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="SpecialityId" Type="int" Nullable="false" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NumberEdition" Type="int" Nullable="false" />
+    <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="BarCode" Type="varchar" MaxLength="80" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="BookId" Type="int" Nullable="false" />
+    <Property Name="EditionCode" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="EditionSpecialityClientAdvers">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="SpecialityId" />
+      <PropertyRef Name="AdvertId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="SpecialityId" Type="int" Nullable="false" />
+    <Property Name="AdvertId" Type="int" Nullable="false" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Tratamiento" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="MatchCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="AddedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="HTMLContent" Type="text" />
+    <Property Name="XMLContent" Type="text" />
+    <Property Name="FileName" Type="varchar" MaxLength="200" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PharmaceuticalForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PharmaForm" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PhoneTypes">
+    <Key>
+      <PropertyRef Name="PhoneTypeId" />
+    </Key>
+    <Property Name="PhoneTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Presentations">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="PresentationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="PlainContent" Type="text" />
+    <Property Name="Content" Type="text" />
+    <Property Name="HtmlContent" Type="text" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="TypeId" Type="tinyint" />
+    <Property Name="AlphabetId" Type="tinyint" />
+    <Property Name="ProductId_Anterior" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="TypeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="40" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Specialities">
+    <Key>
+      <PropertyRef Name="SpecialityId" />
+    </Key>
+    <Property Name="SpecialityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StateName" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="CountryId" Type="tinyint" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmoProductPharmaForms' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmoProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpArbolCategorias' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpArbolCategorias">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="NIVEL 1" Type="nvarchar" MaxLength="255" />
+    <Property Name="NIVEL 2" Type="nvarchar" MaxLength="255" />
+    <Property Name="NIVEL 3" Type="nvarchar" MaxLength="255" />
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="NIVEL 4" Type="nvarchar" MaxLength="255" />
+    <Property Name="active" Type="bit" />
+    <Property Name="CategoryIdFinalArbol" Type="int" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpArtTecnica' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpArtTecnica">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="EditionId" Type="float" />
+    <Property Name="ClientId" Type="float" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="Productid" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo11" Type="nvarchar" MaxLength="255" />
+    <Property Name="SubProductid" Type="float" />
+    <Property Name="SubProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="INFORMACIÓN (Para plantilla)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Comentarios" Type="nvarchar" MaxLength="255" />
+    <Property Name="DISEÑO (Product Shoot)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Imagen y número" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpBBRAUN' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpBBRAUN">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="EditionId" Type="float" />
+    <Property Name="ClientId" Type="float" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ProductId" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo12" Type="float" />
+    <Property Name="SubProductId" Type="float" />
+    <Property Name="SubProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="INFORMACIÓN (Para plantilla)" Type="nvarchar" MaxLength="255" />
+    <Property Name="DISEÑO (Product Shoot)" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpBiomedicaGaoz' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpBiomedicaGaoz">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="EditionId" Type="float" />
+    <Property Name="ClientId" Type="float" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="ProductId" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo11" Type="float" />
+    <Property Name="SubProductId" Type="float" />
+    <Property Name="SubProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="INFORMACIÓN (Para plantilla)" Type="nvarchar" MaxLength="255" />
+    <Property Name="DISEÑO (Product Shoot)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo15" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo16" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo17" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo18" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo19" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo20" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo21" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo22" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo23" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo24" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo25" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo26" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo27" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo28" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpCategories' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpCategories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="NewColumn" />
+    </Key>
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="NewColumn" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpClientCategories' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpClientCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpClientProductCategories' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpClientProductCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpDewimed' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpDewimed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID ARBOL" Type="nvarchar" MaxLength="255" />
+    <Property Name="EditionId" Type="float" />
+    <Property Name="ClientId" Type="float" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="ProductId" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo11" Type="float" />
+    <Property Name="SubProductid" Type="float" />
+    <Property Name="SubProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="INFORMACIÓN (Para plantilla)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Comentarios" Type="nvarchar" MaxLength="255" />
+    <Property Name="DISEÑO (Product Shoot)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Imagen y número" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpDistribuidoraAlfa' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpDistribuidoraAlfa">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="ProductId" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="SubParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="SubProductId" Type="nvarchar" MaxLength="255" />
+    <Property Name="SubProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="INFORMACIÓN (Para plantilla)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Comentarios" Type="nvarchar" MaxLength="255" />
+    <Property Name="DISEÑO (Product Shoot)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Imagen y número" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEBP' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEBP">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="Productid" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="SubParentId" Type="float" />
+    <Property Name="SubProductid" Type="float" />
+    <Property Name="SubProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="Información" Type="nvarchar" MaxLength="255" />
+    <Property Name="Product Shoot" Type="nvarchar" MaxLength="255" />
+    <Property Name="Comentarios" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo13" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo14" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo15" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo16" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo17" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo18" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo19" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo20" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo21" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo22" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo23" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo24" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo25" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo26" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo27" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo28" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEditionClientCategories' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEditionClientCategories">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEditionClientMedicalProducts' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEditionClientMedicalProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEditionClientMedicalProductsMYN' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEditionClientMedicalProductsMYN">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEditionClientProducts' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEditionClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEditionClientProductsAnterior' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEditionClientProductsAnterior">
+    <Key>
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Page" Type="varchar" MaxLength="50" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="tinyint" Nullable="false" />
+    <Property Name="ClientTypeId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpEditionClientProductShots' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpEditionClientProductShots">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="tinyint" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ProductShot" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'Guia_nueva.dbo.tmpEmpresasGuiaColombia' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpEmpresasGuiaColombia">
+          <Property Name="Empresa" Type="nvarchar" MaxLength="255" />
+          <Property Name="Ciudad" Type="nvarchar" MaxLength="255" />
+          <Property Name="Dirección" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono 2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono 3" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono 4" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono 5" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono 6" Type="nvarchar" MaxLength="255" />
+          <Property Name="Teléfono 7" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="255" />
+          <Property Name="Telefax" Type="nvarchar" MaxLength="255" />
+          <Property Name="PBX" Type="nvarchar" MaxLength="255" />
+          <Property Name="CELULAR" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'Guia_nueva.dbo.tmpEspecialidadesGuiaColombia' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="tmpEspecialidadesGuiaColombia">
+          <Property Name="Especialidad" Type="nvarchar" MaxLength="255" />
+          <Property Name="Empresa" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpParticipantProducts' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpParticipantProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="tinyint" Nullable="false" />
+    <Property Name="HTMLContent" Type="text" />
+    <Property Name="XMLContent" Type="text" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpProductContents' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpProductContents">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="tinyint" Nullable="false" />
+    <Property Name="AttributeId" Type="int" Nullable="false" />
+    <Property Name="PlainContent" Type="text" />
+    <Property Name="Content" Type="text" />
+    <Property Name="HtmlContent" Type="text" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpProductPharmaForms' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpProducts' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpProducts">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="TypeId" Type="tinyint" />
+    <Property Name="AlphabetId" Type="tinyint" />
+    <Property Name="ProductIdNuevo" Type="int" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpProductsContenido' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpProductsContenido">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="TypeId" Type="tinyint" />
+    <Property Name="AlphabetId" Type="tinyint" />
+    <Property Name="productIdNuevo" Type="int" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpProductSubstances' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpRecategorizacion' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpRecategorizacion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Recategorización (CAMBIO O NUEVO)" Type="nvarchar" MaxLength="255" />
+    <Property Name="CategoryId" Type="float" />
+    <Property Name="Category" Type="nvarchar" MaxLength="255" />
+    <Property Name="SubcategoryId" Type="float" />
+    <Property Name="Subcategory" Type="nvarchar" MaxLength="255" />
+    <Property Name="ParentId" Type="float" />
+    <Property Name="ID ARBOL" Type="nvarchar" MaxLength="255" />
+    <Property Name="CategoryIdFinal" Type="int" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpSECA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpSECA">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID ARBOL" Type="float" />
+    <Property Name="ParentId" Type="nvarchar" MaxLength="255" />
+    <Property Name="ProductId" Type="float" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo6" Type="float" />
+    <Property Name="Campo7" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo8" Type="float" />
+    <Property Name="PRODUCTO/MODELO" Type="nvarchar" MaxLength="255" />
+    <Property Name="Información" Type="nvarchar" MaxLength="255" />
+    <Property Name="Comentarios" Type="nvarchar" MaxLength="255" />
+    <Property Name="DISEÑO (Product Shoot)" Type="nvarchar" MaxLength="255" />
+    <Property Name="Imagen y número" Type="nvarchar" MaxLength="255" />
+    <Property Name="ProductIdFinal" Type="int" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Guia_nueva.dbo.tmpSEVIME' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="tmpSEVIME">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="2" Type="float" />
+    <Property Name="Campo1" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo2" Type="nvarchar" MaxLength="255" />
+    <Property Name="108" Type="float" />
+    <Property Name="18" Type="float" />
+    <Property Name="SERVICIO Y VENTA DE INSUMOS MÉDICOS ESPECIALIZADOS, SA de CV" Type="nvarchar" MaxLength="255" />
+    <Property Name="SEVIME" Type="nvarchar" MaxLength="255" />
+    <Property Name="1947" Type="float" />
+    <Property Name="AGITADORES" Type="nvarchar" MaxLength="255" />
+    <Property Name="NULL" Type="nvarchar" MaxLength="255" />
+    <Property Name="DE PLAQUETAS, ROTATIVA Y LINEAL" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo12" Type="float" />
+    <Property Name="Campo13" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo14" Type="nvarchar" MaxLength="255" />
+    <Property Name="Campo15" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <Association Name="R_100">
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_108">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientCategories" Type="Self.ClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientCategories">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_109">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="ClientCategories" Type="Self.ClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ClientCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_110">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClientCategories" Type="Self.EditionClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientCategories">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_111">
+    <End Role="ClientCategories" Type="Self.ClientCategories" Multiplicity="1" />
+    <End Role="EditionClientCategories" Type="Self.EditionClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionClientCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_116">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductCategories" Type="Self.ClientProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_117">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="ClientProductCategories" Type="Self.ClientProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ClientProductCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_118">
+    <End Role="ClientProductCategories" Type="Self.ClientProductCategories" Multiplicity="1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_119">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_121">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_122">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_123">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="EditionClientProductShots" Type="Self.EditionClientProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionClientProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_124">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_125">
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="1" />
+    <End Role="ClientProductSubstances" Type="Self.ClientProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ClientProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_126">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductSubstances" Type="Self.ClientProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductSubstances">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_127">
+    <End Role="ClientProductSubstances" Type="Self.ClientProductSubstances" Multiplicity="1" />
+    <End Role="EditionClientMedicalProducts" Type="Self.EditionClientMedicalProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClientMedicalProducts">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_128">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClientMedicalProducts" Type="Self.EditionClientMedicalProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientMedicalProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_129">
+    <End Role="HeterogeneousCategories" Type="Self.HeterogeneousCategories" Multiplicity="1" />
+    <End Role="ClientHeterogeneousCategories" Type="Self.ClientHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="ClientHeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_130">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientHeterogeneousCategories" Type="Self.ClientHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientHeterogeneousCategories">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_131">
+    <End Role="HeterogeneousCategories" Type="Self.HeterogeneousCategories" Multiplicity="1" />
+    <End Role="ClientProductHeterogeneousCategories" Type="Self.ClientProductHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="ClientProductHeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_132">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductHeterogeneousCategories" Type="Self.ClientProductHeterogeneousCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductHeterogeneousCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_133">
+    <End Role="HeterogeneousCategories" Type="Self.HeterogeneousCategories" Multiplicity="1" />
+    <End Role="MatchCategories" Type="Self.MatchCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="MatchCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_135">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="MatchCategories" Type="Self.MatchCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="MatchCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_16">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="States" Type="Self.States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Role="Books" Type="Self.Books" Multiplicity="1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="Clients1" Type="Self.Clients" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="Clients1">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_29">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Products1" Type="Self.Products" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Products1">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_3">
+    <End Role="ClientBrandTypes" Type="Self.ClientBrandTypes" Multiplicity="0..1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientBrandTypes">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_33">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_46">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_50">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="Categories1" Type="Self.Categories" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="Categories1">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_55">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_56">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_59">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="EditionClientSpecialities" Type="Self.EditionClientSpecialities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClientSpecialities">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_60">
+    <End Role="Specialities" Type="Self.Specialities" Multiplicity="1" />
+    <End Role="EditionClientSpecialities" Type="Self.EditionClientSpecialities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialities">
+        <PropertyRef Name="SpecialityId" />
+      </Principal>
+      <Dependent Role="EditionClientSpecialities">
+        <PropertyRef Name="SpecialityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_64">
+    <End Role="EditionClientSpecialities" Type="Self.EditionClientSpecialities" Multiplicity="1" />
+    <End Role="EditionSpecialityClientAdvers" Type="Self.EditionSpecialityClientAdvers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClientSpecialities">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="SpecialityId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionSpecialityClientAdvers">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="SpecialityId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_65">
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="1" />
+    <End Role="EditionSpecialityClientAdvers" Type="Self.EditionSpecialityClientAdvers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Advertisements">
+        <PropertyRef Name="AdvertId" />
+      </Principal>
+      <Dependent Role="EditionSpecialityClientAdvers">
+        <PropertyRef Name="AdvertId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_69">
+    <End Role="States" Type="Self.States" Multiplicity="0..1" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_70">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientAddresses" Type="Self.ClientAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientAddresses">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_71">
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
+    <End Role="ClientAddresses" Type="Self.ClientAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Addresses">
+        <PropertyRef Name="AddressId" />
+      </Principal>
+      <Dependent Role="ClientAddresses">
+        <PropertyRef Name="AddressId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_72">
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTypes">
+        <PropertyRef Name="TypeId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_73">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_74">
+    <End Role="PharmaceuticalForms" Type="Self.PharmaceuticalForms" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaceuticalForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_75">
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_76">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_78">
+    <End Role="Presentations" Type="Self.Presentations" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Presentations">
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_81">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_82">
+    <End Role="Brands" Type="Self.Brands" Multiplicity="1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_85">
+    <End Role="AdvertTypes" Type="Self.AdvertTypes" Multiplicity="1" />
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdvertTypes">
+        <PropertyRef Name="AdvertTypeId" />
+      </Principal>
+      <Dependent Role="Advertisements">
+        <PropertyRef Name="AdvertTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_89">
+    <End Role="ClientTypes" Type="Self.ClientTypes" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientTypes">
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_91">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Brands" Type="Self.Brands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Brands">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_92">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_93">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_99">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Guia_nuevaModelStoreContainer">
+    <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Advertisements" EntityType="Self.Advertisements" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdvertTypes" EntityType="Self.AdvertTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Alphabet" EntityType="Self.Alphabet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientAddresses" EntityType="Self.ClientAddresses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientBrands" EntityType="Self.ClientBrands" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientBrandTypes" EntityType="Self.ClientBrandTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientCategories" EntityType="Self.ClientCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientHeterogeneousCategories" EntityType="Self.ClientHeterogeneousCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProductCategories" EntityType="Self.ClientProductCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProductHeterogeneousCategories" EntityType="Self.ClientProductHeterogeneousCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProducts" EntityType="Self.ClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientProductSubstances" EntityType="Self.ClientProductSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientTypes" EntityType="Self.ClientTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionAttributeGroup" EntityType="Self.EditionAttributeGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionAttributes" EntityType="Self.EditionAttributes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientCategories" EntityType="Self.EditionClientCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientMedicalProducts" EntityType="Self.EditionClientMedicalProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientProducts" EntityType="Self.EditionClientProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientProductShots" EntityType="Self.EditionClientProductShots" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClients" EntityType="Self.EditionClients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionClientSpecialities" EntityType="Self.EditionClientSpecialities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EditionSpecialityClientAdvers" EntityType="Self.EditionSpecialityClientAdvers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HeterogeneousCategories" EntityType="Self.HeterogeneousCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MatchCategories" EntityType="Self.MatchCategories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhoneTypes" EntityType="Self.PhoneTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Presentations" EntityType="Self.Presentations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductContents" EntityType="Self.ProductContents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductSubstances" EntityType="Self.ProductSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Specialities" EntityType="Self.Specialities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientPhones" EntityType="Self.ClientPhones" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ClientPhones].[Number] AS [Number], 
+    [ClientPhones].[Lada] AS [Lada], 
+    [ClientPhones].[ClientPhoneId] AS [ClientPhoneId], 
+    [ClientPhones].[PhoneTypeId] AS [PhoneTypeId], 
+    [ClientPhones].[Active] AS [Active], 
+    [ClientPhones].[ClientId] AS [ClientId], 
+    [ClientPhones].[AddressId] AS [AddressId]
+    FROM [dbo].[ClientPhones] AS [ClientPhones]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmoProductPharmaForms" EntityType="Self.tmoProductPharmaForms" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmoProductPharmaForms].[ProductId] AS [ProductId], 
+    [tmoProductPharmaForms].[PharmaFormId] AS [PharmaFormId]
+    FROM [dbo].[tmoProductPharmaForms] AS [tmoProductPharmaForms]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpArbolCategorias" EntityType="Self.tmpArbolCategorias" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpArbolCategorias].[ID ARBOL] AS [ID ARBOL], 
+    [tmpArbolCategorias].[NIVEL 1] AS [NIVEL 1], 
+    [tmpArbolCategorias].[NIVEL 2] AS [NIVEL 2], 
+    [tmpArbolCategorias].[NIVEL 3] AS [NIVEL 3], 
+    [tmpArbolCategorias].[Id] AS [Id], 
+    [tmpArbolCategorias].[NIVEL 4] AS [NIVEL 4], 
+    [tmpArbolCategorias].[active] AS [active], 
+    [tmpArbolCategorias].[CategoryIdFinalArbol] AS [CategoryIdFinalArbol]
+    FROM [dbo].[tmpArbolCategorias] AS [tmpArbolCategorias]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpArtTecnica" EntityType="Self.tmpArtTecnica" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpArtTecnica].[Id] AS [Id], 
+    [tmpArtTecnica].[CONTROL] AS [CONTROL], 
+    [tmpArtTecnica].[ID ARBOL] AS [ID ARBOL], 
+    [tmpArtTecnica].[EditionId] AS [EditionId], 
+    [tmpArtTecnica].[ClientId] AS [ClientId], 
+    [tmpArtTecnica].[CompanyName] AS [CompanyName], 
+    [tmpArtTecnica].[ParentId] AS [ParentId], 
+    [tmpArtTecnica].[Productid] AS [Productid], 
+    [tmpArtTecnica].[ProductName] AS [ProductName], 
+    [tmpArtTecnica].[Campo11] AS [Campo11], 
+    [tmpArtTecnica].[SubProductid] AS [SubProductid], 
+    [tmpArtTecnica].[SubProductName] AS [SubProductName], 
+    [tmpArtTecnica].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpArtTecnica].[INFORMACIÓN (Para plantilla)] AS [INFORMACIÓN (Para plantilla)], 
+    [tmpArtTecnica].[Comentarios] AS [Comentarios], 
+    [tmpArtTecnica].[DISEÑO (Product Shoot)] AS [DISEÑO (Product Shoot)], 
+    [tmpArtTecnica].[Imagen y número] AS [Imagen y número]
+    FROM [dbo].[tmpArtTecnica] AS [tmpArtTecnica]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpBBRAUN" EntityType="Self.tmpBBRAUN" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpBBRAUN].[Id] AS [Id], 
+    [tmpBBRAUN].[CONTROL] AS [CONTROL], 
+    [tmpBBRAUN].[ID ARBOL] AS [ID ARBOL], 
+    [tmpBBRAUN].[EditionId] AS [EditionId], 
+    [tmpBBRAUN].[ClientId] AS [ClientId], 
+    [tmpBBRAUN].[CompanyName] AS [CompanyName], 
+    [tmpBBRAUN].[ShortName] AS [ShortName], 
+    [tmpBBRAUN].[ProductId] AS [ProductId], 
+    [tmpBBRAUN].[ProductName] AS [ProductName], 
+    [tmpBBRAUN].[ParentId] AS [ParentId], 
+    [tmpBBRAUN].[Campo12] AS [Campo12], 
+    [tmpBBRAUN].[SubProductId] AS [SubProductId], 
+    [tmpBBRAUN].[SubProductName] AS [SubProductName], 
+    [tmpBBRAUN].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpBBRAUN].[INFORMACIÓN (Para plantilla)] AS [INFORMACIÓN (Para plantilla)], 
+    [tmpBBRAUN].[DISEÑO (Product Shoot)] AS [DISEÑO (Product Shoot)]
+    FROM [dbo].[tmpBBRAUN] AS [tmpBBRAUN]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpBiomedicaGaoz" EntityType="Self.tmpBiomedicaGaoz" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpBiomedicaGaoz].[Id] AS [Id], 
+    [tmpBiomedicaGaoz].[ID ARBOL] AS [ID ARBOL], 
+    [tmpBiomedicaGaoz].[CONTROL] AS [CONTROL], 
+    [tmpBiomedicaGaoz].[EditionId] AS [EditionId], 
+    [tmpBiomedicaGaoz].[ClientId] AS [ClientId], 
+    [tmpBiomedicaGaoz].[CompanyName] AS [CompanyName], 
+    [tmpBiomedicaGaoz].[ParentId] AS [ParentId], 
+    [tmpBiomedicaGaoz].[ProductId] AS [ProductId], 
+    [tmpBiomedicaGaoz].[ProductName] AS [ProductName], 
+    [tmpBiomedicaGaoz].[Campo11] AS [Campo11], 
+    [tmpBiomedicaGaoz].[SubProductId] AS [SubProductId], 
+    [tmpBiomedicaGaoz].[SubProductName] AS [SubProductName], 
+    [tmpBiomedicaGaoz].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpBiomedicaGaoz].[INFORMACIÓN (Para plantilla)] AS [INFORMACIÓN (Para plantilla)], 
+    [tmpBiomedicaGaoz].[DISEÑO (Product Shoot)] AS [DISEÑO (Product Shoot)], 
+    [tmpBiomedicaGaoz].[Campo15] AS [Campo15], 
+    [tmpBiomedicaGaoz].[Campo16] AS [Campo16], 
+    [tmpBiomedicaGaoz].[Campo17] AS [Campo17], 
+    [tmpBiomedicaGaoz].[Campo18] AS [Campo18], 
+    [tmpBiomedicaGaoz].[Campo19] AS [Campo19], 
+    [tmpBiomedicaGaoz].[Campo20] AS [Campo20], 
+    [tmpBiomedicaGaoz].[Campo21] AS [Campo21], 
+    [tmpBiomedicaGaoz].[Campo22] AS [Campo22], 
+    [tmpBiomedicaGaoz].[Campo23] AS [Campo23], 
+    [tmpBiomedicaGaoz].[Campo24] AS [Campo24], 
+    [tmpBiomedicaGaoz].[Campo25] AS [Campo25], 
+    [tmpBiomedicaGaoz].[Campo26] AS [Campo26], 
+    [tmpBiomedicaGaoz].[Campo27] AS [Campo27], 
+    [tmpBiomedicaGaoz].[Campo28] AS [Campo28]
+    FROM [dbo].[tmpBiomedicaGaoz] AS [tmpBiomedicaGaoz]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpCategories" EntityType="Self.tmpCategories" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpCategories].[CategoryId] AS [CategoryId], 
+    [tmpCategories].[ParentId] AS [ParentId], 
+    [tmpCategories].[Description] AS [Description], 
+    [tmpCategories].[Active] AS [Active], 
+    [tmpCategories].[NewColumn] AS [NewColumn]
+    FROM [dbo].[tmpCategories] AS [tmpCategories]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpClientCategories" EntityType="Self.tmpClientCategories" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpClientCategories].[ClientId] AS [ClientId], 
+    [tmpClientCategories].[CategoryId] AS [CategoryId]
+    FROM [dbo].[tmpClientCategories] AS [tmpClientCategories]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpClientProductCategories" EntityType="Self.tmpClientProductCategories" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpClientProductCategories].[ClientId] AS [ClientId], 
+    [tmpClientProductCategories].[ProductId] AS [ProductId], 
+    [tmpClientProductCategories].[CategoryId] AS [CategoryId]
+    FROM [dbo].[tmpClientProductCategories] AS [tmpClientProductCategories]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpDewimed" EntityType="Self.tmpDewimed" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpDewimed].[Id] AS [Id], 
+    [tmpDewimed].[CONTROL] AS [CONTROL], 
+    [tmpDewimed].[ID ARBOL] AS [ID ARBOL], 
+    [tmpDewimed].[EditionId] AS [EditionId], 
+    [tmpDewimed].[ClientId] AS [ClientId], 
+    [tmpDewimed].[CompanyName] AS [CompanyName], 
+    [tmpDewimed].[ParentId] AS [ParentId], 
+    [tmpDewimed].[ProductId] AS [ProductId], 
+    [tmpDewimed].[ProductName] AS [ProductName], 
+    [tmpDewimed].[Campo11] AS [Campo11], 
+    [tmpDewimed].[SubProductid] AS [SubProductid], 
+    [tmpDewimed].[SubProductName] AS [SubProductName], 
+    [tmpDewimed].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpDewimed].[INFORMACIÓN (Para plantilla)] AS [INFORMACIÓN (Para plantilla)], 
+    [tmpDewimed].[Comentarios] AS [Comentarios], 
+    [tmpDewimed].[DISEÑO (Product Shoot)] AS [DISEÑO (Product Shoot)], 
+    [tmpDewimed].[Imagen y número] AS [Imagen y número]
+    FROM [dbo].[tmpDewimed] AS [tmpDewimed]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpDistribuidoraAlfa" EntityType="Self.tmpDistribuidoraAlfa" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpDistribuidoraAlfa].[Id] AS [Id], 
+    [tmpDistribuidoraAlfa].[CONTROL] AS [CONTROL], 
+    [tmpDistribuidoraAlfa].[ID ARBOL] AS [ID ARBOL], 
+    [tmpDistribuidoraAlfa].[ProductId] AS [ProductId], 
+    [tmpDistribuidoraAlfa].[ProductName] AS [ProductName], 
+    [tmpDistribuidoraAlfa].[SubParentId] AS [SubParentId], 
+    [tmpDistribuidoraAlfa].[SubProductId] AS [SubProductId], 
+    [tmpDistribuidoraAlfa].[SubProductName] AS [SubProductName], 
+    [tmpDistribuidoraAlfa].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpDistribuidoraAlfa].[INFORMACIÓN (Para plantilla)] AS [INFORMACIÓN (Para plantilla)], 
+    [tmpDistribuidoraAlfa].[Comentarios] AS [Comentarios], 
+    [tmpDistribuidoraAlfa].[DISEÑO (Product Shoot)] AS [DISEÑO (Product Shoot)], 
+    [tmpDistribuidoraAlfa].[Imagen y número] AS [Imagen y número]
+    FROM [dbo].[tmpDistribuidoraAlfa] AS [tmpDistribuidoraAlfa]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEBP" EntityType="Self.tmpEBP" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEBP].[Id] AS [Id], 
+    [tmpEBP].[CONTROL] AS [CONTROL], 
+    [tmpEBP].[ID ARBOL] AS [ID ARBOL], 
+    [tmpEBP].[ParentId] AS [ParentId], 
+    [tmpEBP].[Productid] AS [Productid], 
+    [tmpEBP].[ProductName] AS [ProductName], 
+    [tmpEBP].[SubParentId] AS [SubParentId], 
+    [tmpEBP].[SubProductid] AS [SubProductid], 
+    [tmpEBP].[SubProductName] AS [SubProductName], 
+    [tmpEBP].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpEBP].[Información] AS [Información], 
+    [tmpEBP].[Product Shoot] AS [Product Shoot], 
+    [tmpEBP].[Comentarios] AS [Comentarios], 
+    [tmpEBP].[Campo13] AS [Campo13], 
+    [tmpEBP].[Campo14] AS [Campo14], 
+    [tmpEBP].[Campo15] AS [Campo15], 
+    [tmpEBP].[Campo16] AS [Campo16], 
+    [tmpEBP].[Campo17] AS [Campo17], 
+    [tmpEBP].[Campo18] AS [Campo18], 
+    [tmpEBP].[Campo19] AS [Campo19], 
+    [tmpEBP].[Campo20] AS [Campo20], 
+    [tmpEBP].[Campo21] AS [Campo21], 
+    [tmpEBP].[Campo22] AS [Campo22], 
+    [tmpEBP].[Campo23] AS [Campo23], 
+    [tmpEBP].[Campo24] AS [Campo24], 
+    [tmpEBP].[Campo25] AS [Campo25], 
+    [tmpEBP].[Campo26] AS [Campo26], 
+    [tmpEBP].[Campo27] AS [Campo27], 
+    [tmpEBP].[Campo28] AS [Campo28]
+    FROM [dbo].[tmpEBP] AS [tmpEBP]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEditionClientCategories" EntityType="Self.tmpEditionClientCategories" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEditionClientCategories].[EditionId] AS [EditionId], 
+    [tmpEditionClientCategories].[ClientId] AS [ClientId], 
+    [tmpEditionClientCategories].[CategoryId] AS [CategoryId]
+    FROM [dbo].[tmpEditionClientCategories] AS [tmpEditionClientCategories]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEditionClientMedicalProducts" EntityType="Self.tmpEditionClientMedicalProducts" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEditionClientMedicalProducts].[EditionId] AS [EditionId], 
+    [tmpEditionClientMedicalProducts].[ClientId] AS [ClientId], 
+    [tmpEditionClientMedicalProducts].[ProductId] AS [ProductId], 
+    [tmpEditionClientMedicalProducts].[PharmaFormId] AS [PharmaFormId], 
+    [tmpEditionClientMedicalProducts].[ActiveSubstanceId] AS [ActiveSubstanceId], 
+    [tmpEditionClientMedicalProducts].[PresentationId] AS [PresentationId], 
+    [tmpEditionClientMedicalProducts].[ClientTypeId] AS [ClientTypeId]
+    FROM [dbo].[tmpEditionClientMedicalProducts] AS [tmpEditionClientMedicalProducts]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEditionClientMedicalProductsMYN" EntityType="Self.tmpEditionClientMedicalProductsMYN" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEditionClientMedicalProductsMYN].[EditionId] AS [EditionId], 
+    [tmpEditionClientMedicalProductsMYN].[ClientId] AS [ClientId], 
+    [tmpEditionClientMedicalProductsMYN].[ProductId] AS [ProductId], 
+    [tmpEditionClientMedicalProductsMYN].[PharmaFormId] AS [PharmaFormId], 
+    [tmpEditionClientMedicalProductsMYN].[ActiveSubstanceId] AS [ActiveSubstanceId], 
+    [tmpEditionClientMedicalProductsMYN].[PresentationId] AS [PresentationId], 
+    [tmpEditionClientMedicalProductsMYN].[ClientTypeId] AS [ClientTypeId]
+    FROM [dbo].[tmpEditionClientMedicalProductsMYN] AS [tmpEditionClientMedicalProductsMYN]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEditionClientProducts" EntityType="Self.tmpEditionClientProducts" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEditionClientProducts].[ClientId] AS [ClientId], 
+    [tmpEditionClientProducts].[ProductId] AS [ProductId], 
+    [tmpEditionClientProducts].[CategoryId] AS [CategoryId], 
+    [tmpEditionClientProducts].[EditionId] AS [EditionId], 
+    [tmpEditionClientProducts].[Page] AS [Page]
+    FROM [dbo].[tmpEditionClientProducts] AS [tmpEditionClientProducts]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEditionClientProductsAnterior" EntityType="Self.tmpEditionClientProductsAnterior" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEditionClientProductsAnterior].[Active] AS [Active], 
+    [tmpEditionClientProductsAnterior].[Page] AS [Page], 
+    [tmpEditionClientProductsAnterior].[EditionId] AS [EditionId], 
+    [tmpEditionClientProductsAnterior].[ClientId] AS [ClientId], 
+    [tmpEditionClientProductsAnterior].[ProductId] AS [ProductId], 
+    [tmpEditionClientProductsAnterior].[CategoryId] AS [CategoryId], 
+    [tmpEditionClientProductsAnterior].[ClientTypeId] AS [ClientTypeId]
+    FROM [dbo].[tmpEditionClientProductsAnterior] AS [tmpEditionClientProductsAnterior]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpEditionClientProductShots" EntityType="Self.tmpEditionClientProductShots" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpEditionClientProductShots].[EditionClientProductShotId] AS [EditionClientProductShotId], 
+    [tmpEditionClientProductShots].[EditionId] AS [EditionId], 
+    [tmpEditionClientProductShots].[ClientId] AS [ClientId], 
+    [tmpEditionClientProductShots].[ProductId] AS [ProductId], 
+    [tmpEditionClientProductShots].[CategoryId] AS [CategoryId], 
+    [tmpEditionClientProductShots].[Active] AS [Active], 
+    [tmpEditionClientProductShots].[ProductShot] AS [ProductShot]
+    FROM [dbo].[tmpEditionClientProductShots] AS [tmpEditionClientProductShots]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpParticipantProducts" EntityType="Self.tmpParticipantProducts" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpParticipantProducts].[EditionId] AS [EditionId], 
+    [tmpParticipantProducts].[ClientId] AS [ClientId], 
+    [tmpParticipantProducts].[ProductId] AS [ProductId], 
+    [tmpParticipantProducts].[CategoryId] AS [CategoryId], 
+    [tmpParticipantProducts].[HTMLContent] AS [HTMLContent], 
+    [tmpParticipantProducts].[XMLContent] AS [XMLContent]
+    FROM [dbo].[tmpParticipantProducts] AS [tmpParticipantProducts]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpProductContents" EntityType="Self.tmpProductContents" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpProductContents].[EditionId] AS [EditionId], 
+    [tmpProductContents].[ClientId] AS [ClientId], 
+    [tmpProductContents].[ProductId] AS [ProductId], 
+    [tmpProductContents].[CategoryId] AS [CategoryId], 
+    [tmpProductContents].[AttributeId] AS [AttributeId], 
+    [tmpProductContents].[PlainContent] AS [PlainContent], 
+    [tmpProductContents].[Content] AS [Content], 
+    [tmpProductContents].[HtmlContent] AS [HtmlContent]
+    FROM [dbo].[tmpProductContents] AS [tmpProductContents]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpProductPharmaForms" EntityType="Self.tmpProductPharmaForms" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpProductPharmaForms].[ProductId] AS [ProductId], 
+    [tmpProductPharmaForms].[PharmaFormId] AS [PharmaFormId]
+    FROM [dbo].[tmpProductPharmaForms] AS [tmpProductPharmaForms]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpProducts" EntityType="Self.tmpProducts" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpProducts].[ProductId] AS [ProductId], 
+    [tmpProducts].[ProductName] AS [ProductName], 
+    [tmpProducts].[Active] AS [Active], 
+    [tmpProducts].[ParentId] AS [ParentId], 
+    [tmpProducts].[TypeId] AS [TypeId], 
+    [tmpProducts].[AlphabetId] AS [AlphabetId], 
+    [tmpProducts].[ProductIdNuevo] AS [ProductIdNuevo]
+    FROM [dbo].[tmpProducts] AS [tmpProducts]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpProductsContenido" EntityType="Self.tmpProductsContenido" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpProductsContenido].[ProductId] AS [ProductId], 
+    [tmpProductsContenido].[ProductName] AS [ProductName], 
+    [tmpProductsContenido].[Active] AS [Active], 
+    [tmpProductsContenido].[ParentId] AS [ParentId], 
+    [tmpProductsContenido].[TypeId] AS [TypeId], 
+    [tmpProductsContenido].[AlphabetId] AS [AlphabetId], 
+    [tmpProductsContenido].[productIdNuevo] AS [productIdNuevo]
+    FROM [dbo].[tmpProductsContenido] AS [tmpProductsContenido]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpProductSubstances" EntityType="Self.tmpProductSubstances" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpProductSubstances].[ProductId] AS [ProductId], 
+    [tmpProductSubstances].[PharmaFormId] AS [PharmaFormId], 
+    [tmpProductSubstances].[ActiveSubstanceId] AS [ActiveSubstanceId], 
+    [tmpProductSubstances].[PresentationId] AS [PresentationId]
+    FROM [dbo].[tmpProductSubstances] AS [tmpProductSubstances]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpRecategorizacion" EntityType="Self.tmpRecategorizacion" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpRecategorizacion].[Id] AS [Id], 
+    [tmpRecategorizacion].[Recategorización (CAMBIO O NUEVO)] AS [Recategorización (CAMBIO O NUEVO)], 
+    [tmpRecategorizacion].[CategoryId] AS [CategoryId], 
+    [tmpRecategorizacion].[Category] AS [Category], 
+    [tmpRecategorizacion].[SubcategoryId] AS [SubcategoryId], 
+    [tmpRecategorizacion].[Subcategory] AS [Subcategory], 
+    [tmpRecategorizacion].[ParentId] AS [ParentId], 
+    [tmpRecategorizacion].[ID ARBOL] AS [ID ARBOL], 
+    [tmpRecategorizacion].[CategoryIdFinal] AS [CategoryIdFinal]
+    FROM [dbo].[tmpRecategorizacion] AS [tmpRecategorizacion]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpSECA" EntityType="Self.tmpSECA" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpSECA].[Id] AS [Id], 
+    [tmpSECA].[CONTROL] AS [CONTROL], 
+    [tmpSECA].[ID ARBOL] AS [ID ARBOL], 
+    [tmpSECA].[ParentId] AS [ParentId], 
+    [tmpSECA].[ProductId] AS [ProductId], 
+    [tmpSECA].[ProductName] AS [ProductName], 
+    [tmpSECA].[Campo6] AS [Campo6], 
+    [tmpSECA].[Campo7] AS [Campo7], 
+    [tmpSECA].[Campo8] AS [Campo8], 
+    [tmpSECA].[PRODUCTO/MODELO] AS [PRODUCTO/MODELO], 
+    [tmpSECA].[Información] AS [Información], 
+    [tmpSECA].[Comentarios] AS [Comentarios], 
+    [tmpSECA].[DISEÑO (Product Shoot)] AS [DISEÑO (Product Shoot)], 
+    [tmpSECA].[Imagen y número] AS [Imagen y número], 
+    [tmpSECA].[ProductIdFinal] AS [ProductIdFinal]
+    FROM [dbo].[tmpSECA] AS [tmpSECA]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tmpSEVIME" EntityType="Self.tmpSEVIME" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tmpSEVIME].[Id] AS [Id], 
+    [tmpSEVIME].[2] AS [2], 
+    [tmpSEVIME].[Campo1] AS [Campo1], 
+    [tmpSEVIME].[Campo2] AS [Campo2], 
+    [tmpSEVIME].[108] AS [108], 
+    [tmpSEVIME].[18] AS [18], 
+    [tmpSEVIME].[SERVICIO Y VENTA DE INSUMOS MÉDICOS ESPECIALIZADOS, SA de CV] AS [SERVICIO Y VENTA DE INSUMOS MÉDICOS ESPECIALIZADOS, SA de CV], 
+    [tmpSEVIME].[SEVIME] AS [SEVIME], 
+    [tmpSEVIME].[1947] AS [1947], 
+    [tmpSEVIME].[AGITADORES] AS [AGITADORES], 
+    [tmpSEVIME].[NULL] AS [NULL], 
+    [tmpSEVIME].[DE PLAQUETAS, ROTATIVA Y LINEAL] AS [DE PLAQUETAS, ROTATIVA Y LINEAL], 
+    [tmpSEVIME].[Campo12] AS [Campo12], 
+    [tmpSEVIME].[Campo13] AS [Campo13], 
+    [tmpSEVIME].[Campo14] AS [Campo14], 
+    [tmpSEVIME].[Campo15] AS [Campo15]
+    FROM [dbo].[tmpSEVIME] AS [tmpSEVIME]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="R_100" Association="Self.R_100">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_108" Association="Self.R_108">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_109" Association="Self.R_109">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_110" Association="Self.R_110">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientCategories" EntitySet="EditionClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_111" Association="Self.R_111">
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+      <End Role="EditionClientCategories" EntitySet="EditionClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_116" Association="Self.R_116">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_117" Association="Self.R_117">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_118" Association="Self.R_118">
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_119" Association="Self.R_119">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_121" Association="Self.R_121">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_122" Association="Self.R_122">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_123" Association="Self.R_123">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="EditionClientProductShots" EntitySet="EditionClientProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_124" Association="Self.R_124">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_125" Association="Self.R_125">
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_126" Association="Self.R_126">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_127" Association="Self.R_127">
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+      <End Role="EditionClientMedicalProducts" EntitySet="EditionClientMedicalProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_128" Association="Self.R_128">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientMedicalProducts" EntitySet="EditionClientMedicalProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_129" Association="Self.R_129">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="ClientHeterogeneousCategories" EntitySet="ClientHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_130" Association="Self.R_130">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientHeterogeneousCategories" EntitySet="ClientHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_131" Association="Self.R_131">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="ClientProductHeterogeneousCategories" EntitySet="ClientProductHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_132" Association="Self.R_132">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductHeterogeneousCategories" EntitySet="ClientProductHeterogeneousCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_133" Association="Self.R_133">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="MatchCategories" EntitySet="MatchCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_135" Association="Self.R_135">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="MatchCategories" EntitySet="MatchCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_16" Association="Self.R_16">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="Self.R_21">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="Self.R_23">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="Self.R_24">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Clients1" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_29" Association="Self.R_29">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Products1" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_3" Association="Self.R_3">
+      <End Role="ClientBrandTypes" EntitySet="ClientBrandTypes" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_33" Association="Self.R_33">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_46" Association="Self.R_46">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_50" Association="Self.R_50">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Categories1" EntitySet="Categories" />
+    </AssociationSet>
+    <AssociationSet Name="R_55" Association="Self.R_55">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_56" Association="Self.R_56">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_59" Association="Self.R_59">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+    </AssociationSet>
+    <AssociationSet Name="R_60" Association="Self.R_60">
+      <End Role="Specialities" EntitySet="Specialities" />
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+    </AssociationSet>
+    <AssociationSet Name="R_64" Association="Self.R_64">
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+      <End Role="EditionSpecialityClientAdvers" EntitySet="EditionSpecialityClientAdvers" />
+    </AssociationSet>
+    <AssociationSet Name="R_65" Association="Self.R_65">
+      <End Role="Advertisements" EntitySet="Advertisements" />
+      <End Role="EditionSpecialityClientAdvers" EntitySet="EditionSpecialityClientAdvers" />
+    </AssociationSet>
+    <AssociationSet Name="R_69" Association="Self.R_69">
+      <End Role="States" EntitySet="States" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_70" Association="Self.R_70">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_71" Association="Self.R_71">
+      <End Role="Addresses" EntitySet="Addresses" />
+      <End Role="ClientAddresses" EntitySet="ClientAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_72" Association="Self.R_72">
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_73" Association="Self.R_73">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_74" Association="Self.R_74">
+      <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_75" Association="Self.R_75">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_76" Association="Self.R_76">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_78" Association="Self.R_78">
+      <End Role="Presentations" EntitySet="Presentations" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_81" Association="Self.R_81">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_82" Association="Self.R_82">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_85" Association="Self.R_85">
+      <End Role="AdvertTypes" EntitySet="AdvertTypes" />
+      <End Role="Advertisements" EntitySet="Advertisements" />
+    </AssociationSet>
+    <AssociationSet Name="R_89" Association="Self.R_89">
+      <End Role="ClientTypes" EntitySet="ClientTypes" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_91" Association="Self.R_91">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Brands" EntitySet="Brands" />
+    </AssociationSet>
+    <AssociationSet Name="R_92" Association="Self.R_92">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_93" Association="Self.R_93">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_99" Association="Self.R_99">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

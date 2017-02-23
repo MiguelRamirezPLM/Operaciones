@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model2" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DEACI_20150917Entities1" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="roc_spGetProducts" ReturnType="Collection(Model2.roc_spGetProducts_Result)">
+      <Parameter Name="editionId" Mode="In" Type="Int32" />
+      <Parameter Name="sectionId" Mode="In" Type="Int32" />
+      <Parameter Name="productTypeId" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="roc_spGetProducts_Result">
+    <Property Type="Int32" Name="ProductId" Nullable="false" />
+    <Property Type="Int32" Name="ProductIdParent" Nullable="true" />
+    <Property Type="Byte" Name="ProductTypeId" Nullable="true" />
+    <Property Type="String" Name="ProductName" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="Int32" Name="CompanyId" Nullable="false" />
+    <Property Type="Int32" Name="ProdId" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" />
+    <Property Type="String" Name="HtmlFile" Nullable="true" MaxLength="Max" />
+    <Property Type="Int32" Name="SectionIdParent" Nullable="true" />
+  </ComplexType>
+</Schema>

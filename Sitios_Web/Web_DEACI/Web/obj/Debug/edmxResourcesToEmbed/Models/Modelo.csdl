@@ -1,0 +1,1805 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Guia_nuevaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ActiveSubstance" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductSubstances" Relationship="Self.R_76" FromRole="ActiveSubstances" ToRole="ProductSubstances" />
+  </EntityType>
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="AddressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Suburb" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="StateId" Type="Int32" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_46" FromRole="Addresses" ToRole="Countries" />
+    <NavigationProperty Name="States" Relationship="Self.R_69" FromRole="Addresses" ToRole="States" />
+    <NavigationProperty Name="Clients" Relationship="Self.ClientAddresses" FromRole="Addresses" ToRole="Clients" />
+  </EntityType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdvertId" />
+    </Key>
+    <Property Name="AdvertId" Type="Int32" Nullable="false" />
+    <Property Name="Order" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AdvertName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BaseUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AdvertTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="AdvertTypes" Relationship="Self.R_85" FromRole="Advertisements" ToRole="AdvertTypes" />
+    <NavigationProperty Name="EditionClientSpecialities" Relationship="Self.EditionSpecialityClientAdvers" FromRole="Advertisements" ToRole="EditionClientSpecialities" />
+  </EntityType>
+  <EntityType Name="AdvertTypes">
+    <Key>
+      <PropertyRef Name="AdvertTypeId" />
+    </Key>
+    <Property Name="AdvertTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Advertisements" Relationship="Self.R_85" FromRole="AdvertTypes" ToRole="Advertisements" />
+  </EntityType>
+  <EntityType Name="Alphabet">
+    <Key>
+      <PropertyRef Name="AlphabetId" />
+    </Key>
+    <Property Name="AlphabetId" Type="Byte" Nullable="false" />
+    <Property Name="Letter" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Brands" Relationship="Self.R_91" FromRole="Alphabet" ToRole="Brands" />
+    <NavigationProperty Name="Clients" Relationship="Self.R_92" FromRole="Alphabet" ToRole="Clients" />
+    <NavigationProperty Name="Products" Relationship="Self.R_93" FromRole="Alphabet" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="AttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="AttributeGroupOrder" Type="Int32" Nullable="false" />
+    <Property Name="AttributeGroupKey" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_23" FromRole="Books" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BrandName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Logo" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <NavigationProperty Name="Alphabet" Relationship="Self.R_91" FromRole="Brands" ToRole="Alphabet" />
+    <NavigationProperty Name="ClientBrands" Relationship="Self.R_82" FromRole="Brands" ToRole="ClientBrands" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Byte" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <Property Name="IdArbol" Type="Int32" />
+    <NavigationProperty Name="ClientCategories" Relationship="Self.R_109" FromRole="Categories" ToRole="ClientCategories" />
+    <NavigationProperty Name="ClientProductCategories" Relationship="Self.R_117" FromRole="Categories" ToRole="ClientProductCategories" />
+    <NavigationProperty Name="MatchCategories" Relationship="Self.R_135" FromRole="Categories" ToRole="MatchCategories" />
+    <NavigationProperty Name="Categories1" Relationship="Self.R_50" FromRole="Categories" ToRole="Categories1" />
+    <NavigationProperty Name="Categories2" Relationship="Self.R_50" FromRole="Categories1" ToRole="Categories" />
+  </EntityType>
+  <EntityType Name="ClientBrands">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="BrandId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="Byte" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ExpireDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="BrandId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Brands" Relationship="Self.R_82" FromRole="ClientBrands" ToRole="Brands" />
+    <NavigationProperty Name="ClientBrandTypes" Relationship="Self.R_3" FromRole="ClientBrands" ToRole="ClientBrandTypes" />
+    <NavigationProperty Name="EditionClients" Relationship="Self.R_81" FromRole="ClientBrands" ToRole="EditionClients" />
+  </EntityType>
+  <EntityType Name="ClientBrandTypes">
+    <Key>
+      <PropertyRef Name="ClientBrandTypeId" />
+    </Key>
+    <Property Name="ClientBrandTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ClientBrands" Relationship="Self.R_3" FromRole="ClientBrandTypes" ToRole="ClientBrands" />
+  </EntityType>
+  <EntityType Name="ClientCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Categories" Relationship="Self.R_109" FromRole="ClientCategories" ToRole="Categories" />
+    <NavigationProperty Name="Clients" Relationship="Self.R_108" FromRole="ClientCategories" ToRole="Clients" />
+    <NavigationProperty Name="Editions" Relationship="Self.EditionClientCategories" FromRole="ClientCategories" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="ClientProductCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Categories" Relationship="Self.R_117" FromRole="ClientProductCategories" ToRole="Categories" />
+    <NavigationProperty Name="ClientProducts" Relationship="Self.R_116" FromRole="ClientProductCategories" ToRole="ClientProducts" />
+    <NavigationProperty Name="EditionClientProducts" Relationship="Self.R_118" FromRole="ClientProductCategories" ToRole="EditionClientProducts" />
+  </EntityType>
+  <EntityType Name="ClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientProductCategories" Relationship="Self.R_116" FromRole="ClientProducts" ToRole="ClientProductCategories" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_121" FromRole="ClientProducts" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="Self.R_126" FromRole="ClientProducts" ToRole="ClientProductSubstances" />
+    <NavigationProperty Name="HeterogeneousCategories" Relationship="Self.ClientProductHeterogeneousCategories" FromRole="ClientProducts" ToRole="HeterogeneousCategories" />
+  </EntityType>
+  <EntityType Name="ClientProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientProducts" Relationship="Self.R_126" FromRole="ClientProductSubstances" ToRole="ClientProducts" />
+    <NavigationProperty Name="ProductSubstances" Relationship="Self.R_125" FromRole="ClientProductSubstances" ToRole="ProductSubstances" />
+    <NavigationProperty Name="Editions" Relationship="Self.EditionClientMedicalProducts" FromRole="ClientProductSubstances" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="ClientId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClientIdParent" Type="Int32" />
+    <Property Name="ClientCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <Property Name="ANUNCIANTEID" Type="Int32" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Alphabet" Relationship="Self.R_92" FromRole="Clients" ToRole="Alphabet" />
+    <NavigationProperty Name="ClientCategories" Relationship="Self.R_108" FromRole="Clients" ToRole="ClientCategories" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_124" FromRole="Clients" ToRole="Countries" />
+    <NavigationProperty Name="Clients1" Relationship="Self.R_24" FromRole="Clients" ToRole="Clients1" />
+    <NavigationProperty Name="Clients2" Relationship="Self.R_24" FromRole="Clients1" ToRole="Clients" />
+    <NavigationProperty Name="EditionClients" Relationship="Self.R_56" FromRole="Clients" ToRole="EditionClients" />
+    <NavigationProperty Name="Addresses" Relationship="Self.ClientAddresses" FromRole="Clients" ToRole="Addresses" />
+    <NavigationProperty Name="HeterogeneousCategories" Relationship="Self.ClientHeterogeneousCategories" FromRole="Clients" ToRole="HeterogeneousCategories" />
+  </EntityType>
+  <EntityType Name="ClientTypes">
+    <Key>
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <Property Name="TypeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionClients" Relationship="Self.R_89" FromRole="ClientTypes" ToRole="EditionClients" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryCode" Type="Byte" />
+    <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Addresses" Relationship="Self.R_46" FromRole="Countries" ToRole="Addresses" />
+    <NavigationProperty Name="Clients" Relationship="Self.R_124" FromRole="Countries" ToRole="Clients" />
+    <NavigationProperty Name="States" Relationship="Self.R_16" FromRole="Countries" ToRole="States" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_21" FromRole="Countries" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionAttributeGroup">
+    <Key>
+      <PropertyRef Name="AttributeGroupId" />
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeGroupId" Type="Int32" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EditionAttributes">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductContents" Relationship="Self.R_100" FromRole="EditionAttributes" ToRole="ProductContents" />
+  </EntityType>
+  <EntityType Name="EditionClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ClientProductCategories" Relationship="Self.R_118" FromRole="EditionClientProducts" ToRole="ClientProductCategories" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_119" FromRole="EditionClientProducts" ToRole="Editions" />
+  </EntityType>
+  <EntityType Name="EditionClientProductShots">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ProductShot" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_123" FromRole="EditionClientProductShots" ToRole="ParticipantProducts" />
+  </EntityType>
+  <EntityType Name="EditionClients">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ClientBrands" Relationship="Self.R_81" FromRole="EditionClients" ToRole="ClientBrands" />
+    <NavigationProperty Name="Clients" Relationship="Self.R_56" FromRole="EditionClients" ToRole="Clients" />
+    <NavigationProperty Name="ClientTypes" Relationship="Self.R_89" FromRole="EditionClients" ToRole="ClientTypes" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_55" FromRole="EditionClients" ToRole="Editions" />
+    <NavigationProperty Name="EditionClientSpecialities" Relationship="Self.R_59" FromRole="EditionClients" ToRole="EditionClientSpecialities" />
+  </EntityType>
+  <EntityType Name="EditionClientSpecialities">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="SpecialityId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="SpecialityId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="EditionClients" Relationship="Self.R_59" FromRole="EditionClientSpecialities" ToRole="EditionClients" />
+    <NavigationProperty Name="Specialities" Relationship="Self.R_60" FromRole="EditionClientSpecialities" ToRole="Specialities" />
+    <NavigationProperty Name="Advertisements" Relationship="Self.EditionSpecialityClientAdvers" FromRole="EditionClientSpecialities" ToRole="Advertisements" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+    <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="EditionCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Books" Relationship="Self.R_23" FromRole="Editions" ToRole="Books" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_21" FromRole="Editions" ToRole="Countries" />
+    <NavigationProperty Name="EditionClientProducts" Relationship="Self.R_119" FromRole="Editions" ToRole="EditionClientProducts" />
+    <NavigationProperty Name="EditionClients" Relationship="Self.R_55" FromRole="Editions" ToRole="EditionClients" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_122" FromRole="Editions" ToRole="ParticipantProducts" />
+    <NavigationProperty Name="Editions1" Relationship="Self.R_33" FromRole="Editions" ToRole="Editions1" />
+    <NavigationProperty Name="Editions2" Relationship="Self.R_33" FromRole="Editions1" ToRole="Editions" />
+    <NavigationProperty Name="ClientCategories" Relationship="Self.EditionClientCategories" FromRole="Editions" ToRole="ClientCategories" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="Self.EditionClientMedicalProducts" FromRole="Editions" ToRole="ClientProductSubstances" />
+  </EntityType>
+  <EntityType Name="HeterogeneousCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Tratamiento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="MatchCategories" Relationship="Self.R_133" FromRole="HeterogeneousCategories" ToRole="MatchCategories" />
+    <NavigationProperty Name="Clients" Relationship="Self.ClientHeterogeneousCategories" FromRole="HeterogeneousCategories" ToRole="Clients" />
+    <NavigationProperty Name="ClientProducts" Relationship="Self.ClientProductHeterogeneousCategories" FromRole="HeterogeneousCategories" ToRole="ClientProducts" />
+  </EntityType>
+  <EntityType Name="MatchCategories">
+    <Key>
+      <PropertyRef Name="HeterogeneousCategoryId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="HeterogeneousCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Categories" Relationship="Self.R_135" FromRole="MatchCategories" ToRole="Categories" />
+    <NavigationProperty Name="HeterogeneousCategories" Relationship="Self.R_133" FromRole="MatchCategories" ToRole="HeterogeneousCategories" />
+  </EntityType>
+  <EntityType Name="ParticipantProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClientProducts" Relationship="Self.R_121" FromRole="ParticipantProducts" ToRole="ClientProducts" />
+    <NavigationProperty Name="EditionClientProductShots" Relationship="Self.R_123" FromRole="ParticipantProducts" ToRole="EditionClientProductShots" />
+    <NavigationProperty Name="Editions" Relationship="Self.R_122" FromRole="ParticipantProducts" ToRole="Editions" />
+    <NavigationProperty Name="ProductContents" Relationship="Self.R_99" FromRole="ParticipantProducts" ToRole="ProductContents" />
+  </EntityType>
+  <EntityType Name="PharmaceuticalForms">
+    <Key>
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PharmaForm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_74" FromRole="PharmaceuticalForms" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <EntityType Name="PhoneTypes">
+    <Key>
+      <PropertyRef Name="PhoneTypeId" />
+    </Key>
+    <Property Name="PhoneTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Presentations">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="PresentationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductSubstances" Relationship="Self.R_78" FromRole="Presentations" ToRole="ProductSubstances" />
+  </EntityType>
+  <EntityType Name="ProductContents">
+    <Key>
+      <PropertyRef Name="AttributeId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="PlainContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="HtmlContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EditionAttributes" Relationship="Self.R_100" FromRole="ProductContents" ToRole="EditionAttributes" />
+    <NavigationProperty Name="ParticipantProducts" Relationship="Self.R_99" FromRole="ProductContents" ToRole="ParticipantProducts" />
+  </EntityType>
+  <EntityType Name="ProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PharmaceuticalForms" Relationship="Self.R_74" FromRole="ProductPharmaForms" ToRole="PharmaceuticalForms" />
+    <NavigationProperty Name="Products" Relationship="Self.R_73" FromRole="ProductPharmaForms" ToRole="Products" />
+    <NavigationProperty Name="ProductSubstances" Relationship="Self.R_75" FromRole="ProductPharmaForms" ToRole="ProductSubstances" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <Property Name="ProductId_Anterior" Type="Int32" />
+    <NavigationProperty Name="Alphabet" Relationship="Self.R_93" FromRole="Products" ToRole="Alphabet" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_73" FromRole="Products" ToRole="ProductPharmaForms" />
+    <NavigationProperty Name="Products1" Relationship="Self.R_29" FromRole="Products" ToRole="Products1" />
+    <NavigationProperty Name="Products2" Relationship="Self.R_29" FromRole="Products1" ToRole="Products" />
+    <NavigationProperty Name="ProductTypes" Relationship="Self.R_72" FromRole="Products" ToRole="ProductTypes" />
+  </EntityType>
+  <EntityType Name="ProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Self.R_76" FromRole="ProductSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="ClientProductSubstances" Relationship="Self.R_125" FromRole="ProductSubstances" ToRole="ClientProductSubstances" />
+    <NavigationProperty Name="Presentations" Relationship="Self.R_78" FromRole="ProductSubstances" ToRole="Presentations" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Self.R_75" FromRole="ProductSubstances" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="TypeId" />
+    </Key>
+    <Property Name="TypeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Self.R_72" FromRole="ProductTypes" ToRole="Products" />
+  </EntityType>
+  <EntityType Name="Specialities">
+    <Key>
+      <PropertyRef Name="SpecialityId" />
+    </Key>
+    <Property Name="SpecialityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="EditionClientSpecialities" Relationship="Self.R_60" FromRole="Specialities" ToRole="EditionClientSpecialities" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CountryId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Addresses" Relationship="Self.R_69" FromRole="States" ToRole="Addresses" />
+    <NavigationProperty Name="Countries" Relationship="Self.R_16" FromRole="States" ToRole="Countries" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ClientPhones">
+    <Key>
+      <PropertyRef Name="Number" />
+      <PropertyRef Name="ClientPhoneId" />
+      <PropertyRef Name="PhoneTypeId" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="AddressId" />
+    </Key>
+    <Property Name="Number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Lada" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ClientPhoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PhoneTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="AddressId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmoProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpArbolCategorias">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="NIVEL_1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="NIVEL_2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="NIVEL_3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="NIVEL_4" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="active" Type="Boolean" />
+    <Property Name="CategoryIdFinalArbol" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tmpArtTecnica">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="EditionId" Type="Double" />
+    <Property Name="ClientId" Type="Double" />
+    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Productid" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo11" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SubProductid" Type="Double" />
+    <Property Name="SubProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="INFORMACIÓN__Para_plantilla_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Comentarios" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DISEÑO__Product_Shoot_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Imagen_y_número" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tmpBBRAUN">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="EditionId" Type="Double" />
+    <Property Name="ClientId" Type="Double" />
+    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ShortName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo12" Type="Double" />
+    <Property Name="SubProductId" Type="Double" />
+    <Property Name="SubProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="INFORMACIÓN__Para_plantilla_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DISEÑO__Product_Shoot_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tmpBiomedicaGaoz">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="EditionId" Type="Double" />
+    <Property Name="ClientId" Type="Double" />
+    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo11" Type="Double" />
+    <Property Name="SubProductId" Type="Double" />
+    <Property Name="SubProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="INFORMACIÓN__Para_plantilla_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DISEÑO__Product_Shoot_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo15" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo16" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo17" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo18" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo19" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo20" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo21" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo22" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo23" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo24" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo25" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo26" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo27" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo28" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tmpCategories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="NewColumn" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="NewColumn" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="tmpClientCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpClientProductCategories">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpDewimed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID_ARBOL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="EditionId" Type="Double" />
+    <Property Name="ClientId" Type="Double" />
+    <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo11" Type="Double" />
+    <Property Name="SubProductid" Type="Double" />
+    <Property Name="SubProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="INFORMACIÓN__Para_plantilla_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Comentarios" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DISEÑO__Product_Shoot_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Imagen_y_número" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tmpDistribuidoraAlfa">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="ProductId" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SubParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SubProductId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SubProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="INFORMACIÓN__Para_plantilla_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Comentarios" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DISEÑO__Product_Shoot_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Imagen_y_número" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tmpEBP">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="ParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Productid" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SubParentId" Type="Double" />
+    <Property Name="SubProductid" Type="Double" />
+    <Property Name="SubProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Información" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Product_Shoot" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Comentarios" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo13" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo14" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo15" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo16" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo17" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo18" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo19" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo20" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo21" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo22" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo23" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo24" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo25" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo26" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo27" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo28" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tmpEditionClientCategories">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpEditionClientMedicalProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpEditionClientMedicalProductsMYN">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpEditionClientProducts">
+    <Key>
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tmpEditionClientProductsAnterior">
+    <Key>
+      <PropertyRef Name="Active" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="ClientTypeId" />
+    </Key>
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Byte" Nullable="false" />
+    <Property Name="ClientTypeId" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpEditionClientProductShots">
+    <Key>
+      <PropertyRef Name="EditionClientProductShotId" />
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="EditionClientProductShotId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Byte" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ProductShot" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tmpParticipantProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Byte" Nullable="false" />
+    <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tmpProductContents">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="ClientId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="AttributeId" />
+    </Key>
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Byte" Nullable="false" />
+    <Property Name="AttributeId" Type="Int32" Nullable="false" />
+    <Property Name="PlainContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="HtmlContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tmpProductPharmaForms">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpProducts">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <Property Name="ProductIdNuevo" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tmpProductsContenido">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ProductName" />
+      <PropertyRef Name="Active" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TypeId" Type="Byte" />
+    <Property Name="AlphabetId" Type="Byte" />
+    <Property Name="productIdNuevo" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tmpProductSubstances">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="PresentationId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tmpRecategorizacion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Recategorización__CAMBIO_O_NUEVO_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryId" Type="Double" />
+    <Property Name="Category" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SubcategoryId" Type="Double" />
+    <Property Name="Subcategory" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Double" />
+    <Property Name="ID_ARBOL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryIdFinal" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tmpSECA">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="CONTROL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ID_ARBOL" Type="Double" />
+    <Property Name="ParentId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProductId" Type="Double" />
+    <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo6" Type="Double" />
+    <Property Name="Campo7" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo8" Type="Double" />
+    <Property Name="PRODUCTO_MODELO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Información" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Comentarios" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DISEÑO__Product_Shoot_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Imagen_y_número" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ProductIdFinal" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tmpSEVIME">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="C2" Type="Double" />
+    <Property Name="Campo1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="C108" Type="Double" />
+    <Property Name="C18" Type="Double" />
+    <Property Name="SERVICIO_Y_VENTA_DE_INSUMOS_MÉDICOS_ESPECIALIZADOS__SA_de_CV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SEVIME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="C1947" Type="Double" />
+    <Property Name="AGITADORES" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="NULL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DE_PLAQUETAS__ROTATIVA_Y_LINEAL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo12" Type="Double" />
+    <Property Name="Campo13" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo14" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Campo15" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="R_76">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_46">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_69">
+    <End Role="States" Type="Self.States" Multiplicity="0..1" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="Addresses">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_85">
+    <End Role="AdvertTypes" Type="Self.AdvertTypes" Multiplicity="1" />
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdvertTypes">
+        <PropertyRef Name="AdvertTypeId" />
+      </Principal>
+      <Dependent Role="Advertisements">
+        <PropertyRef Name="AdvertTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_91">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Brands" Type="Self.Brands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Brands">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_92">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_93">
+    <End Role="Alphabet" Type="Self.Alphabet" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Alphabet">
+        <PropertyRef Name="AlphabetId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="AlphabetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_23">
+    <End Role="Books" Type="Self.Books" Multiplicity="1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_82">
+    <End Role="Brands" Type="Self.Brands" Multiplicity="1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_109">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="ClientCategories" Type="Self.ClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ClientCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_117">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="ClientProductCategories" Type="Self.ClientProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="ClientProductCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_135">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="MatchCategories" Type="Self.MatchCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="MatchCategories">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_50">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="Categories1" Type="Self.Categories" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="Categories1">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_3">
+    <End Role="ClientBrandTypes" Type="Self.ClientBrandTypes" Multiplicity="0..1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientBrandTypes">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="ClientBrandTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_81">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="ClientBrands" Type="Self.ClientBrands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="ClientBrands">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_108">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="ClientCategories" Type="Self.ClientCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="ClientCategories">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_116">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductCategories" Type="Self.ClientProductCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_118">
+    <End Role="ClientProductCategories" Type="Self.ClientProductCategories" Multiplicity="1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProductCategories">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_121">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_126">
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="1" />
+    <End Role="ClientProductSubstances" Type="Self.ClientProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientProducts">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ClientProductSubstances">
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_125">
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="1" />
+    <End Role="ClientProductSubstances" Type="Self.ClientProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ClientProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_124">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_24">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="Clients1" Type="Self.Clients" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="Clients1">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_56">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="ClientId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_89">
+    <End Role="ClientTypes" Type="Self.ClientTypes" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientTypes">
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_16">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="States" Type="Self.States" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_21">
+    <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_100">
+    <End Role="EditionAttributes" Type="Self.EditionAttributes" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionAttributes">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="AttributeId" />
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_119">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClientProducts" Type="Self.EditionClientProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClientProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_123">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="EditionClientProductShots" Type="Self.EditionClientProductShots" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="EditionClientProductShots">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_55">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_59">
+    <End Role="EditionClients" Type="Self.EditionClients" Multiplicity="1" />
+    <End Role="EditionClientSpecialities" Type="Self.EditionClientSpecialities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EditionClients">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Principal>
+      <Dependent Role="EditionClientSpecialities">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ClientTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_60">
+    <End Role="Specialities" Type="Self.Specialities" Multiplicity="1" />
+    <End Role="EditionClientSpecialities" Type="Self.EditionClientSpecialities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialities">
+        <PropertyRef Name="SpecialityId" />
+      </Principal>
+      <Dependent Role="EditionClientSpecialities">
+        <PropertyRef Name="SpecialityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_122">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_33">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="Editions1">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_133">
+    <End Role="HeterogeneousCategories" Type="Self.HeterogeneousCategories" Multiplicity="1" />
+    <End Role="MatchCategories" Type="Self.MatchCategories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HeterogeneousCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Principal>
+      <Dependent Role="MatchCategories">
+        <PropertyRef Name="HeterogeneousCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_99">
+    <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="1" />
+    <End Role="ProductContents" Type="Self.ProductContents" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParticipantProducts">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductContents">
+        <PropertyRef Name="EditionId" />
+        <PropertyRef Name="ClientId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_74">
+    <End Role="PharmaceuticalForms" Type="Self.PharmaceuticalForms" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PharmaceuticalForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_78">
+    <End Role="Presentations" Type="Self.Presentations" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Presentations">
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_73">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_75">
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+    <End Role="ProductSubstances" Type="Self.ProductSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Principal>
+      <Dependent Role="ProductSubstances">
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="PharmaFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_29">
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
+    <End Role="Products1" Type="Self.Products" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Products1">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_72">
+    <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTypes">
+        <PropertyRef Name="TypeId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientAddresses">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
+  </Association>
+  <Association Name="ClientHeterogeneousCategories">
+    <End Role="HeterogeneousCategories" Type="Self.HeterogeneousCategories" Multiplicity="*" />
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+  </Association>
+  <Association Name="ClientProductHeterogeneousCategories">
+    <End Role="HeterogeneousCategories" Type="Self.HeterogeneousCategories" Multiplicity="*" />
+    <End Role="ClientProducts" Type="Self.ClientProducts" Multiplicity="*" />
+  </Association>
+  <Association Name="EditionClientCategories">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+    <End Role="ClientCategories" Type="Self.ClientCategories" Multiplicity="*" />
+  </Association>
+  <Association Name="EditionClientMedicalProducts">
+    <End Role="ClientProductSubstances" Type="Self.ClientProductSubstances" Multiplicity="*" />
+    <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+  </Association>
+  <Association Name="EditionSpecialityClientAdvers">
+    <End Role="EditionClientSpecialities" Type="Self.EditionClientSpecialities" Multiplicity="*" />
+    <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="Guia_nueva_modelo" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" />
+    <EntitySet Name="Addresses" EntityType="Self.Addresses" />
+    <EntitySet Name="Advertisements" EntityType="Self.Advertisements" />
+    <EntitySet Name="AdvertTypes" EntityType="Self.AdvertTypes" />
+    <EntitySet Name="Alphabet" EntityType="Self.Alphabet" />
+    <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" />
+    <EntitySet Name="Attributes" EntityType="Self.Attributes" />
+    <EntitySet Name="Books" EntityType="Self.Books" />
+    <EntitySet Name="Brands" EntityType="Self.Brands" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" />
+    <EntitySet Name="ClientBrands" EntityType="Self.ClientBrands" />
+    <EntitySet Name="ClientBrandTypes" EntityType="Self.ClientBrandTypes" />
+    <EntitySet Name="ClientCategories" EntityType="Self.ClientCategories" />
+    <EntitySet Name="ClientProductCategories" EntityType="Self.ClientProductCategories" />
+    <EntitySet Name="ClientProducts" EntityType="Self.ClientProducts" />
+    <EntitySet Name="ClientProductSubstances" EntityType="Self.ClientProductSubstances" />
+    <EntitySet Name="Clients" EntityType="Self.Clients" />
+    <EntitySet Name="ClientTypes" EntityType="Self.ClientTypes" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" />
+    <EntitySet Name="EditionAttributeGroup" EntityType="Self.EditionAttributeGroup" />
+    <EntitySet Name="EditionAttributes" EntityType="Self.EditionAttributes" />
+    <EntitySet Name="EditionClientProducts" EntityType="Self.EditionClientProducts" />
+    <EntitySet Name="EditionClientProductShots" EntityType="Self.EditionClientProductShots" />
+    <EntitySet Name="EditionClients" EntityType="Self.EditionClients" />
+    <EntitySet Name="EditionClientSpecialities" EntityType="Self.EditionClientSpecialities" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" />
+    <EntitySet Name="HeterogeneousCategories" EntityType="Self.HeterogeneousCategories" />
+    <EntitySet Name="MatchCategories" EntityType="Self.MatchCategories" />
+    <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" />
+    <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" />
+    <EntitySet Name="PhoneTypes" EntityType="Self.PhoneTypes" />
+    <EntitySet Name="Presentations" EntityType="Self.Presentations" />
+    <EntitySet Name="ProductContents" EntityType="Self.ProductContents" />
+    <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" />
+    <EntitySet Name="Products" EntityType="Self.Products" />
+    <EntitySet Name="ProductSubstances" EntityType="Self.ProductSubstances" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" />
+    <EntitySet Name="Specialities" EntityType="Self.Specialities" />
+    <EntitySet Name="States" EntityType="Self.States" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="ClientPhones" EntityType="Self.ClientPhones" />
+    <EntitySet Name="tmoProductPharmaForms" EntityType="Self.tmoProductPharmaForms" />
+    <EntitySet Name="tmpArbolCategorias" EntityType="Self.tmpArbolCategorias" />
+    <EntitySet Name="tmpArtTecnica" EntityType="Self.tmpArtTecnica" />
+    <EntitySet Name="tmpBBRAUN" EntityType="Self.tmpBBRAUN" />
+    <EntitySet Name="tmpBiomedicaGaoz" EntityType="Self.tmpBiomedicaGaoz" />
+    <EntitySet Name="tmpCategories" EntityType="Self.tmpCategories" />
+    <EntitySet Name="tmpClientCategories" EntityType="Self.tmpClientCategories" />
+    <EntitySet Name="tmpClientProductCategories" EntityType="Self.tmpClientProductCategories" />
+    <EntitySet Name="tmpDewimed" EntityType="Self.tmpDewimed" />
+    <EntitySet Name="tmpDistribuidoraAlfa" EntityType="Self.tmpDistribuidoraAlfa" />
+    <EntitySet Name="tmpEBP" EntityType="Self.tmpEBP" />
+    <EntitySet Name="tmpEditionClientCategories" EntityType="Self.tmpEditionClientCategories" />
+    <EntitySet Name="tmpEditionClientMedicalProducts" EntityType="Self.tmpEditionClientMedicalProducts" />
+    <EntitySet Name="tmpEditionClientMedicalProductsMYN" EntityType="Self.tmpEditionClientMedicalProductsMYN" />
+    <EntitySet Name="tmpEditionClientProducts" EntityType="Self.tmpEditionClientProducts" />
+    <EntitySet Name="tmpEditionClientProductsAnterior" EntityType="Self.tmpEditionClientProductsAnterior" />
+    <EntitySet Name="tmpEditionClientProductShots" EntityType="Self.tmpEditionClientProductShots" />
+    <EntitySet Name="tmpParticipantProducts" EntityType="Self.tmpParticipantProducts" />
+    <EntitySet Name="tmpProductContents" EntityType="Self.tmpProductContents" />
+    <EntitySet Name="tmpProductPharmaForms" EntityType="Self.tmpProductPharmaForms" />
+    <EntitySet Name="tmpProducts" EntityType="Self.tmpProducts" />
+    <EntitySet Name="tmpProductsContenido" EntityType="Self.tmpProductsContenido" />
+    <EntitySet Name="tmpProductSubstances" EntityType="Self.tmpProductSubstances" />
+    <EntitySet Name="tmpRecategorizacion" EntityType="Self.tmpRecategorizacion" />
+    <EntitySet Name="tmpSECA" EntityType="Self.tmpSECA" />
+    <EntitySet Name="tmpSEVIME" EntityType="Self.tmpSEVIME" />
+    <AssociationSet Name="R_76" Association="Self.R_76">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_46" Association="Self.R_46">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_69" Association="Self.R_69">
+      <End Role="States" EntitySet="States" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="R_85" Association="Self.R_85">
+      <End Role="AdvertTypes" EntitySet="AdvertTypes" />
+      <End Role="Advertisements" EntitySet="Advertisements" />
+    </AssociationSet>
+    <AssociationSet Name="R_91" Association="Self.R_91">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Brands" EntitySet="Brands" />
+    </AssociationSet>
+    <AssociationSet Name="R_92" Association="Self.R_92">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_93" Association="Self.R_93">
+      <End Role="Alphabet" EntitySet="Alphabet" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_23" Association="Self.R_23">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_82" Association="Self.R_82">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_109" Association="Self.R_109">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_117" Association="Self.R_117">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_135" Association="Self.R_135">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="MatchCategories" EntitySet="MatchCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_50" Association="Self.R_50">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Categories1" EntitySet="Categories" />
+    </AssociationSet>
+    <AssociationSet Name="R_3" Association="Self.R_3">
+      <End Role="ClientBrandTypes" EntitySet="ClientBrandTypes" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_81" Association="Self.R_81">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="ClientBrands" EntitySet="ClientBrands" />
+    </AssociationSet>
+    <AssociationSet Name="R_108" Association="Self.R_108">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_116" Association="Self.R_116">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_118" Association="Self.R_118">
+      <End Role="ClientProductCategories" EntitySet="ClientProductCategories" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_121" Association="Self.R_121">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_126" Association="Self.R_126">
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_125" Association="Self.R_125">
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_124" Association="Self.R_124">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_24" Association="Self.R_24">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Clients1" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="R_56" Association="Self.R_56">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_89" Association="Self.R_89">
+      <End Role="ClientTypes" EntitySet="ClientTypes" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_16" Association="Self.R_16">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="States" EntitySet="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_21" Association="Self.R_21">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_100" Association="Self.R_100">
+      <End Role="EditionAttributes" EntitySet="EditionAttributes" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_119" Association="Self.R_119">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClientProducts" EntitySet="EditionClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_123" Association="Self.R_123">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="EditionClientProductShots" EntitySet="EditionClientProductShots" />
+    </AssociationSet>
+    <AssociationSet Name="R_55" Association="Self.R_55">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="EditionClients" EntitySet="EditionClients" />
+    </AssociationSet>
+    <AssociationSet Name="R_59" Association="Self.R_59">
+      <End Role="EditionClients" EntitySet="EditionClients" />
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+    </AssociationSet>
+    <AssociationSet Name="R_60" Association="Self.R_60">
+      <End Role="Specialities" EntitySet="Specialities" />
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+    </AssociationSet>
+    <AssociationSet Name="R_122" Association="Self.R_122">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+    </AssociationSet>
+    <AssociationSet Name="R_33" Association="Self.R_33">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="Editions1" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_133" Association="Self.R_133">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="MatchCategories" EntitySet="MatchCategories" />
+    </AssociationSet>
+    <AssociationSet Name="R_99" Association="Self.R_99">
+      <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+      <End Role="ProductContents" EntitySet="ProductContents" />
+    </AssociationSet>
+    <AssociationSet Name="R_74" Association="Self.R_74">
+      <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_78" Association="Self.R_78">
+      <End Role="Presentations" EntitySet="Presentations" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_73" Association="Self.R_73">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+    </AssociationSet>
+    <AssociationSet Name="R_75" Association="Self.R_75">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductSubstances" EntitySet="ProductSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_29" Association="Self.R_29">
+      <End Role="Products" EntitySet="Products" />
+      <End Role="Products1" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_72" Association="Self.R_72">
+      <End Role="ProductTypes" EntitySet="ProductTypes" />
+      <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="ClientAddresses" Association="Self.ClientAddresses">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Addresses" EntitySet="Addresses" />
+    </AssociationSet>
+    <AssociationSet Name="ClientHeterogeneousCategories" Association="Self.ClientHeterogeneousCategories">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="ClientProductHeterogeneousCategories" Association="Self.ClientProductHeterogeneousCategories">
+      <End Role="HeterogeneousCategories" EntitySet="HeterogeneousCategories" />
+      <End Role="ClientProducts" EntitySet="ClientProducts" />
+    </AssociationSet>
+    <AssociationSet Name="EditionClientCategories" Association="Self.EditionClientCategories">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ClientCategories" EntitySet="ClientCategories" />
+    </AssociationSet>
+    <AssociationSet Name="EditionClientMedicalProducts" Association="Self.EditionClientMedicalProducts">
+      <End Role="ClientProductSubstances" EntitySet="ClientProductSubstances" />
+      <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="EditionSpecialityClientAdvers" Association="Self.EditionSpecialityClientAdvers">
+      <End Role="EditionClientSpecialities" EntitySet="EditionClientSpecialities" />
+      <End Role="Advertisements" EntitySet="Advertisements" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

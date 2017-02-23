@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Alias="Self" Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008">
+  <EntityType Name="AdvertisementEditions">
+    <Key>
+      <PropertyRef Name="AdvId" />
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="AdvId" Nullable="false" Type="int" />
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="EditionId" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="Advertisements">
+    <Key>
+      <PropertyRef Name="AdvId" />
+    </Key>
+    <Property Name="AdvId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="HiredSpace" Nullable="false" MaxLength="60" Type="varchar" />
+    <Property Name="AdvFile" Nullable="false" MaxLength="100" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="BookName" Nullable="false" MaxLength="200" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="BrandId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="BrandName" Nullable="false" Type="varchar(max)" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="StateId" Nullable="false" Type="int" />
+    <Property Name="Name" Nullable="false" MaxLength="60" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Companies">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+    </Key>
+    <Property Name="CompanyId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="CompanyTypeId" Nullable="false" Type="tinyint" />
+    <Property Name="CompanyIdParent" Type="int" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="Suburb" Type="nvarchar(max)" />
+    <Property Name="Ubication" Type="nvarchar(max)" />
+    <Property Name="PostalCode" Type="nvarchar(max)" />
+    <Property Name="Email" Type="nvarchar(max)" />
+    <Property Name="Web" Type="nvarchar(max)" />
+    <Property Name="Contact" Type="nvarchar(max)" />
+    <Property Name="CompanyName" Nullable="false" Type="nvarchar(max)" />
+    <Property Name="CompanyShortName" Type="nvarchar(max)" />
+    <Property Name="CityId" Type="int" />
+    <Property Name="Client_ID" Type="int" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="CompanyBrandEditions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="EditionId" Nullable="false" Type="int" />
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="BrandId" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="CompanyBrandIndexes">
+    <Key>
+      <PropertyRef Name="IndexId" />
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="IndexId" Nullable="false" Type="tinyint" />
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="BrandId" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="CompanyBrands">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="BrandId" Nullable="false" Type="int" />
+    <Property Name="Description" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="CompanyBrandSections">
+    <Key>
+      <PropertyRef Name="SectionId" />
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="BrandId" />
+    </Key>
+    <Property Name="SectionId" Nullable="false" Type="int" />
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="BrandId" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="CompanyEditions">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="EditionId" Nullable="false" Type="int" />
+    <Property Name="HtmlFile" MaxLength="100" Type="varchar" />
+    <Property Name="HtmlContent" Type="text" />
+  </EntityType>
+  <EntityType Name="CompanyPhones">
+    <Key>
+      <PropertyRef Name="PhoneTypeId" />
+      <PropertyRef Name="CompanyId" />
+    </Key>
+    <Property Name="PhoneTypeId" Nullable="false" Type="tinyint" />
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="PhoneValue" Nullable="false" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="CompanySections">
+    <Key>
+      <PropertyRef Name="CompanyId" />
+      <PropertyRef Name="SectionId" />
+    </Key>
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="SectionId" Nullable="false" Type="int" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="CompanyTypes">
+    <Key>
+      <PropertyRef Name="CompanyTypeId" />
+    </Key>
+    <Property Name="CompanyTypeId" Nullable="false" Type="tinyint" />
+    <Property Name="Description" Nullable="false" MaxLength="50" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="CountryName" Nullable="false" MaxLength="60" Type="varchar" />
+    <Property Name="ID" Nullable="false" MaxLength="3" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Editions">
+    <Key>
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="EditionId" Nullable="false" Type="int" />
+    <Property Name="CountryId" Nullable="false" Type="int" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="BookId" Nullable="false" Type="int" />
+    <Property Name="NumberEdition" Nullable="false" Type="int" />
+    <Property Name="ISBN" Nullable="false" MaxLength="20" Type="varchar" />
+    <Property Name="BarCode" MaxLength="80" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Indexes">
+    <Key>
+      <PropertyRef Name="IndexId" />
+    </Key>
+    <Property Name="IndexId" Nullable="false" Type="tinyint" />
+    <Property Name="Description" Nullable="false" MaxLength="150" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="PhoneTypes">
+    <Key>
+      <PropertyRef Name="PhoneTypeId" />
+    </Key>
+    <Property Name="PhoneTypeId" Nullable="false" Type="tinyint" />
+    <Property Name="Description" Nullable="false" MaxLength="30" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductEditions">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="EditionId" />
+    </Key>
+    <Property Name="ProductId" Nullable="false" Type="int" />
+    <Property Name="EditionId" Nullable="false" Type="int" />
+    <Property Name="HtmlFile" MaxLength="200" Type="varchar" />
+    <Property Name="HtmlContent" Type="text" />
+  </EntityType>
+  <EntityType Name="ProductIndexes">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="IndexId" />
+    </Key>
+    <Property Name="ProductId" Nullable="false" Type="int" />
+    <Property Name="IndexId" Nullable="false" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="ProductIdParent" Type="int" />
+    <Property Name="ProductTypeId" Type="tinyint" />
+    <Property Name="ProductName" Nullable="false" Type="nvarchar(max)" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="CompanyId" Nullable="false" Type="int" />
+    <Property Name="ProdId" Nullable="false" Type="int" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProductSections">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="SectionId" />
+    </Key>
+    <Property Name="ProductId" Nullable="false" Type="int" />
+    <Property Name="SectionId" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductTypes">
+    <Key>
+      <PropertyRef Name="ProductTypeId" />
+    </Key>
+    <Property Name="ProductTypeId" Nullable="false" Type="tinyint" />
+    <Property Name="Description" Nullable="false" MaxLength="60" Type="varchar" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="Sections">
+    <Key>
+      <PropertyRef Name="SectionId" />
+    </Key>
+    <Property Name="SectionId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="Description" Nullable="false" Type="nvarchar(max)" />
+    <Property Name="SectionIdParent" Type="int" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="Name" Nullable="false" MaxLength="60" Type="varchar" />
+    <Property Name="CountryId" Nullable="false" Type="int" />
+    <Property Name="Active" Nullable="false" Type="bit" />
+  </EntityType>
+  <Association Name="FK_AdvertisementEditions_Advertisements">
+    <End Type="Self.Advertisements" Multiplicity="1" Role="Advertisements" />
+    <End Type="Self.AdvertisementEditions" Multiplicity="*" Role="AdvertisementEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Advertisements">
+        <PropertyRef Name="AdvId" />
+      </Principal>
+      <Dependent Role="AdvertisementEditions">
+        <PropertyRef Name="AdvId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AdvertisementEditions_Companies">
+    <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
+    <End Type="Self.AdvertisementEditions" Multiplicity="*" Role="AdvertisementEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="AdvertisementEditions">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AdvertisementEditions_Editions">
+    <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
+    <End Type="Self.AdvertisementEditions" Multiplicity="*" Role="AdvertisementEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="AdvertisementEditions">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BrandIndexes_Indexes">
+    <End Type="Self.Indexes" Multiplicity="1" Role="Indexes" />
+    <End Type="Self.CompanyBrandIndexes" Multiplicity="*" Role="CompanyBrandIndexes" />
+    <ReferentialConstraint>
+      <Principal Role="Indexes">
+        <PropertyRef Name="IndexId" />
+      </Principal>
+      <Dependent Role="CompanyBrandIndexes">
+        <PropertyRef Name="IndexId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BrandSections_Sections">
+    <End Type="Self.Sections" Multiplicity="1" Role="Sections" />
+    <End Type="Self.CompanyBrandSections" Multiplicity="*" Role="CompanyBrandSections" />
+    <ReferentialConstraint>
+      <Principal Role="Sections">
+        <PropertyRef Name="SectionId" />
+      </Principal>
+      <Dependent Role="CompanyBrandSections">
+        <PropertyRef Name="SectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Cities_States">
+    <End Type="Self.States" Multiplicity="1" Role="States" />
+    <End Type="Self.Cities" Multiplicity="*" Role="Cities" />
+    <ReferentialConstraint>
+      <Principal Role="States">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="Cities">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyBrandEditions_CompanyBrands">
+    <End Type="Self.CompanyBrands" Multiplicity="1" Role="CompanyBrands" />
+    <End Type="Self.CompanyBrandEditions" Multiplicity="*" Role="CompanyBrandEditions" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyBrands">
+        <PropertyRef Name="CompanyId" />
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="CompanyBrandEditions">
+        <PropertyRef Name="CompanyId" />
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyBrandEditions_Editions">
+    <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
+    <End Type="Self.CompanyBrandEditions" Multiplicity="*" Role="CompanyBrandEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="CompanyBrandEditions">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyBrandIndexes_CompanyBrands">
+    <End Type="Self.CompanyBrands" Multiplicity="1" Role="CompanyBrands" />
+    <End Type="Self.CompanyBrandIndexes" Multiplicity="*" Role="CompanyBrandIndexes" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyBrands">
+        <PropertyRef Name="CompanyId" />
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="CompanyBrandIndexes">
+        <PropertyRef Name="CompanyId" />
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyBrands_Brands">
+    <End Type="Self.Brands" Multiplicity="1" Role="Brands" />
+    <End Type="Self.CompanyBrands" Multiplicity="*" Role="CompanyBrands" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="CompanyBrands">
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyBrands_Companies">
+    <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
+    <End Type="Self.CompanyBrands" Multiplicity="*" Role="CompanyBrands" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyBrands">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyBrandSections_CompanyBrands">
+    <End Type="Self.CompanyBrands" Multiplicity="1" Role="CompanyBrands" />
+    <End Type="Self.CompanyBrandSections" Multiplicity="*" Role="CompanyBrandSections" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyBrands">
+        <PropertyRef Name="CompanyId" />
+        <PropertyRef Name="BrandId" />
+      </Principal>
+      <Dependent Role="CompanyBrandSections">
+        <PropertyRef Name="CompanyId" />
+        <PropertyRef Name="BrandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyEditions_Companies">
+    <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
+    <End Type="Self.CompanyEditions" Multiplicity="*" Role="CompanyEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyEditions">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanyEditions_Editions">
+    <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
+    <End Type="Self.CompanyEditions" Multiplicity="*" Role="CompanyEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="CompanyEditions">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanySections_Companies">
+    <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
+    <End Type="Self.CompanySections" Multiplicity="*" Role="CompanySections" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanySections">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CompanySections_Sections">
+    <End Type="Self.Sections" Multiplicity="1" Role="Sections" />
+    <End Type="Self.CompanySections" Multiplicity="*" Role="CompanySections" />
+    <ReferentialConstraint>
+      <Principal Role="Sections">
+        <PropertyRef Name="SectionId" />
+      </Principal>
+      <Dependent Role="CompanySections">
+        <PropertyRef Name="SectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Editions_Books">
+    <End Type="Self.Books" Multiplicity="1" Role="Books" />
+    <End Type="Self.Editions" Multiplicity="*" Role="Editions" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Editions_Countries">
+    <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
+    <End Type="Self.Editions" Multiplicity="*" Role="Editions" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Editions">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductEditions_Editions">
+    <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
+    <End Type="Self.ProductEditions" Multiplicity="*" Role="ProductEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="ProductEditions">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductEditions_Products">
+    <End Type="Self.Products" Multiplicity="1" Role="Products" />
+    <End Type="Self.ProductEditions" Multiplicity="*" Role="ProductEditions" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductEditions">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_1">
+    <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
+    <End Type="Self.States" Multiplicity="*" Role="States" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="States">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_10">
+    <End Type="Self.Sections" Multiplicity="0..1" Role="Sections" />
+    <End Type="Self.Sections" Multiplicity="*" Role="Sections1" />
+    <ReferentialConstraint>
+      <Principal Role="Sections">
+        <PropertyRef Name="SectionId" />
+      </Principal>
+      <Dependent Role="Sections1">
+        <PropertyRef Name="SectionIdParent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_13">
+    <End Type="Self.Products" Multiplicity="0..1" Role="Products" />
+    <End Type="Self.Products" Multiplicity="*" Role="Products1" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Products1">
+        <PropertyRef Name="ProductIdParent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_14">
+    <End Type="Self.Products" Multiplicity="1" Role="Products" />
+    <End Type="Self.ProductSections" Multiplicity="*" Role="ProductSections" />
+    <ReferentialConstraint>
+      <Principal Role="Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductSections">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_15">
+    <End Type="Self.Sections" Multiplicity="1" Role="Sections" />
+    <End Type="Self.ProductSections" Multiplicity="*" Role="ProductSections" />
+    <ReferentialConstraint>
+      <Principal Role="Sections">
+        <PropertyRef Name="SectionId" />
+      </Principal>
+      <Dependent Role="ProductSections">
+        <PropertyRef Name="SectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_19">
+    <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
+    <End Type="Self.Products" Multiplicity="*" Role="Products" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_3">
+    <End Type="Self.CompanyTypes" Multiplicity="1" Role="CompanyTypes" />
+    <End Type="Self.Companies" Multiplicity="*" Role="Companies" />
+    <ReferentialConstraint>
+      <Principal Role="CompanyTypes">
+        <PropertyRef Name="CompanyTypeId" />
+      </Principal>
+      <Dependent Role="Companies">
+        <PropertyRef Name="CompanyTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_5">
+    <End Type="Self.Companies" Multiplicity="0..1" Role="Companies" />
+    <End Type="Self.Companies" Multiplicity="*" Role="Companies1" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Companies1">
+        <PropertyRef Name="CompanyIdParent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_6">
+    <End Type="Self.PhoneTypes" Multiplicity="1" Role="PhoneTypes" />
+    <End Type="Self.CompanyPhones" Multiplicity="*" Role="CompanyPhones" />
+    <ReferentialConstraint>
+      <Principal Role="PhoneTypes">
+        <PropertyRef Name="PhoneTypeId" />
+      </Principal>
+      <Dependent Role="CompanyPhones">
+        <PropertyRef Name="PhoneTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_7">
+    <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
+    <End Type="Self.CompanyPhones" Multiplicity="*" Role="CompanyPhones" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="CompanyPhones">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_9">
+    <End Type="Self.ProductTypes" Multiplicity="0..1" Role="ProductTypes" />
+    <End Type="Self.Products" Multiplicity="*" Role="Products" />
+    <ReferentialConstraint>
+      <Principal Role="ProductTypes">
+        <PropertyRef Name="ProductTypeId" />
+      </Principal>
+      <Dependent Role="Products">
+        <PropertyRef Name="ProductTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="AdvertisementEditions" EntityType="Self.AdvertisementEditions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Advertisements" EntityType="Self.Advertisements" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyBrandEditions" EntityType="Self.CompanyBrandEditions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyBrandIndexes" EntityType="Self.CompanyBrandIndexes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyBrands" EntityType="Self.CompanyBrands" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyBrandSections" EntityType="Self.CompanyBrandSections" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyEditions" EntityType="Self.CompanyEditions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyPhones" EntityType="Self.CompanyPhones" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanySections" EntityType="Self.CompanySections" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyTypes" EntityType="Self.CompanyTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Indexes" EntityType="Self.Indexes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhoneTypes" EntityType="Self.PhoneTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductEditions" EntityType="Self.ProductEditions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductIndexes" EntityType="Self.ProductIndexes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductSections" EntityType="Self.ProductSections" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AdvertisementEditions_Advertisements" Association="Self.FK_AdvertisementEditions_Advertisements">
+      <End EntitySet="Advertisements" Role="Advertisements" />
+      <End EntitySet="AdvertisementEditions" Role="AdvertisementEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AdvertisementEditions_Companies" Association="Self.FK_AdvertisementEditions_Companies">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="AdvertisementEditions" Role="AdvertisementEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AdvertisementEditions_Editions" Association="Self.FK_AdvertisementEditions_Editions">
+      <End EntitySet="Editions" Role="Editions" />
+      <End EntitySet="AdvertisementEditions" Role="AdvertisementEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BrandIndexes_Indexes" Association="Self.FK_BrandIndexes_Indexes">
+      <End EntitySet="Indexes" Role="Indexes" />
+      <End EntitySet="CompanyBrandIndexes" Role="CompanyBrandIndexes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BrandSections_Sections" Association="Self.FK_BrandSections_Sections">
+      <End EntitySet="Sections" Role="Sections" />
+      <End EntitySet="CompanyBrandSections" Role="CompanyBrandSections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Cities_States" Association="Self.FK_Cities_States">
+      <End EntitySet="States" Role="States" />
+      <End EntitySet="Cities" Role="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyBrandEditions_CompanyBrands" Association="Self.FK_CompanyBrandEditions_CompanyBrands">
+      <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+      <End EntitySet="CompanyBrandEditions" Role="CompanyBrandEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyBrandEditions_Editions" Association="Self.FK_CompanyBrandEditions_Editions">
+      <End EntitySet="Editions" Role="Editions" />
+      <End EntitySet="CompanyBrandEditions" Role="CompanyBrandEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyBrandIndexes_CompanyBrands" Association="Self.FK_CompanyBrandIndexes_CompanyBrands">
+      <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+      <End EntitySet="CompanyBrandIndexes" Role="CompanyBrandIndexes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyBrands_Brands" Association="Self.FK_CompanyBrands_Brands">
+      <End EntitySet="Brands" Role="Brands" />
+      <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyBrands_Companies" Association="Self.FK_CompanyBrands_Companies">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyBrandSections_CompanyBrands" Association="Self.FK_CompanyBrandSections_CompanyBrands">
+      <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+      <End EntitySet="CompanyBrandSections" Role="CompanyBrandSections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyEditions_Companies" Association="Self.FK_CompanyEditions_Companies">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="CompanyEditions" Role="CompanyEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanyEditions_Editions" Association="Self.FK_CompanyEditions_Editions">
+      <End EntitySet="Editions" Role="Editions" />
+      <End EntitySet="CompanyEditions" Role="CompanyEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanySections_Companies" Association="Self.FK_CompanySections_Companies">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="CompanySections" Role="CompanySections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CompanySections_Sections" Association="Self.FK_CompanySections_Sections">
+      <End EntitySet="Sections" Role="Sections" />
+      <End EntitySet="CompanySections" Role="CompanySections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Editions_Books" Association="Self.FK_Editions_Books">
+      <End EntitySet="Books" Role="Books" />
+      <End EntitySet="Editions" Role="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Editions_Countries" Association="Self.FK_Editions_Countries">
+      <End EntitySet="Countries" Role="Countries" />
+      <End EntitySet="Editions" Role="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductEditions_Editions" Association="Self.FK_ProductEditions_Editions">
+      <End EntitySet="Editions" Role="Editions" />
+      <End EntitySet="ProductEditions" Role="ProductEditions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductEditions_Products" Association="Self.FK_ProductEditions_Products">
+      <End EntitySet="Products" Role="Products" />
+      <End EntitySet="ProductEditions" Role="ProductEditions" />
+    </AssociationSet>
+    <AssociationSet Name="R_1" Association="Self.R_1">
+      <End EntitySet="Countries" Role="Countries" />
+      <End EntitySet="States" Role="States" />
+    </AssociationSet>
+    <AssociationSet Name="R_10" Association="Self.R_10">
+      <End EntitySet="Sections" Role="Sections" />
+      <End EntitySet="Sections" Role="Sections1" />
+    </AssociationSet>
+    <AssociationSet Name="R_13" Association="Self.R_13">
+      <End EntitySet="Products" Role="Products" />
+      <End EntitySet="Products" Role="Products1" />
+    </AssociationSet>
+    <AssociationSet Name="R_14" Association="Self.R_14">
+      <End EntitySet="Products" Role="Products" />
+      <End EntitySet="ProductSections" Role="ProductSections" />
+    </AssociationSet>
+    <AssociationSet Name="R_15" Association="Self.R_15">
+      <End EntitySet="Sections" Role="Sections" />
+      <End EntitySet="ProductSections" Role="ProductSections" />
+    </AssociationSet>
+    <AssociationSet Name="R_19" Association="Self.R_19">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="Products" Role="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_3" Association="Self.R_3">
+      <End EntitySet="CompanyTypes" Role="CompanyTypes" />
+      <End EntitySet="Companies" Role="Companies" />
+    </AssociationSet>
+    <AssociationSet Name="R_5" Association="Self.R_5">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="Companies" Role="Companies1" />
+    </AssociationSet>
+    <AssociationSet Name="R_6" Association="Self.R_6">
+      <End EntitySet="PhoneTypes" Role="PhoneTypes" />
+      <End EntitySet="CompanyPhones" Role="CompanyPhones" />
+    </AssociationSet>
+    <AssociationSet Name="R_7" Association="Self.R_7">
+      <End EntitySet="Companies" Role="Companies" />
+      <End EntitySet="CompanyPhones" Role="CompanyPhones" />
+    </AssociationSet>
+    <AssociationSet Name="R_9" Association="Self.R_9">
+      <End EntitySet="ProductTypes" Role="ProductTypes" />
+      <End EntitySet="Products" Role="Products" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
