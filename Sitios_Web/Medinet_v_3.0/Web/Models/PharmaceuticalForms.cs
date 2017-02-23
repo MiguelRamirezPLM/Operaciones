@@ -14,10 +14,17 @@ namespace Web.Models
     
     public partial class PharmaceuticalForms
     {
+        public PharmaceuticalForms()
+        {
+            this.ProductPharmaForms = new HashSet<ProductPharmaForms>();
+        }
+    
         public int PharmaFormId { get; set; }
         public string PharmaFormKey { get; set; }
         public string Description { get; set; }
         public string EnglishDescription { get; set; }
         public bool Active { get; set; }
+    
+        public virtual ICollection<ProductPharmaForms> ProductPharmaForms { get; set; }
     }
 }

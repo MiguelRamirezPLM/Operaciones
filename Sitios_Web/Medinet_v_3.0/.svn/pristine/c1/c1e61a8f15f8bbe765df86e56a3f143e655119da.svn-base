@@ -1,0 +1,356 @@
+﻿@model IEnumerable<plm_spGetDivisionProductsToEdit>
+@using Web.Models;
+@{
+    ViewBag.Title = "ChangeProducts";
+    Web.Models.SessionDivisionId SId = (Web.Models.SessionDivisionId)Session["SessionDivisionId"];
+    Web.Models.Sessions.SessionM _Session1 = (Web.Models.Sessions.SessionM)Session["SessionM"];
+    Medinet db = new Medinet();
+    SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
+
+
+    WebGrid _datagrid;
+    _datagrid = new WebGrid(Model, rowsPerPage: 100);
+
+
+
+    int DivisionId, EditionId, BookId, CountryId;
+    if (_Session != null)
+    {
+        DivisionId = _Session.DivisionId;
+        EditionId = _Session.EditionId;
+        BookId = _Session.BookId;
+        CountryId = _Session.CountryId;
+
+    }
+    else
+    {
+        DivisionId = 0;
+        EditionId = 0;
+        BookId = 0;
+        CountryId = 0;
+    }
+
+    var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+
+}
+
+@*Cambiar producto de laboratorio*@
+
+<script>
+    var ChangeProduct = [];
+    function changeproductsoflaboratory(item) {
+
+        var tr = $(item).parents("tr:first");
+
+        var DId = tr.find("#lblDivisionId").val();
+        var PId = tr.find("#lblProductId").val();
+        var PFId = tr.find("#lblPharmaFormId").val();
+        var CId = tr.find("#lblCategoryId").val();
+
+        if (tr.find("#ChangeProducts").is(":checked")) {
+            ChangeProduct.push({
+                'DId': DId,
+                'PId': PId,
+                'PFId': PFId,
+                'CId': CId
+            });
+        }
+        else if (tr.find("#ChangeProducts").is(":not(:checked)")) {
+
+            var index = DeleteListItem(ChangeProduct, "DId", "PId", "PFId", "CId", DId, PId, PFId, CId);
+
+            if (index == null) {
+            } else if (index >= 0) {
+
+                ChangeProduct.splice(index, 1);
+            }
+
+        }
+    }
+</script>
+<script>
+    function DeleteListItem(arraytosearch, DId, PId, PFId, CId, valuetoDId, valuePId, valuePFId, valueCId) {
+        for (var i = 0; i < arraytosearch.length; i++) {
+
+            if (arraytosearch[i][DId] == valuetoDId) {
+                if (arraytosearch[i][PId] == valuePId) {
+                    if (arraytosearch[i][PFId] == valuePFId) {
+                        if (arraytosearch[i][CId] == valueCId) {
+                            return i;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    };
+</script>
+<script>
+    function SendProducts() {
+
+        $("#bloqueo").show();
+
+        var jsonresponse = JSON.stringify(ChangeProduct);
+        var Size = $(ChangeProduct).size();
+        var DId = $("#DivisionId").val();
+        var EId = $("#EditionId").val();
+
+        var content = "";
+
+        content += "<h3 style='text-align:center'><span class='glyphicon glyphicon-remove'></span> <i><span>&nbsp; ERROR. </span></i></h3>";
+
+        if (Size == 0) {
+            content += "No se ha seleccionado ningun registro";
+
+            apprise("" + content + "", { 'animate': true })
+
+            $("#bloqueo").hide();
+        }
+        else {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "../Sales/ChangeProductsToDivision",
+                data: { ListItems: jsonresponse, ArraySize: Size, Division: DId, Edition: EId },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout("document.location.reload()");
+                    }
+                }
+            })
+        }
+    }
+</script>
+
+<script src="~/Scripts/DataTables/jqueryDataTablesProducts.js"></script>
+<script src="~/Scripts/DataTables/dataTables.scroller.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#example').dataTable({
+                "columnDefs": [{ "searchable": false, "targets": [1, 2] }],
+                "language": {
+                    "lengthMenu": "<div class='col-md-3 title_filter'>" +
+                        "<div class='title-word' style='font-weight:normal; text-transform:none; font-size:17px;'> Mostrar <select class='form-control input-sm'> </div>" +
+                      '<option value="10">10</option>' +
+                      '<option value="20">20</option>' +
+                      '<option value="30">30</option>' +
+                      '<option value="40">40</option>' +
+                      '<option value="50">50</option>' +
+                      '<option value="-1">Todo</option>' +
+                      '</select> productos' + '</div>'
+                }
+            });
+        });
+    });
+</script>
+
+<div class="row col-md-10">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Ventas</strong> | Editar Laboratorio</div>
+        </div>
+    </div>
+    <br />
+    <nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default">
+        <div style="margin-left: 15px;" class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                @{
+
+                    CountriesUsers _CountriesUsers = (CountriesUsers)Session["CountriesUsers"];
+                    if (_CountriesUsers.country.LongCount() >= 1)
+                    {
+                        <a href="@Url.Content("~/Sales/Index")" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Content("~/Production/FilterIndex/" + _Session.id)" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+                        </a>
+                    }
+                }
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i style="color:#324887" class="glyphicon glyphicon-arrow-left"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i style="color:#324887;" class="glyphicon glyphicon-arrow-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+        <div class="message-item" id="m16">
+            <div class="message-inner">
+                <div class="avatar pull-left"></div>
+                <div class="user-detail">
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var cts = (from _ct in db.Countries
+                                                       where _ct.CountryId == CountryId
+                                                       select _ct).ToList();
+                                            foreach (Countries _ct in cts)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">País: <span style="color: #de5145">@_ct.CountryName</span> </span>
+                                                <input type="text" value="@CountryId" id="CountryId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var bkss = (from _bk in db.Books
+                                                        where _bk.BookId == BookId
+                                                        select _bk).ToList();
+                                            foreach (Books _bks in bkss)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Obra: <span style="color: #de5145">@_bks.Description</span> </span>
+                                                <input type="text" value="@BookId" id="BookId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var eds = (from _ed in db.Editions
+                                                       where _ed.EditionId == EditionId
+                                                       select _ed).ToList();
+                                            foreach (Editions _eds in eds)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Edición: <span style="color: #de5145">@_eds.NumberEdition</span> </span>
+                                                <input type="text" value="@EditionId" id="EditionId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Versión: <span style="color: #de5145">@ViewData["TypeName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var cl = (from _cl in db.Divisions
+                                                      where _cl.DivisionId == DivisionId
+                                                      select _cl).ToList();
+                                            foreach (Divisions _cl in cl)
+                                            {
+                                                <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@_cl.ShortName</span></span>
+                                                <input type="text" value="@DivisionId" id="DivisionId" style="display:none" />
+                                            }
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="row col-md-12" align="center">
+    <span class="Titles">Cambiar productos de Laboratorio</span>
+</div>
+<br />
+<br />
+<br />
+
+<div class="row col-md-12">
+    <button onclick="SendProducts()" class="btn btn-warning">
+        <span class="glyphicon glyphicon-send"></span>
+        <span>&nbsp; Guardar</span>
+    </button>
+</div>
+<br />
+<br />
+
+<br />
+
+<div class="row col-md-12">
+    <div class="col-lg-12">
+        <div class="row col-md-12 table-responsive">
+            <div class="tablestyle table-responsive">
+                @_datagrid.GetHtml(
+                         //htmlAttributes: new { id = "example" },
+                         headerStyle: "tdback ",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "display table table-bordered table-hover",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                                _datagrid.Column("", header: "Laboratorio", format: @<text>
+                                @{
+                                    <span style="font-size:12px">@item.DivisionShortName</span>
+                                    <input type="text" value="@item.DivisionId" id="lblDivisionId" style="display:none" />
+                                }
+                                </text>, style:"column225"),
+
+                                _datagrid.Column("", header: "Nombre de Producto", format: @<text>
+                    @{
+                        <span>@item.Brand</span>
+                        <input type="text" value="@item.ProductId" id="lblProductId" style="display:none" />
+                    }
+                                </text>, style:"column225"),
+
+                                _datagrid.Column("", header: "Forma Farmacéutica", format: @<text>
+                    @{
+                        <span>@item.PharmaForm</span>
+                        <input type="text" value="@item.PharmaFormId" id="lblPharmaFormId" style="display:none" />
+                    }
+                                </text>, style:"column225"),
+
+                _datagrid.Column("", header: "Categoría", format: @<text>
+                    @{
+                        <span>@item.CategoryName</span>
+                        <input type="text" value="@item.CategoryId" id="lblCategoryId" style="display:none" />
+                    }
+                </text>, style:"column225"),
+
+
+                                _datagrid.Column("", header: "Cambiar de Laboratorio", format: @<text>
+                    @{
+                        <input type="checkbox" onclick="changeproductsoflaboratory($(this))" id="ChangeProducts" />
+                    }
+                                </text>, style:"text-center column10"),
+
+                                }
+                                                                                                                                                                                                                                                                       )
+            </div>
+        </div>
+    </div>
+</div>
+<br />

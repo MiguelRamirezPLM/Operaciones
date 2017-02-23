@@ -31,5 +31,6 @@ namespace Web.Models
         public virtual ICollection<Users> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCountries> UserCountries { get; set; }
+        public virtual Regions Regions { get; set; }
     }
 }
