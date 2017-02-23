@@ -1,0 +1,1338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ShortName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Divisions">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Name="DivisionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="LaboratoryId" Type="int" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="ShortName" Type="varchar" MaxLength="100" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Editions">
+          <Key>
+            <PropertyRef Name="EditionId" />
+          </Key>
+          <Property Name="EditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EditionTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="NumberEdition" Type="int" Nullable="false" />
+          <Property Name="ISBN" Type="varchar" MaxLength="20" />
+          <Property Name="BarCode" Type="varchar" MaxLength="80" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="AddedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EditionTypes">
+          <Key>
+            <PropertyRef Name="EditionTypeId" />
+          </Key>
+          <Property Name="EditionTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OffMarkets">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="OffDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParticipantProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Page" Type="varchar" MaxLength="30" />
+          <Property Name="HTMLContent" Type="text" />
+          <Property Name="XMLContent" Type="text" />
+          <Property Name="ModifiedContent" Type="bit" />
+          <Property Name="ContentTypeId" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="PharmaceuticalForms">
+          <Key>
+            <PropertyRef Name="PharmaFormId" />
+          </Key>
+          <Property Name="PharmaFormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PharmaFormKey" Type="char" MaxLength="5" />
+          <Property Name="Description" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="EnglishDescription" Type="varchar" MaxLength="150" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductCategories">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="TechnicalSheet" Type="bit" Nullable="false" />
+          <Property Name="ProductDescription" Type="varchar(max)" />
+          <Property Name="HTMLFileName" Type="varchar" MaxLength="100" />
+          <Property Name="SanitaryRegister" Type="varchar" MaxLength="255" />
+          <Property Name="SSFraction" Type="varchar" MaxLength="255" />
+          <Property Name="JSONFormat" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="ProductPharmaForms">
+          <Key>
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ReferenceUrl" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="LaboratoryId" Type="int" Nullable="false" />
+          <Property Name="AlphabetId" Type="tinyint" Nullable="false" />
+          <Property Name="ProductTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="Brand" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="SanitaryRegistry" Type="varchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductTypes">
+          <Key>
+            <PropertyRef Name="ProductTypeId" />
+          </Key>
+          <Property Name="ProductTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="TypeName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="EditionsParentId_fk">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="0..1" />
+          <End Role="Editions1" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="Editions1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionTypes_Fk">
+          <End Role="EditionTypes" Type="Self.EditionTypes" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EditionTypes">
+              <PropertyRef Name="EditionTypeId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="EditionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParticipantProducts_Editions">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="ParticipantProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParticipantProducts_ProductCategories">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ParticipantProducts">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategories_ProductPharmaForms">
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCategories">
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductTypes">
+          <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTypes">
+              <PropertyRef Name="ProductTypeId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCOUNTRY_PR">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPHARMAFORM_PF">
+          <End Role="PharmaceuticalForms" Type="Self.PharmaceuticalForms" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PharmaceuticalForms">
+              <PropertyRef Name="PharmaFormId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPRODUCT_PD">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_14">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCategories">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_17">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_25">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_32">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_42">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="Editions1">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_5">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_6">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_701">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="OffMarkets" Type="Self.OffMarkets" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OffMarkets">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_9">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="plm_spGetCountries" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="plm_spGetDivisionsByCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="countryId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spGetEditionsByProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProductId" Type="int" Mode="In" />
+          <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="PharmaFormId" Type="int" Mode="In" />
+          <Parameter Name="DivisionId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spGetProductsbyDivisionbyCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CountryId" Type="int" Mode="In" />
+          <Parameter Name="DivisionId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Model1StoreContainer">
+          <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EditionTypes" EntityType="Self.EditionTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OffMarkets" EntityType="Self.OffMarkets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="EditionsParentId_fk" Association="Self.EditionsParentId_fk">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="Editions1" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="EditionTypes_Fk" Association="Self.EditionTypes_Fk">
+            <End Role="EditionTypes" EntitySet="EditionTypes" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParticipantProducts_Editions" Association="Self.FK_ParticipantProducts_Editions">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParticipantProducts_ProductCategories" Association="Self.FK_ParticipantProducts_ProductCategories">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategories_ProductPharmaForms" Association="Self.FK_ProductCategories_ProductPharmaForms">
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductTypes" Association="Self.FK_Products_ProductTypes">
+            <End Role="ProductTypes" EntitySet="ProductTypes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FKCOUNTRY_PR" Association="Self.FKCOUNTRY_PR">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FKPHARMAFORM_PF" Association="Self.FKPHARMAFORM_PF">
+            <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="FKPRODUCT_PD" Association="Self.FKPRODUCT_PD">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="R_14" Association="Self.R_14">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="R_17" Association="Self.R_17">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_25" Association="Self.R_25">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="R_32" Association="Self.R_32">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Divisions" EntitySet="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_42" Association="Self.R_42">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="Editions1" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_5" Association="Self.R_5">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_6" Association="Self.R_6">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="Self.R_7">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_701" Association="Self.R_701">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="OffMarkets" EntitySet="OffMarkets" />
+          </AssociationSet>
+          <AssociationSet Name="R_9" Association="Self.R_9">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShortName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="Self.R_6" FromRole="Books" ToRole="Editions" />
+          <NavigationProperty Name="Editions1" Relationship="Self.R_7" FromRole="Books" ToRole="Editions" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FKCOUNTRY_PR" FromRole="Countries" ToRole="Products" />
+          <NavigationProperty Name="Divisions" Relationship="Self.R_17" FromRole="Countries" ToRole="Divisions" />
+          <NavigationProperty Name="Divisions1" Relationship="Self.R_32" FromRole="Countries" ToRole="Divisions" />
+          <NavigationProperty Name="Editions" Relationship="Self.R_5" FromRole="Countries" ToRole="Editions" />
+          <NavigationProperty Name="Products1" Relationship="Self.R_9" FromRole="Countries" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Divisions">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShortName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Countries" Relationship="Self.R_17" FromRole="Divisions" ToRole="Countries" />
+          <NavigationProperty Name="Countries1" Relationship="Self.R_32" FromRole="Divisions" ToRole="Countries" />
+        </EntityType>
+        <EntityType Name="Editions">
+          <Key>
+            <PropertyRef Name="EditionId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EditionTypeId" Type="Byte" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="NumberEdition" Type="Int32" Nullable="false" />
+          <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BarCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="AddedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Books" Relationship="Self.R_6" FromRole="Editions" ToRole="Books" />
+          <NavigationProperty Name="Books1" Relationship="Self.R_7" FromRole="Editions" ToRole="Books" />
+          <NavigationProperty Name="Countries" Relationship="Self.R_5" FromRole="Editions" ToRole="Countries" />
+          <NavigationProperty Name="Editions1" Relationship="Self.EditionsParentId_fk" FromRole="Editions" ToRole="Editions1" />
+          <NavigationProperty Name="Editions2" Relationship="Self.EditionsParentId_fk" FromRole="Editions1" ToRole="Editions" />
+          <NavigationProperty Name="EditionTypes" Relationship="Self.EditionTypes_Fk" FromRole="Editions" ToRole="EditionTypes" />
+          <NavigationProperty Name="ParticipantProducts" Relationship="Self.FK_ParticipantProducts_Editions" FromRole="Editions" ToRole="ParticipantProducts" />
+          <NavigationProperty Name="Editions11" Relationship="Self.R_42" FromRole="Editions" ToRole="Editions1" />
+          <NavigationProperty Name="Editions3" Relationship="Self.R_42" FromRole="Editions1" ToRole="Editions" />
+        </EntityType>
+        <EntityType Name="EditionTypes">
+          <Key>
+            <PropertyRef Name="EditionTypeId" />
+          </Key>
+          <Property Name="EditionTypeId" Type="Byte" Nullable="false" />
+          <Property Name="TypeName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Editions" Relationship="Self.EditionTypes_Fk" FromRole="EditionTypes" ToRole="Editions" />
+        </EntityType>
+        <EntityType Name="OffMarkets">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="OffDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ProductCategories" Relationship="Self.R_701" FromRole="OffMarkets" ToRole="ProductCategories" />
+        </EntityType>
+        <EntityType Name="ParticipantProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Page" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="HTMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="XMLContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedContent" Type="Boolean" />
+          <Property Name="ContentTypeId" Type="Byte" />
+          <NavigationProperty Name="Editions" Relationship="Self.FK_ParticipantProducts_Editions" FromRole="ParticipantProducts" ToRole="Editions" />
+          <NavigationProperty Name="ProductCategories" Relationship="Self.FK_ParticipantProducts_ProductCategories" FromRole="ParticipantProducts" ToRole="ProductCategories" />
+        </EntityType>
+        <EntityType Name="PharmaceuticalForms">
+          <Key>
+            <PropertyRef Name="PharmaFormId" />
+          </Key>
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PharmaFormKey" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EnglishDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductPharmaForms" Relationship="Self.FKPHARMAFORM_PF" FromRole="PharmaceuticalForms" ToRole="ProductPharmaForms" />
+        </EntityType>
+        <EntityType Name="ProductCategories">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="TechnicalSheet" Type="Boolean" Nullable="false" />
+          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="HTMLFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SanitaryRegister" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SSFraction" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="JSONFormat" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OffMarkets" Relationship="Self.R_701" FromRole="ProductCategories" ToRole="OffMarkets" />
+          <NavigationProperty Name="ParticipantProducts" Relationship="Self.FK_ParticipantProducts_ProductCategories" FromRole="ProductCategories" ToRole="ParticipantProducts" />
+          <NavigationProperty Name="ProductPharmaForms" Relationship="Self.FK_ProductCategories_ProductPharmaForms" FromRole="ProductCategories" ToRole="ProductPharmaForms" />
+          <NavigationProperty Name="Products" Relationship="Self.R_14" FromRole="ProductCategories" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="ProductPharmaForms">
+          <Key>
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReferenceUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PharmaceuticalForms" Relationship="Self.FKPHARMAFORM_PF" FromRole="ProductPharmaForms" ToRole="PharmaceuticalForms" />
+          <NavigationProperty Name="ProductCategories" Relationship="Self.FK_ProductCategories_ProductPharmaForms" FromRole="ProductPharmaForms" ToRole="ProductCategories" />
+          <NavigationProperty Name="Products" Relationship="Self.FKPRODUCT_PD" FromRole="ProductPharmaForms" ToRole="Products" />
+          <NavigationProperty Name="Products1" Relationship="Self.R_25" FromRole="ProductPharmaForms" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
+          <Property Name="LaboratoryId" Type="Int32" Nullable="false" />
+          <Property Name="AlphabetId" Type="Byte" Nullable="false" />
+          <Property Name="ProductTypeId" Type="Byte" Nullable="false" />
+          <Property Name="Brand" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SanitaryRegistry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Countries" Relationship="Self.FKCOUNTRY_PR" FromRole="Products" ToRole="Countries" />
+          <NavigationProperty Name="Countries1" Relationship="Self.R_9" FromRole="Products" ToRole="Countries" />
+          <NavigationProperty Name="ProductCategories" Relationship="Self.R_14" FromRole="Products" ToRole="ProductCategories" />
+          <NavigationProperty Name="ProductPharmaForms" Relationship="Self.FKPRODUCT_PD" FromRole="Products" ToRole="ProductPharmaForms" />
+          <NavigationProperty Name="ProductPharmaForms1" Relationship="Self.R_25" FromRole="Products" ToRole="ProductPharmaForms" />
+          <NavigationProperty Name="ProductTypes" Relationship="Self.FK_Products_ProductTypes" FromRole="Products" ToRole="ProductTypes" />
+        </EntityType>
+        <EntityType Name="ProductTypes">
+          <Key>
+            <PropertyRef Name="ProductTypeId" />
+          </Key>
+          <Property Name="ProductTypeId" Type="Byte" Nullable="false" />
+          <Property Name="TypeName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_ProductTypes" FromRole="ProductTypes" ToRole="Products" />
+        </EntityType>
+        <Association Name="R_6">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCOUNTRY_PR">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_17">
+          <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
+          <End Type="Self.Divisions" Multiplicity="*" Role="Divisions" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_32">
+          <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
+          <End Type="Self.Divisions" Multiplicity="*" Role="Divisions" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Divisions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_5">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_9">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Countries">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionsParentId_fk">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="0..1" />
+          <End Role="Editions1" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="Editions1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EditionTypes_Fk">
+          <End Role="EditionTypes" Type="Self.EditionTypes" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EditionTypes">
+              <PropertyRef Name="EditionTypeId" />
+            </Principal>
+            <Dependent Role="Editions">
+              <PropertyRef Name="EditionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParticipantProducts_Editions">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="ParticipantProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_42">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="Editions1" Type="Self.Editions" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="Editions1">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_701">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="OffMarkets" Type="Self.OffMarkets" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OffMarkets">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParticipantProducts_ProductCategories">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ParticipantProducts">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPHARMAFORM_PF">
+          <End Role="PharmaceuticalForms" Type="Self.PharmaceuticalForms" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PharmaceuticalForms">
+              <PropertyRef Name="PharmaFormId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategories_ProductPharmaForms">
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductPharmaForms">
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCategories">
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_14">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductCategories">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPRODUCT_PD">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_25">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductPharmaForms">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductTypes">
+          <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTypes">
+              <PropertyRef Name="ProductTypeId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Medinet" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Self.Books" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" />
+          <EntitySet Name="Divisions" EntityType="Self.Divisions" />
+          <EntitySet Name="Editions" EntityType="Self.Editions" />
+          <EntitySet Name="EditionTypes" EntityType="Self.EditionTypes" />
+          <EntitySet Name="OffMarkets" EntityType="Self.OffMarkets" />
+          <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" />
+          <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" />
+          <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" />
+          <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" />
+          <AssociationSet Name="R_6" Association="Self.R_6">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="Self.R_7">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="FKCOUNTRY_PR" Association="Self.FKCOUNTRY_PR">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_17" Association="Self.R_17">
+            <End EntitySet="Countries" Role="Countries" />
+            <End EntitySet="Divisions" Role="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_32" Association="Self.R_32">
+            <End EntitySet="Countries" Role="Countries" />
+            <End EntitySet="Divisions" Role="Divisions" />
+          </AssociationSet>
+          <AssociationSet Name="R_5" Association="Self.R_5">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_9" Association="Self.R_9">
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="EditionsParentId_fk" Association="Self.EditionsParentId_fk">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="Editions1" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="EditionTypes_Fk" Association="Self.EditionTypes_Fk">
+            <End Role="EditionTypes" EntitySet="EditionTypes" />
+            <End Role="Editions" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParticipantProducts_Editions" Association="Self.FK_ParticipantProducts_Editions">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <AssociationSet Name="R_42" Association="Self.R_42">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="Editions1" EntitySet="Editions" />
+          </AssociationSet>
+          <AssociationSet Name="R_701" Association="Self.R_701">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="OffMarkets" EntitySet="OffMarkets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParticipantProducts_ProductCategories" Association="Self.FK_ParticipantProducts_ProductCategories">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FKPHARMAFORM_PF" Association="Self.FKPHARMAFORM_PF">
+            <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategories_ProductPharmaForms" Association="Self.FK_ProductCategories_ProductPharmaForms">
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="R_14" Association="Self.R_14">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FKPRODUCT_PD" Association="Self.FKPRODUCT_PD">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="R_25" Association="Self.R_25">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductTypes" Association="Self.FK_Products_ProductTypes">
+            <End Role="ProductTypes" EntitySet="ProductTypes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <FunctionImport Name="plm_spGetCountries" ReturnType="Collection(Model1.plm_spGetCountries_Result)" />
+          <FunctionImport Name="plm_spGetDivisionsByCountry" ReturnType="Collection(Model1.plm_spGetDivisionsByCountry_Result)">
+          <Parameter Name="countryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="plm_spGetProductsbyDivisionbyCountry" ReturnType="Collection(Model1.plm_spGetProductsbyDivisionbyCountry_Result)">
+            <Parameter Name="CountryId" Mode="In" Type="Int32" />
+            <Parameter Name="DivisionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="plm_spGetEditionsByProducts" ReturnType="Collection(Model1.plm_spGetEditionsByProducts_Result)">
+            <Parameter Name="ProductId" Mode="In" Type="Int32" />
+            <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="PharmaFormId" Mode="In" Type="Int32" />
+            <Parameter Name="DivisionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="plm_spGetCountries_Result">
+          <Property Type="Int32" Name="CountryId" Nullable="false" />
+          <Property Type="String" Name="CountryName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ID" Nullable="false" MaxLength="3" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetDivisionsByCountry_Result">
+          <Property Type="Int32" Name="DivisionId" Nullable="false" />
+          <Property Type="Int32" Name="ParentId" Nullable="true" />
+          <Property Type="Int32" Name="LaboratoryId" Nullable="false" />
+          <Property Type="Int32" Name="CountryId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="ShortName" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetProductsbyDivisionbyCountry_Result">
+          <Property Type="String" Name="Division" Nullable="false" MaxLength="300" />
+          <Property Type="Int32" Name="Divisionid" Nullable="false" />
+          <Property Type="Int32" Name="CategoryId" Nullable="false" />
+          <Property Type="Int32" Name="PharmaFormId" Nullable="false" />
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="Product" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="PharmaceuticalForm" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Category" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="ProductType" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetProductsByBooksByEditions_Result">
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="Brand" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="ShortName" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="NumberEdition" Nullable="false" />
+          <Property Type="String" Name="TypeName" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetProductsByBooksByEditions_Result1">
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="Brand" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="ShortName" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="NumberEdition" Nullable="false" />
+          <Property Type="String" Name="TypeName" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="ParentId" Nullable="true" />
+          <Property Type="String" Name="ISBN" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetEditionsByProducts_Result">
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="Brand" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="ShortName" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="NumberEdition" Nullable="false" />
+          <Property Type="String" Name="TypeName" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="ISBN" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="ParentId" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Medinet">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="Model1.Books">
+              <MappingFragment StoreEntitySet="Books">
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="Model1.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="Model1.Countries">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Divisions">
+            <EntityTypeMapping TypeName="Model1.Divisions">
+              <MappingFragment StoreEntitySet="Divisions">
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editions">
+            <EntityTypeMapping TypeName="Model1.Editions">
+              <MappingFragment StoreEntitySet="Editions">
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="EditionTypeId" ColumnName="EditionTypeId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="NumberEdition" ColumnName="NumberEdition" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EditionTypes">
+            <EntityTypeMapping TypeName="Model1.EditionTypes">
+              <MappingFragment StoreEntitySet="EditionTypes">
+                <ScalarProperty Name="EditionTypeId" ColumnName="EditionTypeId" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OffMarkets">
+            <EntityTypeMapping TypeName="Model1.OffMarkets">
+              <MappingFragment StoreEntitySet="OffMarkets">
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="OffDate" ColumnName="OffDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParticipantProducts">
+            <EntityTypeMapping TypeName="Model1.ParticipantProducts">
+              <MappingFragment StoreEntitySet="ParticipantProducts">
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="HTMLContent" ColumnName="HTMLContent" />
+                <ScalarProperty Name="XMLContent" ColumnName="XMLContent" />
+                <ScalarProperty Name="ModifiedContent" ColumnName="ModifiedContent" />
+                <ScalarProperty Name="ContentTypeId" ColumnName="ContentTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PharmaceuticalForms">
+            <EntityTypeMapping TypeName="Model1.PharmaceuticalForms">
+              <MappingFragment StoreEntitySet="PharmaceuticalForms">
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="PharmaFormKey" ColumnName="PharmaFormKey" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EnglishDescription" ColumnName="EnglishDescription" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCategories">
+            <EntityTypeMapping TypeName="Model1.ProductCategories">
+              <MappingFragment StoreEntitySet="ProductCategories">
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="TechnicalSheet" ColumnName="TechnicalSheet" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="HTMLFileName" ColumnName="HTMLFileName" />
+                <ScalarProperty Name="SanitaryRegister" ColumnName="SanitaryRegister" />
+                <ScalarProperty Name="SSFraction" ColumnName="SSFraction" />
+                <ScalarProperty Name="JSONFormat" ColumnName="JSONFormat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductPharmaForms">
+            <EntityTypeMapping TypeName="Model1.ProductPharmaForms">
+              <MappingFragment StoreEntitySet="ProductPharmaForms">
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ReferenceUrl" ColumnName="ReferenceUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Model1.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="AlphabetId" ColumnName="AlphabetId" />
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SanitaryRegistry" ColumnName="SanitaryRegistry" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="Model1.ProductTypes">
+              <MappingFragment StoreEntitySet="ProductTypes">
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetCountries" FunctionName="Model1.Store.plm_spGetCountries">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model1.plm_spGetCountries_Result">
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetDivisionsByCountry" FunctionName="Model1.Store.plm_spGetDivisionsByCountry">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model1.plm_spGetDivisionsByCountry_Result">
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="LaboratoryId" ColumnName="LaboratoryId" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetProductsbyDivisionbyCountry" FunctionName="Model1.Store.plm_spGetProductsbyDivisionbyCountry">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model1.plm_spGetProductsbyDivisionbyCountry_Result">
+                <ScalarProperty Name="Division" ColumnName="Division" />
+                <ScalarProperty Name="Divisionid" ColumnName="Divisionid" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="PharmaceuticalForm" ColumnName="PharmaceuticalForm" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetEditionsByProducts" FunctionName="Model1.Store.plm_spGetEditionsByProducts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model1.plm_spGetEditionsByProducts_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="NumberEdition" ColumnName="NumberEdition" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

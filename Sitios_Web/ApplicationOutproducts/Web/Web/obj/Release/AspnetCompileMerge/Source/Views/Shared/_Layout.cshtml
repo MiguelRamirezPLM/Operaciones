@@ -1,0 +1,186 @@
+﻿@using Web.Models;
+@{
+    PLMUsersM plm = new PLMUsersM();
+    CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="~/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="~/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PLM</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Styles/sweetalert.css" rel="stylesheet" />
+    <script src="~/Scripts/sweetalert.min.js"></script>
+    <link href="~/Content/StylesNew.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="~/Content/Layout.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="height:77px">
+        @{
+            var _logmedinet = ViewData["DataBase"];
+            if (_logmedinet == "Medinet")
+            {
+                <div>
+                    <a>
+                        <img src="~/Images/MEDINET_LOGO.png" style="float:right; width:7.5%; height:7%;" class="img-circle" />
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <a>
+                        <img src="~/Images/offmarkets.png" style="float:right; width:7.5%; height:7%;" class="img-circle" />
+                    </a>
+                </div>
+
+            }
+        }
+        <div class="navbar-header">
+            <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-100" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+        </div>
+        <div class="collapse navbar-collapse navbar-left" id="bs-example-navbar-collapse-100">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown navbar-inverse">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        @{
+                            CountriesUsers x = (CountriesUsers)Session["CountriesUsers"];
+                            var _NickName = plm.Users.SingleOrDefault(model => model.UserId == x.userId);
+                        }
+                        <img src="~/Images/malecostume-512.png" style="width:7%; height:20%;" /> Bienvenido @_NickName.NickName <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="cerrarsesión" href="@Url.Content("~/Login/Logout")"><span class="glyphicon glyphiconr glyphicon-off Red"></span>Cerrar sesión</a></li>
+                        <li><a class="RefrescarPágina"><span class="glyphicon glyphiconr glyphicon-retweet Green"></span>Actualizar página</a></li>
+                        <li><a target="_blank" href="@Url.Content("~/OffMarkets/UserManual")"><span class="glyphicon glyphiconr glyphicon glyphicon-file Blue"></span>Manual de uso</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br />
+    <br />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <div class=" col-lg-9 center body-content">
+        <script>
+            $(document).ready(function () {
+                $(".dropdown").hover(
+                    function () {
+                        $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                        $(this).toggleClass('open');
+                    },
+                    function () {
+                        $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                        $(this).toggleClass('open');
+                    }
+                );
+            });
+        </script>
+        @RenderBody()
+        <br />
+        <div id='dynamic_footer'>
+            <div class="title_new">
+                <div class="title-word_new"><p><strong style="color:#003870; font-size: 20px;">PLM</strong><strong style="font-size: 20px;"> - @DateTime.Now.Year </strong></p></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $(".RefrescarPágina").click(function () {
+            swal("¡Página actualizada!", "", "success");
+            setTimeout(function () { location.reload(1); }, 300);
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $(".cerrarsesión").click(function () {
+            $("#CargandoTiempo").show();
+        });
+        $("#CargandoTiempo").hide();
+    });
+</script>
+<div class="blockscreen" id="CargandoTiempo">
+    <div id="blockmessage">
+    </div>
+    <div id="blockimg">
+        <link href="~/Content/loader.css" rel="stylesheet" />
+        <div class="load">
+            <div class="gear one">
+                <svg id="blue" viewbox="0 0 100 100" fill="#94DDFF">
+                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6      c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3      l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9      c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>
+                </svg>
+            </div>
+            <div class="gear two">
+                <svg id="pink" viewbox="0 0 100 100" fill="#DE5145">
+                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6      c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3      l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9      c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>
+                </svg>
+            </div>
+            <div class="gear three">
+                <svg id="yellow" viewbox="0 0 100 100" fill="#FFCD5C">
+                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6      c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3      l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9      c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>
+                </svg>
+            </div>
+            <div class="lil-circle"></div>
+            <svg class="blur-circle">
+                <filter id="blur">
+                    <fegaussianblur in="SourceGraphic" stddeviation="13"></fegaussianblur>
+                </filter>
+                <circle cx="70" cy="70" r="66" fill="transparent" stroke="white" stroke-width="40" filter="url(#blur)"></circle>
+            </svg>
+        </div>
+        <h3 style="color:black" class="TextBlock">  Cerrando sessión...</h3>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".loader").click(function () {
+            $("#cargandoTiempo").show();
+        });
+        $("#cargandoTiempo").hide();
+    });
+</script>
+<div class="blockscreen" id="cargandoTiempo">
+    <div id="blockmessage">
+    </div>
+    <div id="blockimg">
+        <link href="~/Content/loader.css" rel="stylesheet" />
+        <div class="load">
+            <div class="gear one">
+                <svg id="blue" viewbox="0 0 100 100" fill="#94DDFF">
+                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6      c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3      l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9      c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>
+                </svg>
+            </div>
+            <div class="gear two">
+                <svg id="pink" viewbox="0 0 100 100" fill="#DE5145">
+                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6      c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3      l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9      c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>
+                </svg>
+            </div>
+            <div class="gear three">
+                <svg id="yellow" viewbox="0 0 100 100" fill="#FFCD5C">
+                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6      c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3      l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9      c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>
+                </svg>
+            </div>
+            <div class="lil-circle"></div>
+            <svg class="blur-circle">
+                <filter id="blur">
+                    <fegaussianblur in="SourceGraphic" stddeviation="13"></fegaussianblur>
+                </filter>
+                <circle cx="70" cy="70" r="66" fill="transparent" stroke="white" stroke-width="40" filter="url(#blur)"></circle>
+            </svg>
+        </div>
+        <h3 style="color:black" class="TextBlock">  Cargando...</h3>
+    </div>
+</div>

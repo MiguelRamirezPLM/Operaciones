@@ -1,0 +1,541 @@
+﻿@model IEnumerable<Web.Models.plm_spGetProductsbyDivisionbyCountry_Result>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Productos";
+    Medinet md = new Medinet();
+}
+@{
+    SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
+}
+<script>
+    $(document).ready(function () {
+        $('#Caracter').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.List-Divisions').each(function () {
+                var text = $(this).text().toLowerCase();
+                (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+            });
+        });
+    });
+</script>
+<script>
+    function productsoffmarkets(item) {
+        var tr = $(item).parents("tr:first");
+        var _productId = tr.find("#_productId").val();
+        var _pharmaformId = tr.find("#_pharmaformId").val();
+        var _categoryId = tr.find("#_categoryId").val();
+        var _divisionId = $("#_divisionId").val();
+        if (tr.find("#checkproduct").is(":checked")) {
+            tr.find("#_1").removeClass("_off");
+            tr.find("#_2").removeClass("_off");
+            tr.find("#_3").removeClass("_off");
+            tr.find("#_4").removeClass("_off");
+            tr.find("#_5").removeClass("_off");
+            tr.find("#_6").removeClass("_off");
+            tr.find("#_7").removeClass("_off");
+            tr.find("#_1").addClass("Red");
+            tr.find("#_2").addClass("Red");
+            tr.find("#_3").addClass("Red");
+            tr.find("#_4").addClass("Red");
+            tr.find("#_5").addClass("Red");
+            tr.find("#_6").addClass("Red");
+            tr.find("#_7").addClass("Red");
+            $("#_selectOptions :selected").text();
+            var _stringSelect = $("#_selectOptions").val();
+            if (_stringSelect == "_all") {
+                $("._off").show();
+                $(".Red").show();
+            }
+            else if (_stringSelect == "_offMarkets") {
+                $(".Red").show();
+                $("._off").hide();
+            }
+            else if (_stringSelect == "_notOffMarkets") {
+                $(".Red").hide();
+                $("._off").show();
+            }
+            else if (_stringSelect == "null") {
+                $("._off").show();
+                $(".Red").show();
+            }
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: '@Url.Content("~/OffMarkets/InsertOffMarkets")',
+                data: {
+                    DivisionId: _divisionId,
+                    CategoryId: _categoryId,
+                    PharmaFormId: _pharmaformId,
+                    ProductId: _productId,
+                },
+                success: function (data) {
+                    if (data == true) {
+                        swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                    }
+                    else {
+                        swal("¡Atención!", "¡Ocurrio un error al realizar la operación!", "error");
+                        setTimeout(function () { location.reload(1); }, 1);
+                    }
+                }
+            })
+        }
+        else if (tr.find("#checkproduct").is(":not(:checked)")) {
+            tr.find("#_1").removeClass("Red");
+            tr.find("#_2").removeClass("Red");
+            tr.find("#_3").removeClass("Red");
+            tr.find("#_4").removeClass("Red");
+            tr.find("#_5").removeClass("Red");
+            tr.find("#_6").removeClass("Red");
+            tr.find("#_7").removeClass("Red");
+            tr.find("#_1").addClass("_off");
+            tr.find("#_2").addClass("_off");
+            tr.find("#_3").addClass("_off");
+            tr.find("#_4").addClass("_off");
+            tr.find("#_5").addClass("_off");
+            tr.find("#_6").addClass("_off");
+            tr.find("#_7").addClass("_off");
+            $("#_selectOptions :selected").text();
+            var _stringSelect = $("#_selectOptions").val();
+            if (_stringSelect == "_all") {
+                $("._off").show();
+                $(".Red").show();
+            }
+            else if (_stringSelect == "_offMarkets") {
+                $(".Red").show();
+                $("._off").hide();
+            }
+            else if (_stringSelect == "_notOffMarkets") {
+                $(".Red").hide();
+                $("._off").show();
+            }
+            else if (_stringSelect == "null") {
+                $("._off").show();
+                $(".Red").show();
+            }
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: '@Url.Content("~/OffMarkets/DeleteOffMarkets")',
+                data: {
+                    DivisionId: _divisionId,
+                    CategoryId: _categoryId,
+                    PharmaFormId: _pharmaformId,
+                    ProductId: _productId,
+                },
+                success: function (data) {
+                    if (data == true) {
+                        swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                    }
+                    else {
+                        swal("¡Atención!", "¡Ocurrio un error al realizar la operación!", "error");
+                        setTimeout(function () { location.reload(1); }, 1);
+                    }
+                }
+            })
+        }
+    }
+</script>
+<style>
+    #custom-search-input {
+        padding: 1px;
+        border: solid 1px #E4E4E4;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+        #custom-search-input input {
+            border: 0;
+            box-shadow: none;
+        }
+
+        #custom-search-input button {
+            margin: 1px 0 0 0;
+            background: none;
+            box-shadow: none;
+            border: 0;
+            color: #666666;
+            padding: 0 1px 0 2px;
+            border-left: solid 1px #808080;
+        }
+
+            #custom-search-input button:hover {
+                border: 0;
+                box-shadow: none;
+                border-left: solid 1px #808080;
+            }
+
+        #custom-search-input .glyphicon-search {
+            font-size: 18px;
+        }
+
+    .v {
+        height: 300px;
+        overflow: auto;
+    }
+</style>
+<br />
+<br />
+<div class="title">
+    <div class="title-word">Productos</div>
+    <div class="title-word">Fuera</div>
+    <div class="title-word">Del mercado</div>
+</div>
+<br />
+<div>
+    <nav class="navbar navbar-default center col-lg-12">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <a href="@Url.Content("~/OffMarkets/SelectDataBases")" class="btn navbar-brand loader" title="Inicio">
+                    <i class="glyphicon glyphicon-home Estilo8"></i>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown  navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laboratorios<span class="caret"></span></a>
+                        <ul class="dropdown-menu v" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="Caracter" type="text" class="form-control  btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @{
+                                var _getDivisions = md.Database.SqlQuery<plm_spGetDivisionsByCountry_Result>("plm_spGetDivisionsByCountry @countryId=" + _Session.ed).ToList();
+                                foreach (var _roWs in _getDivisions)
+                                {
+                                    <li class="List-Divisions"><a class="loader" href="@Url.Content("~/OffMarkets/ProductsDivisions/" + @_Session.id + "/" + @_roWs.CountryId + "/" + @_roWs.DivisionId)">@_roWs.Description</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                        </a>
+                        <a class="btn navbar-brand " title="Siguiente" onclick="history.forward();">
+                            <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <td align="right" class="warning" width="130">
+                Base de datos:
+            </td>
+            <td>
+                <strong class="País">@ViewData["DataBase"]</strong>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" class="warning" width="130">
+                País:
+            </td>
+            <td><strong class="País">@ViewData["CountryName"]</strong></td>
+        </tr>
+        <tr>
+            <td align="right" class="warning" width="130">
+                Laboratorio:
+            </td>
+            <td><strong class="laboratory">@ViewData["Laboratory"]</strong></td>
+        </tr>
+    </table>
+</div>
+<br />
+<br />
+<script>
+    $(function () {
+        $("._options").change(function () {
+            var _optionSelected = $("#_selectOptions").val();
+            if (_optionSelected == "_offMarkets") {
+                $(".Red").show();
+                $("._off").hide();
+            }
+            if (_optionSelected == "_notOffMarkets") {
+                $(".Red").hide();
+                $("._off").show();
+            }
+            if (_optionSelected == "_all") {
+                $("._off").show();
+                $(".Red").show();
+            }
+            if (_optionSelected == "null") {
+                //$('#_filters option[value=-1]').attr('selected', 'selected');
+                $("._off").show();
+                $(".Red").show();
+
+            }
+        })
+    })
+</script>
+<h2 align="center">Productos</h2>
+<br />
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/DataTables/dataTables.scroller.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        $('#example').dataTable({
+            //"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+            "columnDefs": [{ "searchable": false, "targets": [1, 2, 3, 4, 5, 6] }],
+            "language": {
+                "lengthMenu": '<div class="col-md-3">' + 'Mostrar <select id="_filters" class="form-control input-sm">' +
+                  '<option value="10">10</option>' +
+                  '<option value="20">20</option>' +
+                  '<option value="30">30</option>' +
+                  '<option value="40">40</option>' +
+                  '<option value="50">50</option>' +
+                  '<option value="-1">Todo</option>' +
+                  '</select> productos' + '</div>'
+            }
+        });
+    });
+</script>
+<div align="center" class="col-md-3">
+    <table align="center">
+        <tr>
+            <td width="90">
+                Filtrar por:
+            </td>
+            <td>
+                <select id="_selectOptions" class="form-control _options">
+                    <option value="_all">Todos</option>
+                    <option value="_offMarkets">Productos fuera del mercado</option>
+                    <option value="_notOffMarkets">Productos dentro del mercado</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="example" class="table table-hover table-bordered" cellspacing="0">
+    <thead>
+        <tr>
+            <th class="warning País">Producto</th>
+            <th class="warning País">Forma Farmacéutica</th>
+            <th class="warning País">Categoría</th>
+            <th class="warning País">Descripción</th>
+            <th class="warning País">Tipo de producto</th>
+            <th align="center" class="warning País">Out</th>
+            <th class="warning País" align="center">Edición</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int _idmodal = 0;
+            int _idarray = 5000;
+            foreach (var _p in Model)
+            {
+                _idmodal += 1;
+                _idarray += 1;
+                var _productsoff = (from _off in md.OffMarkets
+                                    where _off.ProductId == _p.ProductId
+                                    && _off.CategoryId == _p.CategoryId
+                                    && _off.PharmaFormId == _p.PharmaFormId
+                                    && _off.DivisionId == _p.Divisionid
+                                    select _off).ToList();
+                if (_productsoff.LongCount() == 1)
+                {
+                    <tr>
+                        <td class="Red" id="_1"><strong>@_p.Product <input type="hidden" id="_productId" value="@_p.ProductId" /></strong></td>
+                        <td class="Red" id="_2">@_p.PharmaceuticalForm <input type="hidden" id="_pharmaformId" value="@_p.PharmaFormId" name="PharmaceuticalForm" /></td>
+                        <td class="Red" id="_3">@_p.Category <input type="hidden" id="_categoryId" value="@_p.CategoryId" name="Category" /></td>
+                        <td class="Red" id="_4">@_p.Description</td>
+                        <td class="Red" id="_5">@_p.ProductType</td>
+                        <td id="_6" align="center" class="Estilo2 Red">
+                            @{
+                    var _OutMarkets = (from _o in md.OffMarkets
+                                       where _o.DivisionId == _p.Divisionid
+                                       && _o.CategoryId == _p.CategoryId
+                                       && _o.PharmaFormId == _p.PharmaFormId
+                                       && _o.ProductId == _p.ProductId
+                                       select _o).ToList();
+                    bool _true = false;
+                    foreach (OffMarkets _OffMarkets in _OutMarkets)
+                    {
+                        if (_p.ProductId == _OffMarkets.ProductId && _p.Divisionid == _OffMarkets.DivisionId && _p.CategoryId == _OffMarkets.CategoryId && _p.PharmaFormId == _OffMarkets.PharmaFormId)
+                        {
+                            _true = true;
+                        }
+                    }
+                    <input type="hidden" id="_divisionId" value="@_p.Divisionid" />
+                                <input type="checkbox" checked="@_true" onclick="productsoffmarkets($(this))" id="checkproduct" />
+                            }
+                        </td>
+                        <td id="_7" class="Red">
+                            <div align="center">
+                                <a class="btn btn-primary loading" data-toggle="modal" data-target=".@_idmodal" title="Ediciones participantes">
+                                    <i class="glyphicon glyphicon-info-sign"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td class="_off" id="_1"><strong>@_p.Product <input type="hidden" id="_productId" value="@_p.ProductId" /></strong></td>
+                        <td class="_off" id="_2">@_p.PharmaceuticalForm <input type="hidden" id="_pharmaformId" value="@_p.PharmaFormId" name="PharmaceuticalForm" /></td>
+                        <td class="_off" id="_3">@_p.Category <input type="hidden" id="_categoryId" value="@_p.CategoryId" name="Category" /></td>
+                        <td class="_off" id="_4">@_p.Description</td>
+                        <td class="_off" id="_5">@_p.ProductType</td>
+                        <td id="_6" align="center" class="Estilo2 btn-nav _off">
+                            @{
+                    var _OutMarkets = (from _o in md.OffMarkets
+                                       where _o.DivisionId == _p.Divisionid
+                                       && _o.CategoryId == _p.CategoryId
+                                       && _o.PharmaFormId == _p.PharmaFormId
+                                       && _o.ProductId == _p.ProductId
+                                       select _o).ToList();
+                    bool _true = false;
+                    foreach (OffMarkets _OffMarkets in _OutMarkets)
+                    {
+                        if (_p.ProductId == _OffMarkets.ProductId && _p.Divisionid == _OffMarkets.DivisionId && _p.CategoryId == _OffMarkets.CategoryId && _p.PharmaFormId == _OffMarkets.PharmaFormId)
+                        {
+                            _true = true;
+                        }
+                    }
+                    <input type="hidden" id="_divisionId" value="@_p.Divisionid" />
+                                <input type="checkbox" checked="@_true" onclick="productsoffmarkets($(this))" id="checkproduct" />
+                            }
+                        </td>
+                        <td id="_7" class="_off">
+                            <div align="center">
+                                <a class="btn btn-primary loading" data-toggle="modal" data-target=".@_idmodal" title="Ediciones participantes">
+                                    <i class="glyphicon glyphicon-info-sign"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+@{
+    int _modalId = 0;
+    foreach (var a in Model)
+    {
+        _modalId += 1;
+        <div class="modal fade @_modalId" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel" align="center"> <strong class="País h3">Ediciones</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <td align="right" class="warning" width="200">
+                                    Producto:
+                                </td>
+                                <td>
+                                    <strong class="País">@a.Product</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" class="warning" width="200">
+                                    Forma farmacéutica:
+                                </td>
+                                <td>
+                                    <strong class="País">@a.PharmaceuticalForm</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" class="warning" width="200">
+                                    Categoría:
+                                </td>
+                                <td>
+                                    <strong class="País">@a.Category</strong>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <td class="warning">
+                                    Obra
+                                </td>
+                                <td class="warning" align="center">
+                                    Edición
+                                </td>
+                                <td class="warning">
+                                    Tipo de edición
+                                </td>
+                                <td class="warning">
+                                    Versión
+                                </td>
+                                <td class="warning">
+                                    Obra de la que emana
+                                </td>
+                            </tr>
+                            @{
+        var _editioninformation = md.Database.SqlQuery<plm_spGetEditionsByProducts_Result>
+            ("plm_spGetEditionsByProducts @ProductId=" + a.ProductId + ", @CategoryId=" + a.CategoryId + ", @PharmaFormId=" + a.PharmaFormId + ", @DivisionId=" + a.Divisionid + "").ToList();
+        foreach (var _get in _editioninformation)
+        {
+            <tr>
+                <td>
+                    @_get.ShortName
+                </td>
+                <td align="center">
+                    @_get.NumberEdition
+                </td>
+                <td>
+                    @_get.TypeName
+                </td>
+                <td>
+                    @_get.ISBN
+                </td>
+                <td>
+                    @{
+            var _bookParent = (from _ed in md.Editions
+                               join _b in md.Books
+                               on _ed.BookId equals _b.BookId
+                               where _ed.EditionId == _get.ParentId
+                               orderby _ed.NumberEdition descending
+                               select new { _b, _ed }).ToList();
+            foreach (var _getParent in _bookParent)
+            {
+                <strong class="País">@_getParent._b.ShortName</strong><strong class="País">@_getParent._ed.NumberEdition</strong>
+            }
+                    }
+                </td>
+            </tr>
+        }
+                            }
+                        </table>
+                    </div>
+                    <div class="modal-footer" align="center">
+                        <div align="center">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/datatables")
+}

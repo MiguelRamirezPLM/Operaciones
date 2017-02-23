@@ -1,0 +1,599 @@
+﻿@{
+    ViewBag.Title = "Manual de uso";
+}
+<link href="~/Content/UserManual.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<script>
+    var activeEl = 1;
+    $(function () {
+        var items = $('.btn-nav');
+        $(items[activeEl]).addClass('active');
+        $(".btn-nav").click(function () {
+            $(items[activeEl]).removeClass('active');
+            $(this).addClass('active');
+            activeEl = $(".btn-nav").index(this);
+        });
+    });
+</script>
+<br />
+<br />
+<div class="title SubTitulos col-md-6">
+    <div class="title-word">Manual</div>
+    <div class="title-word">De</div>
+    <div class="title-word">Uso</div>
+</div>
+<br />
+<br />
+<div align="right" class="title_new Titulo col-md-6">
+    <div class="title-word_new">
+        <img src="~/Images/PLM-LogotipoAzul.png" style="float:right; width:20%; height:20%;" />
+    </div>
+</div>
+<br />
+<br />
+<div>
+    <div>
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <a type="button" href='@Url.Content("~/OffMarkets/SelectDataBases")' class="btn btn-nav loader">
+                    <span class="glyphicon glyphicon-home"></span>
+                    <p align="center">Inicio</p>
+                </a>
+            </div>
+            <div class="btn-group">
+                <button href="#sistema" aria-controls="sistema" role="tab" data-toggle="tab" type="button" class="btn btn-nav">
+                    <span class="glyphicon glyphicon glyphicon-th"></span>
+                    <p>Productos fuera del mercado</p>
+                </button>
+            </div>
+            <div class="btn-group">
+                <button href="#productos" aria-controls="clientes" role="tab" data-toggle="tab" type="button" class="btn btn-nav">
+                    <span class="glyphicon glyphicon glyphicon-ok"></span>
+                    <p>Marcar productos</p>
+                </button>
+            </div>
+            <div class="btn-group">
+                <a onclick="window.close();" type="button" class="btn btn-nav">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <p>Cerrar manual</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<div class="container center col-lg-12" align="center">
+    <script>
+        $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+    <div class="tab-content" spellcheck="true">
+        <div role="tabpanel" class="tab-pane active" id="sistema">
+            <div class="container center col-lg-10" align="center">
+                <div class="Titulo" align="center">
+                    Productos <strong class="MUGreen"> fuera del mercado.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>ara ingresar al sistema deberá ingresar sus credenciales como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Login.png" style="width:90%; height:90%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">U</strong>na vez ingresadas sus credenciales correctamente podrá realizar las acciones que se describen en el siguiente diagrama:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/UML.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">E</strong>n la parte superior de la pantalla encontrará una placa negra, en la parte izquierda se encuentra un menú desplegable que se muestra con tan solo acercar el puntero.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Placa_negra.png" style="width:70%; height:70%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">E</strong>n éste menú podrá realizar las siguientes acciones:
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">1.- Cerrar sesión.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">C</strong>uando haya terminado de trabajar en el sistema, podrá cerrar la sesión como medio de seguridad.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Placa_Negra_Cerrar_Sesión.png" style="width:50%; height:50%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">U</strong>na vez dado click en la pestaña <strong class="MUGreen">"Cerrar sesión"</strong> el sistema lo re direccionará a la página de inicio de sesión.
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">2.- Actualizar página.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">A</strong>ctualizar página es una herramienta que le ayudará en el momento que ocurra algún inconveniente con su navegador, dado que algunas veces los navegadores llegasen a ponerse estáticos y no le permiten al usuario realizar operaciones dentro del sistema.
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>ara hacer uso de esta herramienta siga los pasos que se muestran a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">1.-</strong> Vaya a la placa negra de herramientas y de click en la pestaña <strong class="MUGreen">"Actualizar página"</strong> como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Actualizar_Página.png" style="width:55%; height:55%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">U</strong>na vez realizado esto, se mostrará un mensaje en pantalla que le avisará que ha sido actualizada la página en la que este trabajando.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Actualizada.png" style="width:40%; height:40%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">3.- Ver Manual de uso.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>ara acceder al manual de uso debe dirigirse a la placa de herramientas y dar click en la pestaña <strong class="MUGreen">"Manual de uso".</strong>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Ver_Manual_De_Uso.png" style="width:60%; height:60%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">E</strong>n éste manual encontrará la ayuda necesaria para poder trabajar en el sistema.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Manual_DE_Uso.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="productos">
+            <div class="container center col-lg-10" align="center">
+                <div class="Titulo" align="center">
+                    Marcar <strong class="MUGreen">productos</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>ara marcar productos que ya están fuera del mercado, deberá pasar por los siguientes filtros:
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">1.- Seleccionar base de datos</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">D</strong>eberá seleccionar la base de datos en la que deseé trabajar, para realizar esta acción debe dirigirse a la barra de complementos y ahí encontrará la sección <strong>"Base de datos"</strong>
+                    solo basta acercar el puntero a esta sección y se desplegará una lista con las bases de datos disponibles.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Seleccionar_Base_De_Datos.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">U</strong>na vez seleccionada la base de datos considere que: <strong>Dependiendo de la base de datos que haya seleccionado los filtros pueden cambiar.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">S</strong>i selecciono la base de datos <strong class="MUGreen">MEDINET</strong> posteriormente deberá seleccionar el país.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Seleccionar_País.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">U</strong>na vez seleccionado el país deberá seleccionar el laboratorio con el que deseé trabajar.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Seleccionar_Laboratorio.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">Nota:</strong> Si quiere realizar una búsqueda más rápida, puede utilizar la herramienta del buscador como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Seleccionar_Laboratorio_Búsqueda.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">U</strong>na vez seleccionado el laboratorio, se mostrará una página principal como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Productos.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">E</strong>n ésta página podrá realizar las siguientes acciones:
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">1.-Seleccionar entre un laboratorio y otro.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">S</strong>ólo necesita acercar el puntero a la barra de complementos en la sección <strong class="MUGreen">"Laboratorios"</strong> y se desplegará una lista de los laboratorios con los que puede trabajar.
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Seleccionar_Laboratorio.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">2.-Regresar a la página de inicio.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>odrá realizar ésta acción en dado caso de que quiera regresar al menú de inicio para seleccionar una nueva Base de Datos.
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">S</strong>ólo necesita acercarse a la barra de complementos y dar click en el icono <strong class="MUGreen">"Home".</strong>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Regresar_Inicio.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">3.-Navegar entre las páginas "Anterior y siguiente"</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>odrá realizar ésta acción dando click en las flechas de navegación, que se encuentran en la barra de complementos como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Anterior_Siguiente.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">4.-Filtrar productos "Fuera del mercado"</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>odrá realizar ésta acción dando click en el siguiente selector como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Filtro_Producto_Fuera.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>odrá filtrar los productos por: <strong>"Productos fuera del mercado",</strong> cuando realice ésta acción solamente le aparecerán en la tabla los productos que ya se hayan declarado como
+                    <strong class="MUGreen">"Des comercializados"".</strong>
+                    <p><strong class="MUGreen">Nota:</strong> El filtro se aplicará sobre el filtro <strong>"Mostrar"</strong> veáse <strong class="MUGreen"> 5.-Mostrar productos (10, 20, 30, 40, 50, Todos)</strong></p>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Filtro_Producto_Fuera_Seleccionado.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>odrá filtrar los productos por: <strong>"Productos dentro del mercado",</strong> cuando realice ésta acción solamente le aparecerán en la tabla los productos que <strong class="MUGreen">"NO"</strong> se hayan declarado como
+                    <strong class="MUGreen">"Des comercializados"".</strong>
+                    <p><strong class="MUGreen">Nota:</strong> El filtro se aplicará sobre el filtro <strong>"Mostrar"</strong> veáse <strong class="MUGreen"> 5.-Mostrar productos (10, 20, 30, 40, 50, Todos)</strong></p>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Filtro_Producto_Dentro.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen SubTitulos">P</strong>odrá filtrar los productos por: <strong>"Todos",</strong> cuando realice ésta acción se le mostrarán todos los productos estén dentro o fuera del mercado.
+                    <p><strong class="MUGreen">Nota:</strong> El filtro se aplicará sobre el filtro <strong>"Mostrar"</strong> veáse <strong class="MUGreen"> 5.-Mostrar productos (10, 20, 30, 40, 50, Todos)</strong></p>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Filtro_Producto_Todos.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen"> 5.-Mostrar productos (10, 20, 30, 40, 50, Todos)</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">P</strong>odrá realizar un filtro a la tabla por 10, 20, 30, 40, 50 o todos los productos. Éste filtro es una herramienta de visualización ya que por hoja se pueden mostrar los números mencionados de productos.
+                    <p>El filtro se realiza dando click en el selector, como se muestra a continuación:</p>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Filtro_Producto_Número.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen"> 6.-Buscar productos</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">P</strong>ara realizar la búsqueda de un producto, debe dirigirse a la herramienta <strong class="MUGreen">"Buscar"</strong> como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Buscar.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">U</strong>na vez dado click en el filtro de <strong class="MUGreen">"Búsqueda"</strong> deberá de escribir en el cuadro de texto
+                    las primeras iniciales del producto que desee buscar.
+                    <p> <strong class="MUGreen">S</strong>e dará cuenta que conforme vaya escribiendo se realizará el filtro automáticamente así como se muestra a continuación:</p>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Buscar_Resultado.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen"> 7.-Ordernar productos por: Producto, Forma Farmacéutica, Categoría, Descripción y Tipo de Producto.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">P</strong>ara poder realizar los filtros sólo debe dar click en el icono de
+                    <strong class="MUGreen">"Filtro"</strong> de la columna que desee filtrar, tal y como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Filtros_Columna.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">Nota:</strong> Los filtros funcionan de manera <strong>Ascendientemente</strong> y <strong>Descendientemente</strong> para la columna que aplique el filtro.
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen"> 8.-Ver productos por hoja.</strong>
+                    <br />
+                    <br />
+                    <div class="Parrafos">
+                        <strong class="MUGreen">P</strong>odrá navegar entre las hojas de productos como se muestra a continuación:
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Páginas.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen"> 9.-Marcar productos "Fuera del mercado"</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">S</strong>e considera que un producto ésta fuera del mercado cuando éste ya no se <strong class="MUGreen">"comercializa"</strong>
+                    por esta razón se considera marcar estos productos como <strong class="MUGreen">"Fuera del mercado"</strong> con el fin de que ya no aparezcan mas en las publicaciones de <strong style="color: #013870;">PLM.</strong>
+                    <p><strong class="MUGreen">P</strong>ara marcar un producto debe de dar click sobre la casilla <strong class="MUGreen">"Out (Fuera)"</strong> como se muestra a continuación:</p>
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Marcar.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">U</strong>na vez marcado el producto como <strong class="MUGreen">"Fuera del mercado"</strong> aparecerá el siguiente mensaje en pantalla:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Marcar_Mensaje.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">Y</strong> toda la fila correspondiente al producto marcado quedara en color <strong style="color: #ce1000;">Rojo.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">Nota:</strong> En caso de haber marcado un producto como <strong class="MUGreen">"Fuera del mercado"</strong> por equivocación, podrá revolcar lo cometido desmarcando la casilla correspondiente.
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen"> 10.-Visualizar ediciones en dónde participo el producto.</strong>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">P</strong>ara visualizar las ediciones en las que participo el producto, solo debe de dar click en el botón
+                    <a class="btn btn-primary loading" title="Ediciones participantes">
+                        <i class="glyphicon glyphicon-info-sign"></i>
+                    </a> como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure><img src="~/Images/Manual_Página_Laboratorio_Información.png" style="width:100%; height:100%;" /></figure>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="Parrafos">
+                    <strong class="MUGreen">U</strong>na vez dado click en el botón
+                    <a class="btn btn-primary loading" title="Ediciones participantes">
+                        <i class="glyphicon glyphicon-info-sign"></i>
+                    </a> se desplegara una ventana como se muestra a continuación:
+                </div>
+                <br />
+                <br />
+                <div class="hover14 column">
+                    <div>
+                        <figure>
+                            <img src="~/Images/Manual_Página_Laboratorio_Información_Ventana.png" style="width:70%; height:70%;" />
+                        </figure>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+
