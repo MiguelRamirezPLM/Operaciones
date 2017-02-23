@@ -1,0 +1,146 @@
+﻿<link href="~/Styles/FiltroProducci%c3%b3n_Ediciones.css" rel="stylesheet" />
+@model IEnumerable<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@{
+    ViewBag.Title = "Ediciones";
+    PLMUsers plm = new PLMUsers();
+}
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default3 navbar-default loading btn-nav ribbon Estilo3">Producción</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Tipo de cliente:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["TipoCliente"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+            <div>
+                <nav class="navbar navbar-default Estilo4 loading container center col-lg-10">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <a href="/FiltroProducción/Pais" class="btn navbar-brand loading" title="Inicio">
+                                <i class="glyphicon glyphicon-home Estilo8"></i>
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown loading navbar-default">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span class="caret"></span></a>
+                                    <ul class="dropdown-menu v" role="menu">
+                                        @foreach (var a in Model)
+                                        {
+                                            <li><a href="/FiltroProducción/_TipoCliente/@ViewData["CountryId"]/@ViewData["BookId"]/@a.Editions.EditionId">@a.Editions.NumberEdition</a></li>
+                                        }
+                                    </ul>
+
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                                        <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                                    </a>
+                                    <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                                        <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                                    </a>
+                                </li>
+                                @{
+                                    CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                                    var _RolesA = (from _us in plm.Users
+                                                   join _ap in plm.ApplicationUsers
+                                                   on _us.UserId equals _ap.UserId
+                                                   join _r in plm.Roles
+                                                   on _ap.RoleId equals _r.RoleId
+                                                   where _us.UserId == p.userId
+                                                   select _r);
+                                    if (_RolesA.FirstOrDefault().Description == "Administrador")
+                                    {
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                                <span class="glyphicon glyphicon glyphiconr glyphicon-bookmark Estilo8"></span> Ventas <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="carga" href="/FiltroVentas/Pais"><span class="glyphicon glyphicon glyphiconr glyphicon-share-alt"></span>Módulo de ventas</a></li>
+                                            </ul>
+                                        </li>
+                                        @*<li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                                <span class="glyphicon glyphicon glyphiconr glyphicon-ruble Estilo8"></span> Producción <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="carga" href="/FiltroProducción/Pais"><span class="glyphicon glyphicon glyphiconr glyphicon-share-alt"></span>Módulo de producción</a></li>
+                                            </ul>
+                                        </li>*@
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+<script>
+    $(function () {
+        $(".carga").click(function () {
+            $("#cargando").show();
+        });
+        $("#cargando").hide();
+    });
+</script>
+<div class="blockscreen" id="cargando">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/ldd.gif">
+    </div>
+</div>

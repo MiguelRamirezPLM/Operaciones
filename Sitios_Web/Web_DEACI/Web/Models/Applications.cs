@@ -18,8 +18,11 @@ namespace Web.Models
         public Applications()
         {
             this.ActivitySessions = new HashSet<ActivitySessions>();
-            this.ApplicationUsers = new HashSet<ApplicationUsers>();
             this.Tables = new HashSet<Tables>();
+            this.ApplicationUsers = new HashSet<ApplicationUsers>();
+            this.WebPages = new HashSet<WebPages>();
+            this.Folios = new HashSet<Folios>();
+            this.Errors = new HashSet<Errors>();
         }
     
         public int ApplicationId { get; set; }
@@ -35,8 +38,14 @@ namespace Web.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActivitySessions> ActivitySessions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tables> Tables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApplicationUsers> ApplicationUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tables> Tables { get; set; }
+        public virtual ICollection<WebPages> WebPages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Folios> Folios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Errors> Errors { get; set; }
     }
 }

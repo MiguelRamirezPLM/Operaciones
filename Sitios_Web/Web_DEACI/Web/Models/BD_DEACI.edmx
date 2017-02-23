@@ -4,70 +4,84 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Alias="Self" Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Addresses">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Suburb" Type="nvarchar(max)" />
+          <Property Name="Ubication" Type="nvarchar(max)" />
+          <Property Name="ZipCode" Type="nvarchar(max)" />
+          <Property Name="Web" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Contact" Type="nvarchar(max)" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="Location" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="AdvertisementEditions">
           <Key>
             <PropertyRef Name="AdvId" />
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="EditionId" />
           </Key>
-          <Property Name="AdvId" Nullable="false" Type="int" />
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="EditionId" Nullable="false" Type="int" />
+          <Property Name="AdvId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Advertisements">
           <Key>
             <PropertyRef Name="AdvId" />
           </Key>
-          <Property Name="AdvId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="HiredSpace" Nullable="false" MaxLength="60" Type="varchar" />
-          <Property Name="AdvFile" Nullable="false" MaxLength="100" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="AdvId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HiredSpace" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AdvFile" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Books">
           <Key>
             <PropertyRef Name="BookId" />
           </Key>
-          <Property Name="BookId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="BookName" Nullable="false" MaxLength="200" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Brands">
           <Key>
             <PropertyRef Name="BrandId" />
           </Key>
-          <Property Name="BrandId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="BrandName" Nullable="false" Type="varchar(max)" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="BrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandName" Type="varchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
             <PropertyRef Name="CityId" />
           </Key>
-          <Property Name="CityId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="StateId" Nullable="false" Type="int" />
-          <Property Name="Name" Nullable="false" MaxLength="60" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Companies">
           <Key>
             <PropertyRef Name="CompanyId" />
           </Key>
-          <Property Name="CompanyId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="CompanyTypeId" Nullable="false" Type="tinyint" />
+          <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyIdParent" Type="int" />
-          <Property Name="Address" Type="nvarchar(max)" />
-          <Property Name="Suburb" Type="nvarchar(max)" />
-          <Property Name="Ubication" Type="nvarchar(max)" />
-          <Property Name="PostalCode" Type="nvarchar(max)" />
-          <Property Name="Email" Type="nvarchar(max)" />
-          <Property Name="Web" Type="nvarchar(max)" />
-          <Property Name="Contact" Type="nvarchar(max)" />
-          <Property Name="CompanyName" Nullable="false" Type="nvarchar(max)" />
+          <Property Name="CompanyName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CompanyShortName" Type="nvarchar(max)" />
-          <Property Name="CityId" Type="int" />
           <Property Name="Client_ID" Type="int" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyAddresses">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="AddressId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyBrandEditions">
           <Key>
@@ -75,9 +89,9 @@
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="BrandId" />
           </Key>
-          <Property Name="EditionId" Nullable="false" Type="int" />
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="BrandId" Nullable="false" Type="int" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyBrandIndexes">
           <Key>
@@ -85,17 +99,17 @@
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="BrandId" />
           </Key>
-          <Property Name="IndexId" Nullable="false" Type="tinyint" />
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="BrandId" Nullable="false" Type="int" />
+          <Property Name="IndexId" Type="tinyint" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyBrands">
           <Key>
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="BrandId" />
           </Key>
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="BrandId" Nullable="false" Type="int" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="CompanyBrandSections">
@@ -104,152 +118,195 @@
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="BrandId" />
           </Key>
-          <Property Name="SectionId" Nullable="false" Type="int" />
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="BrandId" Nullable="false" Type="int" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyDistributions">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="DistributionId" />
+          </Key>
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="DistributionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyEditions">
           <Key>
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="EditionId" />
           </Key>
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="EditionId" Nullable="false" Type="int" />
-          <Property Name="HtmlFile" MaxLength="100" Type="varchar" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="HtmlFile" Type="varchar" MaxLength="100" />
           <Property Name="HtmlContent" Type="text" />
+          <Property Name="CompanyTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="Page" Type="varchar" MaxLength="50" />
+          <Property Name="CloseClient" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyPhones">
           <Key>
             <PropertyRef Name="PhoneTypeId" />
             <PropertyRef Name="CompanyId" />
           </Key>
-          <Property Name="PhoneTypeId" Nullable="false" Type="tinyint" />
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="PhoneValue" Nullable="false" Type="nvarchar(max)" />
+          <Property Name="PhoneTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="PhoneValue" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanySections">
           <Key>
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="SectionId" />
           </Key>
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="SectionId" Nullable="false" Type="int" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanyTypes">
           <Key>
             <PropertyRef Name="CompanyTypeId" />
           </Key>
-          <Property Name="CompanyTypeId" Nullable="false" Type="tinyint" />
-          <Property Name="Description" Nullable="false" MaxLength="50" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="CompanyTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Countries">
           <Key>
             <PropertyRef Name="CountryId" />
           </Key>
-          <Property Name="CountryId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="CountryName" Nullable="false" MaxLength="60" Type="varchar" />
-          <Property Name="ID" Nullable="false" MaxLength="3" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EditionCompanyDistributions">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="DistributionId" />
+          </Key>
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="DistributionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EditionCompanySectionAdvers">
+          <Key>
+            <PropertyRef Name="EditionCompanySectionAdverId" />
+          </Key>
+          <Property Name="EditionCompanySectionAdverId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="HiredSpace" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AdverFile" Type="varchar" MaxLength="100" />
+          <Property Name="BaseURL" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Editions">
           <Key>
             <PropertyRef Name="EditionId" />
           </Key>
-          <Property Name="EditionId" Nullable="false" Type="int" />
-          <Property Name="CountryId" Nullable="false" Type="int" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
           <Property Name="ParentId" Type="int" />
-          <Property Name="BookId" Nullable="false" Type="int" />
-          <Property Name="NumberEdition" Nullable="false" Type="int" />
-          <Property Name="ISBN" Nullable="false" MaxLength="20" Type="varchar" />
-          <Property Name="BarCode" MaxLength="80" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="BookId" Type="int" Nullable="false" />
+          <Property Name="NumberEdition" Type="int" Nullable="false" />
+          <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BarCode" Type="varchar" MaxLength="80" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Indexes">
           <Key>
             <PropertyRef Name="IndexId" />
           </Key>
-          <Property Name="IndexId" Nullable="false" Type="tinyint" />
-          <Property Name="Description" Nullable="false" MaxLength="150" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="IndexId" Type="tinyint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PhoneTypes">
           <Key>
             <PropertyRef Name="PhoneTypeId" />
           </Key>
-          <Property Name="PhoneTypeId" Nullable="false" Type="tinyint" />
-          <Property Name="Description" Nullable="false" MaxLength="30" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="PhoneTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductEditions">
           <Key>
             <PropertyRef Name="ProductId" />
             <PropertyRef Name="EditionId" />
           </Key>
-          <Property Name="ProductId" Nullable="false" Type="int" />
-          <Property Name="EditionId" Nullable="false" Type="int" />
-          <Property Name="HtmlFile" MaxLength="200" Type="varchar" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="HtmlFile" Type="varchar" MaxLength="200" />
           <Property Name="HtmlContent" Type="text" />
+          <Property Name="Page" Type="varchar" MaxLength="50" />
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductIndexes">
           <Key>
             <PropertyRef Name="ProductId" />
             <PropertyRef Name="IndexId" />
           </Key>
-          <Property Name="ProductId" Nullable="false" Type="int" />
-          <Property Name="IndexId" Nullable="false" Type="tinyint" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="IndexId" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
             <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="ProductId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductIdParent" Type="int" />
           <Property Name="ProductTypeId" Type="tinyint" />
-          <Property Name="ProductName" Nullable="false" Type="nvarchar(max)" />
+          <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="CompanyId" Nullable="false" Type="int" />
-          <Property Name="ProdId" Nullable="false" Type="int" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="ProdId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductSections">
           <Key>
             <PropertyRef Name="ProductId" />
             <PropertyRef Name="SectionId" />
           </Key>
-          <Property Name="ProductId" Nullable="false" Type="int" />
-          <Property Name="SectionId" Nullable="false" Type="int" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductTypes">
           <Key>
             <PropertyRef Name="ProductTypeId" />
           </Key>
-          <Property Name="ProductTypeId" Nullable="false" Type="tinyint" />
-          <Property Name="Description" Nullable="false" MaxLength="60" Type="varchar" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="ProductTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Sections">
           <Key>
             <PropertyRef Name="SectionId" />
           </Key>
-          <Property Name="SectionId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="Description" Nullable="false" Type="nvarchar(max)" />
+          <Property Name="SectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SectionIdParent" Type="int" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="States">
           <Key>
             <PropertyRef Name="StateId" />
           </Key>
-          <Property Name="StateId" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="Name" Nullable="false" MaxLength="60" Type="varchar" />
-          <Property Name="CountryId" Nullable="false" Type="int" />
-          <Property Name="Active" Nullable="false" Type="bit" />
+          <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_AdvertisementEditions_Advertisements">
-          <End Type="Self.Advertisements" Multiplicity="1" Role="Advertisements" />
-          <End Type="Self.AdvertisementEditions" Multiplicity="*" Role="AdvertisementEditions" />
+          <End Role="Advertisements" Type="Self.Advertisements" Multiplicity="1" />
+          <End Role="AdvertisementEditions" Type="Self.AdvertisementEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Advertisements">
               <PropertyRef Name="AdvId" />
@@ -260,8 +317,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AdvertisementEditions_Companies">
-          <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
-          <End Type="Self.AdvertisementEditions" Multiplicity="*" Role="AdvertisementEditions" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="AdvertisementEditions" Type="Self.AdvertisementEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -272,8 +329,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AdvertisementEditions_Editions">
-          <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
-          <End Type="Self.AdvertisementEditions" Multiplicity="*" Role="AdvertisementEditions" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="AdvertisementEditions" Type="Self.AdvertisementEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Editions">
               <PropertyRef Name="EditionId" />
@@ -284,8 +341,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BrandIndexes_Indexes">
-          <End Type="Self.Indexes" Multiplicity="1" Role="Indexes" />
-          <End Type="Self.CompanyBrandIndexes" Multiplicity="*" Role="CompanyBrandIndexes" />
+          <End Role="Indexes" Type="Self.Indexes" Multiplicity="1" />
+          <End Role="CompanyBrandIndexes" Type="Self.CompanyBrandIndexes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Indexes">
               <PropertyRef Name="IndexId" />
@@ -296,8 +353,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BrandSections_Sections">
-          <End Type="Self.Sections" Multiplicity="1" Role="Sections" />
-          <End Type="Self.CompanyBrandSections" Multiplicity="*" Role="CompanyBrandSections" />
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="CompanyBrandSections" Type="Self.CompanyBrandSections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
               <PropertyRef Name="SectionId" />
@@ -308,8 +365,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Cities_States">
-          <End Type="Self.States" Multiplicity="1" Role="States" />
-          <End Type="Self.Cities" Multiplicity="*" Role="Cities" />
+          <End Role="States" Type="Self.States" Multiplicity="1" />
+          <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="States">
               <PropertyRef Name="StateId" />
@@ -320,8 +377,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyBrandEditions_CompanyBrands">
-          <End Type="Self.CompanyBrands" Multiplicity="1" Role="CompanyBrands" />
-          <End Type="Self.CompanyBrandEditions" Multiplicity="*" Role="CompanyBrandEditions" />
+          <End Role="CompanyBrands" Type="Self.CompanyBrands" Multiplicity="1" />
+          <End Role="CompanyBrandEditions" Type="Self.CompanyBrandEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompanyBrands">
               <PropertyRef Name="CompanyId" />
@@ -334,8 +391,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyBrandEditions_Editions">
-          <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
-          <End Type="Self.CompanyBrandEditions" Multiplicity="*" Role="CompanyBrandEditions" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="CompanyBrandEditions" Type="Self.CompanyBrandEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Editions">
               <PropertyRef Name="EditionId" />
@@ -346,8 +403,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyBrandIndexes_CompanyBrands">
-          <End Type="Self.CompanyBrands" Multiplicity="1" Role="CompanyBrands" />
-          <End Type="Self.CompanyBrandIndexes" Multiplicity="*" Role="CompanyBrandIndexes" />
+          <End Role="CompanyBrands" Type="Self.CompanyBrands" Multiplicity="1" />
+          <End Role="CompanyBrandIndexes" Type="Self.CompanyBrandIndexes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompanyBrands">
               <PropertyRef Name="CompanyId" />
@@ -360,8 +417,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyBrands_Brands">
-          <End Type="Self.Brands" Multiplicity="1" Role="Brands" />
-          <End Type="Self.CompanyBrands" Multiplicity="*" Role="CompanyBrands" />
+          <End Role="Brands" Type="Self.Brands" Multiplicity="1" />
+          <End Role="CompanyBrands" Type="Self.CompanyBrands" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Brands">
               <PropertyRef Name="BrandId" />
@@ -372,8 +429,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyBrands_Companies">
-          <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
-          <End Type="Self.CompanyBrands" Multiplicity="*" Role="CompanyBrands" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyBrands" Type="Self.CompanyBrands" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -384,8 +441,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyBrandSections_CompanyBrands">
-          <End Type="Self.CompanyBrands" Multiplicity="1" Role="CompanyBrands" />
-          <End Type="Self.CompanyBrandSections" Multiplicity="*" Role="CompanyBrandSections" />
+          <End Role="CompanyBrands" Type="Self.CompanyBrands" Multiplicity="1" />
+          <End Role="CompanyBrandSections" Type="Self.CompanyBrandSections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompanyBrands">
               <PropertyRef Name="CompanyId" />
@@ -398,8 +455,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyEditions_Companies">
-          <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
-          <End Type="Self.CompanyEditions" Multiplicity="*" Role="CompanyEditions" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyEditions" Type="Self.CompanyEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -410,8 +467,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanyEditions_Editions">
-          <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
-          <End Type="Self.CompanyEditions" Multiplicity="*" Role="CompanyEditions" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="CompanyEditions" Type="Self.CompanyEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Editions">
               <PropertyRef Name="EditionId" />
@@ -422,8 +479,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySections_Companies">
-          <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
-          <End Type="Self.CompanySections" Multiplicity="*" Role="CompanySections" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanySections" Type="Self.CompanySections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -434,8 +491,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySections_Sections">
-          <End Type="Self.Sections" Multiplicity="1" Role="Sections" />
-          <End Type="Self.CompanySections" Multiplicity="*" Role="CompanySections" />
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="CompanySections" Type="Self.CompanySections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
               <PropertyRef Name="SectionId" />
@@ -446,8 +503,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Editions_Books">
-          <End Type="Self.Books" Multiplicity="1" Role="Books" />
-          <End Type="Self.Editions" Multiplicity="*" Role="Editions" />
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Books">
               <PropertyRef Name="BookId" />
@@ -458,8 +515,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Editions_Countries">
-          <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
-          <End Type="Self.Editions" Multiplicity="*" Role="Editions" />
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Countries">
               <PropertyRef Name="CountryId" />
@@ -470,8 +527,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductEditions_Editions">
-          <End Type="Self.Editions" Multiplicity="1" Role="Editions" />
-          <End Type="Self.ProductEditions" Multiplicity="*" Role="ProductEditions" />
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="ProductEditions" Type="Self.ProductEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Editions">
               <PropertyRef Name="EditionId" />
@@ -482,8 +539,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProductEditions_Products">
-          <End Type="Self.Products" Multiplicity="1" Role="Products" />
-          <End Type="Self.ProductEditions" Multiplicity="*" Role="ProductEditions" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductEditions" Type="Self.ProductEditions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ProductId" />
@@ -494,8 +551,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_1">
-          <End Type="Self.Countries" Multiplicity="1" Role="Countries" />
-          <End Type="Self.States" Multiplicity="*" Role="States" />
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
+          <End Role="States" Type="Self.States" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Countries">
               <PropertyRef Name="CountryId" />
@@ -506,8 +563,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_10">
-          <End Type="Self.Sections" Multiplicity="0..1" Role="Sections" />
-          <End Type="Self.Sections" Multiplicity="*" Role="Sections1" />
+          <End Role="Sections" Type="Self.Sections" Multiplicity="0..1" />
+          <End Role="Sections1" Type="Self.Sections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
               <PropertyRef Name="SectionId" />
@@ -518,8 +575,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_13">
-          <End Type="Self.Products" Multiplicity="0..1" Role="Products" />
-          <End Type="Self.Products" Multiplicity="*" Role="Products1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Products1" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ProductId" />
@@ -530,8 +587,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_14">
-          <End Type="Self.Products" Multiplicity="1" Role="Products" />
-          <End Type="Self.ProductSections" Multiplicity="*" Role="ProductSections" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductSections" Type="Self.ProductSections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ProductId" />
@@ -542,8 +599,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_15">
-          <End Type="Self.Sections" Multiplicity="1" Role="Sections" />
-          <End Type="Self.ProductSections" Multiplicity="*" Role="ProductSections" />
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="ProductSections" Type="Self.ProductSections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sections">
               <PropertyRef Name="SectionId" />
@@ -554,8 +611,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_19">
-          <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
-          <End Type="Self.Products" Multiplicity="*" Role="Products" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -565,21 +622,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_3">
-          <End Type="Self.CompanyTypes" Multiplicity="1" Role="CompanyTypes" />
-          <End Type="Self.Companies" Multiplicity="*" Role="Companies" />
+        <Association Name="R_30">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CompanyTypes">
-              <PropertyRef Name="CompanyTypeId" />
+            <Principal Role="Cities">
+              <PropertyRef Name="CityId" />
             </Principal>
-            <Dependent Role="Companies">
-              <PropertyRef Name="CompanyTypeId" />
+            <Dependent Role="Addresses">
+              <PropertyRef Name="CityId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="R_5">
-          <End Type="Self.Companies" Multiplicity="0..1" Role="Companies" />
-          <End Type="Self.Companies" Multiplicity="*" Role="Companies1" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+          <End Role="Companies1" Type="Self.Companies" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -589,9 +646,85 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_50">
+          <End Role="CompanyTypes" Type="Self.CompanyTypes" Multiplicity="1" />
+          <End Role="CompanyEditions" Type="Self.CompanyEditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyTypes">
+              <PropertyRef Name="CompanyTypeId" />
+            </Principal>
+            <Dependent Role="CompanyEditions">
+              <PropertyRef Name="CompanyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_52">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyDistributions" Type="Self.CompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_53">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyAddresses" Type="Self.CompanyAddresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyAddresses">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_54">
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
+          <End Role="CompanyAddresses" Type="Self.CompanyAddresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="CompanyAddresses">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_55">
+          <End Role="CompanyEditions" Type="Self.CompanyEditions" Multiplicity="1" />
+          <End Role="EditionCompanySectionAdvers" Type="Self.EditionCompanySectionAdvers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyEditions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionCompanySectionAdvers">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_56">
+          <End Role="CompanySections" Type="Self.CompanySections" Multiplicity="1" />
+          <End Role="EditionCompanySectionAdvers" Type="Self.EditionCompanySectionAdvers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanySections">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="EditionCompanySectionAdvers">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_6">
-          <End Type="Self.PhoneTypes" Multiplicity="1" Role="PhoneTypes" />
-          <End Type="Self.CompanyPhones" Multiplicity="*" Role="CompanyPhones" />
+          <End Role="PhoneTypes" Type="Self.PhoneTypes" Multiplicity="1" />
+          <End Role="CompanyPhones" Type="Self.CompanyPhones" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PhoneTypes">
               <PropertyRef Name="PhoneTypeId" />
@@ -601,9 +734,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_62">
+          <End Role="CompanyDistributions" Type="Self.CompanyDistributions" Multiplicity="1" />
+          <End Role="EditionCompanyDistributions" Type="Self.EditionCompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="DistributionId" />
+            </Principal>
+            <Dependent Role="EditionCompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="DistributionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_7">
-          <End Type="Self.Companies" Multiplicity="1" Role="Companies" />
-          <End Type="Self.CompanyPhones" Multiplicity="*" Role="CompanyPhones" />
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyPhones" Type="Self.CompanyPhones" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Companies">
               <PropertyRef Name="CompanyId" />
@@ -614,8 +761,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_9">
-          <End Type="Self.ProductTypes" Multiplicity="0..1" Role="ProductTypes" />
-          <End Type="Self.Products" Multiplicity="*" Role="Products" />
+          <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProductTypes">
               <PropertyRef Name="ProductTypeId" />
@@ -625,22 +772,94 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_CD53">
+          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
+          <End Role="CompanyDistributions" Type="Self.CompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyDistributions">
+              <PropertyRef Name="DistributionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ECD54">
+          <End Role="CompanyEditions" Type="Self.CompanyEditions" Multiplicity="1" />
+          <End Role="EditionCompanyDistributions" Type="Self.EditionCompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyEditions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionCompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_PE20">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="ProductEditions" Type="Self.ProductEditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="ProductEditions">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="plm_spGetCompaniesByEditionIdByCompanyTypeId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+          <Parameter Name="CompanyTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spGetCompaniesGropupBy" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="plm_spGetProductsBySectionsByCompaniesByEdition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spGetProductsBySectionsByCompaniesByEditionS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spGetProductsBySectionsByEdition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spGetProductsBySectionsByEditionS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="plm_spInsertLabsByLastEditions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LastEditionId" Type="int" Mode="In" />
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+          <Parameter Name="CompanyTypeId" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="plm_spInsertLastInformationByEditionClient" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LastEditionId" Type="int" Mode="In" />
+          <Parameter Name="EditionId" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdvertisementEditions" EntityType="Self.AdvertisementEditions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Advertisements" EntityType="Self.Advertisements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyAddresses" EntityType="Self.CompanyAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyBrandEditions" EntityType="Self.CompanyBrandEditions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyBrandIndexes" EntityType="Self.CompanyBrandIndexes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyBrands" EntityType="Self.CompanyBrands" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyBrandSections" EntityType="Self.CompanyBrandSections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyDistributions" EntityType="Self.CompanyDistributions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyEditions" EntityType="Self.CompanyEditions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyPhones" EntityType="Self.CompanyPhones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanySections" EntityType="Self.CompanySections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EditionCompanyDistributions" EntityType="Self.EditionCompanyDistributions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EditionCompanySectionAdvers" EntityType="Self.EditionCompanySectionAdvers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indexes" EntityType="Self.Indexes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhoneTypes" EntityType="Self.PhoneTypes" Schema="dbo" store:Type="Tables" />
@@ -651,129 +870,170 @@
           <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AdvertisementEditions_Advertisements" Association="Self.FK_AdvertisementEditions_Advertisements">
-            <End EntitySet="Advertisements" Role="Advertisements" />
-            <End EntitySet="AdvertisementEditions" Role="AdvertisementEditions" />
+            <End Role="Advertisements" EntitySet="Advertisements" />
+            <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_AdvertisementEditions_Companies" Association="Self.FK_AdvertisementEditions_Companies">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="AdvertisementEditions" Role="AdvertisementEditions" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_AdvertisementEditions_Editions" Association="Self.FK_AdvertisementEditions_Editions">
-            <End EntitySet="Editions" Role="Editions" />
-            <End EntitySet="AdvertisementEditions" Role="AdvertisementEditions" />
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_BrandIndexes_Indexes" Association="Self.FK_BrandIndexes_Indexes">
-            <End EntitySet="Indexes" Role="Indexes" />
-            <End EntitySet="CompanyBrandIndexes" Role="CompanyBrandIndexes" />
+            <End Role="Indexes" EntitySet="Indexes" />
+            <End Role="CompanyBrandIndexes" EntitySet="CompanyBrandIndexes" />
           </AssociationSet>
           <AssociationSet Name="FK_BrandSections_Sections" Association="Self.FK_BrandSections_Sections">
-            <End EntitySet="Sections" Role="Sections" />
-            <End EntitySet="CompanyBrandSections" Role="CompanyBrandSections" />
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="CompanyBrandSections" EntitySet="CompanyBrandSections" />
           </AssociationSet>
           <AssociationSet Name="FK_Cities_States" Association="Self.FK_Cities_States">
-            <End EntitySet="States" Role="States" />
-            <End EntitySet="Cities" Role="Cities" />
+            <End Role="States" EntitySet="States" />
+            <End Role="Cities" EntitySet="Cities" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyBrandEditions_CompanyBrands" Association="Self.FK_CompanyBrandEditions_CompanyBrands">
-            <End EntitySet="CompanyBrands" Role="CompanyBrands" />
-            <End EntitySet="CompanyBrandEditions" Role="CompanyBrandEditions" />
+            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
+            <End Role="CompanyBrandEditions" EntitySet="CompanyBrandEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyBrandEditions_Editions" Association="Self.FK_CompanyBrandEditions_Editions">
-            <End EntitySet="Editions" Role="Editions" />
-            <End EntitySet="CompanyBrandEditions" Role="CompanyBrandEditions" />
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="CompanyBrandEditions" EntitySet="CompanyBrandEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyBrandIndexes_CompanyBrands" Association="Self.FK_CompanyBrandIndexes_CompanyBrands">
-            <End EntitySet="CompanyBrands" Role="CompanyBrands" />
-            <End EntitySet="CompanyBrandIndexes" Role="CompanyBrandIndexes" />
+            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
+            <End Role="CompanyBrandIndexes" EntitySet="CompanyBrandIndexes" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyBrands_Brands" Association="Self.FK_CompanyBrands_Brands">
-            <End EntitySet="Brands" Role="Brands" />
-            <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyBrands_Companies" Association="Self.FK_CompanyBrands_Companies">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="CompanyBrands" Role="CompanyBrands" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyBrandSections_CompanyBrands" Association="Self.FK_CompanyBrandSections_CompanyBrands">
-            <End EntitySet="CompanyBrands" Role="CompanyBrands" />
-            <End EntitySet="CompanyBrandSections" Role="CompanyBrandSections" />
+            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
+            <End Role="CompanyBrandSections" EntitySet="CompanyBrandSections" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyEditions_Companies" Association="Self.FK_CompanyEditions_Companies">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="CompanyEditions" Role="CompanyEditions" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyEditions_Editions" Association="Self.FK_CompanyEditions_Editions">
-            <End EntitySet="Editions" Role="Editions" />
-            <End EntitySet="CompanyEditions" Role="CompanyEditions" />
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanySections_Companies" Association="Self.FK_CompanySections_Companies">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="CompanySections" Role="CompanySections" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanySections" EntitySet="CompanySections" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanySections_Sections" Association="Self.FK_CompanySections_Sections">
-            <End EntitySet="Sections" Role="Sections" />
-            <End EntitySet="CompanySections" Role="CompanySections" />
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="CompanySections" EntitySet="CompanySections" />
           </AssociationSet>
           <AssociationSet Name="FK_Editions_Books" Association="Self.FK_Editions_Books">
-            <End EntitySet="Books" Role="Books" />
-            <End EntitySet="Editions" Role="Editions" />
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Editions" EntitySet="Editions" />
           </AssociationSet>
           <AssociationSet Name="FK_Editions_Countries" Association="Self.FK_Editions_Countries">
-            <End EntitySet="Countries" Role="Countries" />
-            <End EntitySet="Editions" Role="Editions" />
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="Editions" EntitySet="Editions" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductEditions_Editions" Association="Self.FK_ProductEditions_Editions">
-            <End EntitySet="Editions" Role="Editions" />
-            <End EntitySet="ProductEditions" Role="ProductEditions" />
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="ProductEditions" EntitySet="ProductEditions" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductEditions_Products" Association="Self.FK_ProductEditions_Products">
-            <End EntitySet="Products" Role="Products" />
-            <End EntitySet="ProductEditions" Role="ProductEditions" />
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductEditions" EntitySet="ProductEditions" />
           </AssociationSet>
           <AssociationSet Name="R_1" Association="Self.R_1">
-            <End EntitySet="Countries" Role="Countries" />
-            <End EntitySet="States" Role="States" />
+            <End Role="Countries" EntitySet="Countries" />
+            <End Role="States" EntitySet="States" />
           </AssociationSet>
           <AssociationSet Name="R_10" Association="Self.R_10">
-            <End EntitySet="Sections" Role="Sections" />
-            <End EntitySet="Sections" Role="Sections1" />
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="Sections1" EntitySet="Sections" />
           </AssociationSet>
           <AssociationSet Name="R_13" Association="Self.R_13">
-            <End EntitySet="Products" Role="Products" />
-            <End EntitySet="Products" Role="Products1" />
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Products1" EntitySet="Products" />
           </AssociationSet>
           <AssociationSet Name="R_14" Association="Self.R_14">
-            <End EntitySet="Products" Role="Products" />
-            <End EntitySet="ProductSections" Role="ProductSections" />
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductSections" EntitySet="ProductSections" />
           </AssociationSet>
           <AssociationSet Name="R_15" Association="Self.R_15">
-            <End EntitySet="Sections" Role="Sections" />
-            <End EntitySet="ProductSections" Role="ProductSections" />
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="ProductSections" EntitySet="ProductSections" />
           </AssociationSet>
           <AssociationSet Name="R_19" Association="Self.R_19">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="Products" Role="Products" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="R_3" Association="Self.R_3">
-            <End EntitySet="CompanyTypes" Role="CompanyTypes" />
-            <End EntitySet="Companies" Role="Companies" />
+          <AssociationSet Name="R_30" Association="Self.R_30">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Addresses" EntitySet="Addresses" />
           </AssociationSet>
           <AssociationSet Name="R_5" Association="Self.R_5">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="Companies" Role="Companies1" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Companies1" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="R_50" Association="Self.R_50">
+            <End Role="CompanyTypes" EntitySet="CompanyTypes" />
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+          </AssociationSet>
+          <AssociationSet Name="R_52" Association="Self.R_52">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyDistributions" EntitySet="CompanyDistributions" />
+          </AssociationSet>
+          <AssociationSet Name="R_53" Association="Self.R_53">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyAddresses" EntitySet="CompanyAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="R_54" Association="Self.R_54">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="CompanyAddresses" EntitySet="CompanyAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="R_55" Association="Self.R_55">
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+            <End Role="EditionCompanySectionAdvers" EntitySet="EditionCompanySectionAdvers" />
+          </AssociationSet>
+          <AssociationSet Name="R_56" Association="Self.R_56">
+            <End Role="CompanySections" EntitySet="CompanySections" />
+            <End Role="EditionCompanySectionAdvers" EntitySet="EditionCompanySectionAdvers" />
           </AssociationSet>
           <AssociationSet Name="R_6" Association="Self.R_6">
-            <End EntitySet="PhoneTypes" Role="PhoneTypes" />
-            <End EntitySet="CompanyPhones" Role="CompanyPhones" />
+            <End Role="PhoneTypes" EntitySet="PhoneTypes" />
+            <End Role="CompanyPhones" EntitySet="CompanyPhones" />
+          </AssociationSet>
+          <AssociationSet Name="R_62" Association="Self.R_62">
+            <End Role="CompanyDistributions" EntitySet="CompanyDistributions" />
+            <End Role="EditionCompanyDistributions" EntitySet="EditionCompanyDistributions" />
           </AssociationSet>
           <AssociationSet Name="R_7" Association="Self.R_7">
-            <End EntitySet="Companies" Role="Companies" />
-            <End EntitySet="CompanyPhones" Role="CompanyPhones" />
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyPhones" EntitySet="CompanyPhones" />
           </AssociationSet>
           <AssociationSet Name="R_9" Association="Self.R_9">
-            <End EntitySet="ProductTypes" Role="ProductTypes" />
-            <End EntitySet="Products" Role="Products" />
+            <End Role="ProductTypes" EntitySet="ProductTypes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_CD53" Association="Self.R_CD53">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyDistributions" EntitySet="CompanyDistributions" />
+          </AssociationSet>
+          <AssociationSet Name="R_ECD54" Association="Self.R_ECD54">
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+            <End Role="EditionCompanyDistributions" EntitySet="EditionCompanyDistributions" />
+          </AssociationSet>
+          <AssociationSet Name="R_PE20" Association="Self.R_PE20">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="ProductEditions" EntitySet="ProductEditions" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -790,8 +1050,8 @@
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <Property Name="EditionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Advertisements" Relationship="Self.FK_AdvertisementEditions_Advertisements" FromRole="AdvertisementEditions" ToRole="Advertisements" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_AdvertisementEditions_Companies" FromRole="AdvertisementEditions" ToRole="Companies" />
           <NavigationProperty Name="Editions" Relationship="Self.FK_AdvertisementEditions_Editions" FromRole="AdvertisementEditions" ToRole="Editions" />
+          <NavigationProperty Name="Companies" Relationship="Model.FK_AdvertisementEditions_Companies" FromRole="AdvertisementEditions" ToRole="Companies" />
         </EntityType>
         <EntityType Name="Advertisements">
           <Key>
@@ -830,35 +1090,7 @@
           <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="States" Relationship="Self.FK_Cities_States" FromRole="Cities" ToRole="States" />
-        </EntityType>
-        <EntityType Name="Companies">
-          <Key>
-            <PropertyRef Name="CompanyId" />
-          </Key>
-          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyTypeId" Type="Byte" Nullable="false" />
-          <Property Name="CompanyIdParent" Type="Int32" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Suburb" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Ubication" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Web" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Contact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CompanyShortName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CityId" Type="Int32" />
-          <Property Name="Client_ID" Type="Int32" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AdvertisementEditions" Relationship="Self.FK_AdvertisementEditions_Companies" FromRole="Companies" ToRole="AdvertisementEditions" />
-          <NavigationProperty Name="CompanyBrands" Relationship="Self.FK_CompanyBrands_Companies" FromRole="Companies" ToRole="CompanyBrands" />
-          <NavigationProperty Name="CompanyEditions" Relationship="Self.FK_CompanyEditions_Companies" FromRole="Companies" ToRole="CompanyEditions" />
-          <NavigationProperty Name="CompanySections" Relationship="Self.FK_CompanySections_Companies" FromRole="Companies" ToRole="CompanySections" />
-          <NavigationProperty Name="Products" Relationship="Self.R_19" FromRole="Companies" ToRole="Products" />
-          <NavigationProperty Name="CompanyTypes" Relationship="Self.R_3" FromRole="Companies" ToRole="CompanyTypes" />
-          <NavigationProperty Name="Companies1" Relationship="Self.R_5" FromRole="Companies" ToRole="Companies1" />
-          <NavigationProperty Name="Companies2" Relationship="Self.R_5" FromRole="Companies1" ToRole="Companies" />
-          <NavigationProperty Name="CompanyPhones" Relationship="Self.R_7" FromRole="Companies" ToRole="CompanyPhones" />
+          <NavigationProperty Name="Addresses" Relationship="Model.R_301" FromRole="Cities" ToRole="Addresses" />
         </EntityType>
         <EntityType Name="CompanyBrands">
           <Key>
@@ -869,10 +1101,10 @@
           <Property Name="BrandId" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Brands" Relationship="Self.FK_CompanyBrands_Brands" FromRole="CompanyBrands" ToRole="Brands" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_CompanyBrands_Companies" FromRole="CompanyBrands" ToRole="Companies" />
           <NavigationProperty Name="CompanyBrandIndexes" Relationship="Model.CompanyBrandsCompanyBrandIndexes" FromRole="CompanyBrands" ToRole="CompanyBrandIndexes" />
           <NavigationProperty Name="CompanyBrandSections" Relationship="Model.CompanyBrandsCompanyBrandSections" FromRole="CompanyBrands" ToRole="CompanyBrandSections" />
           <NavigationProperty Name="CompanyBrandEditions" Relationship="Model.CompanyBrandsCompanyBrandEditions" FromRole="CompanyBrands" ToRole="CompanyBrandEditions" />
+          <NavigationProperty Name="Companies" Relationship="Model.FK_CompanyBrands_Companies" FromRole="CompanyBrands" ToRole="Companies" />
         </EntityType>
         <EntityType Name="CompanyEditions">
           <Key>
@@ -883,8 +1115,14 @@
           <Property Name="EditionId" Type="Int32" Nullable="false" />
           <Property Name="HtmlFile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="HtmlContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_CompanyEditions_Companies" FromRole="CompanyEditions" ToRole="Companies" />
           <NavigationProperty Name="Editions" Relationship="Self.FK_CompanyEditions_Editions" FromRole="CompanyEditions" ToRole="Editions" />
+          <Property Name="CompanyTypeId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="CompanyTypes" Relationship="Model.R_50" FromRole="CompanyEditions" ToRole="CompanyTypes" />
+          <NavigationProperty Name="Companies" Relationship="Model.FK_CompanyEditions_Companies" FromRole="CompanyEditions" ToRole="Companies" />
+          <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CloseClient" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EditionCompanySectionAdvers" Relationship="Model.R_55" FromRole="CompanyEditions" ToRole="EditionCompanySectionAdvers" />
+          <NavigationProperty Name="EditionCompanyDistributions" Relationship="Model.R_ECD54" FromRole="CompanyEditions" ToRole="EditionCompanyDistributions" />
         </EntityType>
         <EntityType Name="CompanyPhones">
           <Key>
@@ -894,8 +1132,8 @@
           <Property Name="PhoneTypeId" Type="Byte" Nullable="false" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <Property Name="PhoneValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Companies" Relationship="Self.R_7" FromRole="CompanyPhones" ToRole="Companies" />
           <NavigationProperty Name="PhoneTypes" Relationship="Self.R_6" FromRole="CompanyPhones" ToRole="PhoneTypes" />
+          <NavigationProperty Name="Companies" Relationship="Model.R_7" FromRole="CompanyPhones" ToRole="Companies" />
         </EntityType>
         <EntityType Name="CompanySections">
           <Key>
@@ -905,8 +1143,9 @@
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <Property Name="SectionId" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_CompanySections_Companies" FromRole="CompanySections" ToRole="Companies" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_CompanySections_Sections" FromRole="CompanySections" ToRole="Sections" />
+          <NavigationProperty Name="Companies" Relationship="Model.FK_CompanySections_Companies" FromRole="CompanySections" ToRole="Companies" />
+          <NavigationProperty Name="EditionCompanySectionAdvers" Relationship="Model.R_56" FromRole="CompanySections" ToRole="EditionCompanySectionAdvers" />
         </EntityType>
         <EntityType Name="CompanyTypes">
           <Key>
@@ -915,7 +1154,7 @@
           <Property Name="CompanyTypeId" Type="Byte" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Companies" Relationship="Self.R_3" FromRole="CompanyTypes" ToRole="Companies" />
+          <NavigationProperty Name="CompanyEditions" Relationship="Model.R_50" FromRole="CompanyTypes" ToRole="CompanyEditions" />
         </EntityType>
         <EntityType Name="Countries">
           <Key>
@@ -955,6 +1194,7 @@
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CompanyBrandIndexes" Relationship="Model.IndexesCompanyBrandIndexes" FromRole="Indexes" ToRole="CompanyBrandIndexes" />
+          <NavigationProperty Name="ProductIndexes" Relationship="Model.IndexesProductIndexes" FromRole="Indexes" ToRole="ProductIndexes" />
         </EntityType>
         <EntityType Name="PhoneTypes">
           <Key>
@@ -976,6 +1216,9 @@
           <Property Name="HtmlContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Editions" Relationship="Self.FK_ProductEditions_Editions" FromRole="ProductEditions" ToRole="Editions" />
           <NavigationProperty Name="Products" Relationship="Self.FK_ProductEditions_Products" FromRole="ProductEditions" ToRole="Products" />
+          <Property Name="Page" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Status" Relationship="Model.R_PE20" FromRole="ProductEditions" ToRole="Status" />
         </EntityType>
         <EntityType Name="ProductIndexes">
           <Key>
@@ -984,6 +1227,8 @@
           </Key>
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="IndexId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Model.ProductsProductIndexes" FromRole="ProductIndexes" ToRole="Products" />
+          <NavigationProperty Name="Indexes" Relationship="Model.IndexesProductIndexes" FromRole="ProductIndexes" ToRole="Indexes" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -997,12 +1242,13 @@
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <Property Name="ProdId" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Companies" Relationship="Self.R_19" FromRole="Products" ToRole="Companies" />
           <NavigationProperty Name="ProductEditions" Relationship="Self.FK_ProductEditions_Products" FromRole="Products" ToRole="ProductEditions" />
           <NavigationProperty Name="Products1" Relationship="Self.R_13" FromRole="Products" ToRole="Products1" />
           <NavigationProperty Name="Products2" Relationship="Self.R_13" FromRole="Products1" ToRole="Products" />
           <NavigationProperty Name="ProductTypes" Relationship="Self.R_9" FromRole="Products" ToRole="ProductTypes" />
           <NavigationProperty Name="ProductSections" Relationship="Model.ProductsProductSections" FromRole="Products" ToRole="ProductSections" />
+          <NavigationProperty Name="Companies" Relationship="Model.R_19" FromRole="Products" ToRole="Companies" />
+          <NavigationProperty Name="ProductIndexes" Relationship="Model.ProductsProductIndexes" FromRole="Products" ToRole="ProductIndexes" />
         </EntityType>
         <EntityType Name="ProductTypes">
           <Key>
@@ -1047,18 +1293,6 @@
             </Principal>
             <Dependent Role="AdvertisementEditions">
               <PropertyRef Name="AdvId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AdvertisementEditions_Companies">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
-          <End Role="AdvertisementEditions" Type="Self.AdvertisementEditions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="AdvertisementEditions">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1107,90 +1341,6 @@
             </Principal>
             <Dependent Role="Cities">
               <PropertyRef Name="StateId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanyBrands_Companies">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
-          <End Role="CompanyBrands" Type="Self.CompanyBrands" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="CompanyBrands">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanyEditions_Companies">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
-          <End Role="CompanyEditions" Type="Self.CompanyEditions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="CompanyEditions">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanySections_Companies">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
-          <End Role="CompanySections" Type="Self.CompanySections" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="CompanySections">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_19">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_3">
-          <End Role="CompanyTypes" Type="Self.CompanyTypes" Multiplicity="1" />
-          <End Role="Companies" Type="Self.Companies" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyTypes">
-              <PropertyRef Name="CompanyTypeId" />
-            </Principal>
-            <Dependent Role="Companies">
-              <PropertyRef Name="CompanyTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_5">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
-          <End Role="Companies1" Type="Self.Companies" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="Companies1">
-              <PropertyRef Name="CompanyIdParent" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_7">
-          <End Role="Companies" Type="Self.Companies" Multiplicity="1" />
-          <End Role="CompanyPhones" Type="Self.CompanyPhones" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Companies">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="CompanyPhones">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1320,7 +1470,6 @@
           <EntitySet Name="Books" EntityType="Self.Books" />
           <EntitySet Name="Brands" EntityType="Self.Brands" />
           <EntitySet Name="Cities" EntityType="Self.Cities" />
-          <EntitySet Name="Companies" EntityType="Self.Companies" />
           <EntitySet Name="CompanyBrands" EntityType="Self.CompanyBrands" />
           <EntitySet Name="CompanyEditions" EntityType="Self.CompanyEditions" />
           <EntitySet Name="CompanyPhones" EntityType="Self.CompanyPhones" />
@@ -1340,10 +1489,6 @@
             <End Role="Advertisements" EntitySet="Advertisements" />
             <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
           </AssociationSet>
-          <AssociationSet Name="FK_AdvertisementEditions_Companies" Association="Self.FK_AdvertisementEditions_Companies">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
-          </AssociationSet>
           <AssociationSet Name="FK_AdvertisementEditions_Editions" Association="Self.FK_AdvertisementEditions_Editions">
             <End Role="Editions" EntitySet="Editions" />
             <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
@@ -1359,34 +1504,6 @@
           <AssociationSet Name="FK_Cities_States" Association="Self.FK_Cities_States">
             <End Role="States" EntitySet="States" />
             <End Role="Cities" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanyBrands_Companies" Association="Self.FK_CompanyBrands_Companies">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanyEditions_Companies" Association="Self.FK_CompanyEditions_Companies">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySections_Companies" Association="Self.FK_CompanySections_Companies">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="CompanySections" EntitySet="CompanySections" />
-          </AssociationSet>
-          <AssociationSet Name="R_19" Association="Self.R_19">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="R_3" Association="Self.R_3">
-            <End Role="CompanyTypes" EntitySet="CompanyTypes" />
-            <End Role="Companies" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="R_5" Association="Self.R_5">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="Companies1" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="R_7" Association="Self.R_7">
-            <End Role="Companies" EntitySet="Companies" />
-            <End Role="CompanyPhones" EntitySet="CompanyPhones" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyEditions_Editions" Association="Self.FK_CompanyEditions_Editions">
             <End Role="Editions" EntitySet="Editions" />
@@ -1464,7 +1581,123 @@
             <End Role="CompanyBrands" EntitySet="CompanyBrands" />
             <End Role="CompanyBrandEditions" EntitySet="CompanyBrandEditions" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="R_50" Association="Model.R_50">
+            <End Role="CompanyTypes" EntitySet="CompanyTypes" />
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+          </AssociationSet>
+          <EntitySet Name="Companies" EntityType="Model.Companies" />
+          <AssociationSet Name="FK_AdvertisementEditions_Companies" Association="Model.FK_AdvertisementEditions_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="AdvertisementEditions" EntitySet="AdvertisementEditions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyBrands_Companies" Association="Model.FK_CompanyBrands_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyBrands" EntitySet="CompanyBrands" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyEditions_Companies" Association="Model.FK_CompanyEditions_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySections_Companies" Association="Model.FK_CompanySections_Companies">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanySections" EntitySet="CompanySections" />
+          </AssociationSet>
+          <AssociationSet Name="R_19" Association="Model.R_19">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="R_5" Association="Model.R_5">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="Companies1" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="R_7" Association="Model.R_7">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyPhones" EntitySet="CompanyPhones" />
+          </AssociationSet>
+          <EntitySet Name="Addresses" EntityType="Model.Addresses" />
+          <AssociationSet Name="R_301" Association="Model.R_301">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Addresses" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="ProductsProductIndexes" Association="Model.ProductsProductIndexes">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductIndexes" EntitySet="ProductIndexes" />
+          </AssociationSet>
+          <AssociationSet Name="IndexesProductIndexes" Association="Model.IndexesProductIndexes">
+            <End Role="Indexes" EntitySet="Indexes" />
+            <End Role="ProductIndexes" EntitySet="ProductIndexes" />
+          </AssociationSet>
+          <EntitySet Name="CompanyAddresses" EntityType="Model.CompanyAddresses" />
+          <AssociationSet Name="AddressesCompanyAddresses" Association="Model.AddressesCompanyAddresses">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="CompanyAddresses" EntitySet="CompanyAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="CompaniesCompanyAddresses" Association="Model.CompaniesCompanyAddresses">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyAddresses" EntitySet="CompanyAddresses" />
+          </AssociationSet>
+          <FunctionImport Name="plm_spGetCompaniesByEditionIdByCompanyTypeId" ReturnType="Collection(Model.plm_spGetCompaniesByEditionIdByCompanyTypeId_Result)">
+            <Parameter Name="EditionId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="EditionCompanySectionAdvers" EntityType="Model.EditionCompanySectionAdvers" />
+          <AssociationSet Name="R_55" Association="Model.R_55">
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+            <End Role="EditionCompanySectionAdvers" EntitySet="EditionCompanySectionAdvers" />
+          </AssociationSet>
+          <AssociationSet Name="R_56" Association="Model.R_56">
+            <End Role="CompanySections" EntitySet="CompanySections" />
+            <End Role="EditionCompanySectionAdvers" EntitySet="EditionCompanySectionAdvers" />
+          </AssociationSet>
+          <EntitySet Name="Status" EntityType="Model.Status" />
+          <AssociationSet Name="R_PE20" Association="Model.R_PE20">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="ProductEditions" EntitySet="ProductEditions" />
+          </AssociationSet>
+          <FunctionImport Name="plm_spGetProductsBySectionsByCompaniesByEdition" ReturnType="Collection(Model.plm_spGetProductsBySectionsByCompaniesByEdition_Result)">
+            <Parameter Name="EditionId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="plm_spGetProductsBySectionsByEdition" ReturnType="Collection(Model.plm_spGetProductsBySectionsByEdition_Result)">
+          <Parameter Name="EditionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="plm_spGetProductsBySectionsByCompaniesByEditionS" ReturnType="Collection(Model.plm_spGetProductsBySectionsByCompaniesByEditionS_Result)">
+            <Parameter Name="EditionId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="plm_spGetProductsBySectionsByEditionS" ReturnType="Collection(Model.plm_spGetProductsBySectionsByEditionS_Result)">
+          <Parameter Name="EditionId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="CompanyDistributions" EntityType="Model.CompanyDistributions" />
+          <EntitySet Name="EditionCompanyDistributions" EntityType="Model.EditionCompanyDistributions" />
+          <AssociationSet Name="R_52" Association="Model.R_52">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyDistributions" EntitySet="CompanyDistributions" />
+          </AssociationSet>
+          <AssociationSet Name="R_CD53" Association="Model.R_CD53">
+            <End Role="Companies" EntitySet="Companies" />
+            <End Role="CompanyDistributions" EntitySet="CompanyDistributions" />
+          </AssociationSet>
+          <AssociationSet Name="R_62" Association="Model.R_62">
+            <End Role="CompanyDistributions" EntitySet="CompanyDistributions" />
+            <End Role="EditionCompanyDistributions" EntitySet="EditionCompanyDistributions" />
+          </AssociationSet>
+          <AssociationSet Name="R_ECD54" Association="Model.R_ECD54">
+            <End Role="CompanyEditions" EntitySet="CompanyEditions" />
+            <End Role="EditionCompanyDistributions" EntitySet="EditionCompanyDistributions" />
+          </AssociationSet>
+          <FunctionImport Name="plm_spGetCompaniesGropupBy" ReturnType="Collection(Model.plm_spGetCompaniesGropupBy_Result)" />
+          <FunctionImport Name="plm_spInsertLabsByLastEditions">
+            <Parameter Name="LastEditionId" Mode="In" Type="Int32" />
+            <Parameter Name="EditionId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyTypeId" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="plm_spInsertLastInformationByEditionClient">
+            <Parameter Name="LastEditionId" Mode="In" Type="Int32" />
+            <Parameter Name="EditionId" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          </EntityContainer>
         <EntityType Name="ProductSections">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -1613,7 +1846,401 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="R_50">
+          <End Type="Model.CompanyTypes" Role="CompanyTypes" Multiplicity="1" />
+          <End Type="Model.CompanyEditions" Role="CompanyEditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyTypes">
+              <PropertyRef Name="CompanyTypeId" />
+            </Principal>
+            <Dependent Role="CompanyEditions">
+              <PropertyRef Name="CompanyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyIdParent" Type="Int32" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyShortName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Client_ID" Type="Int32" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AdvertisementEditions" Relationship="Model.FK_AdvertisementEditions_Companies" FromRole="Companies" ToRole="AdvertisementEditions" />
+          <NavigationProperty Name="CompanyBrands" Relationship="Model.FK_CompanyBrands_Companies" FromRole="Companies" ToRole="CompanyBrands" />
+          <NavigationProperty Name="CompanyEditions" Relationship="Model.FK_CompanyEditions_Companies" FromRole="Companies" ToRole="CompanyEditions" />
+          <NavigationProperty Name="CompanySections" Relationship="Model.FK_CompanySections_Companies" FromRole="Companies" ToRole="CompanySections" />
+          <NavigationProperty Name="Products" Relationship="Model.R_19" FromRole="Companies" ToRole="Products" />
+          <NavigationProperty Name="Companies1" Relationship="Model.R_5" FromRole="Companies" ToRole="Companies1" />
+          <NavigationProperty Name="Companies2" Relationship="Model.R_5" FromRole="Companies1" ToRole="Companies" />
+          <NavigationProperty Name="CompanyPhones" Relationship="Model.R_7" FromRole="Companies" ToRole="CompanyPhones" />
+          <NavigationProperty Name="CompanyAddresses" Relationship="Model.CompaniesCompanyAddresses" FromRole="Companies" ToRole="CompanyAddresses" />
+          <NavigationProperty Name="CompanyDistributions" Relationship="Model.R_52" FromRole="Companies" ToRole="CompanyDistributions" />
+          <NavigationProperty Name="CompanyDistributions1" Relationship="Model.R_CD53" FromRole="Companies" ToRole="CompanyDistributions" />
+        </EntityType>
+        <Association Name="FK_AdvertisementEditions_Companies">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.AdvertisementEditions" Role="AdvertisementEditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="AdvertisementEditions">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyBrands_Companies">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanyBrands" Role="CompanyBrands" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyBrands">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyEditions_Companies">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanyEditions" Role="CompanyEditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyEditions">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanySections_Companies">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanySections" Role="CompanySections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanySections">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_19">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.Products" Role="Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_5">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="0..1" />
+          <End Type="Model.Companies" Role="Companies1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="Companies1">
+              <PropertyRef Name="CompanyIdParent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_7">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanyPhones" Role="CompanyPhones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyPhones">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Addresses">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Suburb" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Ubication" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Web" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" />
+          <NavigationProperty Name="Cities" Relationship="Model.R_301" FromRole="Addresses" ToRole="Cities" />
+          <NavigationProperty Name="CompanyAddresses" Relationship="Model.AddressesCompanyAddresses" FromRole="Addresses" ToRole="CompanyAddresses" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="R_301">
+          <End Type="Model.Cities" Role="Cities" Multiplicity="0..1" />
+          <End Type="Model.Addresses" Role="Addresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="Addresses">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductsProductIndexes">
+          <End Type="Model.Products" Role="Products" Multiplicity="1" />
+          <End Type="Model.ProductIndexes" Role="ProductIndexes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ProductIndexes">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IndexesProductIndexes">
+          <End Type="Model.Indexes" Role="Indexes" Multiplicity="1" />
+          <End Type="Model.ProductIndexes" Role="ProductIndexes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Indexes">
+              <PropertyRef Name="IndexId" />
+            </Principal>
+            <Dependent Role="ProductIndexes">
+              <PropertyRef Name="IndexId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CompanyAddresses">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddressId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Addresses" Relationship="Model.AddressesCompanyAddresses" FromRole="CompanyAddresses" ToRole="Addresses" />
+          <NavigationProperty Name="Companies" Relationship="Model.CompaniesCompanyAddresses" FromRole="CompanyAddresses" ToRole="Companies" />
+        </EntityType>
+        <Association Name="AddressesCompanyAddresses">
+          <End Type="Model.Addresses" Role="Addresses" Multiplicity="1" />
+          <End Type="Model.CompanyAddresses" Role="CompanyAddresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="CompanyAddresses">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CompaniesCompanyAddresses">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanyAddresses" Role="CompanyAddresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyAddresses">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="plm_spGetCompaniesByEditionIdByCompanyTypeId_Result">
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="String" Name="CompanyName" Nullable="false" />
+          <Property Type="Byte" Name="CompanyTypeId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="CompanyId1" Nullable="true" />
+          <Property Type="String" Name="CompanyName1" Nullable="true" />
+          <Property Type="Byte" Name="CompanyTypeId1" Nullable="true" />
+          <Property Type="String" Name="Description1" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="EditionCompanySectionAdvers">
+          <Key>
+            <PropertyRef Name="EditionCompanySectionAdverId" />
+          </Key>
+          <Property Name="EditionCompanySectionAdverId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="HiredSpace" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="AdverFile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BaseURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CompanyEditions" Relationship="Model.R_55" FromRole="EditionCompanySectionAdvers" ToRole="CompanyEditions" />
+          <NavigationProperty Name="CompanySections" Relationship="Model.R_56" FromRole="EditionCompanySectionAdvers" ToRole="CompanySections" />
+        </EntityType>
+        <Association Name="R_55">
+          <End Type="Model.CompanyEditions" Role="CompanyEditions" Multiplicity="1" />
+          <End Type="Model.EditionCompanySectionAdvers" Role="EditionCompanySectionAdvers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyEditions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionCompanySectionAdvers">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_56">
+          <End Type="Model.CompanySections" Role="CompanySections" Multiplicity="1" />
+          <End Type="Model.EditionCompanySectionAdvers" Role="EditionCompanySectionAdvers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanySections">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="EditionCompanySectionAdvers">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductEditions" Relationship="Model.R_PE20" FromRole="Status" ToRole="ProductEditions" />
+        </EntityType>
+        <Association Name="R_PE20">
+          <End Type="Model.Status" Role="Status" Multiplicity="1" />
+          <End Type="Model.ProductEditions" Role="ProductEditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="ProductEditions">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="plm_spGetProductsBySectionsByCompaniesByEdition_Result">
+          <Property Type="String" Name="ProductName" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="Description1" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sección" Nullable="true" />
+          <Property Type="String" Name="SubSección" Nullable="true" />
+          <Property Type="String" Name="SubSubSección" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetProductsBySectionsByEdition_Result">
+          <Property Type="String" Name="ProductName" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="Description1" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Sección" Nullable="true" />
+          <Property Type="String" Name="SubSección" Nullable="true" />
+          <Property Type="String" Name="SubSubSección" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetProductsBySectionsByCompaniesByEditionS_Result">
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="ProductName" Nullable="false" />
+          <Property Type="String" Name="ProductTypeDescription" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="StatusDescription" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="true" />
+          <Property Type="String" Name="SubSection" Nullable="true" />
+          <Property Type="String" Name="SubSubSection" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="plm_spGetProductsBySectionsByEditionS_Result">
+          <Property Type="Int32" Name="CompanyId" Nullable="false" />
+          <Property Type="String" Name="CompanyName" Nullable="false" />
+          <Property Type="Int32" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="ProductName" Nullable="false" />
+          <Property Type="String" Name="ProductTypeDescription" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="StatusDescription" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Section" Nullable="true" />
+          <Property Type="String" Name="SubSection" Nullable="true" />
+          <Property Type="String" Name="SubSubSection" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="CompanyDistributions">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="DistributionId" />
+          </Key>
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="DistributionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Companies" Relationship="Model.R_52" FromRole="CompanyDistributions" ToRole="Companies" />
+          <NavigationProperty Name="Companies1" Relationship="Model.R_CD53" FromRole="CompanyDistributions" ToRole="Companies" />
+          <NavigationProperty Name="EditionCompanyDistributions" Relationship="Model.R_62" FromRole="CompanyDistributions" ToRole="EditionCompanyDistributions" />
+        </EntityType>
+        <EntityType Name="EditionCompanyDistributions">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="DistributionId" />
+          </Key>
+          <Property Name="EditionId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="DistributionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompanyDistributions" Relationship="Model.R_62" FromRole="EditionCompanyDistributions" ToRole="CompanyDistributions" />
+          <NavigationProperty Name="CompanyEditions" Relationship="Model.R_ECD54" FromRole="EditionCompanyDistributions" ToRole="CompanyEditions" />
+        </EntityType>
+        <Association Name="R_52">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanyDistributions" Role="CompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_CD53">
+          <End Type="Model.Companies" Role="Companies" Multiplicity="1" />
+          <End Type="Model.CompanyDistributions" Role="CompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Companies">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="CompanyDistributions">
+              <PropertyRef Name="DistributionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_62">
+          <End Type="Model.CompanyDistributions" Role="CompanyDistributions" Multiplicity="1" />
+          <End Type="Model.EditionCompanyDistributions" Role="EditionCompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="DistributionId" />
+            </Principal>
+            <Dependent Role="EditionCompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="DistributionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ECD54">
+          <End Type="Model.CompanyEditions" Role="CompanyEditions" Multiplicity="1" />
+          <End Type="Model.EditionCompanyDistributions" Role="EditionCompanyDistributions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyEditions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="EditionCompanyDistributions">
+              <PropertyRef Name="CompanyId" />
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="plm_spGetCompaniesGropupBy_Result">
+          <Property Type="Int32" Name="CompanyId" Nullable="true" />
+          <Property Type="String" Name="CompanyName" Nullable="false" />
+          <Property Type="String" Name="CompanyShortName" Nullable="true" />
+        </ComplexType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1666,27 +2293,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Companies">
-            <EntityTypeMapping TypeName="Model.Companies">
-              <MappingFragment StoreEntitySet="Companies">
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
-                <ScalarProperty Name="CompanyIdParent" ColumnName="CompanyIdParent" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Suburb" ColumnName="Suburb" />
-                <ScalarProperty Name="Ubication" ColumnName="Ubication" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Web" ColumnName="Web" />
-                <ScalarProperty Name="Contact" ColumnName="Contact" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyShortName" ColumnName="CompanyShortName" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CompanyBrands">
             <EntityTypeMapping TypeName="Model.CompanyBrands">
               <MappingFragment StoreEntitySet="CompanyBrands">
@@ -1699,6 +2305,9 @@
           <EntitySetMapping Name="CompanyEditions">
             <EntityTypeMapping TypeName="Model.CompanyEditions">
               <MappingFragment StoreEntitySet="CompanyEditions">
+                <ScalarProperty Name="CloseClient" ColumnName="CloseClient" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="EditionId" ColumnName="EditionId" />
                 <ScalarProperty Name="HtmlFile" ColumnName="HtmlFile" />
@@ -1778,6 +2387,8 @@
           <EntitySetMapping Name="ProductEditions">
             <EntityTypeMapping TypeName="Model.ProductEditions">
               <MappingFragment StoreEntitySet="ProductEditions">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Page" ColumnName="Page" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="EditionId" ColumnName="EditionId" />
                 <ScalarProperty Name="HtmlFile" ColumnName="HtmlFile" />
@@ -1871,6 +2482,158 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="Model.Companies">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Client_ID" ColumnName="Client_ID" />
+                <ScalarProperty Name="CompanyShortName" ColumnName="CompanyShortName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyIdParent" ColumnName="CompanyIdParent" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="Model.Addresses">
+              <MappingFragment StoreEntitySet="Addresses">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Web" ColumnName="Web" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Ubication" ColumnName="Ubication" />
+                <ScalarProperty Name="Suburb" ColumnName="Suburb" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyAddresses">
+            <EntityTypeMapping TypeName="IsTypeOf(Model.CompanyAddresses)">
+              <MappingFragment StoreEntitySet="CompanyAddresses">
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetCompaniesByEditionIdByCompanyTypeId" FunctionName="Model.Store.plm_spGetCompaniesByEditionIdByCompanyTypeId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.plm_spGetCompaniesByEditionIdByCompanyTypeId_Result">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CompanyId1" ColumnName="CompanyId1" />
+                <ScalarProperty Name="CompanyName1" ColumnName="CompanyName1" />
+                <ScalarProperty Name="CompanyTypeId1" ColumnName="CompanyTypeId1" />
+                <ScalarProperty Name="Description1" ColumnName="Description1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="EditionCompanySectionAdvers">
+            <EntityTypeMapping TypeName="Model.EditionCompanySectionAdvers">
+              <MappingFragment StoreEntitySet="EditionCompanySectionAdvers">
+                <ScalarProperty Name="BaseURL" ColumnName="BaseURL" />
+                <ScalarProperty Name="AdverFile" ColumnName="AdverFile" />
+                <ScalarProperty Name="HiredSpace" ColumnName="HiredSpace" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+                <ScalarProperty Name="EditionCompanySectionAdverId" ColumnName="EditionCompanySectionAdverId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="Model.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetProductsBySectionsByCompaniesByEdition" FunctionName="Model.Store.plm_spGetProductsBySectionsByCompaniesByEdition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.plm_spGetProductsBySectionsByCompaniesByEdition_Result">
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Description1" ColumnName="Description1" />
+                <ScalarProperty Name="Sección" ColumnName="Sección" />
+                <ScalarProperty Name="SubSección" ColumnName="SubSección" />
+                <ScalarProperty Name="SubSubSección" ColumnName="SubSubSección" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetProductsBySectionsByEdition" FunctionName="Model.Store.plm_spGetProductsBySectionsByEdition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.plm_spGetProductsBySectionsByEdition_Result">
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Description1" ColumnName="Description1" />
+                <ScalarProperty Name="Sección" ColumnName="Sección" />
+                <ScalarProperty Name="SubSección" ColumnName="SubSección" />
+                <ScalarProperty Name="SubSubSección" ColumnName="SubSubSección" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetProductsBySectionsByCompaniesByEditionS" FunctionName="Model.Store.plm_spGetProductsBySectionsByCompaniesByEditionS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.plm_spGetProductsBySectionsByCompaniesByEditionS_Result">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductTypeDescription" ColumnName="ProductTypeDescription" />
+                <ScalarProperty Name="StatusDescription" ColumnName="StatusDescription" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="SubSection" ColumnName="SubSection" />
+                <ScalarProperty Name="SubSubSection" ColumnName="SubSubSection" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetProductsBySectionsByEditionS" FunctionName="Model.Store.plm_spGetProductsBySectionsByEditionS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.plm_spGetProductsBySectionsByEditionS_Result">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductTypeDescription" ColumnName="ProductTypeDescription" />
+                <ScalarProperty Name="StatusDescription" ColumnName="StatusDescription" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="SubSection" ColumnName="SubSection" />
+                <ScalarProperty Name="SubSubSection" ColumnName="SubSubSection" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CompanyDistributions">
+            <EntityTypeMapping TypeName="Model.CompanyDistributions">
+              <MappingFragment StoreEntitySet="CompanyDistributions">
+                <ScalarProperty Name="DistributionId" ColumnName="DistributionId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EditionCompanyDistributions">
+            <EntityTypeMapping TypeName="Model.EditionCompanyDistributions">
+              <MappingFragment StoreEntitySet="EditionCompanyDistributions">
+                <ScalarProperty Name="DistributionId" ColumnName="DistributionId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="plm_spGetCompaniesGropupBy" FunctionName="Model.Store.plm_spGetCompaniesGropupBy">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.plm_spGetCompaniesGropupBy_Result">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyShortName" ColumnName="CompanyShortName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="plm_spInsertLabsByLastEditions" FunctionName="Model.Store.plm_spInsertLabsByLastEditions" />
+          <FunctionImportMapping FunctionImportName="plm_spInsertLastInformationByEditionClient" FunctionName="Model.Store.plm_spInsertLastInformationByEditionClient" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,0 +1,590 @@
+﻿<link href="~/Styles/Ventas_Productos.css" rel="stylesheet" />
+@{
+    SessionCompanyEditions _Session1 = (SessionCompanyEditions)Session["SessionCompanyEditions"];
+}
+@{
+    SessionEditionId pp = (SessionEditionId)Session["SessionEditionId"];
+}
+<script src="~/Scripts/DistributionScripts.js"></script>
+@model PagedList.IPagedList<Web.Models.plm_spGetCompaniesGropupBy_Result>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Distribuidores";
+    PLMUsers plm = new PLMUsers();
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default3 navbar-default btn-nav ribbon Estilo3"> Ventas</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left"> @ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Tipo de cliente:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["TipoCliente"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo7 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav">
+                    <li><a class="carga" href="/Ventas/Clientes/@ViewData["Number"]/@ViewData["CompanyId"]/@_Session1._CompanyTypeId"><strong class="Estilo6 btn-nav">Cliente: @ViewData["CompanyName"] <span class="sr-only">(current)</span></strong> </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo4 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <a href="/FiltroVentas/Pais" class="btn navbar-brand  carga" title="Inicio">
+                    <i class="glyphicon glyphicon-home Estilo8"></i>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="CaracterEdiciones" type="text" class="form-control btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @{
+                                var _EditionSelected = (from _e in db.Editions
+                                                        select _e).ToList();
+                                foreach (var a in _EditionSelected)
+                                {
+                                    <li class="ListaEdiciones"><a class="carga" href="/Ventas/Distribuidores/@a.EditionId/@_Session1.ed/@_Session1._CompanyTypeId">@a.NumberEdition</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown  navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clientes<span class="caret"></span></a>
+                        <ul class="dropdown-menu v" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="Caracter" type="text" class="form-control btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @{
+                                var _storeprocedure = db.Database.SqlQuery<plm_spGetCompaniesByEditionIdByCompanyTypeId_Result>
+                                    ("plm_spGetCompaniesByEditionIdByCompanyTypeId @EditionId=" + _Session1.id + ", @CompanyTypeId=" + _Session1._CompanyTypeId + "").ToList();
+                            }
+                            @foreach (var a in _storeprocedure)
+                            {
+                                <li class="ListaClientes"><a class="carga" href="/Ventas/Distribuidores/@ViewData["Number"]/@a.CompanyId/@a.CompanyTypeId">@a.CompanyName</a></li>
+                            }
+                        </ul>
+                    </li>
+                    <li><a class="carga" href="/Ventas/Marcas/@ViewData["Number"]/@ViewData["CompanyId"]/@_Session1._CompanyTypeId">Marcas <span class="sr-only">(current)</span></a></li>
+                    <li><a class="carga" href="/Ventas/Productos/@ViewData["Number"]/@ViewData["CompanyId"]/@_Session1._CompanyTypeId">Productos <span class="sr-only">(current)</span></a></li>
+                    <li class="dropdown navbar-default active">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Distribuidores<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a data-toggle="modal" data-target="#DistribuidoresEdición"><span></span>Distribuidores asociados al cliente en la edición <strong class="Estilo6">@ViewData["Edición"]</strong></a></li>
+                            <li><a data-toggle="modal" data-target="#DistribuidoresTotales"><span></span>Distribuidores asociados al cliente</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left Estilo4" role="search">
+                    <div class="form-group  Estilo4">
+                        @Html.TextBox("palabra", null, new { @class = "form-control btn-nav" })
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Buscar">
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand " title="Anterior" onclick="history.back();">
+                            <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                        </a>
+                    </li>
+                    @{
+                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                        var _RolesA = (from _us in plm.Users
+                                       join _ap in plm.ApplicationUsers
+                                       on _us.UserId equals _ap.UserId
+                                       join _r in plm.Roles
+                                       on _ap.RoleId equals _r.RoleId
+                                       where _us.UserId == p.userId
+                                       select _r);
+                        if (_RolesA.FirstOrDefault().Description == "Administrador")
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon glyphiconr glyphicon-ruble Estilo8"></span> Producción <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="carga" href="/Producción/Distribuidores/@_Session1.id/@_Session1.ed/@_Session1._CompanyTypeId"><span class="glyphicon glyphicon glyphiconr glyphicon-share-alt"></span>Módulo de producción</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="blockscreen" id="cargando">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/ldd.gif">
+    </div>
+</div>
+<div class="blockscreen" id="cargandoTiempo">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/Timer.gif">
+    </div>
+</div>
+
+@{
+    var _CompanyClose = (from _ce in db.CompanyEditions
+                         where _ce.CompanyId == _Session1.ed
+                         && _ce.EditionId == _Session1.id
+                         select _ce).ToList();
+    if (_CompanyClose.LongCount() == 0)
+    {
+        <div align="center" class="container center col-lg-10 Estilo7">
+            <input type="hidden" id="_Edition_Client_Participant" value="@_Session1.id" />
+            <input type="hidden" id="_Client_Participant" value="@_Session1.ed" />
+            <input type="hidden" id="_Client_Type_Participant" value="@_Session1._CompanyTypeId" />
+            El cliente <strong class="Estilo6">@ViewData["CompanyName"]</strong> aún no participa en la edición <strong class="Estilo6">@ViewData["Edición"],</strong> si quiere que sea participante en la edición de click <a class="Cliente_Participante">aqui</a>
+        </div>
+    }
+    foreach (var Close in _CompanyClose)
+    {
+        if (Close.CloseClient == false)
+        {
+            <div align="center" class="container center col-lg-10 Estilo7">
+                El cliente <strong class="Estilo6">@ViewData["CompanyName"]</strong> ya esta cerrado para la edición <strong class="Estilo6">@ViewData["Edición"].</strong>
+            </div>
+        }
+        else
+        {
+            <div class="container center col-lg-10">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default2 navbar-default  btn-nav ribbon Estilo7">Distribuidores</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td class="warning Estilo4" align="center">
+                <div>
+                    <div align="left">Nombre del distribuidor</div>
+                </div>
+            </td>
+            <td class="warning Estilo4" align="center">
+                <div>
+                    <div align="left">Nombre corto del distribuidor</div>
+                </div>
+            </td>
+            <td class="warning Estilo4" align="center">
+                <div>
+                    <div align="center">Participante</div>
+                </div>
+            </td>
+            <td class="warning Estilo4" align="center">
+                <div>
+                    <div align="center">Ediciones</div>
+                </div>
+            </td>
+        </tr>
+        @foreach (var c in Model)
+        {
+            var _Identificador = c.CompanyId + 100000;
+            <tr>
+                <td class="Estilo2 btn-nav">
+                    @c.CompanyName
+                </td>
+                <td class="Estilo2 btn-nav">
+                    @Html.DisplayFor(modelItem => c.CompanyShortName)
+                </td>
+                <td align="center" class="Estilo2 btn-nav">
+                    @{
+            var _ValueDistributionEditions = (from _cd in db.EditionCompanyDistributions
+                                              where _cd.CompanyId == _Session1.ed
+                                              && _cd.EditionId == _Session1.id
+                                              select _cd).ToList();
+            bool _DistributorCheck = false;
+            foreach (EditionCompanyDistributions _DistributionEditions in _ValueDistributionEditions)
+            {
+                if (_DistributionEditions.DistributionId == c.CompanyId)
+                {
+                    _DistributorCheck = true;
+                }
+            }
+                    }
+                    Edición @ViewData["Edición"]
+                    <input hidden id="_EditionId" value="@_Session1.id"/>
+                    <input hidden id="_CompanyId" value="@_Session1.ed"/>
+                    <input type="checkbox" id="@c.CompanyId" value="@c.CompanyId" name="Distribuidor_Participante" class="Distribuidor_Participante" checked="@_DistributorCheck">
+                </td>
+                <td>
+                    <div align="center">
+                        <a class="btn btn-default navbar-default loading btn-nav" data-toggle="modal" data-target="#@_Identificador" title="Ediciónes">
+                            <i class="glyphicon glyphicon-indent-right"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div align="center" class="Estilo4 btn-nav">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    <div align="center" class="Estilo4">
+        @Html.PagedListPager(Model, page => Url.Action("Distribuidores",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+</div>
+<div class="container">
+    @{
+        foreach (var c in Model)
+        {
+            var _Identificador = c.CompanyId + 100000;
+            <div class="modal modal-message modal-success fade " id="@_Identificador" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="text-danger">×</span><span class="sr-only">Close</span></button>
+                        <div class="modal-body1 Estilo2x">
+                            <br />
+                            <div>
+                                <div class="panel panel-warning">
+                                    <div class="panel-body">
+                                        <div>
+                                            <div class="modal-header Estilo7 btn-nav" align="center">
+                                                <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Ediciones en donde ha participado el distribuidor con el cliente</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div>
+                                                        <br />
+                                                        <table class="table table-hover table-bordered">
+                                                            <tr>
+                                                                <td width="200" align="center" class="Estilo4 btn-nav warning">
+                                                                    <div>
+                                                                        <div align="right">  Nombre del cliente: </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="Estilo4 btn-nav">
+                                                                    <div>
+                                                                        <div align="left">@ViewData["CompanyName"]</div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="modal-body1">
+                                                            <ul class="timeline">
+                                                                @{
+            var _CompanyEditionsDistribut = (from _ced in db.EditionCompanyDistributions
+                                             where _ced.DistributionId == c.CompanyId
+                                             select _ced).ToList();
+            if (_CompanyEditionsDistribut.LongCount() == 0)
+            {
+                                 <li class="timeline-inverted">
+                    <div class="timeline-panel">
+                        <div align="left" class="Estilo4 btn-nav modal-body"> @c.CompanyName <strong class="Red">no ha participado en ninguna edición con el cliente</strong> <strong class="Estilo6"> </strong></div>
+                    </div>
+                </li>
+            }
+            else
+            {
+                         foreach (var s in _CompanyEditionsDistribut)
+            {
+                <li class="timeline-inverted">
+                    <div class="timeline-panel">
+                        <div align="left" class="Estilo4 btn-nav modal-body"> DEACI <strong class="Estilo6"> @s.CompanyEditions.Editions.NumberEdition </strong></div>
+                        <div align="left" class="Estilo4 btn-nav modal-body">
+                            @{
+                var _Companies = (from _c in db.Companies
+                                  where _c.CompanyId == s.DistributionId
+                                  select _c).ToList();
+                foreach (var a in _Companies)
+                {
+                    @a.CompanyName
+                }
+                            }
+                        </div>
+                    </div>
+                </li>
+            }    
+            }
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <button1 class="Estilo2x btn btn-danger" data-dismiss="modal">Cerrar</button1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="container">
+    @{
+        <div class="modal modal-message modal-success fade " id="DistribuidoresEdición" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="text-danger">×</span><span class="sr-only">Close</span></button>
+                    <div class="modal-body1 Estilo2x">
+                        <br />
+                        <div>
+                            <div class="panel panel-warning">
+                                <div class="panel-body">
+                                    <div>
+                                        <div class="modal-header Estilo7 btn-nav" align="center">
+                                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Distrobuidores asociados al cliente</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div>
+                                                    <br />
+                                                    <table class="table table-hover table-bordered">
+                                                        <tr>
+                                                            <td width="200" align="center" class="Estilo4 btn-nav warning">
+                                                                <div>
+                                                                    <div align="right">  Nombre del cliente: </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Estilo4 btn-nav">
+                                                                <div>
+                                                                    <div align="left">@ViewData["CompanyName"]</div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <div class="modal-body1">
+                                                        <ul class="timeline">
+                                                            @{
+        var _CompanyEditionsDistributions = (from _ced in db.EditionCompanyDistributions
+                                         where _ced.CompanyId == _Session1.ed
+                                         && _ced.EditionId == _Session1.id
+                                         select _ced).ToList();
+        if (_CompanyEditionsDistributions.LongCount() == 0)
+        {
+            <li class="timeline-inverted">
+                <div class="timeline-panel">
+                    <div align="left" class="Estilo4 btn-nav modal-body"> No hay distribuidores asociados al cliente para ésta edición<strong class="Estilo6"> </strong></div>
+                </div>
+            </li>
+        }
+        else
+        {
+            foreach (var s in _CompanyEditionsDistributions)
+            {
+                <li class="timeline-inverted">
+                    <div class="timeline-panel">
+                        <div align="left" class="Estilo4 btn-nav modal-body"> DEACI <strong class="Estilo6"> @s.CompanyEditions.Editions.NumberEdition </strong></div>
+                        <div align="left" class="Estilo4 btn-nav modal-body">
+                            @{
+                var _Companies = (from _c in db.Companies
+                                  where _c.CompanyId == s.DistributionId
+                                  select _c).ToList();
+                foreach (var a in _Companies)
+                {
+                    @a.CompanyName
+                }
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <button1 class="Estilo2x btn btn-danger" data-dismiss="modal">Cerrar</button1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+</div>
+<div class="container">
+    @{
+            <div class="modal modal-message modal-success fade " id="DistribuidoresTotales" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="text-danger">×</span><span class="sr-only">Close</span></button>
+                        <div class="modal-body1 Estilo2x">
+                            <br />
+                            <div>
+                                <div class="panel panel-warning">
+                                    <div class="panel-body">
+                                        <div>
+                                            <div class="modal-header Estilo7 btn-nav" align="center">
+                                                <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Distribuidores asociados al cliente</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div>
+                                                        <br />
+                                                        <table class="table table-hover table-bordered">
+                                                            <tr>
+                                                                <td width="200" align="center" class="Estilo4 btn-nav warning">
+                                                                    <div>
+                                                                        <div align="right">  Nombre del cliente: </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="Estilo4 btn-nav">
+                                                                    <div>
+                                                                        <div align="left">@ViewData["CompanyName"]</div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="modal-body1">
+                                                            <ul class="timeline">
+                                                                @{
+            var _DistributionCompanies = (from _ced in db.CompanyDistributions
+                                             where _ced.CompanyId == _Session1.ed
+                                             select _ced).ToList();
+            if (_DistributionCompanies.LongCount() == 0)
+            {
+                <li class="timeline-inverted">
+                    <div class="timeline-panel">
+                        <div align="left" class="Estilo4 btn-nav modal-body"> No hay distribuidores asociados al cliente<strong class="Estilo6"> </strong></div>
+                    </div>
+                </li>
+            }
+            else
+            {
+                foreach (var s in _DistributionCompanies)
+                {
+                    <li class="timeline-inverted">
+                        <div class="timeline-panel">
+                            <div align="left" class="Estilo4 btn-nav modal-body">
+                                @{
+                    var _Companies = (from _c in db.Companies
+                                      where _c.CompanyId == s.DistributionId
+                                      select _c).ToList();
+                    foreach (var a in _Companies)
+                    {
+                        @a.CompanyName
+                    }
+                                }
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <button1 class="Estilo2x btn btn-danger" data-dismiss="modal">Cerrar</button1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+</div>
+        }
+    }
+}

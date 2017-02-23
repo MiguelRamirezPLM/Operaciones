@@ -19,7 +19,7 @@ namespace Web.Models
         public int EditionId { get; set; }
     
         public virtual Advertisements Advertisements { get; set; }
-        public virtual Companies Companies { get; set; }
         public virtual Editions Editions { get; set; }
+        public virtual Companies Companies { get; set; }
     }
 }

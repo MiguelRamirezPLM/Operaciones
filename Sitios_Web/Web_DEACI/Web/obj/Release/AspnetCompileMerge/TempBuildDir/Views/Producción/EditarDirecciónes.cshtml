@@ -1,0 +1,243 @@
+﻿<script>
+    $(document).ready(function () {
+        $("._ModificarDirecciones").click(function () {
+            var _CompanyIdEdit = $("#_CompanyIdEdit").val();
+            var _AddressNameEdit = $("#_AddressNameEdit").val();
+            var _AddressIdEdit = $("#_AddressIdEdit").val();
+            var _SuburbEdit = $("#_SuburbEdit").val();
+            var _UbicationEdit = $("#_UbicationEdit").val();
+            var _ZipCodeEdit = $("#_ZipCodeEdit").val();
+            var _EmailEdit = $("#_EmailEdit").val();
+            var _WebEdit = $("#_WebEdit").val();
+            var _ContactEdit = $("#_ContactEdit").val();
+            var _CityIdEdit = $("#_EditCityId").val();
+            var _LocationEdit = $("#_LocationEdit").val();
+            if (_AddressNameEdit.trim() == false) {
+                swal("¡Atención!", "¡El campo 'Dirección' no puede quedar vacio!", "error");
+            }
+            else
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Ventas/EditarDirección",
+                    traditional: true,
+                    data: {
+                        CompanyId: _CompanyIdEdit, AddressId: _AddressIdEdit, Address: _AddressNameEdit, Suburb: _SuburbEdit, Ubication: _UbicationEdit,
+                        ZipCode: _ZipCodeEdit, Email: _EmailEdit, Web: _WebEdit, Contact: _ContactEdit, CityId: _CityIdEdit, Location: _LocationEdit
+                    },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Cambios guardados!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                    }
+                });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("._EstadoSeleccionado").change(function () {
+            var _StateId = $("#_EditStateId").val();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Ventas/ObtenerCiudades",
+                traditional: true,
+                data: { id: _StateId },
+                success: function (data) {
+                    $("#_EditCityId").empty();
+                    $("#_EditCityId")
+                       .append($("<option></option>")
+                       .attr("value", 0)
+                       .text("Seleccione..."));
+                    $.each(data, function (index, val) {
+                        $("#_EditCityId")
+                        .append($("<option></option>")
+                        .attr("value", val.CityId)
+                        .text(val.Name));
+                    });
+                }
+            })
+        });
+    });
+</script>
+@model IEnumerable<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+@using (Html.BeginForm())
+{
+    foreach (var a in Model)
+    {
+        <div class="modal-body1 Estilo2x">
+            <br />
+            <div>
+                <div class="panel panel-warning">
+                    <div class="panel-body">
+                        <div>
+                            <div class="modal-header Estilo7 btn-nav" align="center">
+                                <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Editar direcciones</h1>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div>
+                                        <br />
+                                        <div class="modal-body1">
+                                            <br />
+                                            <div class="Nota btn-nav" align="right">
+                                                Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                                <br />
+                                            </div>
+                                            <div class="Nota btn-nav">
+                                                <div class="Nota btn-nav" align="left">
+                                                    Dirección <strong class="Red">*</strong>
+                                                    <br />
+                                                </div>
+                                                <input type="hidden" id="_AddressIdEdit" value="@a.Addresses.AddressId" />
+                                                <input type="hidden" id="_CompanyIdEdit" value="@a.Companies.CompanyId" />
+                                                <input class="form-control" type="text" id="_AddressNameEdit" value="@a.Addresses.Address" />
+                                            </div>
+                                            <div class="Nota btn-nav">
+                                                <div class="Nota btn-nav" align="left">
+                                                    Suburbio
+                                                    <br />
+                                                </div>
+                                                <input class="form-control" type="text" id="_SuburbEdit" value="@a.Addresses.Suburb" />
+                                            </div>
+                                            <div class="Nota btn-nav">
+                                                <div class="Nota btn-nav" align="left">
+                                                    Delegación
+                                                    <br />
+                                                </div>
+                                                <input class="form-control" type="text" id="_LocationEdit" value="@a.Addresses.Location" />
+                                            </div>
+                                            <div class="Nota">
+                                                <div class="Nota btn-nav" align="left">
+                                                    Ubicación
+                                                    <br />
+                                                </div>
+                                                <input class="form-control" type="text" id="_UbicationEdit" value="@a.Addresses.Ubication" />
+                                                <div class="Nota btn-nav">
+                                                    <div class="Nota btn-nav" align="left">
+                                                        Código postal
+                                                        <br />
+                                                    </div>
+                                                    <input class="form-control" type="text" id="_ZipCodeEdit" value="@a.Addresses.ZipCode" />
+                                                </div>
+                                                <div class="Nota btn-nav">
+                                                    <div class="Nota btn-nav" align="left">
+                                                        Email
+                                                        <br />
+                                                    </div>
+                                                    <input class="form-control" type="text" id="_EmailEdit" value="@a.Addresses.Email" />
+                                                </div>
+                                                <div class="Nota btn-nav">
+                                                    <div class="Nota btn-nav" align="left">
+                                                        Web
+                                                        <br />
+                                                    </div>
+                                                    <input class="form-control" type="text" id="_WebEdit" value="@a.Addresses.Web" />
+                                                </div>
+                                                <div class="Nota btn-nav">
+                                                    <div class="Nota btn-nav" align="left">
+                                                        Contacto
+                                                        <br />
+                                                    </div>
+                                                    <input class="form-control" type="text" id="_ContactEdit" value="@a.Addresses.Contact" />
+                                                </div>
+                                                <div align="left" class="Estilo7x btn-nav">
+                                                    Estado:
+                                                    <select id="_EditStateId" class="form-control _EstadoSeleccionado Estilo2">
+                                                        <option value="@null">Seleccione...</option>
+                                                        @{
+        var Ciudades = (from _c in db.Cities
+                        join _s in db.States
+                        on _c.StateId equals _s.StateId
+                        where _c.CityId == a.Addresses.CityId
+                        select new { _s, _c }).ToList();
+        States _Estados = new States();
+        Cities _Ciudades = new Cities();
+        foreach (var r in Ciudades)
+        {
+            if (r._c.CityId == null)
+            {
+                _Ciudades.CityId = int.Parse(null);
+            }
+            else
+            {
+                _Ciudades.CityId = r._c.CityId;
+            }
+        }
+        foreach (var rr in Ciudades)
+        {
+            if (rr._s.StateId == null)
+            {
+                _Estados.StateId = int.Parse(null);
+            }
+            else
+            {
+                _Estados.StateId = rr._s.StateId;
+            }
+        }
+        var _States = (from _s in db.States
+                       orderby _s.Name
+                       select _s).ToList();
+        foreach (var t in _States)
+        {
+            if (t.StateId == _Estados.StateId)
+            {
+                                                <option selected="selected" value="@t.StateId">@t.Name</option>
+            }
+            else
+            {
+                                                <option value="@t.StateId">@t.Name</option>
+            }
+        }
+                                                        }
+                                                    </select>
+                                                </div>
+                                                <div align="left" class="Estilo7x btn-nav">
+                                                    Ciudad:
+                                                    <select id="_EditCityId" class="form-control Estilo2">
+                                                        <option value="@null">Seleccione...</option>
+                                                        @{
+        var _Cities = (from _ct in db.Cities
+                       orderby _ct.Name
+                       select _ct).ToList();
+        foreach (var t in _Cities)
+        {
+            if (t.CityId == _Ciudades.CityId)
+            {
+                                                <option selected="selected" value="@t.CityId">@t.Name</option>
+            }
+            else
+            {
+                                                <option value="@t.CityId">@t.Name</option>
+            }
+        }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="button" value="Guardar" class="btn btn-success _ModificarDirecciones" />
+                            <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav" data-dismiss="modal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    }
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

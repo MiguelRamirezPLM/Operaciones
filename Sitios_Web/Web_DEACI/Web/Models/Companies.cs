@@ -24,21 +24,15 @@ namespace Web.Models
             this.Products = new HashSet<Products>();
             this.Companies1 = new HashSet<Companies>();
             this.CompanyPhones = new HashSet<CompanyPhones>();
+            this.CompanyAddresses = new HashSet<CompanyAddresses>();
+            this.CompanyDistributions = new HashSet<CompanyDistributions>();
+            this.CompanyDistributions1 = new HashSet<CompanyDistributions>();
         }
     
         public int CompanyId { get; set; }
-        public byte CompanyTypeId { get; set; }
         public Nullable<int> CompanyIdParent { get; set; }
-        public string Address { get; set; }
-        public string Suburb { get; set; }
-        public string Ubication { get; set; }
-        public string PostalCode { get; set; }
-        public string Email { get; set; }
-        public string Web { get; set; }
-        public string Contact { get; set; }
         public string CompanyName { get; set; }
         public string CompanyShortName { get; set; }
-        public Nullable<int> CityId { get; set; }
         public Nullable<int> Client_ID { get; set; }
         public bool Active { get; set; }
     
@@ -52,11 +46,16 @@ namespace Web.Models
         public virtual ICollection<CompanySections> CompanySections { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Products> Products { get; set; }
-        public virtual CompanyTypes CompanyTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Companies> Companies1 { get; set; }
         public virtual Companies Companies2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyPhones> CompanyPhones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyAddresses> CompanyAddresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyDistributions> CompanyDistributions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyDistributions> CompanyDistributions1 { get; set; }
     }
 }

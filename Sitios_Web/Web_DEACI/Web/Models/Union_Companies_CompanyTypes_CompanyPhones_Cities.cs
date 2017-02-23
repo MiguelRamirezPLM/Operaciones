@@ -29,8 +29,14 @@ namespace Web.Models
         public ProductEditions ProductEditions { get; set; }
         public CompanyBrandEditions CompanyBrandEditions { get; set; }
         public PhoneTypes PhoneTypes { get; set; }
-
-
+        public Books Books { get; set; }
+        public Advertisements Advertisements { get; set; }
+        public AdvertisementEditions AdvertisementEditions { get; set; }
+        public CompanyAddresses CompanyAddress { get; set; }
+        public EditionCompanySectionAdvers EditionCompanySectionAdvers { get; set; }
+        public Addresses Addresses { get; set; }
+        public CompanyDistributions CompanyDistributions { get; set; }
+        public EditionCompanyDistributions EditionCompanyDistributions { get; set; }
         public List<Companies> Listar()
         {
             var companies = new List<Companies>();

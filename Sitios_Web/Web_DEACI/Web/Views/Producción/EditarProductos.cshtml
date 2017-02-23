@@ -1,0 +1,237 @@
+﻿<script>
+    $(document).ready(function () {
+        $("._EditarProducto").click(function () {
+            var _ProductIdEdit = $("#_ProductIdEdit").val();
+            var _CompanyIdEdit = $("#_CompanyIdEdit").val();
+            var _ProductNameEdit = $("#_ProductNameEdit").val();
+            var _ProductIdParentEdit = $("#_ProductIdParentEdit").val();
+            var _DescriptionEdit = $("#_DescriptionEdit").val();
+            var _ProductTypeIdEdit = $("#_ProductTypeIdEdit").val();
+            if (_ProductTypeIdEdit.trim() == "AGREGADO") {
+                if (_ProductIdParentEdit == "Seleccione...") {
+                    swal("¡Atención!", "¡El campo 'Producto asociado' no puede quedar vacio!", "error");
+                }
+                else if (_ProductNameEdit.trim() == false && _ProductTypeIdEdit == "") {
+                    swal("¡Atención!", "¡Los campos marcados con * son obligatorios!", "error");
+                }
+                else if (_ProductTypeIdEdit == "") {
+                    swal("¡Atención!", "¡El campo tipo de producto no puede quedar vacio!", "error");
+                }
+                else if (_ProductNameEdit.trim() == false) {
+                    swal("¡Atención!", "¡El campo nombre del producto no puede quedar vacio!", "error");
+                }
+                else if (_ProductNameEdit.trim() != false && _ProductTypeIdEdit != "") {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/Ventas/EditarProducto",
+                        traditional: true,
+                        data: { CompanyId: _CompanyIdEdit, ProductId: _ProductIdEdit, ProductName: _ProductNameEdit, ProductTypeId: _ProductTypeIdEdit, Description: _DescriptionEdit, ProductIdParent: _ProductIdParentEdit },
+                        success: function (data) {
+                            if (data == true) {
+                                swal("¡Cambios guardados!", "", "success")
+                                setTimeout(function () { location.reload(1); }, 300);
+                            }
+                            else {
+                                swal("¡Atención!", "¡El producto ingresado ya existe!", "error");
+                            }
+                        }
+                    });
+                }
+            }
+            else if (_ProductNameEdit.trim() == false && _ProductTypeIdEdit == "") {
+                swal("¡Atención!", "¡Los campos marcados con * son obligatorios!", "error");
+            }
+            else if (_ProductTypeIdEdit == "") {
+                swal("¡Atención!", "¡El campo tipo de producto no puede quedar vacio!", "error");
+            }
+            else if (_ProductNameEdit.trim() == false) {
+                swal("¡Atención!", "¡El campo nombre del producto no puede quedar vacio!", "error");
+            }
+            else if (_ProductNameEdit.trim() != false && _ProductTypeIdEdit != "") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Ventas/EditarProducto",
+                    traditional: true,
+                    data: { CompanyId: _CompanyIdEdit, ProductId: _ProductIdEdit, ProductName: _ProductNameEdit, ProductTypeId: _ProductTypeIdEdit, Description: _DescriptionEdit, ProductIdParent: _ProductIdParentEdit },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Cambios guardados!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            swal("¡Atención!", "¡El producto ingresado ya existe!", "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@{
+    SessionEditionId _Session = (SessionEditionId)Session["SessionEditionId"];
+}
+@model IEnumerable<Web.Models.Products>
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+@using (Html.BeginForm())
+{
+    foreach (var a in Model)
+    {
+        if (a.ProductTypes.Description == "AGREGADO")
+        {
+            <script>
+                $(document).ready(function () {
+                    $("#_ProductParent").show();
+                });
+            </script>
+        }
+        else
+        {
+            <script>
+                $(document).ready(function () {
+                    $("#_ProductParent").hide();
+                });
+            </script>
+        }
+    }
+    <script>
+        $(document).ready(function () {
+            $("._TipodeProducto").click(function () {
+                var _ProducTypeId = $("#_ProductTypeIdEdit").val();
+                if (_ProducTypeId.trim() == "AGREGADO") {
+                    $("#_ProductParent").show();
+                }
+                else {
+                    $("#_ProductParent").hide();
+                }
+            });
+        });
+    </script>
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Editar producto</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <br />
+                                        <div class="Nota btn-nav" align="right">
+                                            Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                            <br />
+                                        </div>
+                                        <div class="Nota btn-nav">
+                                            <div class="Nota btn-nav" align="left">
+                                                Nombre del producto: <strong class="Red">*</strong>
+                                                <br />
+                                            </div>
+                                            <input type="hidden" id="_ProductIdEdit" value="@Model.SingleOrDefault().ProductId" />
+                                            <input type="hidden" id="_CompanyIdEdit" value="@Model.SingleOrDefault().CompanyId" />
+                                            <input class="form-control btn-nav" type="text" id="_ProductNameEdit" value="@Model.SingleOrDefault().ProductName" />
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav">
+                                            <div class="Nota btn-nav" align="left">
+                                                Descripción:
+                                                <br />
+                                            </div>
+                                            <input class="form-control btn-nav" type="text" id="_DescriptionEdit" value="@Model.SingleOrDefault().Description" />
+                                        </div>
+                                        <br />
+                                        <div>
+                                            <div class="Nota btn-nav" align="left">
+                                                Tipo de producto: <strong class="Red">*</strong>
+                                                <select id="_ProductTypeIdEdit" class="form-control _TipodeProducto">
+                                                    <option value="@null">Seleccione...</option>
+                                                    @{
+    foreach (var a in Model)
+    {
+        var _ProductType = (from _pt in db.ProductTypes
+                            where _pt.Description != "MARCA"
+                            select _pt).ToList();
+        foreach (var aa in _ProductType)
+        {
+            if (aa.ProductTypeId == a.ProductTypeId)
+            {
+                <option value="@aa.Description" selected>@aa.Description</option>
+            }
+            else
+            {
+                <option value="@aa.Description">@aa.Description</option>
+            }
+        }
+    }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <br />
+                                            <div class="Nota btn-nav" id="_ProductParent" align="left">
+                                                Producto asociado: <strong class="Red">*</strong>
+                                                <select id="_ProductIdParentEdit" class="form-control">
+                                                    <option value="@null">Seleccione...</option>
+                                                    @foreach (var a in Model)
+                                                    {
+                                                        var _ProductParents = (from _p in db.Products
+                                                                               join _pt in db.ProductTypes
+                                                                               on _p.ProductTypeId equals _pt.ProductTypeId
+                                                                               where _pt.Description != "(PRODUCTO) en TERCERA"
+                                                                               && _pt.Description != "AGREGADO"
+                                                                               && _pt.Description != "PRODUCTO (TEXTO EDITORIAL)"
+                                                                               && _pt.Description != "MARCA"
+                                                                               && _p.CompanyId == a.CompanyId
+                                                                               select new { _p, _pt }).ToList();
+                                                        foreach (var _pa in _ProductParents)
+                                                        {
+                                                            if (a.ProductIdParent == _pa._p.ProductId)
+                                                            {
+                                                                <option value="@_pa._p.ProductId" selected>@_pa._p.ProductName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                var _ProductEditions = (from _pe in db.ProductEditions
+                                                                                        join _p in db.Products
+                                                                                        on _pe.ProductId equals _p.ProductId
+                                                                                        where _pe.ProductId == _pa._p.ProductId
+                                                                                        && _pe.EditionId == _Session.id
+                                                                                        select _p).ToList();
+                                                                foreach (var _ppp in _ProductEditions)
+                                                                {
+                                                                    <option value="@_ppp.ProductId">@_ppp.ProductName</option>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" value="Guardar" class="btn btn-success _EditarProducto" />
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

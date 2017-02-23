@@ -11,15 +11,34 @@ namespace Web.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class CompanyEditions
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CompanyEditions()
+        {
+            this.EditionCompanySectionAdvers = new HashSet<EditionCompanySectionAdvers>();
+            this.EditionCompanyDistributions = new HashSet<EditionCompanyDistributions>();
+        }
+    
         public int CompanyId { get; set; }
         public int EditionId { get; set; }
         public string HtmlFile { get; set; }
         public string HtmlContent { get; set; }
+        public byte CompanyTypeId { get; set; }
+        public string Page { get; set; }
+        public bool CloseClient { get; set; }
+        public HttpPostedFileBase File { get; set; }
     
-        public virtual Companies Companies { get; set; }
         public virtual Editions Editions { get; set; }
+        public virtual CompanyTypes CompanyTypes { get; set; }
+        public virtual Companies Companies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EditionCompanySectionAdvers> EditionCompanySectionAdvers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EditionCompanyDistributions> EditionCompanyDistributions { get; set; }
     }
 }

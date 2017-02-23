@@ -17,7 +17,7 @@ namespace Web.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompanyTypes()
         {
-            this.Companies = new HashSet<Companies>();
+            this.CompanyEditions = new HashSet<CompanyEditions>();
         }
     
         public byte CompanyTypeId { get; set; }
@@ -25,6 +25,6 @@ namespace Web.Models
         public bool Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Companies> Companies { get; set; }
+        public virtual ICollection<CompanyEditions> CompanyEditions { get; set; }
     }
 }

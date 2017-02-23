@@ -27,12 +27,12 @@ namespace Web.Models
         public string Description { get; set; }
     
         public virtual Brands Brands { get; set; }
-        public virtual Companies Companies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyBrandIndexes> CompanyBrandIndexes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyBrandSections> CompanyBrandSections { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyBrandEditions> CompanyBrandEditions { get; set; }
+        public virtual Companies Companies { get; set; }
     }
 }

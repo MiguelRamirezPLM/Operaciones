@@ -1,0 +1,132 @@
+﻿@model Web.Models.CompanyBrandSections
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("._AgregarProductoÍndice").click(function () {
+            var _IndexId = $("#_IndexId").val();
+            var _ProductId = $("#_ProductId").val();
+            if (_IndexId == "Seleccione...") {
+                swal("¡Atención!", "¡El campo 'Nombre del índice' no puede quedar vacio!", "error");
+            }
+            else if (_IndexId != "Seleccione...") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Ventas/AgregarProductoÍndice",
+                    traditional: true,
+                    data: { IndexId: _IndexId, ProductId: _ProductId },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Producto asociado al índice!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            swal("¡Atención!", "¡El producto ya está asociado al índice seleccionado!", "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Agregar producto a índice</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <div class="Nota btn-nav" align="right">
+                                            Nota: Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                            <br />
+                                        </div>
+                                        <div class="Nota btn-nav" align="left">
+                                            <table class="table table-hover table-bordered">
+                                                <tr>
+                                                    <td width="200" align="center" class="Estilo4 btn-nav warning">
+                                                        <div>
+                                                            <div align="right"> Nombre del producto: </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Estilo4">
+                                                        <div>
+                                                            <div align="left">@ViewData["ProductName"]</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200" align="center" class="Estilo4 btn-nav warning">
+                                                        <div>
+                                                            <div align="right"> Descripción: </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Estilo4">
+                                                        <div>
+                                                            <div align="left">@ViewData["Description"]</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200" align="center" class="Estilo4 btn-nav warning">
+                                                        <div>
+                                                            <div align="right"> Tipo de producto: </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Estilo4">
+                                                        <div>
+                                                            <div align="left">@ViewData["ProductType"]</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <input type="hidden" value="@ViewData["ProductId"]" id="_ProductId" />
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav">
+                                            <div class="Estilo7x btn-nav" align="left">
+                                                Nombre del índice: <strong class="Red">*</strong>
+                                                <select id="_IndexId" class="form-control Estilo2x">
+                                                    <option value="@null">Seleccione...</option>
+                                                    @{
+    var _Indexes = (from _i in db.Indexes
+                    orderby _i.Description
+                    select _i).ToList();
+    foreach (var t in _Indexes)
+    {
+        <option value="@t.IndexId"> @t.Description</option>
+    }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" value="Guardar" class="btn btn-success Estilo2x _AgregarProductoÍndice" />
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

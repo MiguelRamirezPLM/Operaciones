@@ -14,11 +14,19 @@ namespace Web.Models
     
     public partial class CompanySections
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CompanySections()
+        {
+            this.EditionCompanySectionAdvers = new HashSet<EditionCompanySectionAdvers>();
+        }
+    
         public int CompanyId { get; set; }
         public int SectionId { get; set; }
         public bool Active { get; set; }
     
-        public virtual Companies Companies { get; set; }
         public virtual Sections Sections { get; set; }
+        public virtual Companies Companies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EditionCompanySectionAdvers> EditionCompanySectionAdvers { get; set; }
     }
 }

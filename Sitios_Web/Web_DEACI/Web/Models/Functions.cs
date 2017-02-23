@@ -9,9 +9,9 @@ namespace Web.Models
     public class Functions
     {
         private DEACI_20150917Entities DEACI = new DEACI_20150917Entities();
-        private PLMUsers_20111213Entities2  db = new PLMUsers_20111213Entities2();
+        private PLMUsers  db = new PLMUsers();
         ActivitySessions ActivitiSessions = new ActivitySessions();
-        public CountriesUser Cusers = new CountriesUser();
+        public Countries_Users Cusers = new Countries_Users();
         public UserCountries Ucountries = new UserCountries();
         Countries DCountries = new Countries();
         public List<Countries> lcoun = new List<Countries>();
@@ -20,6 +20,8 @@ namespace Web.Models
         public void ActivitySesions(Models.Users user)
         {
             ActivitiSessions.Date = DateTime.Now;
+            ActivitiSessions.UserId = user.UserId;
+            ActivitiSessions.ApplicationId = user.Applications.ApplicationId;
 
             db.ActivitySessions.Add(ActivitiSessions);
             db.SaveChanges();
@@ -27,7 +29,7 @@ namespace Web.Models
 
         public void Countries(Models.Users user)
         {
-            var UserC = from UserCountry in db.UserCountries
+            var UserC = from UserCountry in db.UserCountriesSet
                         where UserCountry.UserId == user.UserId
                         select UserCountry;
 
@@ -38,14 +40,14 @@ namespace Web.Models
                     Ucountries.CountryId = UC.CountryId;
                     Ucountries.UserId = UC.UserId;
 
-                    var CountU = from CountriesU in db.CountriesUser
+                    var CountU = from CountriesU in db.Countries_Users
                                  where CountriesU.CountryId == Ucountries.CountryId
                                  select CountriesU;
                     if (CountU .LongCount() > 0)
                     {
-                        foreach (CountriesUser Count in CountU)
+                        foreach (Countries_Users Count in CountU)
                         {
-                            Cusers = new CountriesUser();
+                            Cusers = new Countries_Users();
                             Cusers.Active = Count.Active;
                             Cusers.CountryName = Count.CountryName;
                             Cusers.CountryId = Count.CountryId;
@@ -54,6 +56,8 @@ namespace Web.Models
                             var CountriesD = from Country in DEACI.Countries
                                              where Country.ID == Cusers.ID
                                              select Country;
+
+
                             if (CountU.LongCount() > 0)
                             { 
                                 foreach (Countries coun in CountriesD)

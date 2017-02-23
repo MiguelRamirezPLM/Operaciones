@@ -1,0 +1,399 @@
+﻿<link href="~/Styles/Ventas_Clientes.css" rel="stylesheet" />
+@{
+    SessionEditionId _Session = (SessionEditionId)Session["SessionEditionId"];
+}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+@model PagedList.IPagedList<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Paginar clientes";
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+    PLMUsers plm = new PLMUsers();
+}
+<script>
+    $(document).ready(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<script>
+    function Pages(a, b, c) {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Producción/PaginarCompañias",
+            traditional: true,
+            data: { CompanyId: a, EditionId: b, Page: c },
+            success: function (data) {
+                if (data == true) {
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default3 navbar-default btn-nav ribbon Estilo3">Producción</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo7 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav">
+                    <li><a><strong class="Estilo6 btn-nav">Paginar clientes <span class="sr-only">(current)</span></strong> </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo4 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <a href="/FiltroProducción/Pais" class="btn navbar-brand Tiempo" title="Inicio">
+                    <i class="glyphicon glyphicon-home Estilo8"></i>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown navbar-default">
+                        <a class="Tiempo" href="/Producción/Clientes/@ViewData["EditionId"]/@ViewData["CompanyId"]/@ViewData["CompanyTypeId"]">Página principal</a>
+                    </li>
+                    <li class="dropdown navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="CaracterEdiciones" type="text" class="form-control btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @{
+                                var _EditionsSelect = (from _e in db.Editions
+                                                       select _e).ToList();
+                                foreach (var a in _EditionsSelect)
+                                {
+                                    <li class="ListaEdiciones"><a class="Tiempo" href="/Producción/PaginarClientes/@a.EditionId/@ViewData["CompanyId"]/@ViewData["CompanyTypeId"]">@a.NumberEdition</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left Estilo4" role="search">
+                    <div class="form-group  Estilo4">
+                        @Html.TextBox("palabra", null, new { @class = "form-control btn-nav" })
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Buscar">
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container center col-lg-10">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default2 navbar-default btn-nav ribbon Estilo7"> Clientes </button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        @{
+            <tr>
+                <td class="warning Estilo4"><div>Nombre del cliente</div></td>
+                <td align="center" class="warning Estilo4"><div>Tipo de cliente</div></td>
+                <td align="center" class="warning Estilo4"><div>Información</div></td>
+                <td width="100" class="warning Estilo4" align="center">
+                    <div>
+                        <div align="center">No. Página</div>
+                    </div>
+                </td>
+            </tr>
+            foreach (var _cc in Model)
+            {
+                var _InfoModal = _cc.Companies.CompanyId + 70000;
+                <tr>
+                    <td class="Estilo2 btn-nav">
+                        @_cc.Companies.CompanyName
+                    </td>
+                    <td align="center" class="Estilo2 btn-nav">
+                        @_cc.CompanyTypes.Description
+                    </td>
+                    <td>
+                        <div align="center">
+                            <a class="btn btn-primary loading" data-toggle="modal" data-target="#@_InfoModal" title="Información">
+                                <i class="glyphicon glyphicon-info-sign"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="Estilo7x" align="center">
+                            <input class="form-control btn-nav col-xs-1" type="text" value="@_cc.CompanyEditions.Page" onchange="Pages(@_cc.CompanyEditions.CompanyId, @_cc.CompanyEditions.EditionId, (this.value))" />
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div align="center" class="Estilo4 btn-nav">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    <div align="center" class="Estilo4 ">
+        @Html.PagedListPager(Model, page => Url.Action("PaginarClientes",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".Tiempo").click(function () {
+            $("#cargandoTiempo").show();
+        });
+        $("#cargandoTiempo").hide();
+    });
+</script>
+<div class="blockscreen" id="cargandoTiempo">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/ldd.gif">
+    </div>
+</div>
+<div>
+    @{
+        foreach (var a in Model)
+        {
+            var _InfoModal = a.Companies.CompanyId + 70000;
+            <div class="modal fade" id="@_InfoModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="Estilo7 Estilo6 btn-nav" align="center">
+                                Información del cliente
+                            </div>
+                        </div>
+                        <br />
+                        <div class="modal-body1">
+                            @{
+            var _CompanyEditionss2 = (from _c in db.Companies
+                                      join _ce in db.CompanyEditions on _c.CompanyId equals _ce.CompanyId
+                                      join _ed in db.Editions on _ce.EditionId equals _ed.EditionId
+                                      where _c.CompanyId == a.Companies.CompanyId
+                                      && _ce.EditionId == a.CompanyEditions.EditionId
+                                      select new { _ed, _c, _ce }).ToList();
+            if (_CompanyEditionss2.LongCount() == 0)
+            {
+                <div class='modal-body'>
+                    <div>
+                        <img src="/Images/candado.png" style="float:left; width:22%; height:22%;" />
+                    </div>
+                    <div class="Estilo7">
+                        ¡No hay información que mostrar, dado que el cliente aún no participa en la edición <strong class="Estilo6">@ViewData["Edición"]</strong>!
+                    </div>
+                </div>
+            }
+            else
+            {
+                var _ClientDetails = (from _c in db.Companies
+                                      join _ce in db.CompanyEditions
+                                      on _c.CompanyId equals _ce.CompanyId
+                                      join _ct in db.CompanyTypes
+                                      on _ce.CompanyTypeId equals _ct.CompanyTypeId
+                                      where _c.CompanyId == a.Companies.CompanyId
+                                      && _ce.EditionId == a.CompanyEditions.EditionId
+                                      select new { _c, _ct }).ToList();
+                foreach (var d in _ClientDetails)
+                {
+                    <div class="Estilo7x btn-nav" align="center">
+                        Nombre del cliente: @d._c.CompanyName
+                    </div>
+                                <br />
+                                <div class="Estilo7x btn-nav" align="center">
+                                    Nombre corto del cliente: @d._c.CompanyShortName
+                                </div>
+                                <br />
+                                <div class="Estilo7x btn-nav" align="center">
+                                    El cliente participa en la edición @ViewData["Edición"] como: @d._ct.Description
+                                </div>
+                                <br />
+                    var _Pagination = (from _ce in db.CompanyEditions
+                                       where _ce.CompanyId == d._c.CompanyId
+                                       && _ce.EditionId == a.CompanyEditions.EditionId
+                                       select _ce).ToList();
+                    foreach (var rr in _Pagination)
+                    {
+                        if (rr.Page == null)
+                        {
+                            <div class="Estilo7x btn-nav Red" align="center">
+                                El cliente aún no esta paginado
+                            </div>
+                                <br />
+                                
+                        }
+                        else
+                        {
+                                           <div>
+                                            <img src="/Images/ind.png" style="float:left; width:18%; height:18%;" />
+                                        </div>
+                            <div class="Estilo7x btn-nav" align="center">
+                                Página: <strong class="Red">@rr.Page</strong>
+                            </div>
+                                <br />
+                        }
+                    }
+
+                    if (@d._c.CompanyIdParent != null)
+                    {
+                        <div class="Estilo7x btn-nav" align="center">
+                            @{
+                        var _ClienParent = (from _c in db.Companies
+                                            where _c.CompanyId == d._c.CompanyIdParent
+                                            select _c).ToList();
+                            }
+                            Cliente asociado: @if (_ClienParent.LongCount() > 0)
+                            {
+                                foreach (var _cpp in _ClienParent)
+                                {
+                                    @_cpp.CompanyName
+                                }
+                            }
+                        </div>
+                                <br />
+                    }
+                }
+            }
+                            }
+
+                        </div>
+                        <div align="center">
+                            <button1 type="button" class="btn btn-danger Estilo2x" data-dismiss="modal">Cerrar</button1>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_PaginarCliente" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="DestinoPaginarClientes">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<style>
+    #custom-search-input {
+        padding: 1px;
+        border: solid 1px #E4E4E4;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+        #custom-search-input input {
+            border: 0;
+            box-shadow: none;
+        }
+
+        #custom-search-input button {
+            margin: 1px 0 0 0;
+            background: none;
+            box-shadow: none;
+            border: 0;
+            color: #666666;
+            padding: 0 1px 0 2px;
+            border-left: solid 1px #ccc;
+        }
+
+            #custom-search-input button:hover {
+                border: 0;
+                box-shadow: none;
+                border-left: solid 1px #ccc;
+            }
+
+        #custom-search-input .glyphicon-search {
+            font-size: 18px;
+        }
+</style>
+<style>
+    .loading, .loading > td, .loading > th, .nav li.loading.active > a, .pagination li.loading, .pagination > li.active.loading > a, .pager > li.loading > a {
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+        background-size: 40px 40px;
+        animation: 2s linear 0s normal none infinite progress-bar-stripes;
+        -webkit-animation: progress-bar-stripes 2s linear infinite;
+    }
+
+    .btn.btn-default.loading, input[type="text"].loading, select.loading, textarea.loading, .well.loading, .list-group-item.loading, .pagination > li.active.loading > a, .pager > li.loading > a {
+        background-image: linear-gradient(45deg, rgba(235, 235, 235, 0.15) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(235, 235, 235, 0.15) 50%, rgba(235, 235, 235, 0.15) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+    }
+</style>

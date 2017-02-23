@@ -1,0 +1,235 @@
+﻿<script>
+    $(document).ready(function () {
+        $("._AgregarDirección").click(function () {
+            var _CompanyId = $("#_CompanyId").val();
+            var _Address = $("#_Address").val();
+            var _Suburb = $("#_Suburb").val();
+            var _Ubication = $("#_Ubication").val();
+            var _ZipCode = $("#_ZipCode").val();
+            var _Email = $("#_Email").val();
+            var _Web = $("#_Web").val();
+            var _Contact = $("#_Contact").val();
+            var _CityId = $("#_CityIdEdit").val();
+            var _Location = $("#_Location").val();
+            if (_Address.trim() == false) {
+                swal("¡Atención!", "¡El campo 'Dirección' no puede quedar vacio!", "error");
+            }
+            else
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/FiltroVentas/AgregarDirección",
+                    traditional: true,
+                    data: {
+                        CompanyId: _CompanyId, Address: _Address, Suburb: _Suburb, Ubication: _Ubication,
+                        ZipCode: _ZipCode, Email: _Email, Web: _Web, Contact: _Contact, CityId: _CityId, Location: _Location
+                    },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Dirección agregada!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                    }
+                });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("._EstadoSelect").change(function () {
+            var _StateId = $("#_StateId").val();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/FiltroVentas/ObtenerCiudades",
+                traditional: true,
+                data: { id: _StateId },
+                success: function (data) {
+                    $("#_CityIdEdit").empty();
+                    $("#_CityIdEdit")
+                       .append($("<option></option>")
+                       .attr("value", 0)
+                       .text("Seleccione..."));
+                    $.each(data, function (index, val) {
+                        $("#_CityIdEdit")
+                        .append($("<option></option>")
+                        .attr("value", val.CityId)
+                        .text(val.Name));
+                    });
+                }
+            })
+        });
+    });
+</script>
+@model Web.Models.Companies
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Agregar dirección</h1>
+                        </div>
+                        <div class="modal-body Estilo2x">
+                            <div class="Nota btn-nav" align="right">
+                                Nota: Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                <br />
+                            </div>
+                            <br />
+                            <div class="Nota btn-nav">
+                                Laboratorio: @Model.CompanyName
+                            </div>
+                            <div class="Nota btn-nav">
+                                <div class="Nota btn-nav" align="left">
+                                    Dirección: <strong class="Red">*</strong>
+                                    <br />
+                                </div>
+                                <input type="hidden" id="_CompanyId" value="@Model.CompanyId" />
+                                <input class="form-control" type="text" id="_Address" />
+                            </div>
+                            <div class="Nota btn-nav">
+                                <div class="Nota btn-nav" align="left">
+                                    Suburbio:
+                                    <br />
+                                </div>
+                                <input class="form-control" type="text" id="_Suburb" />
+                            </div>
+                            <div class="Nota btn-nav">
+                                <div class="Nota btn-nav" align="left">
+                                    Delegación:
+                                    <br />
+                                </div>
+                                <input class="form-control" type="text" id="_Location" />
+                            </div>
+                            <div class="Nota">
+                                <div class="Nota btn-nav" align="left">
+                                    Ubicación:
+                                    <br />
+                                </div>
+                                <input class="form-control" type="text" id="_Ubication" />
+                                <div class="Nota btn-nav">
+                                    <div class="Nota btn-nav" align="left">
+                                        Código postal:
+                                        <br />
+                                    </div>
+                                    <input class="form-control" type="text" id="_ZipCode" />
+                                </div>
+                                <div class="Nota btn-nav">
+                                    <div class="Nota btn-nav" align="left">
+                                        Email:
+                                        <br />
+                                    </div>
+                                    <input class="form-control" type="text" id="_Email" />
+                                </div>
+                                <div class="Nota btn-nav">
+                                    <div class="Nota btn-nav" align="left">
+                                        Web:
+                                        <br />
+                                    </div>
+                                    <input class="form-control" type="text" id="_Web" />
+                                </div>
+                                <div class="Nota btn-nav">
+                                    <div class="Nota btn-nav" align="left">
+                                        Contacto:
+                                        <br />
+                                    </div>
+                                    <input class="form-control" type="text" id="_Contact" />
+                                </div>
+                                <div align="left" class="Estilo7x btn-nav">
+                                    Estado:
+                                    <select id="_StateId" class="form-control _EstadoSelect Estilo2">
+                                        <option value="@null">Seleccione...</option>
+                                        @{
+    var Ciudades = (from _c in db.Cities
+                    join _s in db.States
+                    on _c.StateId equals _s.StateId
+                    select new { _s, _c }).ToList();
+    States _Estados = new States();
+    Cities _Ciudades = new Cities();
+    foreach (var r in Ciudades)
+    {
+        if (r._c.CityId == null)
+        {
+            _Ciudades.CityId = int.Parse(null);
+        }
+        else
+        {
+            _Ciudades.CityId = r._c.CityId;
+        }
+    }
+    foreach (var rr in Ciudades)
+    {
+        if (rr._s.StateId == null)
+        {
+            _Estados.StateId = int.Parse(null);
+        }
+        else
+        {
+            _Estados.StateId = rr._s.StateId;
+        }
+    }
+    var _States = (from _s in db.States
+                   orderby _s.Name
+                   select _s).ToList();
+    foreach (var t in _States)
+    {
+        if (t.StateId == _Estados.StateId)
+        {
+        }
+        else
+        {
+                            <option value="@t.StateId">@t.Name</option>
+        }
+    }
+                                        }
+                                    </select>
+                                </div>
+                                <div align="left" class="Estilo7x btn-nav">
+                                    Ciudad:
+                                    <select id="_CityIdEdit" class="form-control Estilo2">
+                                        <option value="@null">Seleccione...</option>
+                                        @{
+    var _Cities = (from _ct in db.Cities
+                   orderby _ct.Name
+                   select _ct).ToList();
+    foreach (var t in _Cities)
+    {
+        if (t.CityId == _Ciudades.CityId)
+        {
+        }
+        else
+        {
+                            <option value="@t.CityId">@t.Name</option>
+        }
+    }
+                                        }
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="modal-body" align="center">
+                                <input type="button" value="Guardar" class="btn btn-success _AgregarDirección Estilo2x" />
+                                <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

@@ -1,0 +1,1007 @@
+﻿<link href="~/Styles/Ventas_Clientes.css" rel="stylesheet" />
+@{
+    SessionEditionId _Session = (SessionEditionId)Session["SessionEditionId"];
+}
+@model PagedList.IPagedList<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Reporte del cliente";
+    PLMUsers plm = new PLMUsers();
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<script>
+    $(document).ready(function () {
+        $('#Caracter').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.ListaClientes').each(function () {
+                var text = $(this).text().toLowerCase();
+                (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+            });
+        });
+    });
+</script>
+<style>
+    #custom-search-input {
+        padding: 1px;
+        border: solid 1px #E4E4E4;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+        #custom-search-input input {
+            border: 0;
+            box-shadow: none;
+        }
+
+        #custom-search-input button {
+            margin: 1px 0 0 0;
+            background: none;
+            box-shadow: none;
+            border: 0;
+            color: #666666;
+            padding: 0 1px 0 2px;
+            border-left: solid 1px #ccc;
+        }
+
+            #custom-search-input button:hover {
+                border: 0;
+                box-shadow: none;
+                border-left: solid 1px #ccc;
+            }
+
+        #custom-search-input .glyphicon-search {
+            font-size: 18px;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#CaracterEdiciones').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.ListaEdiciones').each(function () {
+                var text = $(this).text().toLowerCase();
+                (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+            });
+        });
+    });
+</script>
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default3 navbar-default btn-nav ribbon Estilo7"> Reporte del cliente</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        @{
+            var _Company = (from _c in db.Companies
+                            join _ce in db.CompanyEditions
+                            on _c.CompanyId equals _ce.CompanyId
+                            where _c.CompanyId == _Session.ed
+                            && _ce.EditionId == _Session.id
+                            select new { _c, _ce }).ToList();
+            foreach (var a in _Company)
+            {
+                <tr class="btn-nav">
+                    <td width="300" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Tipo de cliente:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="left" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@a._ce.CompanyTypes.Description</div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">PRODUCTO "(FICHA TÉCNICA)”:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _Ficha = (from _c in db.Companies
+                                      join _p in db.Products
+                                      on _c.CompanyId equals _p.CompanyId
+                                      join _pt in db.ProductTypes
+                                      on _p.ProductTypeId equals _pt.ProductTypeId
+                                      join _pe in db.ProductEditions
+                                      on _p.ProductId equals _pe.ProductId
+                                      where _c.CompanyId == _Session.ed
+                                      && _pe.EditionId == _Session.id
+                                      && _pt.Description != "(PRODUCTO) en TERCERA"
+                                      && _pt.Description != "AGREGADO"
+                                      && _pt.Description != "PRODUCTO (TEXTO EDITORIAL)"
+                                      && _pt.Description != "MARCA"
+                                      select _p).ToList();
+                        var _LongCountFicha = _Ficha.LongCount();
+                        ViewData["FICHATÉCNICA"] = _LongCountFicha;
+                    }
+                    <div align="left">@ViewData["FICHATÉCNICA"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">AGREGADO:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _Agregado = (from _c in db.Companies
+                                         join _p in db.Products
+                                         on _c.CompanyId equals _p.CompanyId
+                                         join _pt in db.ProductTypes
+                                         on _p.ProductTypeId equals _pt.ProductTypeId
+                                         join _pe in db.ProductEditions
+                                         on _p.ProductId equals _pe.ProductId
+                                         where _c.CompanyId == _Session.ed
+                                         && _pe.EditionId == _Session.id
+                                         && _pt.Description == "AGREGADO"
+                                         select _p).ToList();
+                        var _LongCountAgregado = _Agregado.LongCount();
+                        ViewData["AGREGADO"] = _LongCountAgregado;
+                    }
+                    <div align="left">@ViewData["AGREGADO"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">(PRODUCTO) en TERCERA:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _Tercera = (from _c in db.Companies
+                                        join _p in db.Products
+                                        on _c.CompanyId equals _p.CompanyId
+                                        join _pt in db.ProductTypes
+                                        on _p.ProductTypeId equals _pt.ProductTypeId
+                                        join _pe in db.ProductEditions
+                                        on _p.ProductId equals _pe.ProductId
+                                        where _c.CompanyId == _Session.ed
+                                        && _pe.EditionId == _Session.id
+                                        && _pt.Description == "(PRODUCTO) en TERCERA"
+                                        select _p).ToList();
+                        var _LongCountTercera = _Tercera.LongCount();
+                        ViewData["TERCERA"] = _LongCountTercera;
+                    }
+                    <div align="left">@ViewData["TERCERA"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">PRODUCTO (TEXTO EDITORIAL):</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _Texto = (from _c in db.Companies
+                                      join _p in db.Products
+                                      on _c.CompanyId equals _p.CompanyId
+                                      join _pt in db.ProductTypes
+                                      on _p.ProductTypeId equals _pt.ProductTypeId
+                                      join _pe in db.ProductEditions
+                                      on _p.ProductId equals _pe.ProductId
+                                      where _c.CompanyId == _Session.ed
+                                      && _pe.EditionId == _Session.id
+                                      && _pt.Description == "PRODUCTO (TEXTO EDITORIAL)"
+                                      select _p).ToList();
+                        var _LongCounTexto = _Texto.LongCount();
+                        ViewData["EDITORIAL"] = _LongCounTexto;
+                    }
+                    <div align="left">@ViewData["EDITORIAL"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Productos nuevos:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _ProductsNew = (from _c in db.Companies
+                                            join _p in db.Products
+                                                on _c.CompanyId equals _p.CompanyId
+                                            join _pe in db.ProductEditions
+                                                on _p.ProductId equals _pe.ProductId
+                                            join _st in db.Status
+                                                on _pe.StatusId equals _st.StatusId
+                                            where _pe.EditionId == _Session.id
+                                            && _c.CompanyId == _Session.ed
+                                            && _st.Description == "Nuevo"
+                                            select _p).ToList();
+                        var _LongCountNewProducts = _ProductsNew.LongCount();
+                        ViewData["ProductosNuevos"] = _LongCountNewProducts;
+                    }
+                    <div align="left">@ViewData["ProductosNuevos"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Productos con cambios:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _ProductsChanges = (from _c in db.Companies
+                                                join _p in db.Products
+                                                    on _c.CompanyId equals _p.CompanyId
+                                                join _pe in db.ProductEditions
+                                                    on _p.ProductId equals _pe.ProductId
+                                                join _st in db.Status
+                                                    on _pe.StatusId equals _st.StatusId
+                                                where _pe.EditionId == _Session.id
+                                                && _c.CompanyId == _Session.ed
+                                                && _st.Description == "Con cambios"
+                                                select _p).ToList();
+                        var _LongCountChangeProducts = _ProductsChanges.LongCount();
+                        ViewData["ProductosConCambios"] = _LongCountChangeProducts;
+                    }
+                    <div align="left">@ViewData["ProductosConCambios"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Productos sin cambios:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _ProductsNot = (from _c in db.Companies
+                                            join _p in db.Products
+                                            on _c.CompanyId equals _p.CompanyId
+                                            join _pe in db.ProductEditions
+                                            on _p.ProductId equals _pe.ProductId
+                                            join _st in db.Status
+                                            on _pe.StatusId equals _st.StatusId
+                                            where _pe.EditionId == _Session.id
+                                            && _c.CompanyId == _Session.ed
+                                            && _st.Description == "Sin cambios"
+                                            select _p).ToList();
+                        var _LongCountNotProducts = _ProductsNot.LongCount();
+                        ViewData["ProductosSinCambios"] = _LongCountNotProducts;
+                    }
+                    <div align="left">@ViewData["ProductosSinCambios"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Total de productos:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    @{
+                        var _Products = (from _c in db.Companies
+                                         join _p in db.Products
+                                         on _c.CompanyId equals _p.CompanyId
+                                         join _pt in db.ProductTypes
+                                         on _p.ProductTypeId equals _pt.ProductTypeId
+                                         join _pe in db.ProductEditions
+                                         on _p.ProductId equals _pe.ProductId
+                                         where _c.CompanyId == _Session.ed
+                                         && _pe.EditionId == _Session.id
+                                         && _pt.Description != "MARCA"
+                                         select _p).ToList();
+                        var _LongCountProducts = _Products.LongCount();
+                        ViewData["CountProductsCompany"] = _LongCountProducts;
+                    }
+                    <div align="left">@ViewData["CountProductsCompany"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo7 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav">
+                    @{
+                        var _CompanyName = (from _c in db.Companies
+                                            join _ce in db.CompanyEditions
+                                            on _c.CompanyId equals _ce.CompanyId
+                                            where _c.CompanyId == _Session.ed
+                                            && _ce.EditionId == _Session.id
+                                            select new { _c, _ce }).ToList();
+                        foreach (var _com in _CompanyName)
+                        {
+                            <li><a class="Tiempo" href="/Producción/Clientes/@_Session.id/@_com._c.CompanyId/@_com._ce.CompanyTypeId"><strong class="Estilo6 btn-nav">Cliente: @_com._c.CompanyName <span class="sr-only">(current)</span></strong> </a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo4 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <a href="/FiltroProducción/Pais" class="btn navbar-brand Tiempo" title="Inicio">
+                    <i class="glyphicon glyphicon-home Estilo8"></i>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @{
+                        var _CompanyTypeId = (from _c in db.Companies
+                                              join _ce in db.CompanyEditions
+                                              on _c.CompanyId equals _ce.CompanyId
+                                              where _c.CompanyId == _Session.ed
+                                              && _ce.EditionId == _Session.id
+                                              select new { _c, _ce }).ToList();
+                        foreach (var a in _CompanyTypeId)
+                        {
+                            <li><a class="Tiempo" href="/Producción/Clientes/@_Session.id/@_Session.ed/@a._ce.CompanyTypeId">Página principal <span class="sr-only">(current)</span></a></li>
+                        }
+                    }
+                    <li class="dropdown navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="CaracterEdiciones" type="text" class="form-control btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @{
+                                var _EditionsSelect = (from _e in db.Editions
+                                                       select _e).ToList();
+                                foreach (var a in _EditionsSelect)
+                                {
+                                    <li class="ListaEdiciones"><a class="Tiempo" href="/Producción/ReporteCliente/@a.EditionId/@_Session.ed">@a.NumberEdition</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown active navbar-default">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reporte del cliente<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Producción/GenerarReporteClientePDF/@_Session.id/@_Session.ed" target="_blank"><span class="glyphicon glyphiconr glyphicon glyphicon-open-file Red"></span>Generar PDF</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="Tiempo" href="/Producción/ReporteProductosCliente/@_Session.id/@_Session.ed">Reporte de productos <span class="sr-only">(current)</span></a></li>
+                    <li><a class="Tiempo" href="/Producción/ReporteProductosSecciónCliente/@_Session.id/@_Session.ed">Reporte de productos por sección <span class="sr-only">(current)</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                        </a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left Estilo4" role="search">
+                    <div class="form-group  Estilo4">
+                        @Html.TextBox("palabra", null, new { @class = "form-control btn-nav" })
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Buscar">
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo4 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a class="Tiempo" href="/Producción/ReporteProductosÍndiceCliente/@_Session.id/@_Session.ed">Reporte de productos por índice</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+@{
+    var _AddressCompany = (from _c in db.Companies
+                           join _ca in db.CompanyAddresses
+                           on _c.CompanyId equals _ca.CompanyId
+                           join _ad in db.Addresses
+                           on _ca.AddressId equals _ad.AddressId
+                           where _c.CompanyId == _Session.ed
+                           select _ad).ToList();
+    if (_AddressCompany.LongCount() == 0)
+    {
+        <div class="container text-danger" align="center">
+            <h2>El cliente no tiene direcciones</h2>
+        </div>
+    }
+    else
+    {
+        <div class="container center col-lg-10" align="center">
+            <div class="row" align="center">
+                <div align="center">
+                    <button type="button" class="btn btn-default2 navbar-default btn-nav ribbon Estilo7"> Direcciones</button>
+                </div>
+            </div>
+            @{
+        foreach (var s in _AddressCompany)
+        {
+            <table class="table table-hover table-bordered">
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Dirección:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Address</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Suburbio:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Suburb</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Delegación:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Location</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Ubicación:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Ubication</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Código postal:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.ZipCode</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Email:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Email</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Web:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Web</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Contacto:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s.Contact</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="30" align="center" class="Estilo4 btn-nav warning">
+                        <div>
+                            <div align="right">País:</div>
+                        </div>
+                    </td>
+                    <td width="320" align="left" class="Estilo4 btn-nav">
+                        @{
+            var _citiesss = (from _ci in db.Cities
+                             join _s in db.States
+                             on _ci.StateId equals _s.StateId
+                             join _co in db.Countries
+                             on _s.CountryId equals _co.CountryId
+                             where _ci.CityId == s.CityId
+                             select _co).ToList();
+            foreach (var r in _citiesss)
+            {
+                @r.CountryName
+            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td width="30" align="center" class="Estilo4 btn-nav warning">
+                        <div>
+                            <div align="right">Estado:</div>
+                        </div>
+                    </td>
+                    <td width="320" align="left" class="Estilo4 btn-nav">
+                        @{
+            var _citiess = (from _ci in db.Cities
+                            join _s in db.States
+                            on _ci.StateId equals _s.StateId
+                            where _ci.CityId == s.CityId
+                            select _s).ToList();
+            foreach (var r in _citiess)
+            {
+                @r.Name
+            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td width="30" align="center" class="Estilo4 btn-nav warning">
+                        <div>
+                            <div align="right">Ciudad:</div>
+                        </div>
+                    </td>
+                    <td width="320" align="left" class="Estilo4 btn-nav">
+                        @{
+            var _cities = (from _ci in db.Cities
+                           where _ci.CityId == s.CityId
+                           select _ci).ToList();
+            foreach (var r in _cities)
+            {
+                @r.Name
+            }
+                        }
+                    </td>
+                </tr>
+            </table>
+                <br />
+        }
+            }
+        </div>
+    }
+}
+<br />
+@{
+    var _CompanyPhoness = (from _c in db.Companies
+                           join _cp in db.CompanyPhones
+                           on _c.CompanyId equals _cp.CompanyId
+                           join _pt in db.PhoneTypes
+                           on _cp.PhoneTypeId equals _pt.PhoneTypeId
+                           where _c.CompanyId == _Session.ed
+                           select new { _pt, _cp }).ToList();
+    if (_CompanyPhoness.LongCount() == 0)
+    {
+        <div class="container text-danger" align="center">
+            <h2>El cliente no tiene teléfonos</h2>
+        </div>
+    }
+    else
+    {
+
+    }
+}
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default2 navbar-default btn-nav ribbon Estilo7"> Teléfonos</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        @{
+            foreach (var s in _CompanyPhoness)
+            {
+                <tr class="btn-nav">
+                    <td width="182" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">@s._pt.Description</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@s._cp.PhoneValue</div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<br />
+@{
+    var _AdversSections = (from _c in db.Companies
+                           join _eda in db.EditionCompanySectionAdvers
+                           on _c.CompanyId equals _eda.CompanyId
+                           join _s in db.Sections
+                           on _eda.SectionId equals _s.SectionId
+                           join _ce in db.CompanyEditions
+                           on _c.CompanyId equals _ce.CompanyId
+                           where _ce.EditionId == _eda.EditionId
+                           where _eda.EditionId == _Session.id
+                           && _eda.CompanyId == _Session.ed
+                           select new { _eda, _c, _s }).ToList();
+    if (_AdversSections.LongCount() == 0)
+    {
+        <div class="container Estilo7 Red" align="center">
+            El cliente no tiene anuncios asociados
+        </div>
+    }
+    else
+    {
+        <div class="container center col-lg-10">
+            <div class="row" align="center">
+                <div align="center">
+                    <button type="button" class="btn btn-default2 navbar-default  btn-nav ribbon Estilo7">Anuncios</button>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td class="warning Estilo4" align="left">
+                        <div>
+                            <div align="left">Sección</div>
+                        </div>
+                    </td>
+                    <td class="warning Estilo4" align="left">
+                        <div>
+                            <div align="left">Nombre del anuncio</div>
+                        </div>
+                    </td>
+                    <td class="warning Estilo4" align="left">
+                        <div>
+                            <div align="left">Espacio contratado</div>
+                        </div>
+                    </td>
+                </tr>
+                @foreach (var c in _AdversSections)
+                {
+                    <tr class="Estilo2 btn-nav">
+                        <td class="btn-nav">
+                            <div align="left">
+                                @{
+                    var _SectionName = (from _s in db.Sections
+                                        where _s.SectionId == c._eda.SectionId
+                                        select _s).ToList();
+                    foreach (var Description in _SectionName)
+                    {
+                        @Description.Description
+                    }
+                                }
+                            </div>
+                        </td>
+                        <td class="btn-nav">
+                            <div align="left">
+                                @{
+                    var _Editions = (from _ed in db.Editions
+                                     where _ed.EditionId == c._eda.EditionId
+                                     select _ed).ToList();
+                    var imageName = "";
+                    imageName = c._eda.AdverFile;
+                    string fullPath_DEACI = Request.MapPath("/Anuncios/DEACI_" + _Editions.SingleOrDefault().NumberEdition + "/" + imageName);
+                    if (System.IO.File.Exists(fullPath_DEACI))
+                    {
+                        <a target="_blank" href="/Anuncios/DEACI_@_Editions.SingleOrDefault().NumberEdition/@c._eda.AdverFile" class="Estilo6"> @c._eda.AdverFile </a>
+                    }
+                    else
+                    {
+                        <strong class="Red">@c._eda.AdverFile</strong>
+                    }
+                                }
+                            </div>
+                        </td>
+                        <td class="btn-nav">
+                            <div align="left">
+                                @c._eda.HiredSpace
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}
+
+@{
+    var _CompanyBrands = (from _cbe in db.CompanyBrandEditions
+                          join _b in db.Brands
+                          on _cbe.BrandId equals _b.BrandId
+                          where _cbe.CompanyId == _Session.ed
+                          && _cbe.EditionId == _Session.id
+                          select _b).ToList();
+    if (_CompanyBrands.LongCount() == 0)
+    {
+        <div class="container Estilo7 Red" align="center">
+            El cliente no tiene marcas asociadas
+        </div>
+    }
+    else
+    {
+        <div class="container center col-lg-10" align="center">
+            <div class="row" align="center">
+                <div align="center">
+                    <button type="button" class="btn btn-default2 navbar-default btn-nav ribbon Estilo7">Marcas</button>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td class="warning Estilo4" align="left">
+                        <div>
+                            <div align="left">Nombre de la marca</div>
+                        </div>
+                    </td>
+                </tr>
+                @foreach (var c in _CompanyBrands)
+                {
+                    <tr class="Estilo2 btn-nav">
+                        <td class="btn-nav">
+                            <div align="left">
+                                @c.BrandName
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    }
+}
+
+
+@{
+    var _CompanyDistributions = (from _cbe in db.EditionCompanyDistributions
+                                 where _cbe.CompanyId == _Session.ed
+                                 && _cbe.EditionId == _Session.id
+                                 select _cbe).ToList();
+    if (_CompanyDistributions.LongCount() == 0)
+    {
+        <div class="container Estilo7 Red" align="center">
+            El cliente no tiene distribuidores asociados
+        </div>
+    }
+    else
+    {
+        <div class="container center col-lg-10" align="center">
+            <div class="row" align="center">
+                <div align="center">
+                    <button type="button" class="btn btn-default2 navbar-default btn-nav ribbon Estilo7">Distribuidores</button>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td class="warning Estilo4" align="left">
+                        <div>
+                            <div align="left">Nombre del distribuidor</div>
+                        </div>
+                    </td>
+                </tr>
+                @foreach (var c in _CompanyDistributions)
+                {
+                    var _Distributions = (from _c in db.Companies
+                                          where _c.CompanyId == c.DistributionId
+                                          select _c).ToList();
+                    foreach (var Dis in _Distributions)
+                    {
+                        <tr>
+                            <td class="Estilo2 btn-nav">
+                                <div class="btn-nav" align="left">
+                                    @Dis.CompanyName
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+        </div>
+    }
+}
+
+@{
+    var Error1 = ViewData["CompanyNull"];
+    if (Error1 == "")
+    {
+        <div class="container Estilo7 Red" align="center">
+            El cliente no participa en la edición @ViewData["Edición"]
+        </div>
+    }
+}
+@{
+    var Error = ViewData["CompanyNull"];
+    if (Error == "")
+    {
+        <script type="text/javascript">
+            $(window).load(function () {
+                $('#myModalMensaje').modal('show');
+            });
+        </script>
+        <div class="container Estilo4">
+            <div class="row">
+                <div class='modal fade in' id='myModalMensaje' data-keyboard="false" data-backdrop="static">
+                    <div class='modal-dialog'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <div>
+                                    <img src="/Images/Edición.png" style="float:left; width:24%; height:24%;" />
+                                </div>
+                                @{
+        var _Edition = (from _ed in db.Editions
+                        where _ed.EditionId == _Session.id
+                        select _ed).ToList();
+        ViewData["NumeroEdición"] = _Edition.SingleOrDefault().NumberEdition;
+                                }
+                                <div>
+                                    ¡El cliente no participa en la edición <strong class="Red">@ViewData["NumeroEdición"]</strong>!
+                                </div>
+                                <br />
+                                <input type="button" value="Aceptar" class="btn btn-success Estilo2x" onclick="history.back();" />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+}
+<script>
+    $(function () {
+        $(".Tiempo").click(function () {
+            $("#cargandoTiempo").show();
+        });
+        $("#cargandoTiempo").hide();
+    });
+</script>
+<div class="blockscreen" id="cargandoTiempo">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/ldd.gif">
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".GeneratePDF").click(function () {
+            $("#generatepdf").show();
+        });
+        $("#generatepdf").hide();
+    });
+</script>
+<div class="blockscreen1" id="generatepdf">
+    <div id="blockmessage1">
+    </div>
+    <div id="blockimg1">
+        <img src="/Images/8YsAmq3.gif">
+        <h3 style="color:white" class="TextBlock">  Generando PDF...</h3>
+    </div>
+</div>
+<style>
+    .blockscreen1 {
+        display: none;
+        position: fixed;
+        background-color: #262626;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        opacity: 0.7;
+        z-index: 1000;
+    }
+
+    #blockmessage1 {
+        color: white;
+        padding-top: 20% !important;
+        text-align: center;
+        font-weight: bold;
+        z-index: 10000;
+    }
+
+    #blockimg1 {
+        color: white;
+        padding-top: 1px;
+        text-align: center;
+        z-index: 10000;
+    }
+
+    .TextBlock1 {
+        font-family: 'Comic Sans MS';
+        font-size: 30px;
+    }
+</style>

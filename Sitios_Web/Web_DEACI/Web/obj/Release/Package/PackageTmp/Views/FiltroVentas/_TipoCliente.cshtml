@@ -1,0 +1,230 @@
+﻿<link href="~/Styles/FiltroProducci%c3%b3n_Clientes.css" rel="stylesheet" />
+@model IEnumerable<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@{
+    ViewBag.Title = "Tipo de cliente";
+    PLMUsers plm = new PLMUsers();
+}
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button type="button" class="btn btn-default3 navbar-default loading btn-nav ribbon Estilo3">Ventas</button>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Tipo de cliente:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["_TipoCliente"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<style>
+    #custom-search-input {
+        padding: 1px;
+        border: solid 1px #E4E4E4;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+        #custom-search-input input {
+            border: 0;
+            box-shadow: none;
+        }
+
+        #custom-search-input button {
+            margin: 1px 0 0 0;
+            background: none;
+            box-shadow: none;
+            border: 0;
+            color: #666666;
+            padding: 0 1px 0 2px;
+            border-left: solid 1px #ccc;
+        }
+
+            #custom-search-input button:hover {
+                border: 0;
+                box-shadow: none;
+                border-left: solid 1px #ccc;
+            }
+
+        #custom-search-input .glyphicon-search {
+            font-size: 18px;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#Caracter').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.ListaClientes').each(function () {
+                var text = $(this).text().toLowerCase();
+                (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+            });
+        });
+    });
+</script>
+<div>
+    <nav class="navbar navbar-default Estilo4 loading container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <a href="/FiltroVentas/Pais" class="btn navbar-brand loading" title="Inicio">
+                    <i class="glyphicon glyphicon-home Estilo8"></i>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown loading navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tipo de clientes<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="Caracter" type="text" class="form-control btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @foreach (var a in Model)
+                            {
+                                if (a.CompanyTypes.Description == "LABORATORIO")
+                                {
+                                       <li class="ListaClientes"><a class="Tiempo" href="/FiltroVentas/_Clientes/@ViewData["CountryId"]/@ViewData["BookId"]/@ViewData["EditionId"]/@a.CompanyTypes.CompanyTypeId">@a.CompanyTypes.Description</a></li>
+                              
+                                }
+                                else
+                                {
+                                        <li class="ListaClientes"><a href="/FiltroVentas/_Clientes/@ViewData["CountryId"]/@ViewData["BookId"]/@ViewData["EditionId"]/@a.CompanyTypes.CompanyTypeId">@a.CompanyTypes.Description</a></li>
+                             
+                                }
+                            }
+                        </ul>
+
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                        </a>
+                    </li>
+                    @{
+                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                        var _RolesA = (from _us in plm.Users
+                                       join _ap in plm.ApplicationUsers
+                                       on _us.UserId equals _ap.UserId
+                                       join _r in plm.Roles
+                                       on _ap.RoleId equals _r.RoleId
+                                       where _us.UserId == p.userId
+                                       select _r);
+                        if (_RolesA.FirstOrDefault().Description == "Administrador")
+                        {
+                            @*<li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon glyphiconr glyphicon-bookmark Estilo8"></span> Ventas <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="carga" href="/FiltroVentas/Pais"><span class="glyphicon glyphicon glyphiconr glyphicon-share-alt"></span>Módulo de ventas</a></li>
+                                </ul>
+                            </li>*@
+                            <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon glyphiconr glyphicon-ruble Estilo8"></span> Producción <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="carga" href="/FiltroProducción/Pais"><span class="glyphicon glyphicon glyphiconr glyphicon-share-alt"></span>Módulo de producción</a></li>
+                                    </ul>
+                                </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<script>
+    $(function () {
+        $(".carga").click(function () {
+            $("#cargando").show();
+        });
+        $("#cargando").hide();
+    });
+</script>
+<div class="blockscreen" id="cargando">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/ldd.gif">
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".Tiempo").click(function () {
+            $("#cargandoTiempo").show();
+        });
+        $("#cargandoTiempo").hide();
+    });
+</script>
+<div class="blockscreen" id="cargandoTiempo">
+    <div id="blockmessage">
+        <h3 style="color:#000" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/Deleteload.gif">
+    </div>
+</div>

@@ -1,0 +1,182 @@
+﻿@{
+    SessionEditionId _Session = (SessionEditionId)Session["SessionEditionId"];
+}
+<script>
+    $(document).ready(function () {
+        $("._MopdificarCliente").click(function () {
+            var _CompanyNameEdit = $("#_CompanyNameEdit").val();
+            var _CompanyShortNameEdit = $("#_CompanyShortNameEdit").val();
+            var _CompanyTypeIdEdit = $("#_CompanyTypeIdEdit").val();
+            var _CompanyIdEdit = $("#_CompanyIdEdit").val();
+            var _EditionIdEdit = $("#_EditionIdEdit").val();
+            var _CompanyIdParent = $("#_CompanyIdParent").val();
+            if (_CompanyNameEdit.trim() == false && _CompanyTypeIdEdit == "Seleccione...") {
+                swal("¡Atención!", "¡Los campos marcados con * son obligatorios!", "error");
+            }
+            else if (_CompanyNameEdit.trim() == false) {
+                swal("¡Atención!", "¡El campo 'Nombre del laoratorio' no puede quedar vacio!", "error");
+            }
+            else if (_CompanyTypeIdEdit == "Seleccione...") {
+                swal("¡Atención!", "¡El campo 'Tipo de cliente' no puede quedar vacio!", "error");
+            }
+            else if (_CompanyNameEdit.trim() != false && _CompanyTypeIdEdit != "Seleccione...") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/FiltroVentas/ModificarCliente",
+                    traditional: true,
+                    data: { CompanyId: _CompanyIdEdit, CompanyName: _CompanyNameEdit, CompanyShortName: _CompanyShortNameEdit, CompanyTypeId: _CompanyTypeIdEdit, EditionId: _EditionIdEdit, CompanyIdParent: _CompanyIdParent },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Cambios guardados!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            swal("¡Atención!", "¡El producto ingresado ya existe!", "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@model Web.Models.Companies
+           @using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Editar laboratorio</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <br />
+                                        <div class="Nota btn-nav" align="right">
+                                            Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                            <br />
+                                        </div>
+                                        <div class="Nota btn-nav">
+                                            <div class="Nota btn-nav" align="left">
+                                                Nombre del laboratorio: <strong class="Red">*</strong>
+                                                <br />
+                                            </div>
+                                            <input type="hidden" id="_CompanyIdEdit" value="@Model.CompanyId" />
+                                            <input type="hidden" id="_EditionIdEdit" value="@_Session.id"/>
+                                            <input class="form-control btn-nav" type="text" id="_CompanyNameEdit" value="@Model.CompanyName" />
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav">
+                                            <div class="Nota btn-nav" align="left">
+                                                Nombre corto del laboratorio:
+                                                <br />
+                                            </div>
+                                            <input class="form-control btn-nav" type="text" id="_CompanyShortNameEdit" value="@Model.CompanyShortName" />
+                                        </div>
+                                        <br />
+                                        <div class="Estilo7x btn-nav" align="left">
+                                            Tipo de cliente: <strong class="Red">*</strong>
+                                            <select id="_CompanyTypeIdEdit" class="form-control Estilo2x">
+                                                <option value="@null">Seleccione...</option>
+                                                @{
+    var _clienteditions = (from _ce in db.CompanyEditions
+                           where _ce.EditionId == _Session.id
+                           && _ce.CompanyId == _Session.ed
+                           select _ce).ToList();
+    foreach (var rr in _clienteditions)
+    {
+        var _ClientTypes = (from _ct in db.CompanyTypes
+                            where _ct.Description != "CLIENTE ANTERIOR" && _ct.Description != "SUCURSAL ANTERIOR" && _ct.Description != "DISTRIBUIDOR ANTERIOR"
+                            select _ct).ToList();
+        foreach (var t in _ClientTypes)
+        {
+            if (t.CompanyTypeId == rr.CompanyTypeId)
+            {
+                                    <option selected="selected" value="@t.CompanyTypeId">@t.Description</option>
+            }
+            else
+            {
+                                    <option value="@t.CompanyTypeId"> @t.Description</option>
+            }
+        }
+    }
+                                                }
+                                            </select>
+                                        </div>
+                                        @{
+    var _ClientDetails2 = (from _c in db.Companies
+                           join _ce in db.CompanyEditions
+                           on _c.CompanyId equals _ce.CompanyId
+                           join _ct in db.CompanyTypes
+                           on _ce.CompanyTypeId equals _ct.CompanyTypeId
+                           where _c.CompanyId == _Session.ed
+                           select new { _c, _ct }).Distinct();
+    foreach (var d in _ClientDetails2)
+    {
+             if (d._c.CompanyIdParent != null)
+    {
+                                    <div class="Estilo7x btn-nav">
+                                        Cliente asociado:
+                                        <select id="_CompanyIdParent" class="form-control Estilo2x">
+                                            <option value="@null">Seleccione...</option>
+                                            @{
+        var _ClientParents = (from _c in db.Companies
+                              join _ce in db.CompanyEditions
+                              on _c.CompanyId equals _ce.CompanyId
+                              join _ct in db.CompanyTypes
+                              on _ce.CompanyTypeId equals _ct.CompanyTypeId
+                              where _ct.Description == "CLIENTE"
+                              && _ce.EditionId == _Session.id
+                              select _c).ToList();
+        foreach (var _p in _ClientParents)
+        {
+            if (_p.CompanyId == d._c.CompanyIdParent)
+            {
+                                    <option selected="selected" value="@_p.CompanyId">@_p.CompanyName</option>
+            }
+            else
+            {
+                                    <option value="@_p.CompanyId"> @_p.CompanyName</option>
+            }
+        }
+                                            }
+                                        </select>
+                                    </div>
+    }
+    else
+    {
+                                    <input type="hidden" id="_CompanyIdParent" value="Seleccione..." />
+    }
+    }
+                                        }
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" value="Guardar" class="btn btn-success _MopdificarCliente" />
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

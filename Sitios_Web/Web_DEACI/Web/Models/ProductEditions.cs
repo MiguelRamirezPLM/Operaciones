@@ -11,6 +11,9 @@ namespace Web.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class ProductEditions
     {
@@ -18,8 +21,12 @@ namespace Web.Models
         public int EditionId { get; set; }
         public string HtmlFile { get; set; }
         public string HtmlContent { get; set; }
+        public string Page { get; set; }
+        public byte StatusId { get; set; }
+        public HttpPostedFileBase File { get; set; }
     
         public virtual Editions Editions { get; set; }
         public virtual Products Products { get; set; }
+        public virtual Status Status { get; set; }
     }
 }

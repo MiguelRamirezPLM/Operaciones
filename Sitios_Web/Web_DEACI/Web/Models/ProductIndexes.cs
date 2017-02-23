@@ -16,5 +16,8 @@ namespace Web.Models
     {
         public int ProductId { get; set; }
         public byte IndexId { get; set; }
+    
+        public virtual Products Products { get; set; }
+        public virtual Indexes Indexes { get; set; }
     }
 }

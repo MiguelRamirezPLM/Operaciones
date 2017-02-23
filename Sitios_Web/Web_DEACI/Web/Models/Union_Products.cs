@@ -15,6 +15,7 @@ namespace Web.Models
         public ProductEditions prodedition { get; set; }
         public Editions editions { get; set; }
         public Companies companies { get; set; }
+        public Status Status { get; set; }
         public Products Obtener(int id)
         {
             var eproducts = new Products();

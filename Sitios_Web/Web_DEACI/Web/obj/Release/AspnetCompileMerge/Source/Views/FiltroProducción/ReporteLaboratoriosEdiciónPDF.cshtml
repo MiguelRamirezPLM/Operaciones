@@ -1,0 +1,317 @@
+﻿<title>DEACI | Reporte de la edición @ViewData["Edición"]</title>
+<link href="~/Styles/Ventas_Clientes.css" rel="stylesheet" />
+<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+<link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+<link href="~/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/DEACI_Login.css" rel="stylesheet" />
+<link href="~/Styles/Animaci%c3%b3n.css" rel="stylesheet" />
+@{
+    SessionEditionId _Session = (SessionEditionId)Session["SessionEditionId"];
+}
+@model IEnumerable<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Reporte de la edición";
+    Layout = null;
+    PLMUsers plm = new PLMUsers();
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<div align="center">
+    <img src="/Images/PLM-LogotipoAzul.png" width="200" align="right" />
+    <img src="/Images/logo.jpg" width="400" align="left" />
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="container center col-lg-10" align="center">
+    <h2>
+        Reporte de laboratorios de ANÁLISIS CLÍNICOS, LABORATORIOS DE, participantes de la edición @ViewData["Edición"]
+    </h2>
+</div>
+<br />
+<div class="container center col-lg-10" align="center">
+    <table class="table table-hover table-bordered">
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Módulo:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left"><strong>Producción</strong></div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="300" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Total de laboratorios:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["CountLabs"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+@{
+    var Error1 = ViewData["LabsNull"];
+    if (Error1 == "")
+    {
+        <div class="container text-danger" align="center">
+            <h2>No hay laboratorios de ANÁLISIS CLÍNICOS, LABORATORIOS DE, participando en la edición @ViewData["Edición"]</h2>
+        </div>
+    }
+    else
+    {
+        <div align="center"><h2>Laboratorios de ANÁLISIS CLÍNICOS, LABORATORIOS DE,</h2></div>
+        <div class="container center col-lg-10">
+            @foreach (var c in Model)
+            {
+                <br />
+                <div align="center"><h3>@c.Companies.CompanyName</h3></div>
+                <table class="table">
+                    <tr>
+                        @{
+                var _CompanyAddressess = (from _ca in db.CompanyAddresses
+                                          join _ad in db.Addresses
+                                          on _ca.AddressId equals _ad.AddressId
+                                          where _ca.CompanyId == c.Companies.CompanyId
+                                          select _ad).ToList();
+                foreach (var s in _CompanyAddressess)
+                {
+                    var _cities = (from _ci in db.Cities
+                                   where _ci.CityId == s.CityId
+                                   select _ci).ToList();
+                    foreach (var a in _cities)
+                    {
+                        var _States = (from _s in db.States
+                                       where _s.StateId == a.StateId
+                                       select _s).ToList();
+                        foreach (var b in _States)
+                        {
+                            var _Country = (from _c in db.Countries
+                                            where _c.CountryId == b.CountryId
+                                            select _c).ToList();
+                            foreach (var f in _Country)
+                            {
+                                <td>
+                                    <strong>
+                                        País:
+                                    </strong>@f.CountryName
+                                </td>
+                                <td>
+                                    <strong>
+                                        Estado:
+                                    </strong>@b.Name
+                                </td>
+                                <td colspan="2">
+                                    <strong>
+                                        Ciudad:
+                                    </strong>@a.Name
+                                </td>
+                            }
+                        }
+                    }
+                }
+                        }
+                    </tr>
+                    @{
+                var _CompanyAddres = (from _ca in db.CompanyAddresses
+                                      join _ad in db.Addresses
+                                      on _ca.AddressId equals _ad.AddressId
+                                      where _ca.CompanyId == c.Companies.CompanyId
+                                      select _ad).ToList();
+                foreach (var a in _CompanyAddres)
+                {
+                    <tr style="border:hidden">
+                        @{
+                    if (a.Address == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                Dirección:
+                            </strong>@a.Address
+                        </td>
+                    }
+                        }
+                        @{
+                    if (a.Suburb == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                Suburbio:
+                            </strong>@a.Suburb
+                        </td>
+                    }
+                        }
+                        @{
+                    if (a.Location == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                Delegación:
+                            </strong>@a.Location
+                        </td>
+                    }
+                        }
+                    </tr>
+                        <tr style="border:hidden">
+                            @{
+                    if (a.Ubication == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                Ubicación:
+                            </strong>@a.Ubication
+                        </td>
+                    }
+                            }
+                            @{
+                    if (a.ZipCode == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                Código postal:
+                            </strong>@a.ZipCode
+                        </td>
+                    }
+                            }
+                        </tr>
+                        <tr style="border:hidden">
+                            @{
+                    if (a.Email == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                E-mail:
+                            </strong>@a.Email
+                        </td>
+                    }
+                            }
+                            @{
+                    if (a.Web == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td>
+                            <strong>
+                                Web:
+                            </strong>@a.Web
+                        </td>
+                    }
+                            }
+                        </tr>
+                        <tr style="border:hidden">
+                            @{
+                    if (a.Contact == null)
+                    {
+
+                    }
+                    else
+                    {
+                        <td colspan="2">
+                            <strong>
+                                Contacto:
+                            </strong>@a.Contact
+                        </td>
+                    }
+                            }
+                        </tr>
+                        <tr style="border:hidden">
+                            @{
+                    var _CompanyPhoness = (from _c in db.Companies
+                                           join _cp in db.CompanyPhones
+                                           on _c.CompanyId equals _cp.CompanyId
+                                           join _pt in db.PhoneTypes
+                                           on _cp.PhoneTypeId equals _pt.PhoneTypeId
+                                           where _c.CompanyId == c.Companies.CompanyId
+                                           select new { _pt, _cp }).ToList();
+                    foreach (var ss in _CompanyPhoness)
+                    {
+                        <td>
+                            <strong>
+                                @ss._pt.Description
+                            </strong>@ss._cp.PhoneValue
+                        </td>
+                    }
+                            }
+                        </tr>
+                }
+                    }
+                </table>
+            }
+        </div>
+    }
+}

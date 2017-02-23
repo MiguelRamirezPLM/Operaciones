@@ -1,0 +1,24 @@
+﻿<script>
+    $(document).ready(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300,400,400italic,700' rel='stylesheet' type='text/css'>
+<link href="~/Styles/Productos.css" rel="stylesheet" />
+@{
+    ViewBag.Title = @ViewData["HtmlFile"];
+}
+<br />
+<br />
+<br />
+<br />
+@Html.Raw(ViewData["Line"].ToString())

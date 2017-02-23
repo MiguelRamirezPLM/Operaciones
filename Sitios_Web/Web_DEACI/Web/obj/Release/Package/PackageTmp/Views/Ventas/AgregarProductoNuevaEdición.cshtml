@@ -1,0 +1,111 @@
+﻿@{
+    SessionProductSections _Session = (SessionProductSections)Session["SessionProductSections"];
+}
+@model Web.Models.ProductEditions
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#_AgregarEdiciónProducto").click(function () {
+            var _CompanyIdAddEditions = $("#_CompanyIdAddEditions").val();
+            var _ProductIdAddEditions = $("#_ProductIdAddEditions").val();
+            var _HtmlFileAddEditions = $("#_HtmlFileAddEditions").val();
+            var _HtmlContentAddEditions = $("#_HtmlContentAddEditions").val();
+            var _EditionIdAddEditions = $("#_EditionIdAddEditions").val();
+            if (_ProductIdAddEditions == "Seleccione..." && _EditionIdAddEditions == "Seleccione...") {
+                swal("¡Atención!", "¡Los campos marcados con * son obligatorios!", "error");
+            }
+            else if (_ProductIdAddEditions == "Seleccione...") {
+                swal("¡Atención!", "¡El campo 'Nombre del producto' no puede quedar vacio!", "error");
+            }
+            else if (_EditionIdAddEditions == "Seleccione...") {
+                swal("¡Atención!", "¡El campo 'Numero de edición' no puede quedar vacio!", "error");
+            }
+            else if (_ProductIdAddEditions != "Seleccione..." && _EditionIdAddEditions != "Seleccione...") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Ventas/AgregarProductoEdición",
+                    traditional: true,
+                    data: { CompanyId: _CompanyIdAddEditions, ProductId: _ProductIdAddEditions, HtmlFile: _HtmlFileAddEditions, HtmlContent: _HtmlContentAddEditions, EditionId: _EditionIdAddEditions },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Producto agregado a la edición!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            swal("¡Atención!", "¡El producto no puede participar en la edición seleccionada!", "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Agregar producto a edición</h1>
+                        </div>
+                        <div class="modal-body1">
+                            <div class="Nota btn-nav" align="right">
+                                Nota: Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                <br />
+                            </div>
+                            <br />
+                            <div class="Estilo7x btn-nav" align="left">
+                                Nombre del producto: <strong class="Estilo6">@ViewData["ProductName"]</strong>
+                                <input type="hidden" value="@_Session.ed" id="_ProductIdAddEditions" />
+                                <input type="hidden" value="@ViewData["CompanyId"]" id="_CompanyIdAddEditions" />
+                            </div>
+                            <br />
+                            <div class="Estilo7x btn-nav" align="left">
+                                Numero de edición: <strong class="Red">*</strong>
+                                <select id="_EditionIdAddEditions" class="form-control Estilo2x">
+                                    <option value="@null">Seleccione...</option>
+                                    @{
+    var _Editions = (from _ed in db.Editions
+                     select _ed).ToList();
+    foreach (var t in _Editions)
+    {
+        <option value="@t.EditionId"> @t.NumberEdition</option>
+    }
+                                    }
+                                </select>
+                            </div>
+                            <br />
+                            <div class="Estilo7x btn-nav" align="left">
+                                Archivo Html:
+                                <input class="form-control" type="text" id="_HtmlFileAddEditions" />
+                            </div>
+                            <br />
+                            <div class="Estilo7x btn-nav" align="left">
+                                Contenido Html:
+                                <textarea class="form-control" id="_HtmlContentAddEditions"></textarea>
+                            </div>
+                            <br />
+                        </div>
+                        <input type="button" value="Guardar" class="btn btn-success Estilo2x" id="_AgregarEdiciónProducto">
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

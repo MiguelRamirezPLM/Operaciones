@@ -18,6 +18,7 @@ namespace Web.Models
         public int ApplicationId { get; set; }
         public int UserId { get; set; }
         public System.DateTime Date { get; set; }
+    
         public virtual Applications Applications { get; set; }
         public virtual Users Users { get; set; }
     }

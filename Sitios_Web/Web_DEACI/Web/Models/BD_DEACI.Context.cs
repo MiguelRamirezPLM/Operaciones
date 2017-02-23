@@ -12,6 +12,8 @@ namespace Web.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class DEACI_20150917Entities : DbContext
     {
@@ -30,7 +32,6 @@ namespace Web.Models
         public virtual DbSet<Books> Books { get; set; }
         public virtual DbSet<Brands> Brands { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
-        public virtual DbSet<Companies> Companies { get; set; }
         public virtual DbSet<CompanyBrands> CompanyBrands { get; set; }
         public virtual DbSet<CompanyEditions> CompanyEditions { get; set; }
         public virtual DbSet<CompanyPhones> CompanyPhones { get; set; }
@@ -50,5 +51,108 @@ namespace Web.Models
         public virtual DbSet<CompanyBrandIndexes> CompanyBrandIndexes { get; set; }
         public virtual DbSet<CompanyBrandSections> CompanyBrandSections { get; set; }
         public virtual DbSet<CompanyBrandEditions> CompanyBrandEditions { get; set; }
+        public virtual DbSet<Companies> Companies { get; set; }
+        public virtual DbSet<Addresses> Addresses { get; set; }
+        public virtual DbSet<CompanyAddresses> CompanyAddresses { get; set; }
+        public virtual DbSet<EditionCompanySectionAdvers> EditionCompanySectionAdvers { get; set; }
+        public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<CompanyDistributions> CompanyDistributions { get; set; }
+        public virtual DbSet<EditionCompanyDistributions> EditionCompanyDistributions { get; set; }
+    
+        public virtual ObjectResult<plm_spGetCompaniesByEditionIdByCompanyTypeId_Result> plm_spGetCompaniesByEditionIdByCompanyTypeId(Nullable<int> editionId, Nullable<int> companyTypeId)
+        {
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            var companyTypeIdParameter = companyTypeId.HasValue ?
+                new ObjectParameter("CompanyTypeId", companyTypeId) :
+                new ObjectParameter("CompanyTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<plm_spGetCompaniesByEditionIdByCompanyTypeId_Result>("plm_spGetCompaniesByEditionIdByCompanyTypeId", editionIdParameter, companyTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<plm_spGetProductsBySectionsByCompaniesByEdition_Result> plm_spGetProductsBySectionsByCompaniesByEdition(Nullable<int> editionId, Nullable<int> companyId)
+        {
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<plm_spGetProductsBySectionsByCompaniesByEdition_Result>("plm_spGetProductsBySectionsByCompaniesByEdition", editionIdParameter, companyIdParameter);
+        }
+    
+        public virtual ObjectResult<plm_spGetProductsBySectionsByEdition_Result> plm_spGetProductsBySectionsByEdition(Nullable<int> editionId)
+        {
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<plm_spGetProductsBySectionsByEdition_Result>("plm_spGetProductsBySectionsByEdition", editionIdParameter);
+        }
+    
+        public virtual ObjectResult<plm_spGetProductsBySectionsByCompaniesByEditionS_Result> plm_spGetProductsBySectionsByCompaniesByEditionS(Nullable<int> editionId, Nullable<int> companyId)
+        {
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<plm_spGetProductsBySectionsByCompaniesByEditionS_Result>("plm_spGetProductsBySectionsByCompaniesByEditionS", editionIdParameter, companyIdParameter);
+        }
+    
+        public virtual ObjectResult<plm_spGetProductsBySectionsByEditionS_Result> plm_spGetProductsBySectionsByEditionS(Nullable<int> editionId)
+        {
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<plm_spGetProductsBySectionsByEditionS_Result>("plm_spGetProductsBySectionsByEditionS", editionIdParameter);
+        }
+    
+        public virtual ObjectResult<plm_spGetCompaniesGropupBy_Result> plm_spGetCompaniesGropupBy()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<plm_spGetCompaniesGropupBy_Result>("plm_spGetCompaniesGropupBy");
+        }
+    
+        public virtual int plm_spInsertLabsByLastEditions(Nullable<int> lastEditionId, Nullable<int> editionId, Nullable<byte> companyTypeId)
+        {
+            var lastEditionIdParameter = lastEditionId.HasValue ?
+                new ObjectParameter("LastEditionId", lastEditionId) :
+                new ObjectParameter("LastEditionId", typeof(int));
+    
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            var companyTypeIdParameter = companyTypeId.HasValue ?
+                new ObjectParameter("CompanyTypeId", companyTypeId) :
+                new ObjectParameter("CompanyTypeId", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("plm_spInsertLabsByLastEditions", lastEditionIdParameter, editionIdParameter, companyTypeIdParameter);
+        }
+    
+        public virtual int plm_spInsertLastInformationByEditionClient(Nullable<int> lastEditionId, Nullable<int> editionId, Nullable<int> companyId)
+        {
+            var lastEditionIdParameter = lastEditionId.HasValue ?
+                new ObjectParameter("LastEditionId", lastEditionId) :
+                new ObjectParameter("LastEditionId", typeof(int));
+    
+            var editionIdParameter = editionId.HasValue ?
+                new ObjectParameter("EditionId", editionId) :
+                new ObjectParameter("EditionId", typeof(int));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("plm_spInsertLastInformationByEditionClient", lastEditionIdParameter, editionIdParameter, companyIdParameter);
+        }
     }
 }

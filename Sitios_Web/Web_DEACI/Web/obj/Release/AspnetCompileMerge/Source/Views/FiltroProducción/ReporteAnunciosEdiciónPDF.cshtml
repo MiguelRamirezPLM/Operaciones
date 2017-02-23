@@ -1,0 +1,159 @@
+﻿<link href="~/Styles/Ventas_Clientes.css" rel="stylesheet" />
+<title>DEACI | Reporte de anuncios de la edición @ViewData["Edición"]</title>
+<link href="~/Styles/Ventas_Clientes.css" rel="stylesheet" />
+<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+<link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+<link href="~/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/DEACI_Login.css" rel="stylesheet" />
+<link href="~/Styles/Animaci%c3%b3n.css" rel="stylesheet" />
+@model IEnumerable<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Reporte de anuncios por edición";
+    Layout = null;
+    PLMUsers plm = new PLMUsers();
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<div align="center">
+    <img src="/Images/PLM-LogotipoAzul.png" width="200" align="right" />
+    <img src="/Images/logo.jpg" width="400" align="left" />
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="container center col-lg-10" align="center">
+    <h2>
+        Reporte de anuncios de la edición @ViewData["Edición"]
+    </h2>
+</div>
+<br />
+<div class="container center col-lg-10" align="center">
+    <table class="table table-hover table-bordered">
+        <tr class="btn-nav">
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Módulo:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left"><strong>Producción</strong></div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="btn-nav">
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Total de anuncios:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["CountAdversEdition"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+@{
+    var Error1 = ViewData["CompanyNull"];
+    if (Error1 == "")
+    {
+        <div class="container text-danger" align="center">
+            <h2>No hay anuncios participando en la edición @ViewData["Edición"]</h2>
+        </div>
+    }
+    else
+    {
+        <div align="center"><h2>Anuncios</h2></div>
+        <br />
+        <div class="container center col-lg-10">
+            @foreach (var c in Model)
+            {
+                <br />
+                <div>
+                    <h4>
+                        <strong>
+                            Nombre del cliente:
+                        </strong>
+                        @c.Companies.CompanyName
+                    </h4>
+                </div>
+                <div>
+                    <h4>
+                        <strong>
+                            Sección:
+                        </strong>
+                        @{
+                var _SectionName = (from _s in db.Sections
+                                    where _s.SectionId == c.EditionCompanySectionAdvers.SectionId
+                                    select _s).ToList();
+                foreach (var Description in _SectionName)
+                {
+                    @Description.Description
+                }
+                        }
+                    </h4>
+                </div>
+                <div>
+                    <h4>
+                        <strong>
+                            Anuncio:
+                        </strong>
+                        @c.EditionCompanySectionAdvers.AdverFile
+                    </h4>
+                </div>
+                <div>
+                    <h4>
+                        <strong>
+                            Espacio contratado:
+                        </strong>
+                        @c.EditionCompanySectionAdvers.HiredSpace
+                    </h4>
+                </div>
+            }
+        </div>
+    }
+}

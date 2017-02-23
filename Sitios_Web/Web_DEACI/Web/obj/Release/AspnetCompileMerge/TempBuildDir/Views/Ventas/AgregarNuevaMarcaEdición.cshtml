@@ -1,0 +1,102 @@
+﻿@{
+    SessionBrandId _Session = (SessionBrandId)Session["SessionBrandId"];
+}
+@model Web.Models.CompanyBrandEditions
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#_AgregarEdiciónMarca").click(function () {
+            var _EditionIdAdd = $("#_EditionIdd").val();
+            var _BrandIdAdd = $("#_BrandIdAdd").val();
+            var _CompanyIdAdd = $("#_CompanyIdAdd").val();
+            if (_EditionIdAdd == "Seleccione..." && _BrandIdAdd == "Seleccione...") {
+                swal("¡Atención!", "¡Los campos marcados son * son obligatorios!", "error");
+            }
+            else if (_EditionIdAdd != "Seleccione..." && _BrandIdAdd != "Seleccione...") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Ventas/AgregarMarcaEdición",
+                    traditional: true,
+                    data: { _EditionId: _EditionIdAdd, _CompanyId: _CompanyIdAdd, _BrandId: _BrandIdAdd },
+                    success: function (data) {
+                        if (data == false) {
+                            swal("¡Atención!", "¡La marca no puede participar en la edición seleccionada!", "error");
+                        }
+                        else if (data == true) {
+                            swal("¡Cambios gudardados!", "", "success");
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                    }
+                });
+            }
+            else if (_EditionIdAdd == "Seleccione...") {
+                swal("¡Atención!", "¡El campo número de edición no puede quedar vacio!", "error");
+            }
+            else if (_BrandIdAdd == "Seleccione...") {
+                swal("¡Atención!", "¡El campo nombre de la marca no puede quedar vacio!", "error");
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Agregar marca a edición</h1>
+                        </div>
+                        <br />
+                        <div class="modal-body1">
+                            <div class="Nota btn-nav" align="right">
+                                Nota: Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                <br />
+                            </div>
+                            <br />
+                            <div class="Estilo7x btn-nav" align="left">
+                                Nombre de la marca: <strong class="Estilo6">@ViewData["BrandName"]</strong>
+                                <input type="hidden" value="@_Session.ed" id="_BrandIdAdd" />
+                                <input type="hidden" value="@_Session.id" id="_CompanyIdAdd" />
+                            </div>
+                            <br />
+                            <div class="Estilo7x btn-nav" align="left">
+                                Numero de edición: <strong class="Red">*</strong>
+                                <select id="_EditionIdd" class="form-control Estilo2x">
+                                    <option value="@null">Seleccione...</option>
+                                    @{
+    var _Editions = (from _ed in db.Editions
+                     select _ed).ToList();
+    foreach (var t in _Editions)
+    {
+                    <option value="@t.EditionId"> @t.NumberEdition</option>
+    }
+                                    }
+                                </select>
+                                <input type="hidden" value="@ViewData["CompanyId"]" id="_CompanyIdAdd" />
+                                <input type="hidden" value="@_Session.id" id="_EditionIdAddBrand" />
+                            </div>
+                        </div>
+                        <br />
+                        <input type="button" value="Guardar" class="btn btn-success Estilo2x" id="_AgregarEdiciónMarca">
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

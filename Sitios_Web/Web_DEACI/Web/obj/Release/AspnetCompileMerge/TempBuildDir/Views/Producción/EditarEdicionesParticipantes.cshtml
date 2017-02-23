@@ -1,0 +1,201 @@
+﻿@model Web.Models.CompanyEditions
+@{
+    Layout = null;
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("._EditarEdiciónCliente").click(function () {
+            swal("¡Cambios guardados!", "", "success")
+        });
+    });
+</script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <style>
+        .image-preview-input {
+            position: relative;
+            overflow: hidden;
+            margin: 0px;
+            color: #333;
+            background-color: #fff;
+            border-color: #ccc;
+        }
+
+            .image-preview-input input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+
+        .image-preview-input-title {
+            margin-left: 2px;
+        }
+    </style>
+    <script>
+        $(document).on('click', '#close-preview', function () {
+            $('.image-preview').popover('hide');
+            // Hover befor close the preview
+            $('.image-preview').hover(
+                function () {
+                    $('.image-preview').popover('show');
+                },
+                 function () {
+                     $('.image-preview').popover('hide');
+                 }
+            );
+        });
+
+        $(function () {
+            // Create the close button
+            var closebtn = $('<button/>', {
+                type: "button",
+                text: 'x',
+                id: 'close-preview',
+                style: 'font-size: initial;',
+            });
+            closebtn.attr("class", "close pull-right");
+            // Set the popover default content
+            $('.image-preview').popover({
+                trigger: 'manual',
+                html: true,
+                title: "<strong>Archivo HTML</strong>" + $(closebtn)[0].outerHTML,
+                content: "No ha seleccionado algun archivo",
+                placement: 'bottom'
+            });
+            // Clear event
+            $('.image-preview-clear').click(function () {
+                $('.image-preview').attr("data-content", "").popover('hide');
+                $('.image-preview-filename').val("");
+                $('.image-preview-clear').hide();
+                $('.image-preview-input input:file').val("");
+                $(".image-preview-input-title").text("Seleccione el archivo...");
+            });
+            // Create the preview image
+            $(".image-preview-input input:file").change(function () {
+                var img = $('<inframe/>', {
+                    id: 'dynamic',
+                    width: 250,
+                    height: 200
+                });
+                var file = this.files[0];
+                var reader = new FileReader();
+                // Set preview image into the popover data-content
+                reader.onload = function (e) {
+                    $(".image-preview-input-title").text("Cambiar");
+                    $(".image-preview-clear").show();
+                    $(".image-preview-filename").val(file.name);
+                    img.attr('src', e.target.result);
+                    $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Editar edición participante</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <div class="Nota btn-nav">
+                                            <div class="Nota btn-nav" align="left">
+                                                Edición: <strong class="Estilo6">
+                                                    @ViewData["EdiciónParticipante"]
+                                                    @Html.ValidationMessageFor(model => model.EditionId)
+                                                </strong>
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        @{
+    var _HTMLNULL = ViewData["FileNull"];
+    if (_HTMLNULL == "")
+    {
+        <div class="Nota">
+            <div class="Nota btn-nav" align="left">
+                ¡No hay archivo <strong class="Red">HTML</strong>!
+            </div>
+            <br />
+        </div>
+    }
+    else
+    {
+
+            <div class="Nota">
+                <div class="Nota btn-nav" align="left">
+                    <div class="Estilo4">Contendio: <a href="/Producción/HTML/@Model.EditionId/@Model.CompanyId" target="_blank">@Model.HtmlFile</a></div> <input hidden value="@Model.HtmlFile" id="HtmlFile" name="HtmlFile" />
+                </div>
+                <br />
+                <div class="Estilo4">
+                    ¡Ya existe un archivo HTML, si agrega otro se <strong class="Estilo6">reemplazara el existente</strong>!
+                </div>
+                <br />
+            </div>
+    }
+                                        }
+                                        <div>
+                                            <div class="Nota btn-nav" align="left">
+                                                Archivo HTML:
+                                                <br />
+                                            </div>
+                                            <div class="input-group image-preview">
+                                                <input type="text" class="form-control image-preview-filename" disabled="disabled">
+                                                <span class="input-group-btn">
+                                                    <button1 type="button" class="btn btn-danger image-preview-clear" style="display:none;">
+                                                        <span class="glyphicon glyphicon-remove"></span> Cancelar
+                                                    </button1>
+                                                    <div class="btn btn-default image-preview-input">
+                                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                                        <span class="image-preview-input-title">Seleccione el archivo...</span>
+                                                        <input type="file" name="File" id="File" />
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+
+                                        <br />
+                                        <div class="Nota btn-nav">
+                                            @Html.ValidationMessageFor(model => model.HtmlContent)
+                                            <input type="hidden" value="@Model.EditionId" name="EditionId" id="EditionId"/>
+                                            <input type="hidden" value="@Model.CompanyId" name="CompanyId" id="CompanyId"/>
+                                            <input type="hidden" value="@Model.HtmlContent" name="HtmlContent" id="HtmlContent"/>
+                                            <input type="hidden" value="@Model.CompanyTypeId" name="CompanyTypeId" id="CompanyTypeId"/>
+                                            <input type="hidden" value="@Model.CloseClient" name="CloseClient" id="CloseClient"/>
+                                            <input type="hidden" value="@Model.Page" name="Page" id="Page"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <input type="submit" value="Guardar" class="btn btn-success Estilo2x _EditarEdiciónCliente" />
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

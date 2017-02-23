@@ -14,8 +14,17 @@ namespace Web.Models
     
     public partial class Operations
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Operations()
+        {
+            this.OperationRoles = new HashSet<OperationRoles>();
+        }
+    
         public int OperationId { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OperationRoles> OperationRoles { get; set; }
     }
 }

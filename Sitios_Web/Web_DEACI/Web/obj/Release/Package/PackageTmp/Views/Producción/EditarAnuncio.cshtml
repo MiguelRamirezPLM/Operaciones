@@ -1,0 +1,231 @@
+﻿@*<script>
+        $(document).ready(function () {
+            $("._ModificarAnuncio").click(function () {
+                var _AdvIdChanges = $("#_AdvIdChanges").val();
+                var _HiredSpaceChanges = $("#_HiredSpaceChanges").val();
+                var _AdvFile = $("#_AdvFile").val();
+                var _AdNameChanges = $("#_AdNameChanges").val();
+                if (_HiredSpaceChanges.trim() == false && _AdName.trim() == false) {
+                    swal("¡Atención!", "¡Los campos marcados con * no pueden quedar vacios!", "error");
+                }
+                else if (_HiredSpaceChanges.trim() == false) {
+                    swal("¡Atención!", "¡El campo 'Espacio contratado' no puede quedar vacio!", "error");
+                }
+                else if (_AdNameChanges.trim() == false) {
+                    swal("¡Atención!", "¡El campo 'Nombre del anuncio' no puede quedar vacio!", "error");
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/Producción/ModificarAnuncio",
+                        traditional: true,
+                        data: { AdvId: _AdvIdChanges, HiredSpace: _HiredSpaceChanges, Archivo: _AdvFile, AdName: _AdNameChanges },
+                        success: function (data) {
+                            if (data == true) {
+                                swal("¡Cambios guardados!", "", "success")
+                                setTimeout(function () { location.reload(1); }, 300);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>*@
+<script>
+    $(document).ready(function () {
+        $("._CambiosGuardados").click(function () {
+            swal("¡Cambios guardados!", "", "success")
+        });
+    });
+</script>
+@model Web.Models.EditionCompanySectionAdvers
+@{
+    Layout = null;
+}
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <style>
+        .image-preview-input {
+            position: relative;
+            overflow: hidden;
+            margin: 0px;
+            color: #333;
+            background-color: #fff;
+            border-color: #ccc;
+        }
+
+            .image-preview-input input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+
+        .image-preview-input-title {
+            margin-left: 2px;
+        }
+    </style>
+    <script>
+        $(document).on('click', '#close-preview', function () {
+            $('.image-preview').popover('hide');
+            // Hover befor close the preview
+            $('.image-preview').hover(
+                function () {
+                    $('.image-preview').popover('show');
+                },
+                 function () {
+                     $('.image-preview').popover('hide');
+                 }
+            );
+        });
+
+        $(function () {
+            // Create the close button
+            var closebtn = $('<button/>', {
+                type: "button",
+                text: 'x',
+                id: 'close-preview',
+                style: 'font-size: initial;',
+            });
+            closebtn.attr("class", "close pull-right");
+            // Set the popover default content
+            $('.image-preview').popover({
+                trigger: 'manual',
+                html: true,
+                title: "<strong>Imagen</strong>" + $(closebtn)[0].outerHTML,
+                content: "No ha seleccionado alguna imagen",
+                placement: 'bottom'
+            });
+            // Clear event
+            $('.image-preview-clear').click(function () {
+                $('.image-preview').attr("data-content", "").popover('hide');
+                $('.image-preview-filename').val("");
+                $('.image-preview-clear').hide();
+                $('.image-preview-input input:file').val("");
+                $(".image-preview-input-title").text("Seleccione el archivo...");
+            });
+            // Create the preview image
+            $(".image-preview-input input:file").change(function () {
+                var img = $('<img/>', {
+                    id: 'dynamic',
+                    width: 250,
+                    height: 200
+                });
+                var file = this.files[0];
+                var reader = new FileReader();
+                // Set preview image into the popover data-content
+                reader.onload = function (e) {
+                    $(".image-preview-input-title").text("Cambiar");
+                    $(".image-preview-clear").show();
+                    $(".image-preview-filename").val(file.name);
+                    img.attr('src', e.target.result);
+                    $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Editar anuncio</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <br />
+                                        <div class="Nota btn-nav" align="right">
+                                            Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                            <br />
+                                        </div>
+                                        <div class="Nota btn-nav">
+                                            <div class="Nota btn-nav" align="left">
+                                                Espacio contratado: <strong class="Estilo6">@Model.HiredSpace</strong>
+                                                <br />
+                                            </div>
+                                            <input type="hidden" name="EditionCompanySectionAdverId" id="EditionCompanySectionAdverId" value="@Model.EditionCompanySectionAdverId" />
+                                            <input type="hidden" name="CompanyId" id="CompanyId" value="@Model.CompanyId" />
+                                            <input type="hidden" name="EditionId" id="EditionId" value="@Model.EditionId" />
+                                            <input type="hidden" name="SectionId" id="SectionId" value="@Model.SectionId" />
+                                            <input type="hidden" name="AdverFile" id="AdverFile" value="@Model.AdverFile" />
+                                            <input type="hidden" name="BaseURL" id="BaseURL" value="@Model.BaseURL" />
+                                            <input type="hidden" name="HiredSpace" id="HiredSpace" value="@Model.HiredSpace" />
+                                            <br />
+                                        </div>
+                                        @{
+    var _Error = ViewData["FileNull"];
+    if (_Error != "")
+    {
+                                    <div class="Nota">
+                                        <div class="Nota" align="left">
+                                            @{
+        var imageName = "";
+        imageName = @Model.AdverFile;
+        string fullPath_DEACI = Request.MapPath("/Anuncios/DEACI_" + @Model.CompanyEditions.Editions.NumberEdition + "/" + imageName);
+                                    <h4> Anuncio: <a target="_blank" href="/Anuncios/DEACI_@Model.CompanyEditions.Editions.NumberEdition/@Model.AdverFile" class="Estilo6"> @Model.AdverFile </a></h4>
+                                            }
+                                        </div>
+                                        <br />
+                                        <div class="Estilo4">
+                                            ¡Ya existe un anuncio, si agrega otro se <strong class="Estilo6">reemplazara el anuncio existente</strong>!
+                                        </div>
+                                    </div>
+                                            <br />
+    }
+    else
+    {
+                                    <div class="Nota">
+                                        <div class="Estilo4">
+                                            ¡No hay anuncios asociados para esta sección, <strong class="Red">cargue un anuncio por favor</strong>!
+                                        </div>
+                                    </div>
+                                            <br />
+    }
+                                        }
+                                        <div>
+                                            <div class="input-group image-preview">
+                                                <input type="text" class="form-control image-preview-filename" disabled="disabled">
+                                                <span class="input-group-btn">
+                                                    <button1 type="button" class="btn btn-danger image-preview-clear" style="display:none;">
+                                                        <span class="glyphicon glyphicon-remove"></span> Cancelar
+                                                    </button1>
+                                                    <div class="btn btn-default image-preview-input">
+                                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                                        <span class="image-preview-input-title">Seleccione el archivo...</span>
+                                                        <input type="file" accept="image/png, image/jpeg, image/gif" name="File" id="File" />
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" value="Guardar" class="btn btn-success _CambiosGuardados"/>
+                            <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav" data-dismiss="modal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

@@ -1,0 +1,100 @@
+﻿
+@model Web.Models.CompanySections
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("._AgregarClienteSección").click(function () {
+            var _SectionId = $("#_SectionId").val();
+            var _CompanyId = $("#_CompanyId").val();
+            if (_SectionId == "Seleccione...") {
+                swal("¡Atención!", "¡El campo 'Nombre de la sección' no puede quedar vacio!", "error");
+            }
+            else if (_SectionId != "Seleccione...") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Producción/AgregarClienteSección",
+                    traditional: true,
+                    data: { SectionId: _SectionId, CompanyId: _CompanyId },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Cliente asociado a la sección!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            swal("¡Atención!", "¡El cliente ya está asociado a la sección seleccionada!", "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Agregar cliente a sección</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <div class="Nota btn-nav" align="right">
+                                            <img src="/Images/Sección.png" style="float:left; width:20%; height:20%;" class="img-circle" />
+                                            Nota: Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav" align="left">
+                                            Nombre del cliente: <strong class="Estilo6">
+                                                @ViewData["CompanyName"]
+                                                <input type="hidden" value="@ViewData["CompanyId"]" id="_CompanyId" />
+                                            </strong>
+                                            <br />
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav">
+                                            <div class="Estilo7x btn-nav" align="left">
+                                                Nombre de la sección: <strong class="Red">*</strong>
+                                                <select id="_SectionId" class="form-control Estilo2x">
+                                                    <option value="@null">Seleccione...</option>
+                                                    @{
+    var _Sections = (from _s in db.Sections
+                     orderby _s.Description
+                     select _s).ToList();
+    foreach (var t in _Sections)
+    {
+        <option value="@t.SectionId"> @t.Description</option>
+    }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" value="Guardar" class="btn btn-success Estilo2x _AgregarClienteSección" />
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

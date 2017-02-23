@@ -13,28 +13,25 @@ namespace Web.Controllers
         ApplicationUsers ApplicationUsers = new ApplicationUsers();
         Applications Applications = new Applications();
         Web.Models.Roles Roles = new Web.Models.Roles();
-        private PLMUsers_20111213Entities2 db = new PLMUsers_20111213Entities2();
+        private PLMUsers db = new PLMUsers();
         Functions Functions = new Functions();
-
         public ActionResult Index()
         {
             return View();
         }
-
         [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
-        public ActionResult Login(Models.Users user, ActivitySessions ActivitySessions, Models.UserCountries UserCountries1, Models.Countries Country)
+        public ActionResult Login(Models.Users user, ActivitySessions ActivitySessions, Models.UserCountries UserCountries1, Models.Countries_Users Country)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (user.IsValid(user.NickName, user.Password))
+                    if (user.Validación(user.NickName, user.Password))
                     {
                         FormsAuthentication.SetAuthCookie(user.NickName, user.Active = true);
                         if (user.ApplicationsUsers.UserId == user.UserId)
@@ -64,18 +61,17 @@ namespace Web.Controllers
                     {
                         if (user.Applications.ApplicationId != user.ApplicationsUsers.ApplicationId)
                         {
-                            ModelState.AddModelError("", "Debe tener autorización para ingersar al sistema");
+                            ViewData["Error"] = "Debe tener autorización para ingersar al sistema";
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Ingrese los datos correctamente");
+                            ViewData["Error"] = "Ingrese los datos correctamente";
                         }
                     }
                 }
             }
-            catch
-            {
-            }
+            catch(Exception e)
+            { }
             return View(user);
         }
         public ActionResult Logout()
@@ -84,12 +80,10 @@ namespace Web.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Login");
         }
-
-        public void UserCont(Models.Users user, Models.UserCountries UserCountries1, Models.Countries Country)
+        public void UserCont(Models.Users user, Models.UserCountries UserCountries1, Models.Countries_Users Country)
         {
             Functions function = new Functions();
             function.Countries(user);
-
             int userId = user.UserId;
             int countryId = function.Ucountries.CountryId;
             int ApplicationId = user.ApplicationsUsers.ApplicationId;
@@ -98,12 +92,10 @@ namespace Web.Controllers
             List<int> country = new List<int>();
             foreach (Countries ce in list)
             {
-
                 var.Add(ce.ID);
                 CountriesUsers c = new CountriesUsers(country, var, ApplicationId, userId);
                 Session["CountriesUsers"] = c;
             }
-
             foreach (Countries cu in list)
             {
                 country.Add(cu.CountryId);

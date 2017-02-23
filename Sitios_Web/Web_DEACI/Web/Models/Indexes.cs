@@ -18,6 +18,7 @@ namespace Web.Models
         public Indexes()
         {
             this.CompanyBrandIndexes = new HashSet<CompanyBrandIndexes>();
+            this.ProductIndexes = new HashSet<ProductIndexes>();
         }
     
         public byte IndexId { get; set; }
@@ -26,5 +27,7 @@ namespace Web.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyBrandIndexes> CompanyBrandIndexes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProductIndexes> ProductIndexes { get; set; }
     }
 }

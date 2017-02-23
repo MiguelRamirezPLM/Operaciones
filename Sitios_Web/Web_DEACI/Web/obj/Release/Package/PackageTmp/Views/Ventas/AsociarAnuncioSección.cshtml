@@ -1,0 +1,247 @@
+﻿@{
+    SessionCompanyEditions _Session = (SessionCompanyEditions)Session["SessionCompanyEditions"];
+}
+@using Web.Models;
+@{
+    Layout = null;
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+}
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".Anuncio_Participante").click(function () {
+                var tr = $(this).parents("tr:first");
+                if (tr.find(".Anuncio_Participante").is(':checked')) {
+                    var _EditionCompanySectionAdverIdAdd = $(this).attr("Id");
+                    var _CompanyId = $("#_CompanyId").val();
+                    var _SectionId = $("#_SectionId").val();
+                    var _EditionId = $("#_EditionId").val();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/Ventas/AgregarAnuncioEdición",
+                        traditional: true,
+                        data: { EditionCompanySectionAdverId: _EditionCompanySectionAdverIdAdd, EditionId: _EditionId, SectionId: _SectionId, CompanyId: _CompanyId },
+                        success: function (data) {
+                            if (data == true) {
+                                swal("¡Anuncio asociado!", "", "success");
+                                setTimeout(function () { location.reload(1); }, 300);
+                            }
+                            else {
+                                swal({
+                                    title: "¡Atención!",
+                                    text: "¡El anuncio no puede participar en esta edición!",
+                                    type: "warning",
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Aceptar",
+                                    closeOnConfirm: false,
+                                }, function () {
+                                    setTimeout(function () { location.reload(1); }, 1);
+                                })
+                            }
+                        }
+                    });
+                }
+                else if (tr.find(".Anuncio_Participante").is(":not(:checked)")) {
+                    var _EditionCompanySectionAdverIdAdd = $(this).attr("Id");
+                    var _CompanyId = $("#_CompanyId").val();
+                    var _SectionId = $("#_SectionId").val();
+                    var _EditionId = $("#_EditionId").val();
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/Ventas/EliminarAnuncioEdición",
+                        traditional: true,
+                        data: { EditionCompanySectionAdverId: _EditionCompanySectionAdverIdAdd, EditionId: _EditionId, SectionId: _SectionId, CompanyId: _CompanyId },
+                        success: function (data) {
+                            if (data == true) {
+                                swal("¡Anuncio desasociado!", "", "success");
+                                setTimeout(function () { location.reload(1); }, 300);
+                            }
+                            else {
+                                setTimeout(function () { location.reload(1); }, 1);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@using (Html.BeginForm())
+{
+    <div class="modal-body1 Estilo2x">
+        <br />
+        <div>
+            <div class="panel panel-warning">
+                <div class="panel-body">
+                    <div>
+                        <div class="modal-header Estilo7 btn-nav" align="center">
+                            <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Asociar anuncio existente</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <br />
+                                    <div class="modal-body1">
+                                        <div class="Nota btn-nav" align="right">
+                                            <img src="/Images/Sección.png" style="float:left; width:20%; height:20%;" class="img-circle" />
+                                            Nota: Solamente de click en el recuadro para que pueda asociar el <strong class="Red">anuncio</strong>.
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav" align="left">
+                                            Nombre del cliente: <strong class="Estilo6">
+                                                @{
+    var _CompanyName = (from _c in db.Companies
+                        where _c.CompanyId == _Session.ed
+                        select _c).ToList();
+    foreach (var a in _CompanyName)
+    {
+                                @a.CompanyName
+    }
+                                                }
+                                            </strong>
+                                        </div>
+                                        <br />
+                                        <div class="Nota btn-nav" align="left">
+                                            Sección: <strong class="Estilo6">
+                                                @{
+    var _SectionName = (from _s in db.Sections
+                        where _s.SectionId == _Session._CompanyTypeId
+                        select _s).ToList();
+    foreach (var r in _SectionName)
+    {
+                                @r.Description
+    }
+                                                }
+                                            </strong>
+                                            <br />
+                                        </div>
+                                        <br />
+
+                                                @{
+    var _ValueAdver = (from _ade in db.EditionCompanySectionAdvers
+                       where _ade.CompanyId == _Session.ed
+                       select _ade).ToList();
+    if (_ValueAdver.LongCount() == 0)
+    {
+         <div class="Red Estilo7">
+            No hay anuncios para asociar
+          </div>
+    }
+    else
+    {
+        int _CompanyId = _Session.ed;
+        int _EditionId = _Session.id;
+        var _AdverEditions = (from _eda in db.EditionCompanySectionAdvers
+                              join _c in db.Companies
+                              on _eda.CompanyId equals _c.CompanyId
+                              where _eda.CompanyId == _Session.ed
+                              && _eda.EditionId != _Session.id
+                              select new { _eda, _c }).ToList();
+        foreach (var _cc in _AdverEditions)
+        {
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td width="250" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Participo en:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">DEACI @_cc._eda.CompanyEditions.Editions.NumberEdition</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="250" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Anuncio:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">
+                                @if (_cc._eda.AdverFile != null)
+                                {
+                                    var imageName = "";
+                                    imageName = _cc._eda.AdverFile;
+                                    string fullPath_DEACI = Request.MapPath("/Anuncios/DEACI_" + _cc._eda.CompanyEditions.Editions.NumberEdition + "/" + imageName);
+                                    if (System.IO.File.Exists(fullPath_DEACI))
+                                    {
+                                        <a target="_blank" href="/Anuncios/DEACI_@_cc._eda.CompanyEditions.Editions.NumberEdition/@_cc._eda.AdverFile" class="Estilo6"> @_cc._eda.AdverFile </a>
+                                    }
+                                    else
+                                    {
+                                        <strong class="Red">@_cc._eda.AdverFile</strong>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="250" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Participante:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left" class="Estilo4 btn-nav">
+                                Participante en la edición:
+                                @{
+                                var _Adver = (from _ad in db.EditionCompanySectionAdvers
+                                              where _ad.CompanyId == _Session.ed
+                                              select _ad).ToList();
+                                bool _Checado = false;
+                                foreach (EditionCompanySectionAdvers _EditionCompanySectionAdvers in _Adver)
+                                {
+                                    if (_Session.id == _EditionCompanySectionAdvers.EditionId)
+                                    {
+                                        _Checado = true;
+                                    }
+                                }
+                                }
+                                <input hidden id="_EditionId" value="@_Session.id" />
+                                <input hidden id="_SectionId" value="@_Session._CompanyTypeId" />
+                                <input hidden id="_CompanyId" value="@_Session.ed" />
+                                <strong class="Estilo6">@ViewData["Edición"]</strong>
+                                <input type="checkbox" id="@_cc._eda.EditionCompanySectionAdverId" value="@_cc._eda.EditionCompanySectionAdverId" name="EditionCompanySectionAdverId" class="Anuncio_Participante" checked="@_Checado">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="250" align="center" class="warning Estilo4 btn-nav">
+                        <div>
+                            <div align="right">Espacio contratado:</div>
+                        </div>
+                    </td>
+                    <td width="950" align="center" class=" Estilo4 btn-nav">
+                        <div>
+                            <div align="left">@_cc._eda.HiredSpace</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+                                                    <br />
+        }
+    }
+
+}
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

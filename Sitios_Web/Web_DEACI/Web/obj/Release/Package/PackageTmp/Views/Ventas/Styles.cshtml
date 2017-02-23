@@ -1,0 +1,1240 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<style>
+    /*<--- Estilos (ACTUALIZADOS) DEACI 29 en adelante --->*/
+    /*<-- Incluir en el HTML: <link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300,400,400italic,700' rel='stylesheet' type='text/css'> -->*/
+
+    body {
+        background-color: White;
+        margin-left: 45px;
+        margin-right: 35px;
+        margin-bottom: 40px;
+        margin-top: 40px;
+    }
+
+    img:hover {
+        -webkit-transition-duration: 1.5s;
+        -webkit-transform: scale(1);
+        -webkit-box-shadow: 0px 0px 30px #ccc;
+    }
+
+    a {
+        color: #af3900;
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        font-weight: normal;
+        background-color: rgba(245, 229, 139, 0.0);
+        text-decoration: none;
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,9)), color-stop(50%, rgba(0,0,0,.9)), to(rgba(0,0,0,2)));
+        -webkit-border-image: -webkit-linear-gradient(top left, rgba(172, 172, 172, 0.9) 0%, rgba(250, 239, 161, 0.1) 100%);
+    }
+
+    a {
+        position: relative;
+        color: #236B8e;
+    }
+
+        a:after {
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0px;
+            width: 0;
+            height: 1px;
+            border-radius: 6px;
+            background-color: #236B8e;
+            content: "";
+            transition: width 2.5s;
+        }
+
+        a:hover {
+            font-weight: bold;
+        }
+
+            a:hover:after {
+                width: 100%;
+            }
+
+        a:visited {
+            text-decoration: none;
+            color: #a5694c;
+            font-weight: bold;
+        }
+
+    ._a_empresa {
+        border-bottom: 1px solid #f0f1e7;
+        color: #af3900;
+        font-family: 'Alegreya Sans';
+        font-size: 35px;
+        font-weight: normal;
+        line-height: 40px;
+        text-transform: uppercase;
+        margin: 0 0 1px;
+        padding: 0 0 2px;
+        background-color: rgba(245, 229, 139, 0.07);
+        border-radius: 3px;
+        text-decoration: none;
+        color: #af3900;
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,9)), color-stop(50%, rgba(0,0,0,.5)), to(rgba(0,0,0,2)));
+        -webkit-border-image: -webkit-linear-gradient(top left, rgba(172, 172, 172, 0.9) 0%, rgba(250, 239, 161, 0.1) 100%);
+        border-image-slice: 3;
+    }
+
+    ._a_empresa-2lin {
+        border-bottom: 1px solid #f0f1e7;
+        color: #af3900;
+        font-family: 'Alegreya Sans';
+        font-size: 35px;
+        font-weight: normal;
+        line-height: 40px;
+        text-transform: uppercase;
+        margin: 0 0 1px;
+        padding: 0 0 2px;
+        background-color: rgba(245, 229, 139, 0.07);
+        border-radius: 3px;
+        text-decoration: none;
+        color: #af3900;
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,9)), color-stop(50%, rgba(0,0,0,.5)), to(rgba(0,0,0,2)));
+        -webkit-border-image: -webkit-linear-gradient(top left, rgba(172, 172, 172, 0.9) 0%, rgba(250, 239, 161, 0.1) 100%);
+        border-image-slice: 3;
+    }
+
+    ._a_empresa_2in {
+        border-bottom: 1px solid #f0f1e7;
+        color: #af3900;
+        font-family: 'Alegreya Sans';
+        font-size: 35px;
+        font-weight: normal;
+        line-height: 40px;
+        text-transform: uppercase;
+        margin: 0 0 1px;
+        padding: 0 0 2px;
+        background-color: rgba(245, 229, 139, 0.07);
+        border-radius: 3px;
+        text-decoration: none;
+        color: #af3900;
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,9)), color-stop(50%, rgba(0,0,0,.5)), to(rgba(0,0,0,2)));
+        -webkit-border-image: -webkit-linear-gradient(top left, rgba(172, 172, 172, 0.9) 0%, rgba(250, 239, 161, 0.1) 100%);
+        border-image-slice: 3;
+    }
+
+    ._a_producto {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: left;
+        font-weight: bold;
+    }
+    
+
+    .tb_3as-direccion {
+        color: #000000;
+        font-family: 'Alegreya Sans';
+        font-size: 20px;
+        font-weight: normal;
+        margin: 0 0 2px;
+        padding: 0 0 2px;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #000000;
+        border-image-slice: 3;
+    }
+
+    ._a_direccion-contratante {
+        color: #000000;
+        font-family: 'Alegreya Sans';
+        font-size: 20px;
+        font-weight: normal;
+        margin: 0 0 2px;
+        padding: 0 0 2px;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #000000;
+        border-image-slice: 3;
+    }
+
+    ._a_sucursales {
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        color: #000000;
+        text-align: left;
+    }
+
+    p._a_titulo-producto {
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        color: rgba(200, 71, 70, 0.80);
+        font-weight: bold;
+        text-align: center;
+    }
+
+    p-_-Foto_espacio {
+        text-align: center;
+    }
+
+    span.alpha_symbol-new {
+        font-size: 16px;
+    }
+
+    span.alpha-symbol-new {
+        font-size: 16px;
+    }
+
+    p.pf_titulo_producto {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 28px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    p.pf-titulo-producto {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 28px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    p.pf_especial_titulo_prod {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 28px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    p.pf_especial-titulo-prod {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 28px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    span.cr_logo_derecha {
+        float: right;
+        margin-left: 30px;
+        margin-top: 10px;
+    }
+
+    td.cl_3a_logo_der {
+        float: right;
+        margin-left: 30px;
+        margin-top: 10px;
+    } 
+
+    span.cr_cursiva_normal {
+        font-style: italic;
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+    }
+
+    span.cr-logo-derecha {
+        float: right;
+    }
+
+    p.pf_pie_empresa {
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        color: #993300;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    p.pf-pie-empresa {
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        color: #993300;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    p.pf_pie_datos {
+        font-family: 'Alegreya Sans';
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    p.pf-pie-datos {
+        font-family: 'Alegreya Sans';
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    p.pf_base_propaganda {
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        font-weight: bold;
+        color: #CC6600;
+    }
+
+    p.pf-base-propaganda {
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        font-weight: bold;
+        color: #CC6600;
+    }
+
+    p.pf_normal {
+        font-size: 16px;
+        font-family: 'Alegreya Sans';
+        text-align: justify;
+    }
+
+    p.pf-normal {
+        font-size: 16px;
+        font-family: 'Alegreya Sans';
+        text-align: justify;
+    }
+
+    p.pf_bullets-2 {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-indent: 20px;
+    }
+
+    p.pf-bullets-2 {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-indent: 20px;
+    }
+
+    p.pf_bullets-3 {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-indent: 35px;
+    }
+
+    p.pf_bullets-1 {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-indent: 12px;
+    }
+
+    p.pf-bullets-1 {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-indent: 12px;
+    }
+
+    span.cr_negritas {
+        color: #af3900;
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        margin: 0 0 1px;
+        padding: 0 0 2px;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #af3900;
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,9)), color-stop(50%, rgba(0,0,0,.7)), to(rgba(0,0,0,2)));
+        -webkit-border-image: -webkit-linear-gradient(top left, rgba(172, 172, 172, 0.9) 0%, rgba(250, 239, 161, 0.1) 100%);
+        border-image-slice: 3;
+    }
+
+    span.cr-negritas {
+        color: #af3900;
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        margin: 0 0 1px;
+        padding: 0 0 2px;
+        border-radius: 3px;
+        text-decoration: none;
+        color: #af3900;
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,9)), color-stop(50%, rgba(0,0,0,.7)), to(rgba(0,0,0,2)));
+        -webkit-border-image: -webkit-linear-gradient(top left, rgba(172, 172, 172, 0.9) 0%, rgba(250, 239, 161, 0.1) 100%);
+        border-image-slice: 3;
+    }
+
+    span.cr_rubro {
+        font-weight: bold;
+        color: #236B8E;
+    }
+
+    span.cr-rubro {
+        font-weight: bold;
+        color: #236B8E;
+    }
+
+    span.cr_subtitulo {
+        font-weight: bold;
+        color: #236B8E;
+    }
+
+    span.cr-subtitulo {
+        font-weight: bold;
+        color: #236B8E;
+    }
+
+    span.cr_rubro-especial {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 30px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    span.cr-rubro-especial {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 30px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    p.tb_titulo {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    p.tb-titulo {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    p.tb_franja {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    p.tb-franja {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    p.tb_interior-centrado {
+        font-family: 'Alegreya Sans';
+        font-size: 15px;
+        text-align: center;
+    }
+
+    p.tb-interior-centrado {
+        font-family: 'Alegreya Sans';
+        font-size: 15px;
+        text-align: center;
+    }
+     
+    table.tb_producto {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        border: 1px solid black;
+    }
+
+    table.tb-producto {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: center;
+        border: 1px solid black;
+    }
+
+    td.cl_celda-general {
+        border: 1px solid black;
+    }
+
+    td.cl-celda-general {
+        border: 1px solid black;
+    }
+
+    td.cl_pantalla {
+        background-color: Silver;
+        border: 1px solid black;
+        font-weight: bold;
+    }
+
+    td.cl-pantalla {
+        background-color: Silver;
+        border: 1px;
+        font-weight: bold;
+    }
+
+    table.tb_transparente td {
+        border: 0px;
+    }
+
+    table.tb-transparente td {
+        border: 0px;
+    }
+
+    p.pf_foto_centrada {
+        text-align: center;
+        margin-left: 6px;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        margin-top: 6px;
+    }
+
+    p.pf-foto-centrada {
+        text-align: center;
+        margin-bottom: 6px;
+        margin-top: 6px;
+    }
+
+    p.tb_interior-izquierda {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: left;
+    }
+
+    p.tb-interior-izquierda {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: left;
+    }
+
+    #rubro {
+        background-color: #dedede;
+        font-family: 'Alegreya Sans';
+        font-size: 18px;
+        text-align: left;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    p.pf_registro {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    span.cr_superindice {
+        vertical-align: super;
+        /*font-size:12px;*/
+    }
+
+    table.Tabla-en-Producto {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: center;
+        border: 1px solid black;
+    }
+
+    p.pf_referencias {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    p.pf_titulo_interior-producto {
+        font-family: 'Alegreya Sans';
+        font-weight: bold;
+        font-size: 28px;
+        color: #236B8E;
+        text-transform: uppercase;
+    }
+
+    td.tb_3as {
+        border-radius: 6px;
+        border: 0.5px solid rgba(172, 172, 172, 0.30);
+    }
+
+    tr.tb_3as:hover {
+        background: rgba(250, 239, 161, 0.10);
+    }
+
+    .cl_3a_cabeza {
+        background: rgba(172, 172, 172, 0.03);
+    }
+
+    ._as-Cabeza {
+        border-radius: 6px;
+        background: rgba(172, 172, 172, 0.03);
+    }
+
+    td.Tabla-3as {
+        border-radius: 6px;
+        border: 0.5px solid rgba(172, 172, 172, 0.30);
+    }
+
+    tr.Tabla-3as:hover {
+        background: rgba(250, 239, 161, 0.10);
+    }
+
+    p._a_descripcion {
+        font-family: 'Alegreya Sans';
+        font-size: 17px;
+        text-align: justify;
+        margin-left: 7px;
+        margin-right: 7px;
+    }
+
+    p._a_subtitulo-producto {
+        font-family: 'Alegreya Sans';
+        font-size: 17px;
+        text-align: justify;
+        margin-left: 7px;
+        margin-right: 7px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    p._a_titulo-prod-descripcion {
+        font-family: 'Alegreya Sans';
+        font-size: 17px;
+        margin-left: 7px;
+        margin-right: 7px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    span.cr_palomita {
+        font-family: Wingdings;
+    }
+
+    span.cr_bullet-tabla {
+        font-family: Wingdings;
+    }
+
+    p.pf_introduccion_titulo {
+        font-family: 'Alegreya Sans';
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #8E2323;
+        text-align: center;
+    }
+
+    p.pf_tabla_espacio {
+        font-family: 'Alegreya Sans';
+        font-size: 16px;
+        text-align: justify;
+    }
+    /*span.letra_clientes {
+        font-size: 18pt;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color: #FF7F24;
+        font-weight: bold;
+    }
+
+    p.letra_clientes {
+        font-size: 18pt;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color: #FF7F24;
+        font-weight: bold;
+    }*/
+
+</style>
+
+
+@*<table border="0" width="100%" cellpadding="5" cellspacing="5">
+    <tr>
+        <td width="50%">
+            <table>
+                <tr class="tb_3as-direccion">
+                    <td class="tb_3as-direccion DIRECCION-3---LOGO cl_3a-direccion">
+                        <p class="_a_direccion-contratante">
+                            Av. Insurgentes Sur 1898 Piso 12
+                            <br />Col. La Florida
+                            <br />C.P. 01020, Ciudad de México
+                            <br />Tel.: 9171-1057
+                            <br /><a target="_blank" href="http://www.ascencia.com.mx">www.ascencia.com.mx</a>
+
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td width="50%">
+            <table>
+                <tr class="tb_3as-direccion">
+                    <td style="float:right" class="tb_3as-direccion DIRECCION-3---LOGO cl_3a_logo_der">
+                        <p class="_a_alineción_der_logo"><span class="cr_logo_derecha"><img src="imagenes/contour_diabetessolutions_bluebg_logo.png" alt="" /></span></p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>*@
+
+
+
+
+<link href='estilos.css' rel='stylesheet' type='text/css' />
+<link href='https://fonts.googleapis.com/css?family=Alegreya+Sans:300,400,400italic,700' rel='stylesheet' type='text/css'>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>accutrack_3a</title>
+</head>
+<body id="accutrack_3a">
+    <div id="_idContainer003">
+        <p class="_a_empresa" lang="es-ES">Accutrack, S.A. de C.V.</p>
+        <table border="0" width="100%" cellpadding="5" cellspacing="5">
+            <tr>
+                <td width="50%">
+                    <table>
+                        <tr class="tb_3as-direccion">
+                            <td class="tb_3as-direccion _a-LOGO-derecha cl_3a-direccion">
+                                <p class="_a_direccion-contratante">
+                                    Calle 12 Núm. 9
+                                    <br />Col. San Pedro de los Pinos
+                                    <br />C.P. 03800, México, D.F.
+                                    <br />Del. Benito Juárez
+                                    <br />Tels.: (55) 5524-4481, 5524-2644
+                                    <br />y 5524-4575
+                                    <br />e-mail: <a href="mailto:ventas@accutrack.com.mx">ventas@accutrack.com.mx</a>
+                                    <br /><a target="_blank" href="http://www.accutrack.com.mx">www.accutrack.com.mx</a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="50%">
+                    <table>
+                        <tr class="tb_3as-direccion">
+                            <td style="float:right" class="tb_3as-direccion DIRECCION-3---LOGO cl_3a_logo_der">
+                                <p class="_a_alineción_der_logo"><span class="cr_logo_derecha"><img src="imagenes/accutrack_logo.png" alt="" /></span></p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table id="table001" class="tb_3as-direccion">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tbody></tbody>
+        </table>
+        <p align="center" class=”pf_foto_centrada”><span lang=”en-US” /><img src="imagenes/Accutrack_ANUNCIO_doble_color.png" alt="" />
+
+        <p class="pf_normal"><span class="cr_negritas">ACCUTRACK, S.A. de C.V. </span> es una empresa de productos y servicios especializados para hospitales, laboratorios clínicos y centros de transfusión. Hemos celebrado alianzas estratégicas, comerciales y de desarrollo tecnológico con importantes empresas internacionales, entre las que se encuentran las siguientes: Immunetics Inc, Jas Diagnostics, Laboratorio Lemos, Intec Products, MedTec, Thermofisher (MAS, Microgenics).</p>
+
+        <table id="table002" class="tb_3as">
+            <colgroup>
+                <col />
+                <col />
+            </colgroup>
+            <tbody>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto">PRUEBAS RÁPIDAS</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td width="415" class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/accutrack-doas.html" target="_self">*&#9;ACCUTRACK <br />DOAS </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba de un solo paso para detección sencilla o múltiple de drogas: anfetamina (AMP), cocaína (COC), opiatos (MOR), canabinoides (THC), metanfetaminas (MET), benzodiacepinas (BZD); barbitúricos (BAR), fenciclidina (PCP) y metadona (MED).</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/accutrack_hcg_card_test.html" target="_self">*&#9;ACCUTRACK <br />HCG CARD TEST </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba de embarazo en cartucho, con pipeta <br />desechable, simple y rápida, de un solo paso. Para uso en suero, plasma y orina. Sensibilidad: 25 mui/ml. Presentación 50 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/advanced_quality_one_step_myoglobin-ck-mb.html" target="_self">*&#9;ADVANCED QUALITY ONE STEP MYOGLOBIN/CK-MB/TROPONIN <br />I TEST</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida para la determinación cualitativa de mioglobina cardiaca/CK-MB/Troponina I en sangre total, suero o plasma.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/baby_track_midstream_test.html" target="_self">*&#9;BABY TRACK <br />MIDSTREAM TEST</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba para la detección de embarazo, de un solo paso. Para uso en orina. Sensibilidad: 25 mui/ml <br />1 prueba.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/one_step_anti-tp-treponema_pallidum-syphilis-test.html" target="_self">*&#9;ONE STEP ANTI-TP <br />(<span class="cr_cursiva_bold">TREPONEMA <br />PALLIDUM</span>/<span class="cr_cursiva_bold">SYPHILIS) </span>TEST</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida para la determinación cualitativa de anticuerpos contra <span class="cr_cursiva_normal">Treponema pallidum</span> en sangre total, suero y plasma. </p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/one_step_anti-vih-1-2-test-sangre_total-suero.html" target="_self">*&#9;ONE STEP <br />ANTI-VIH <br />(1+2) TEST </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida de un solo paso para la determinación cualitativa de anticuerpos del virus de la inmunodeficiencia humana en sangre total, suero o plasma. Presentación 50 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/the_advanced_quality_one_stepanti_hiv_1-2-tri_line.html" target="_self">*&#9;ONE STEP ANTI<br />HIV (1&amp;2) TRI LINETEST</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida inmunocromatográfica para la determinación cualitativa de anticuerpos (IgG, IgM, IgA) específicos al VIH-1 incluyendo el subtipo 0 y el VIH-2 simultáneamente en sangre total, suero o plasma. </p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/one_step_hbsag_test.html" target="_self">*&#9;ONE STEP HBsAg<br />TEST</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida de un solo paso para la detección cualitativa del antígeno de superficie de la hepatitis B (HBsAg) en sangre total, suero o plasma humano, presentación de 50 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/one_step_hcv_test.html" target="_self">*&#9;ONE STEP <br />HCV TEST </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida de un solo paso para la detección cualitativa de anticuerpos del virus de la hepatitis C en sangre total, suero o plasma humano. Presentación 50 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/one_step_prostate_specific_antigen-psa-test.html" target="_self">*&#9;ONE STEP <br />PROSTATE SPECIFIC <br />ANTIGEN (PSA) TEST</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba rápida de un solo paso para la detección del antígeno prostático específico (PSA) en muestras de sangre total, suero o plasma humano. 25 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/the_advanced_quality_one_stepanti_hiv_1-2-tri_line.html" target="_self">*&#9;THE ADVANCED QUALITY™ One step ANTI HIV (1 &amp; 2) TRI LINEtest</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Es un ensayo de inmunocromatografía rápida para la determinación cualitativa de anticuerpos de todos los isotipos (IgG, IgM, IgA) específicos o HIV-1 incluyendo subtipo O y HIV-2 simultáneamente, en sangre total, suero o plasma.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto">SEROLOGÍA</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/accutrack_chagas_microelisa_recombinante.html" target="_self">*&#9;ACCUTRACK <br />CHAGAS <br />MICROELISA<br />RECOMBINANTE</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba de microelisa para la determinación de anticuerpos contra <span class="cr_cursiva_normal">Trypanosoma cruzi</span> en muestras de suero y plasma. Detecta anticuerpos IgG e IgM. Equipo para 96 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/accutrack_chagas_microelisa_test_system.html" target="_self">*&#9;ACCUTRACK <br />CHAGAS <br />MICROELISA <br />TEST SYSTEM</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Prueba de microelisa para la determinación de anticuerpos contra <span class="cr_cursiva_normal">Trypanosoma cruzi</span> en muestras de suero y plasma. Detecta anticuerpos IgG e IgM. Equipo para 192 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/advanced_hbsag_elisa_test_kit.html" target="_self">*&#9;ADVANCED <br />HBsAg ELISA <br />TEST KIT </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Sistema microelisa para la determinación cualitativa del antígeno de superficie del virus de la hepatitis B (HBsAg) en suero o plasma. Equipo para 192 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/advanced_hiv-1-2_elisa_test_3a-generacion.html" target="_self">*&#9;ADVANCED HIV <br />(1+2) ELISA TEST <br />(3a. GENERACIÓN) </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Sistema microelisa para la determinación de anticuerpos contra el virus del VIH-1/2 en muestras de suero o plasma. Equipo para 96 puebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">
+                            <a href="../Productos/advanced_treponema_pallidum-tp-elisa_test.html" target="_self">
+                                *&#9;ADVANCED <br />
+                                <span class="cr_cursiva_bold">TREPONEMA <br />PALLIDUM</span> (TP) <br />ELISA TEST
+                            </a>
+                        </p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Sistema microelisa para la determinación de anticuerpos contra el <span class="cr_cursiva_normal">Treponema pallidum</span>, en muestras de suero y plasma. Equipo para 96 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto"><span lang="en-US">CONTROL DE CALIDAD</span></p>
+                        <p class="_a_descripcion">Productos de control de calidad, para equipos automatizados, respaldados con las aplicaciones proporcionados por Accutrack.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/productos_de_control_de_calidad.html" target="_self">*&#9;PRODUCTOS <br />DE CONTROL <br />DE CALIDAD</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Controles para química clínica</p>
+                        <p class="_a_descripcion">Controles para química urinaria</p>
+                        <p class="_a_descripcion">Controles para urianálisis</p>
+                        <p class="_a_descripcion">Controles de inmunoensayos</p>
+                        <p class="_a_descripcion">Controles de marcadores cardiacos</p>
+                        <p class="_a_descripcion">Controles de sangre completa</p>
+                        <p class="_a_descripcion">Controles de ensayo de proteínas serológicas/<br />inmunología</p>
+                        <p class="_a_descripcion">Omnitroles</p>
+                        <p class="_a_descripcion">Controles toxicológicos</p>
+                        <p class="_a_descripcion">Drogas inmunosupresoras</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/lablink_xl.html" target="_self">*&#9;LABLINK xL</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Software para control de calidad</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/omnitroles.html" target="_self">*&#9;OMNITROLES</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Control valorado liofilizado de química.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto"><a href="../Productos/quimica_clinica.html" target="_self">*QUÍMICA CLÍNICA</a></p>
+                        <p class="_a_subtitulo-producto">Productos liofilizados</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos">
+                        <p class="_a_titulo-prod-descripcion">Descripción</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion">
+                        <p class="_a_titulo-prod-descripcion">Presentación</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Calibrador múltiple</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">10 × 5 ml</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">CK-NAC</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">10 × 6.5 ml</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Suero control nivel 1</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">10 × 5 ml</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Suero control nivel 2</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">10 × 5 ml</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/monitroles.html" target="_self">*&#9;MONITROLES</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">10 × 5 ml</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_subtitulo-producto">Productos líquidos</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Ácido úrico líquido</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Albúmina</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Amilasa líquida</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">AST líquida</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Bilirrubina directa</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Bilirrubina total</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Colesterol líquido</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Creatinina univial</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Glucosa oxidasa líquida</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Proteína total</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Triglicéridos líquido</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-descripcion cl_3a-productos">
+                        <p class="_a_descripcion">Urea nitrógeno líquido</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">2 × 125 ml &#9;1 × 1000</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto">HEMATOLOGÍA</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/albumina_bovina_polimerizada_a_22.html" target="_self">*&#9;ALBÚMINA BOVINA <br />POLIMERIZADA A 22%</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion">
+                        <p class="_a_descripcion">Reactivo de diagnóstico para la detección <span class="cr_cursiva_normal">in vitro</span> estimación de antígeno y anticuerpo incompleto. 10 ml.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a_cabeza" colspan="2">
+                        <p class="_a_titulo-producto"><a href="../Productos/coagulacion.html" target="_self">*COAGULACIÓN</a></p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;APTT-LS</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Tromboplastina líquida lista para usarse en el tiempo de tromboplastina parcial activada y para las pruebas de los factores de la coagulación de la vía intrínseca. Ideal para el monitoreo de la terapia con heparina.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;APTT-XL</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Tromboplastina líquida lista para usarse en el tiempo de tromboplastina parcial activada. Altamente sensible a la deficiencia de los factores de coagulación de la vía intrínseca, inhibidores de lupus, para el monitoreo de la terapia <br />con heparina.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;FIBRINOGEN ASSAY SET </p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Es una prueba para la determinación rápida y cuantitativa de fibrinógeno en plasma (método de clauss). El kit contiene trombina bovina, plasma de referencia de fibrinógeno y buffer salino de imidazol. 100 pruebas.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;PLASMA CONTROL <br />DE COAGULACIÓN, NIVEL 1</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Plasma humano normal, se usa como control para monitorear el desempeño de las pruebas de rutina de coagulación. 10 x 1 ml.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;PLASMA CONTROL <br />DE COAGULACIÓN, NIVEL 2</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Plasma humano moderadamente anormal (bajo) se usa como control para monitorear el desempeño de las pruebas de rutina de coagulación. 10 x 1 ml.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;PLASMA CONTROL <br />DE COAGULACIÓN, NIVEL 3</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Plasma humano significativamente anormal (alto). Se usa como control para monitorear el desempeño de las pruebas de rutina de coagulación. 10 x 1 ml.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;REFERENCE EMULSION <br />FLUID FOR ACL <br />INSTRUMENT</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Se utiliza como solución de cebado en el equipo ACL de IL, para obtener una referencia óptica en pruebas de coagulación. 4 x 500 ml.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;THROMBIN TIME REAGENT</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Reactivo de trombina para la determinación del tiempo de trombina (TT) en forma manual o automatizada. 10 x 1 ml.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;THROMBOPLASTIN-DS</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Tromboplastina de alta sensibilidad (isi = 1.0) de cerebro de conejo y buffer, para el tiempo de protrombina y para las pruebas de los factores <br />de coagulación de la vía extrínseca<br />(monitoreo de pacientes anticoagulados).</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;THROMBOStat 1</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Coagulómetro con un canal de lectura, sistema de lectura mecánico, utiliza cualquier tipo de muestra sanguínea. No requiere mantenimiento. Sistema abierto. Realiza TP, TT, TTPA, fibrinógeno y factores de coagulación.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto">&#9;THROMBOSTAT 2</p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Coagulómetro con dos canales de lectura, sistema de lectura mecánico, utiliza cualquier tipo de muestra sanguínea. No requiere mantenimiento. Sistema abierto. Realiza TP, TT, TTPA, fibrinógeno y factores de coagulación.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/thrombotimers.html" target="_self">*&#9;THROMBOTIMERS</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Coagulómetros fotomecánicos con 1, 2 y 4 canales de lectura para laboratorios con volumen de trabajo. Realiza TP, TTPA, TT, fibrinógeno y factores de coagulación. Sistema abierto. </p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto"><span lang="en-US">EQUIPOS ACCUTRACK</span></p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/autoblot_3000.html" target="_self">*&#9;AUTOBLOT 3000 <br />ANALIZADOR <br />PARA CONFIRMATORIA <br />DE VIH </a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Es un equipo completamente automatizado<br />para los ensayos de diagnóstico <span class="cr_cursiva_normal">in vitro</span> de Western Blot. El Autoblot incuba, agita, lava y lleva a cabo la adición subsecuente de reactivos definida por el operador durante la fase de programación para el procesamiento de muestras. Ello permite una fácil instalación con el procesador WALKAWAY, sonando una alarma cuando la prueba es completada. </p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/analizer_90.html" target="_self">*&#9;ANALIZER 90</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Equipo semiautomatizado de química clínica <br />con diferentes programaciones.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/equipo_erba.html" target="_self">*&#9;EQUIPO ERBA</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Equipo para química clínica semiautomatizado.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/thrombotimers.html" target="_self">*&#9;THROMBOTIMER 1, 2, 4</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Coagulómetro fotoóptico con 1, 2 y 4 canales de medición para laboratorios con bajo volumen de trabajo, realiza TP, TTPA, TT, fibrinógeno y factores de la coagulación. Sistema abierto.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/tuberculina_ppd_accutrack.html" target="_self">*&#9;TUBERCULINA PPD <br />ACCUTRACK</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Para la determinación <span class="cr_cursiva_normal">in vivo</span> de la sensibilización <br />de <span class="cr_cursiva_normal">Mycobacterium tuberculosis</span>.</p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a_cabeza cl_3a-productos" colspan="2">
+                        <p class="_a_titulo-producto"><span lang="en-US">SENSIDISCOS</span></p>
+                    </td>
+                </tr>
+                <tr class="tb_3as">
+                    <td class="tb_3as cl_3a-productos cl_3a-productos">
+                        <p class="_a_producto"><a href="../Productos/clairo_combi.html" target="_self">*&#9;CLAIRO COMBI</a></p>
+                    </td>
+                    <td class="tb_3as cl_3a-descripcion cl_3a-descripcion">
+                        <p class="_a_descripcion">Discos de sensibilidad bacteriana combinada hechos con papel filtro esterilizado con una graduación especial, los cuales tienen 14 brazos de proyección. La punta de cada uno de ellos está impregnada con una cantidad exacta y específica de antibiótico o agente quimioterapéutico que se ha secado al vacío a bajas temperaturas. </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -20,6 +20,7 @@ namespace Web.Models
             this.ProductEditions = new HashSet<ProductEditions>();
             this.Products1 = new HashSet<Products>();
             this.ProductSections = new HashSet<ProductSections>();
+            this.ProductIndexes = new HashSet<ProductIndexes>();
         }
     
         public int ProductId { get; set; }
@@ -31,7 +32,6 @@ namespace Web.Models
         public int ProdId { get; set; }
         public bool Active { get; set; }
     
-        public virtual Companies Companies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductEditions> ProductEditions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -40,5 +40,8 @@ namespace Web.Models
         public virtual ProductTypes ProductTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductSections> ProductSections { get; set; }
+        public virtual Companies Companies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProductIndexes> ProductIndexes { get; set; }
     }
 }

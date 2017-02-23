@@ -1,0 +1,83 @@
+﻿<script>
+    $(document).ready(function () {
+        $("._AgregarAnuncio").click(function () {
+            var _EditionId = $("#_EditionId").val();
+            var _SectionId = $("#_SectionId").val();
+            var _CompanyId = $("#_CompanyId").val();
+            var _HiredSpace = $("#_HiredSpace").val();
+            if (_HiredSpace.trim() == false) {
+                swal("¡Atención!", "¡El campo 'Nombre del espacio contratado' no puede quedar vacio!", "error");
+            }
+            else if (_HiredSpace.trim() != false) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Ventas/AgregarAnuncio",
+                    traditional: true,
+                    data: { CompanyId: _CompanyId, EditionId: _EditionId, SectionId: _SectionId, HiredSpace: _HiredSpace },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Anuncio agregado!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+@model Web.Models.EditionCompanySectionAdvers
+@{
+    Layout = null;
+}
+@*<link rel="icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="shortcut icon" href="/Images/favicon.ico" type="image/vnd.microsoft.icon">*@
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+<div class="modal-body1 Estilo2x">
+    <br />
+    <div>
+        <div class="panel panel-warning">
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+               <div>
+                    <div class="modal-header Estilo7 btn-nav" align="center">
+                        <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Agregar anuncio</h1>
+                    </div>
+                    <div class="modal-body Estilo2x">
+                        <div class="Nota btn-nav" align="right">
+                            Nota: Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                            <br />
+                        </div>
+                        <br />
+                        <div class="Estilo7x">
+                            <div hidden class="Estilo7x btn-nav">
+                                <div class="Estilo7x btn-nav" align="left">
+                                    Nombre del anuncio
+                                    <br />
+                                </div>
+                                <input class="form-control" id="_AdName" type="text">
+                            </div>
+                            <div class="Estilo7x btn-nav">
+                                <div class="Estilo7x btn-nav" align="left">
+                                    Espacio contratado <strong class="Red">*</strong>
+                                    <br />
+                                </div>
+                                <input class="form-control" id="_HiredSpace" type="text">
+                                <input hidden id="_EditionId" value="@ViewData["EditionId"]"/>
+                                <input hidden id="_CompanyId" value="@ViewData["CompanyId"]"/>
+                                <input hidden id="_SectionId" value="@ViewData["SectionId"]"/>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="button" value="Guardar" class="btn btn-success _AgregarAnuncio Estilo2x" />
+                    <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav Estilo2x" data-dismiss="modal" />
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <br />
+</div>

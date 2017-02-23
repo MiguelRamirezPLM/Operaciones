@@ -17,7 +17,7 @@ namespace Web.Models
         public int UserId { get; set; }
         public int CountryId { get; set; }
     
-        public virtual CountriesUser Countries { get; set; }
+        public virtual Countries_Users Countries_Users { get; set; }
         public virtual Users Users { get; set; }
     }
 }

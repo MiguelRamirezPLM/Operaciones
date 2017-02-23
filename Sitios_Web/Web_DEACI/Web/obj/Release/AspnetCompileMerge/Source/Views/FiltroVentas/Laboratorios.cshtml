@@ -1,0 +1,1377 @@
+﻿
+@{
+    SessionEditionId _Session = (SessionEditionId)Session["SessionEditionId"];
+}
+
+<link href="~/Styles/Clientes_button.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#EnlaceAjaxAgregarSeccionesCliente").click(function (evento) {
+            $("#DestinoAjaxAgregarSeccionesCliente").load("/Filtroventas/AgregarSeccionesCliente", function () {
+            });
+        });
+    })
+</script>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<script>
+    $(document).ready(function () {
+        $(".Cliente_Participante").click(function () {
+            var tr = $(this).parents("tr:first");
+            if (tr.find(".Cliente_Participante").is(':checked')) {
+                var _CompanyId = $(this).attr("Id");
+                var _EditionId = $("#_EditionId").val();
+                var _CompanyTypeId = $("#_CompanyTypeId").val();
+                tr.find("#CompanyId").text(_CompanyId);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/FiltroVentas/AgregarClienteEdición",
+                    traditional: true,
+                    data: { EditionId: _EditionId, CompanyId: _CompanyId, CompanyTypeId: _CompanyTypeId },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Laboratorio agregado a la edición!", "", "success");
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            swal({
+                                title: "¡Atención!",
+                                text: "¡El laboratorio no puede participar en esta edición!",
+                                type: "warning",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Entendido",
+                                closeOnConfirm: false,
+                            },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    swal("Entendido", "", "success");
+                                    setTimeout(function () { location.reload(1); }, 1);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else if (tr.find(".Cliente_Participante").is(":not(:checked)")) {
+                $(function () {
+                    $("#cargandoEliminandoCliente").show();
+                });
+                var _CompanyId = $(this).attr("Id");
+                var _EditionId = $("#_EditionId").val();
+                tr.find("#CompanyId").text(_CompanyId);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/FiltroVentas/EliminarEdiciónCliente",
+                    traditional: true,
+                    data: { EditionId: _EditionId, CompanyId: _CompanyId },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Laboratorio desasociado de la edición!", "", "success");
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                        else {
+                            setTimeout(function () { location.reload(1); }, 1);
+                        }
+                    }
+                });
+            }
+        });
+    });
+    function prueba(a, b){
+        var _CompanyId = a;
+        var _SectionId = b;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/FiltroVentas/EliminarSecciónCliente",
+            traditional: true,
+            data: { CompanyId: _CompanyId, SectionId: _SectionId },
+            success: function (data) {
+                if (data == true) {
+                    swal("¡Laboratorio desasociado de la sección!", "", "success");
+                    setTimeout(function () { location.reload(1); }, 300);
+                }
+                else {
+                    setTimeout(function () { location.reload(1); }, 1);
+                }
+            }
+        });
+    }
+    function lastinformation(_EditionId, _CompanyTypeId)
+    {
+        swal({
+            title: "¿Desea cargar la misma información de la edición anterior?",
+            text: "Se cargaran todos los laboratorios que participaron en la edición anterior",
+            type: "warning",
+            confirmButtonColor: "#DD6B55",
+            showLoaderOnConfirm: "Aceptar",
+            confirmButtonText: "Cancelar",
+            cancelButtonText: "Aceptar",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function (isConfirm) {
+            if (isConfirm == false) {
+                $.ajax({
+                    async : true,
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Filtroventas/MismaInformación",
+                    traditional: true,
+                    data: { EditionId: _EditionId, CompanyTypeId: _CompanyTypeId },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Información cargada!", "", "success");
+                            setTimeout(function () { location.reload(1); }, 1);
+                        }
+                    }
+                });;
+            }
+            else {
+                swal("Cancelado", "", "error");
+                setTimeout(function () { location.reload(1); }, 1);
+            }
+        });
+    }
+    function EliminarDirección(_CompanyId, _AddressId)
+    {
+        $.ajax({
+            async : true,
+            type: "POST",
+            dataType: "json",
+            url: "/Filtroventas/EliminarDirección",
+            traditional: true,
+            data: { CompanyId: _CompanyId, AddressId: _AddressId },
+            success: function (data) {
+                if (data == true) {
+                    swal("¡Dirección eliminada!", "", "success");
+                    setTimeout(function () { location.reload(1); }, 1);
+                }
+            }
+        });;
+    }
+    function EliminarTeléfono(_CompanyId, _PhoneTypeId)
+    {
+        $.ajax({
+            async : true,
+            type: "POST",
+            dataType: "json",
+            url: "/Filtroventas/EliminarTeléfono",
+            traditional: true,
+            data: { CompanyId: _CompanyId, PhoneTypeId: _PhoneTypeId },
+            success: function (data) {
+                if (data == true) {
+                    swal("¡Teléfono eliminado!", "", "success");
+                    setTimeout(function () { location.reload(1); }, 1);
+                }
+            }
+        });;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $(".DirecciónEliminada").click(function () {
+            swal("¡Dirección eliminada!", "", "success")
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#CaracterEdiciones').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.ListaEdiciones').each(function () {
+                var text = $(this).text().toLowerCase();
+                (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(".TeléfonoEliminado").click(function () {
+            swal("¡Teléfono eliminado!", "", "success")
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#EnaceAjaxEditarCliente").click(function (evento) {
+            $("#EditarClienteAjax").load("/FiltroVentas/EditarCliente", function () {
+            });
+        });
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#EnaceAjaxEditarTeléfonos").click(function (evento) {
+            $("#EditarTeléfonosAjax").load("/FiltroVentas/EditarTeléfonos", function () {
+            });
+        });
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#EnaceAjaxAgregarTeléfonos").click(function (evento) {
+            $("#AgregarTeléfonosAjax").load("/FiltroVentas/AgregarTeléfonos", function () {
+            });
+        });
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#EnaceAjaxAgregarDirecciones").click(function (evento) {
+            $("#AgregarDireccionesAjax").load("/FiltroVentas/AgregarDirecciones", function () {
+            });
+        });
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#EnlaceAjaxEditarDirecciones").click(function (evento) {
+            $("#EditarDireccionesAjax").load("/FiltroVentas/EditarDirecciones", function () {
+            });
+        });
+    });
+</script>
+@model PagedList.IPagedList<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@using Web.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Laboratorios";
+    DEACI_20150917Entities db = new DEACI_20150917Entities();
+    PLMUsers plm = new PLMUsers();
+}
+<div class="container center col-lg-10" align="center">
+    <div class="row" align="center">
+        <div align="center">
+            <button1 type="button" class="btn btn-default3 navbar-default btn-nav ribbon Estilo3">Ventas</button1>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">País:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["País"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Obra:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Obra"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Edición:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["Edición"]</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="182" align="center" class="warning Estilo4 btn-nav">
+                <div>
+                    <div align="right">Tipo  de cliente:</div>
+                </div>
+            </td>
+            <td width="950" align="center" class=" Estilo4 btn-nav">
+                <div>
+                    <div align="left">@ViewData["TipoCliente"]</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo7 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav">
+                    <li><a><strong class="Estilo6 btn-nav">Laboratorios <span class="sr-only">(current)</span></strong> </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div>
+    <nav class="navbar navbar-default Estilo4 container center col-lg-10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <a href="/FiltroVentas/Pais" class="btn navbar-brand Tiempo" title="Inicio">
+                    <i class="glyphicon glyphicon-home Estilo8"></i>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="CaracterEdiciones" type="text" class="form-control btn-nav" placeholder="Buscar" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <p> </p>
+                            </li>
+                            @{
+                                var _EditionsSelect = (from _e in db.Editions
+                                                       select _e).ToList();
+                                foreach (var a in _EditionsSelect)
+                                {
+                                    <li class="ListaEdiciones"><a class="Tiempo" href="/FiltroVentas/Laboratorios/@ViewData["CountryId"]/@ViewData["BookId"]/@a.EditionId/@_Session.ed">@a.NumberEdition</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown navbar-default">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reportes<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            @{
+                                var _CompanyReport = (from _c in db.CompanyTypes
+                                                      where _c.CompanyTypeId == _Session.ed
+                                                      select _c).ToList();
+                                foreach (var ReporClien in _CompanyReport)
+                                {
+                                    <li><a target="_blank" href="/FiltroVentas/GenerarReporteLaboratoriosEdiciónPDF/@ViewData["CountryId"]/@ViewData["BookId"]/@ViewData["Number"]/@ReporClien.CompanyTypeId"><span class="glyphicon glyphiconr glyphicon glyphicon-open-file Red"></span>Generar reporte de laboratorios de ANÁLISIS CLÍNICOS, LABORATORIOS DE, participantes en la edición <strong class="Estilo6">@ViewData["Edición"]</strong></a></li>
+                                    <li><a target="_blank" href="/FiltroVentas/GenerarReporteLaboratoriosDiagnósticoPDF/@ViewData["CountryId"]/@ViewData["BookId"]/@ViewData["Number"]/@ReporClien.CompanyTypeId"><span class="glyphicon glyphiconr glyphicon glyphicon-open-file Red"></span>Generar reporte de laboratorios de DIAGNÓSTICO POR IMAGEN, SERVICIOS, participantes en la edición <strong class="Estilo6">@ViewData["Edición"]</strong></a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    @{
+                        var _CheckInformation = ViewData["LastInformation"];
+                                            if (_CheckInformation == "True")
+                    {
+                            <li class="dropdown navbar-default">
+                              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Misma información<span class="caret"></span></a>
+                               <ul class="dropdown-menu" role="menu">
+                                   <li><a onclick="lastinformation(@_Session.id, @_Session.ed)"><span class="glyphicon glyphiconr glyphicon glyphicon-refresh text-success"></span>Cargue la misma información de la edición anterior</a></li>
+                               </ul>
+
+                           </li>
+                    } 
+                    } 
+                </ul>
+                <form class="navbar-form navbar-left Estilo4" role="search">
+                    <div class="form-group  Estilo4">
+                        @Html.TextBox("palabra", null, new { @class = "form-control btn-nav" })
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Buscar">
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i class="glyphicon glyphicon-chevron-left Estilo6"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i class="glyphicon glyphicon-chevron-right Estilo6"></i>
+                        </a>
+                    </li>
+                    @{
+                        CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
+                        var _RolesA = (from _us in plm.Users
+                                       join _ap in plm.ApplicationUsers
+                                       on _us.UserId equals _ap.UserId
+                                       join _r in plm.Roles
+                                       on _ap.RoleId equals _r.RoleId
+                                       where _us.UserId == p.userId
+                                       select _r);
+                        if (_RolesA.FirstOrDefault().Description == "Administrador")
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon glyphiconr glyphicon-ruble Estilo8"></span> Producción <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="Tiempo" href="/FiltroProducción/Laboratorios/@ViewData["Countryid"]/@ViewData["BookId"]/@_Session.id/@_Session.ed"><span class="glyphicon glyphicon glyphiconr glyphicon-share-alt"></span>Módulo de producción</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container center col-lg-10">
+    <div class="row" align="center">
+        <div align="center">
+            <button1 type="button" class="btn btn-default2 navbar-default btn-nav ribbon Estilo7"> Información de los laboratorios</button1>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        @{
+            <tr>
+                <td class="warning Estilo4"><div>Nombre del laboratorio</div></td>
+                <td align="center" class="warning Estilo4"><div>Tipo</div></td>
+                <td class="warning Estilo4" align="center"><div align="center">Participante</div></td>
+                <td class="warning Estilo4" align="center">
+                    <div>
+                        <div align="center">Editar</div>
+                    </div>
+                </td>
+                <td class="warning Estilo4" align="center">
+                    <div>
+                        <div align="center">Información</div>
+                    </div>
+                </td>
+                <td class="warning Estilo4" align="center">
+                    <div>
+                        <div align="center">Secciones</div>
+                    </div>
+                </td>
+                <td class="warning Estilo4" align="center">
+                    <div>
+                        <div align="center">Edición</div>
+                    </div>
+                </td>
+            </tr>
+            foreach (var _cc in Model)
+            {
+                var _EditModal = _cc.Companies.CompanyId + 60000;
+                var _InfoModal = _cc.Companies.CompanyId + 70000;
+                var _EditionModal = _cc.Companies.CompanyId + 80000;
+                var _AddressModal = _cc.Companies.CompanyId + 90000;
+                var _SeccionesModal = _cc.Companies.CompanyId + 1000000;
+                <tr>
+                    <td class="Estilo2 btn-nav">
+                        @_cc.Companies.CompanyName
+                    </td>
+                    <td align="center" class="Estilo2 btn-nav">
+                        @_cc.CompanyTypes.Description
+                    </td>
+                    <td align="center" class="Estilo2 btn-nav">
+                        @{
+                            <input type="hidden" value="@ViewData["Number"]" id="_EditionId" />
+                var _EditionClient = (from _ce in db.CompanyEditions
+                                      where _ce.EditionId == _Session.id
+                                      && _ce.CompanyId == _cc.Companies.CompanyId
+                                      select _ce).ToList();
+                bool _Checado = false;
+                foreach (CompanyEditions _CompanyEditions in _EditionClient)
+                {
+                    if (_cc.Companies.CompanyId == _CompanyEditions.CompanyId)
+                    {
+                        _Checado = true;
+                    }
+                }
+                        }
+                        Edición @ViewData["Edición"]
+                        <input type="hidden" id="_CompanyTypeId" name="CompanyTypeId" value="@_Session.ed" />
+                        <input type="checkbox" id="@_cc.Companies.CompanyId" value="@_cc.Companies.CompanyId" name="CompanyEditions" class="Cliente_Participante" checked="@_Checado">
+                    </td>
+                    @{
+                if (_Checado == true)
+                {
+                    <td>
+                        <div align="center">
+                            <a class="btn btn-danger loading" data-toggle="modal" href="~/FiltroVentas/EditarCliente/@_Session.id/@_cc.Companies.CompanyId" data-target="#_EditarCliente" title="Editar laboratorio" id="EnlaceAjaxEditarCliente">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                        </div>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <div align="center">
+                            <a class="btn btn-danger loading" data-toggle="modal" data-target="#Error" title="Laboratorio no participante">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                        </div>
+                    </td>
+                }
+                    }
+                    <td>
+                        <div align="center">
+                            <a class="btn btn-primary loading" data-toggle="modal" data-target="#@_InfoModal" title="Información">
+                                <i class="glyphicon glyphicon-info-sign"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div align="center">
+                            <a class="btn btn-default loading btn-warning" data-toggle="modal" data-target="#@_SeccionesModal" title="Asociar cliente a sección">
+                                <i class="glyphicon glyphicon glyphicon glyphicon-indent-left"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div align="center">
+                            <a class="btn btn-default loading btn-nav" data-toggle="modal" data-target="#@_EditionModal" title="Ediciones">
+                                <i class="glyphicon glyphicon-indent-right"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div align="center" class="Estilo4 btn-nav">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+    <div align="center" class="Estilo4">
+        @Html.PagedListPager(Model, page => Url.Action("Laboratorios",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".Tiempo").click(function () {
+            $("#cargandoTiempo").show();
+        });
+        $("#cargandoTiempo").hide();
+    });
+</script>
+<div class="blockscreen" id="cargandoTiempo">
+    <div id="blockmessage">
+        <h3 style="color:black" class="TextBlock">  Cargando... </h3>
+    </div>
+    <div id="blockimg">
+        <img src="/Images/ldd.gif">
+    </div>
+</div>
+<div>
+    @{
+        foreach (var a in Model)
+        {
+            var _InfoModal = a.Companies.CompanyId + 70000;
+            <div class="modal fade" id="@_InfoModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="Estilo7 Estilo6 btn-nav" align="center">
+                                Información del laboratorio
+                            </div>
+                        </div>
+                        <br />
+                        <div class="modal-body1">
+                            @{
+                var _ClientDetails = (from _c in db.Companies
+                                      where _c.CompanyId == a.Companies.CompanyId
+                                      select new { _c }).ToList();
+                foreach (var d in _ClientDetails)
+                {
+                    <div class="Estilo7x btn-nav" align="center">
+                        Nombre del laboratorio: @d._c.CompanyName
+                    </div>
+                                <br />
+                                <div class="Estilo7x btn-nav" align="center">
+                                    Nombre corto del laboratorio: @d._c.CompanyShortName
+                                </div>
+                                <br />
+                                <br />
+
+                    if (@d._c.CompanyIdParent != null)
+                    {
+                        <div class="Estilo7x btn-nav" align="center">
+                            @{
+                        var _ClienParent = (from _c in db.Companies
+                                            where _c.CompanyId == d._c.CompanyIdParent
+                                            select _c).ToList();
+                            }
+                            Cliente asociado: @if (_ClienParent.LongCount() > 0)
+                            {
+                                foreach (var _cpp in _ClienParent)
+                                {
+                                    @_cpp.CompanyName
+                                }
+                            }
+                        </div>
+                                <br />
+                    }
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="col-md-12">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-body">
+                                            <div>
+                                                <div class="modal-header" align="center">
+                                                    <h4 class="modal-title Estilo7 btn-nav" id="myModalLabel">Teléfonos</h4>
+                                                </div>
+                                                <br />
+                                                <div align="right" class=" Estilo4 btn-nav"> <img src="/Images/telefono.png" style="float:left; width:12%; height:12%;" /> Agregar teléfono   <a class="btn btn-success loading" href="~/FiltroVentas/AgregarTeléfonos/@a.Companies.CompanyId" data-toggle="modal" data-target="#_AgregarTeléfonos" id="EnaceAjaxAgregarTeléfonos"><em class="glyphicon glyphicon-plus"></em></a></div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <br />
+                                                            <table class="table table-hover table-bordered">
+                                                                @{
+                    var _CompanyPhoness = (from _c in db.Companies
+                                           join _cp in db.CompanyPhones
+                                           on _c.CompanyId equals _cp.CompanyId
+                                           join _pt in db.PhoneTypes
+                                           on _cp.PhoneTypeId equals _pt.PhoneTypeId
+                                           where _c.CompanyId == a.Companies.CompanyId
+                                           select new { _pt, _cp }).ToList();
+                    if (_CompanyPhoness.LongCount() == 0)
+                    {
+                        <tr style="border:hidden">
+                            <td>
+                                <div class="Estilo7 Red" align="center">
+                                    El laboratorio no tiene teléfonos
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var s in _CompanyPhoness)
+                        {
+                            <tr>
+                                <td width="80" align="center" class="Estilo4 btn-nav warning">
+                                    <div>
+                                        <div align="right">  @s._pt.Description  </div>
+                                    </div>
+                                </td>
+                                <td width="320" align="center" class=" Estilo4 btn-nav">
+                                    <div align="left">
+                                        @s._cp.PhoneValue
+                                    </div>
+                                </td>
+                                <td width="150" align="center">
+                                    <a title="Editar" class="btn btn-default loading" href="~/FiltroVentas/EditarTeléfonos/@a.Companies.CompanyId/@s._cp.PhoneTypeId" data-toggle="modal" data-target="#_EditarTeléfonos" id="EnaceAjaxEditarTeléfonos">
+                                        <i class=" glyphicon glyphicon-pencil">
+                                        </i>
+                                    </a>
+                                    <a title="Eliminar" class="btn btn-danger loading" onclick="EliminarTeléfono(@s._cp.CompanyId, @s._pt.PhoneTypeId)"><i class="glyphicon glyphicon-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                                                                }
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col-md-12">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-body">
+                                            <div>
+                                                <div class="modal-header" align="center">
+                                                    <h4 class="modal-title Estilo7 btn-nav" id="myModalLabel">Direcciones</h4>
+                                                </div>
+                                                <br />
+                                                <div align="right" class="Estilo4 btn-nav"> <img src="/Images/direccion.png" style="float:left; width:12%; height:12%;" /> Agregar dirección   <a class="btn btn-success loading" href="~/FiltroVentas/AgregarDirecciones/@a.Companies.CompanyId" data-toggle="modal" data-target="#_AgregarDirecciones" id="EnaceAjaxAgregarDirecciones"><em class="glyphicon glyphicon-plus"></em></a></div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <br />
+                                                            <table class="table table-hover table-bordered">
+                                                                @{
+                    var _AddressCompany = (from _c in db.Companies
+                                           join _ca in db.CompanyAddresses
+                                           on _c.CompanyId equals _ca.CompanyId
+                                           join _ad in db.Addresses
+                                           on _ca.AddressId equals _ad.AddressId
+                                           where _c.CompanyId == a.Companies.CompanyId
+                                           select _ad).ToList();
+                    if (_AddressCompany.LongCount() == 0)
+                    {
+                        <tr style="border:hidden">
+                            <td>
+                                <div class="Estilo7 Red" align="center">
+                                    El laboratorio no tiene direcciones
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var s in _AddressCompany)
+                        {
+                            <tr>
+                                <td colspan="2" width="150" align="right">
+                                    <a title="Editar" class="btn btn-default loading" href="~/FiltroVentas/EditarDirecciones/@a.Companies.CompanyId/@s.AddressId" data-toggle="modal" data-target="#_EditarDirecciones" id="EnlaceAjaxEditarDirecciones">
+                                        <i class=" glyphicon glyphicon-pencil">
+                                        </i>
+                                    </a>
+                                    <a title="Eliminar" class="btn btn-danger loading" onclick="EliminarDirección(@a.Companies.CompanyId, @s.AddressId )"><i class="glyphicon glyphicon-trash"></i></a>
+                                </td>
+                            </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> Dirección:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Address
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> Suburbio:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Suburb
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                                                                                        <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> Delegación:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Location
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> Ubicación:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Ubication
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> C.P:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.ZipCode
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> E-mail:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Email
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> Web:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Web
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right"> Contacto:  </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="center" class=" Estilo4 btn-nav">
+                                                                            <div align="left">
+                                                                                @s.Contact
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                                                                                        <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right">País:</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="left" class="Estilo4 btn-nav">
+                                                                            @{
+                            var _citiesss = (from _ci in db.Cities
+                                             join _s in db.States
+                                             on _ci.StateId equals _s.StateId
+                                             join _co in db.Countries
+                                             on _s.CountryId equals _co.CountryId
+                                             where _ci.CityId == s.CityId
+                                             select _co).ToList();
+                            foreach (var r in _citiesss)
+                            {
+                                @r.CountryName
+                            }
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                      <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right">Estado:</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="left" class="Estilo4 btn-nav">
+                                                                            @{
+                            var _citiess = (from _ci in db.Cities
+                                            join _s in db.States
+                                            on _ci.StateId equals _s.StateId
+                                            where _ci.CityId == s.CityId
+                                            select _s).ToList();
+                            foreach (var r in _citiess)
+                            {
+                                @r.Name
+                            }
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td width="30" align="center" class="Estilo4 btn-nav warning">
+                                                                            <div>
+                                                                                <div align="right">Ciudad:</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td width="320" align="left" class="Estilo4 btn-nav">
+                                                                            @{
+                            var _cities = (from _ci in db.Cities
+                                           where _ci.CityId == s.CityId
+                                           select _ci).ToList();
+                            foreach (var r in _cities)
+                            {
+                                @r.Name
+                            }
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                        }
+                    }
+                                                                }
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                }
+            
+                            }
+
+                        </div>
+                        <div align="center">
+                            <button type="button" class="btn btn-danger Estilo2x" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="container">
+    <div class="modal modal-message modal-success fade" id="Error" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="Estilo7 Estilo6 btn-nav" align="center">
+                        Información del laboratorio
+                    </div>
+                </div>
+                <div class="modal-body1">
+                    <div class='modal-body'>
+                        <div>
+                            <img src="/Images/candado.png" style="float:left; width:22%; height:22%;" />
+                        </div>
+                        <div class="Estilo7">
+                            ¡No puede editar el laboratorio, dado que aún no participa en la edición <strong class="Estilo6">@ViewData["Edición"]</strong>!
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-header">
+                    <button type="button" class="btn btn-danger Estilo4" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    foreach (var a in Model)
+    {
+        var _EditionModal = a.Companies.CompanyId + 80000;
+        <div class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="@_EditionModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div align="center">
+                        <button1 type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true"><strong class="Red">x</strong></button1>
+                        <h4 class="modal-title Estilo7 Estilo6 btn-nav">Ediciones dónde participa el laboratorio @a.Companies.CompanyName</h4>
+                    </div>
+                    <div class="modal-body">
+                        @{
+        var _CompanyEditionss = (from _c in db.Companies
+                                 join _ce in db.CompanyEditions on _c.CompanyId equals _ce.CompanyId
+                                 join _ed in db.Editions on _ce.EditionId equals _ed.EditionId
+                                 where _c.CompanyId == a.Companies.CompanyId
+                                 select new { _ed, _c, _ce }).ToList();
+                                <div align="left">
+                                    <div>
+                                        <article>
+                                            <br />
+                                            <section>
+                                                <div>
+                                                    <div class="panel panel-default" style="background-color:rgba(0, 0, 0, 0.0)">
+                                                        <div class="panel-body">
+                                                            <br>
+                                                            <ul class="timeline">
+                                                                @foreach (var s in _CompanyEditionss)
+                                                                {
+                                                                    if (s._ed.ISBN == "DEACI 22")
+                                                                    {
+                                                                        <li class="timeline-inverted">
+                                                                            <div class="timeline-panel warning">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 24")
+                                                                    {
+                                                                        <li class="timeline-badge">
+                                                                            <div class="timeline-panel warning" align="right">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 25")
+                                                                    {
+
+                                                                        <li class="timeline-inverted">
+                                                                            <div class="timeline-panel warning">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 26")
+                                                                    {
+                                                                        <li class="timeline-badge">
+                                                                            <div class="timeline-panel warning" align="right">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 27")
+                                                                    {
+                                                                        <li class="timeline-inverted">
+                                                                            <div class="timeline-panel warning">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 28")
+                                                                    {
+                                                                        <li class="timeline-badge">
+                                                                            <div class="timeline-panel warning" align="right">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 29")
+                                                                    {
+                                                                        <li class="timeline-inverted">
+                                                                            <div class="timeline-panel warning">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 30")
+                                                                    {
+                                                                        <li class="timeline-badge">
+                                                                            <div class="timeline-panel warning" align="right">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 31")
+                                                                    {
+                                                                        <li class="timeline-inverted">
+                                                                            <div class="timeline-panel warning">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                    if (s._ed.ISBN == "DEACI 32")
+                                                                    {
+                                                                        <li class="timeline-badge">
+                                                                            <div class="timeline-panel warning">
+                                                                                <div class="Estilo4">
+                                                                                    DEACI <strong class="Estilo6">@s._ed.NumberEdition</strong>
+                                                                                </div>
+                                                                                <div class="Estilo4">
+                                                                                    Participa como: <strong class="Red"> @s._ce.CompanyTypes.Description</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </article>
+                                    </div>
+                                </div>
+                        }
+                        <div align="center">
+                            <button type="button" class="btn btn-danger Estilo2x" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+@{
+    foreach (var x in Model)
+    {
+        var _SeccionesModal = x.Companies.CompanyId + 1000000;
+ <div class="container">
+    <div class="modal modal-message modal-success fade " id="@_SeccionesModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body1 Estilo2x">
+                    <br />
+                    <div>
+                        <div class="panel panel-warning">
+                            <div class="panel-body">
+                                <div>
+                                    <div class="modal-header Estilo7 btn-nav" align="center">
+                                        <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Secciones asociadas al laboratorio @x.Companies.CompanyName</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div>
+                                                <br />
+                                                <div class="modal-body1">
+                                                    <ul class="timeline">
+                                                        <li>
+                                                            <div class="timeline-badge">
+                                                                <a title="Agregar" class="btn btn-success loading" href="/FiltroVentas/AgregarSeccionesCliente/@x.Companies.CompanyId" data-toggle="modal" data-target="#_AgregarSeccionesCliente" id="EnlaceAjaxAgregarSeccionesCliente">
+                                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="timeline-panel">
+                                                                <div align="right" class="Estilo4 btn-nav modal-body">
+                                                                    Agregar laboratorio a sección
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        @{
+                                                            var _Sections = (from _c in db.Companies
+                                                                             join _cs in db.CompanySections
+                                                                             on _c.CompanyId equals _cs.CompanyId
+                                                                             join _s in db.Sections
+                                                                             on _cs.SectionId equals _s.SectionId
+                                                                             where _c.CompanyId == x.Companies.CompanyId
+                                                                             select new { _c, _cs, _s }).ToList();
+                                                            if (_Sections.LongCount() == 0)
+                                                            {
+                                                                <li class="timeline-inverted">
+                                                                        <div class="timeline-panel">
+                                                                            <div align="left" class="Estilo4 modal-body">
+                                                                                <h4 class="Red">El laboratorio no esta asociado a ninguna sección</h4> <h4 class="btn-nav"></h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li> 
+                                                            }
+                                                            foreach (var s in _Sections)
+                                                            {
+                                                                if (s._s.SectionIdParent == null)
+                                                                {
+                                                                    <li class="timeline-inverted">
+                                                                        <div class="timeline-badge">
+                                                                            <a title="Desasociar sección" class="btn btn-danger loading" onclick="prueba(@s._c.CompanyId, @s._s.SectionId)">
+                                                                                <i class="glyphicon glyphicon glyphicon-remove"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="timeline-panel">
+                                                                            <div align="left" class="Estilo4 modal-body">
+                                                                                <h4 class="Estilo6">(Sección)</h4> <h4 class="btn-nav"> @s._s.Description</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                                else
+                                                                {
+                                                                    var _sections = (from _s in db.Sections
+                                                                                     where _s.SectionId == s._s.SectionIdParent
+                                                                                     select _s).ToList();
+                                                                    <li>
+                                                                        <div class="timeline-badge">
+                                                                            <a class="btn btn btn-danger loading" onclick="prueba(@s._c.CompanyId, @s._s.SectionId)">
+                                                                                <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="timeline-panel" align="left">
+                                                                            <div class="timeline-body">
+                                                                                @if (_sections.SingleOrDefault().SectionIdParent == null)
+                                                                                {
+                                                                                    <p class="Estilo4 btn-nav">
+                                                                                        <h4 class="Estilo6">(Sub Sección)</h4>
+                                                                                        <h4 class="btn-nav">@s._s.Description</h4>
+                                                                                    </p>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <p class="Estilo4 btn-nav">
+                                                                                        <h4 class="Estilo6"> (Sub Sub Sección)</h4>
+                                                                                        <h4 class="btn-nav">@s._s.Description</h4>
+                                                                                    </p>
+                                                                                }
+                                                                                <a class="btn btn-nav">
+                                                                                    <i class="glyphicon glyphicon-arrow-down">
+                                                                                    </i>
+                                                                                </a>
+                                                                                @if (_sections.LongCount() > 0)
+                                                                                {
+                                                                                    foreach (var f in _sections)
+                                                                                    {
+                                                                                        if (f.SectionIdParent == null)
+                                                                                        {
+                                                                                            <p class="Estilo4 btn-nav">
+                                                                                                <h4 class="Estilo6">(Sección)</h4>
+                                                                                                <h4 class="btn-nav">@f.Description</h4>
+                                                                                            </p>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <p class="Estilo4 btn-nav">
+                                                                                                <h4 class="Estilo6">(Sub Sección)</h4>
+                                                                                                <h4 class="btn-nav">@f.Description</h4>
+                                                                                            </p>
+                                                                                            <a class="btn btn-nav">
+                                                                                                <i class="glyphicon glyphicon-arrow-down">
+                                                                                                </i>
+                                                                                            </a>
+                                                                                            var _Level = (from _s in db.Sections
+                                                                                                          where _s.SectionId == f.SectionIdParent
+                                                                                                          select _s).ToList();
+                                                                                            if (_Level.LongCount() > 0)
+                                                                                            {
+                                                                                                foreach (var d in _Level)
+                                                                                                {
+                                                                                                    <p class="Estilo4 btn-nav">
+                                                                                                        <h4 class="Estilo6">(Sección)</h4>
+                                                                                                        <h4 class="btn-nav">@d.Description </h4>
+                                                                                                    </p>
+                                                                                                }
+                                                                                            }
+                                                                                        }
+
+                                                                                    }
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button class="Estilo2x btn btn-danger" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>        
+    }
+}
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_EditarCliente" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="EditarClienteAjax">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_EditarTeléfonos" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="EditarTeléfonosAjax">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_AgregarTeléfonos" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="AgregarTeléfonosAjax">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_AgregarDirecciones" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="AgregarDireccionesAjax">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_EditarDirecciones" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="EditarDireccionesAjax">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal modal-message modal-success fade in container col-lg-10" id="_AgregarSeccionesCliente" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" id="DestinoAjaxAgregarSeccionesCliente">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<style>
+    #custom-search-input {
+        padding: 1px;
+        border: solid 1px #E4E4E4;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+        #custom-search-input input {
+            border: 0;
+            box-shadow: none;
+        }
+
+        #custom-search-input button {
+            margin: 1px 0 0 0;
+            background: none;
+            box-shadow: none;
+            border: 0;
+            color: #666666;
+            padding: 0 1px 0 2px;
+            border-left: solid 1px #ccc;
+        }
+
+            #custom-search-input button:hover {
+                border: 0;
+                box-shadow: none;
+                border-left: solid 1px #ccc;
+            }
+
+        #custom-search-input .glyphicon-search {
+            font-size: 18px;
+        }
+</style>
+<style>
+    .loading, .loading > td, .loading > th, .nav li.loading.active > a, .pagination li.loading, .pagination > li.active.loading > a, .pager > li.loading > a {
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+        background-size: 40px 40px;
+        animation: 2s linear 0s normal none infinite progress-bar-stripes;
+        -webkit-animation: progress-bar-stripes 2s linear infinite;
+    }
+
+    .btn.btn-default.loading, input[type="text"].loading, select.loading, textarea.loading, .well.loading, .list-group-item.loading, .pagination > li.active.loading > a, .pager > li.loading > a {
+        background-image: linear-gradient(45deg, rgba(235, 235, 235, 0.15) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(235, 235, 235, 0.15) 50%, rgba(235, 235, 235, 0.15) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+    }
+</style>

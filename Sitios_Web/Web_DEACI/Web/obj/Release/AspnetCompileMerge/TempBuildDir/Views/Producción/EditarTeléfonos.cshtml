@@ -1,0 +1,81 @@
+﻿<script>
+    $(document).ready(function () {
+        $("._ModificarTeléfonos").click(function () {
+            var _CompanyIdPhone = $("#_CompanyIdPhone").val();
+            var _IdPhoneType = $("#_IdPhoneType").val();
+            var _ValuePhone = $("#_ValuePhone").val();
+            if (_ValuePhone.trim() == false) {
+                swal("¡Atención!", "¡Los campos marcados con * son obligatorios!", "error");
+            }
+            else
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Producción/EditarTeléfono",
+                    traditional: true,
+                    data: { CompanyId: _CompanyIdPhone, PhoneTypeEdit: _IdPhoneType, PhoneValueEdit: _ValuePhone },
+                    success: function (data) {
+                        if (data == true) {
+                            swal("¡Cambios guardados!", "", "success")
+                            setTimeout(function () { location.reload(1); }, 300);
+                        }
+                    }
+                });
+        });
+    });
+</script>
+@model ICollection<Web.Models.Union_Companies_CompanyTypes_CompanyPhones_Cities>
+@{
+    Layout = null;
+}
+<script src="~/Bootstrap/js/JavaScript1.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/sweetalert.min.js"></script>
+@using (Html.BeginForm())
+{
+    foreach (var a in Model)
+    {
+        <div class="modal-body1 Estilo2x">
+            <br />
+            <div>
+                <div class="panel panel-warning">
+                    <div class="panel-body">
+                        <div>
+                            <div class="modal-header Estilo7 btn-nav" align="center">
+                                <h1 class="modal-title btn-nav Estilo7" id="myModalLabel">Editar teléfonos</h1>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div>
+                                        <br />
+                                        <div class="modal-body1">
+                                            <br />
+                                            <div class="Nota btn-nav" align="right">
+                                                Los campos marcados con <strong class="Red">*</strong> son obligatorios.
+                                                <br />
+                                            </div>
+                                            <div class="Nota btn-nav">
+                                                <div class="Nota btn-nav" align="left">
+                                                    @a.PhoneTypes.Description          <strong class="Red">*</strong>
+                                                    <br />
+                                                </div>
+                                                <input type="hidden" id="_IdPhoneType" value="@a.PhoneTypes.PhoneTypeId" />
+                                                <input type="hidden" id="_CompanyIdPhone" value="@a.Companies.CompanyId" />
+                                                <input class="form-control" type="text" id="_ValuePhone" value="@a.CompanyPhones.PhoneValue" />
+                                            </div>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="button" value="Guardar" class="btn btn-success _ModificarTeléfonos" />
+                            <input type="button" value="Cancelar" class="btn btn-default navbar-default btn-nav" data-dismiss="modal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    }
+}
+<script src="~/Bootstrap/js/bootstrap.min.js"></script>

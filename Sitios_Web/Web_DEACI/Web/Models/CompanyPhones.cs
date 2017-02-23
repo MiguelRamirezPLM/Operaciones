@@ -18,7 +18,7 @@ namespace Web.Models
         public int CompanyId { get; set; }
         public string PhoneValue { get; set; }
     
-        public virtual Companies Companies { get; set; }
         public virtual PhoneTypes PhoneTypes { get; set; }
+        public virtual Companies Companies { get; set; }
     }
 }
