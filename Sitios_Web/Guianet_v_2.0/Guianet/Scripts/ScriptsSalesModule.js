@@ -5302,7 +5302,7 @@ function getlevel4LI(value) {
         success: function (data) {
             $(elmls).empty();
             $.each(data, function (index, val) {
-                $(elmls).append($("<li></li>").append("<label style='font-weight:100;cursor:pointer' data-toggle=\"tooltip\" title=\"Click para Editar " + val.LeafCategory + "\" onclick=\"alert($(this).text())\">" + val.LeafCategory + "</label>"));
+                $(elmls).append($("<li></li>").append("<label style='font-weight:100;cursor:pointer' data-toggle=\"tooltip\" title=\"Doble click en el Nombre para Editar " + val.LeafCategory + "\" ondblclick=\"alert($(this).text())\">" + val.LeafCategory + "</label>"));
             });
         }
     })
