@@ -905,7 +905,7 @@ function saveCategoriesSM() {
             Type: "POST",
             dataType: "Json",
             url: "../SalesModule/saveCategories",
-            data: { ListItems: jsonresponse, ArraySize: size,Edition:EId },
+            data: { ListItems: jsonresponse, ArraySize: size, Edition: EId },
             success: function (data) {
                 setTimeout('document.location.reload()');
             }
@@ -5302,7 +5302,7 @@ function getlevel4LI(value) {
         success: function (data) {
             $(elmls).empty();
             $.each(data, function (index, val) {
-                $(elmls).append($("<li></li>").append("<label style='font-weight:100'>" + val.LeafCategory + "</label>"));
+                $(elmls).append($("<li></li>").append("<label style='font-weight:100;cursor:pointer' data-toggle=\"tooltip\" title=\"Click para Editar " + val.LeafCategory + "\" onclick=\"alert($(this).text())\">" + val.LeafCategory + "</label>"));
             });
         }
     })
@@ -6443,5 +6443,73 @@ function SaveAddPDF(item) {
                 }
             })
         }
+    }
+}
+
+
+function ActFldsEditCat(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    tr.find(".display-modeECT").hide();
+    tr.find(".edit-modeECT").show();
+
+    sessionStorage.CTName = tr.find("#lblCategoryThree").text();
+
+}
+
+function DisFldsEditCat(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    tr.find(".display-modeECT").show();
+    tr.find(".edit-modeECT").hide();
+
+    tr.find("#txtCategoryThree").val(sessionStorage.CTName);
+}
+
+
+function SaveFldsEditCat(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    tr.find(".display-modeECT").hide();
+    tr.find(".edit-modeECT").show();
+
+    var CTId = tr.find("#lblCategoryThreeId").val();
+    var CTName = tr.find("#txtCategoryThree").val();
+
+    if (!CTName.trim() == true) {
+        var message = "El campo Nombre de Categor&iacute;a no puede quedar vac&iacute;o";
+        var d = "";
+        d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+        apprise("" + d + "", { 'animate': true });
+    }
+    else {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Production/EditCategoryName",
+            data: { Category: CTId, CategoryName: CTName, TableName: 'CategoryThree' },
+            success: function (data) {
+                if (data == true) {
+                    tr.find("#lblCategoryThree").text(CTName);
+                    tr.find(".display-modeECT").show();
+                    tr.find(".edit-modeECT").hide();
+                }
+                else if (data == false) {
+                    var message = "Ya existe una Categor&iacute;a con el mismo nombre.";
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+                    d += "<p></p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+                }
+            }
+        })
     }
 }

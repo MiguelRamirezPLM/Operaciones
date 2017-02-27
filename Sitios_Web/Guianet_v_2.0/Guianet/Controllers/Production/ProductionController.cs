@@ -4446,5 +4446,59 @@ namespace Guianet.Controllers.Production
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult EditCategoryName(string Category, string CategoryName, string TableName)
+        {
+            int CategoryId = int.Parse(Category);
+
+            if (TableName == "LeafCategories")
+            {
+                List<LeafCategories> L = db.LeafCategories.Where(x => x.LeafCategory.ToUpper().Trim() == CategoryName.ToUpper().Trim() && x.LeafCategoryId != CategoryId).ToList();
+
+                if (L.LongCount() > 0)
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+
+                List<LeafCategories> LS = db.Database.SqlQuery<LeafCategories>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName=" + TableName + ", @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "").ToList();
+
+                if (LS.LongCount() > 0)
+                {
+                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDCategories @CRUDType=" + CRUD.Update + ", @TableName=" + TableName + ", @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "");
+
+                    if (TableName == "LeafCategories")
+                    {
+                        ActivityLog.LeafCategories(CategoryId, CategoryName, 2, 1);
+                    }
+                }
+            }
+
+            if (TableName == "CategoryThree")
+            {
+
+                List<CategoriesThree> L = db.CategoriesThree.Where(x => x.CategoryThree.ToUpper().Trim() == CategoryName.ToUpper().Trim() && x.CategoryThreeId != CategoryId).ToList();
+
+                if (L.LongCount() > 0)
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+
+                List<CategoriesThree> LS = db.Database.SqlQuery<CategoriesThree>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName=" + TableName + ", @CategoryThreeId=" + CategoryId + "").ToList();
+
+                if (LS.LongCount() > 0)
+                {
+                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDCategories @CRUDType=" + CRUD.Update + ", @TableName=" + TableName + ", @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "");
+
+                    if (TableName == "CategoryThree")
+                    {
+                        ActivityLog.CategoryThree(CategoryId, CategoryName, 2, 1);
+                    }
+                }
+            }
+
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
