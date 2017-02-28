@@ -42,7 +42,14 @@
     <Reference Include="EPPlus">
       <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Users\miguel.ramirez\Documents\Visual Studio 2013\Projects\MediVet\MediVet\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
     <Reference Include="PLMCryptographyComponent, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\PLMCryptographyComponent.dll</HintPath>
@@ -174,10 +181,41 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActiveSubstances.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityLogInfo.cs" />
     <Compile Include="Models\BarCodes.cs">
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Class\ActiveSubstances.cs" />
+    <Compile Include="Models\Class\CheckProductInteraction.cs" />
+    <Compile Include="Models\Class\CRUD.cs" />
+    <Compile Include="Models\Class\GetActiveSubstancesWithoutInteractions.cs" />
+    <Compile Include="Models\Class\GetHypersensibilities.cs" />
+    <Compile Include="Models\Class\GetICDByProductPharmaform.cs" />
+    <Compile Include="Models\Class\GetICDs.cs" />
+    <Compile Include="Models\Class\GetIndicationsByProduct.cs" />
+    <Compile Include="Models\Class\GetInteractions.cs" />
+    <Compile Include="Models\Class\GetIppaProductInteractions.cs" />
+    <Compile Include="Models\Class\GetOtherElemensWithoutInteractions.cs" />
+    <Compile Include="Models\Class\GetPharmacologicalGroupsWithoutInteraction.cs" />
+    <Compile Include="Models\Class\GetPharmaContraindications.cs" />
+    <Compile Include="Models\Class\GetPhysiologicalContraindications.cs" />
+    <Compile Include="Models\Class\GetProductCommentContraindications.cs" />
+    <Compile Include="Models\Class\GetProductotherInteractions.cs" />
+    <Compile Include="Models\Class\GetProductPharmaGroupInteractions.cs" />
+    <Compile Include="Models\Class\GetProductPhysContraindications.cs" />
+    <Compile Include="Models\Class\GetProductSubstanceContraindications.cs" />
+    <Compile Include="Models\Class\GetProductSubstanceInteractions.cs" />
+    <Compile Include="Models\Class\GetReportInteractions.cs" />
+    <Compile Include="Models\Class\GetRowsPerPage.cs" />
+    <Compile Include="Models\Class\GetTherapeuticOMSByProduct.cs" />
+    <Compile Include="Models\Class\Operations.cs" />
+    <Compile Include="Models\Class\PhysiologicalContraindications.cs" />
+    <Compile Include="Models\Class\ProductPharmaContraindications.cs" />
+    <Compile Include="Models\Class\ReturnAddedInteractions.cs" />
+    <Compile Include="Models\Class\TherapeuticsEphMRA.cs" />
     <Compile Include="Models\ContentFamiliesByDivision.cs" />
     <Compile Include="Models\EditionProductShots.cs">
       <DependentUpon>Medinet.tt</DependentUpon>
@@ -189,6 +227,21 @@
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetBookToEditionByContry_Result.cs" />
+    <Compile Include="Models\ICD.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Indications.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IPPAProductInteractions.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OtherElements.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PharmacologicalGroups.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PLMUserActions.cs" />
     <Compile Include="Models\ActivityLogs.cs">
       <DependentUpon>PLMUsers.tt</DependentUpon>
@@ -367,11 +420,17 @@
     <Compile Include="Models\ProductCategories.cs">
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductICD.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ProductImages.cs">
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductImagesInfo.cs" />
     <Compile Include="Models\ProductImageSizes.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductIndications.cs">
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductPharmaForms.cs">
@@ -384,6 +443,15 @@
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductShotTypes.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductSubstanceInteractions.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductTherapeuticOMS.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductTherapeutics.cs">
       <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductTypes.cs">
@@ -404,6 +472,8 @@
     </Compile>
     <Compile Include="Models\SessionCountrybyDivision.cs" />
     <Compile Include="Models\SessionDivisionId.cs" />
+    <Compile Include="Models\Sessions\Pager.cs" />
+    <Compile Include="Models\Sessions\SessionLI.cs" />
     <Compile Include="Models\Sessions\SessionM.cs" />
     <Compile Include="Models\SessionRoles.cs" />
     <Compile Include="Models\Sessions\SessionRows.cs" />
@@ -414,6 +484,12 @@
     </Compile>
     <Compile Include="Models\Tables.cs">
       <DependentUpon>PLMUsers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TherapeuticOMS.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Therapeutics.cs">
+      <DependentUpon>Medinet.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserCountries.cs">
       <DependentUpon>PLMUsers.tt</DependentUpon>
@@ -929,6 +1005,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GetReport\GetInteractionsByKey.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -292,22 +292,37 @@
 
                         _datagrid.Column("", header: "Categoría", format: @<text>
                                 @{
-                                    <span class="display-modeEC"> <label id="lblShortName">@item.CategoryThree</label> </span>
+                                    <span class="display-modeECT" style="margin-left:10px"> <label id="lblCategoryThree">@item.CategoryThree</label> </span>
+    <input type="text" value="@item.CategoryThree" id="txtCategoryThree" class="form-control edit-modeECT" style="color:red;width:90%;display:none" placeholder="Nombre de Categoría"/>
                                     <input id="lblCategoryThreeId" style="display:none;" value="@item.CategoryThreeId" />
                                 }
-                        </text>,style:"column16"),
+                        </text>),
 
-                        _datagrid.Column("", header: "Página de Catálogo de Productos", format: @<text>
+                        @*_datagrid.Column("", header: "Página de Catálogo de Productos", format: @<text>
                 @{
     <input type="text" class="form-control" value="@item.CategoryProductPage" id="ProductPage" onblur="addCategoryPage($(this))" placeholder="Página de Catálogo de Productos" />
 }
-                        </text>,style:"column16 text-center"),
+                        </text>,style:"column16 text-center"),*@
 
                 _datagrid.Column("", header: "Página de Productos y Servicios", format: @<text>
                 @{
-    <input type="text" class="form-control" value="@item.CategoryPSPage" id="CategoryPage" onblur="addCategoryPage($(this))" placeholder="Página de Productos y Servicios" />
+                    <input type="text" class="form-control" value="@item.CategoryPSPage" id="CategoryPage" onblur="addCategoryPage($(this))" placeholder="Página de Productos y Servicios" />
+                }
+                </text>,style:"column16 text-center"),
+            
+            _datagrid.Column("", header: "Editar", format: @<text>
+                @{
+                    <button class="btn btn-warning btn-sm display-modeECT" onclick="ActFldsEditCat($(this))">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+    <button class="btn btn-primary btn-sm edit-modeECT" style="display:none" onclick="SaveFldsEditCat($(this))">
+        <span class="glyphicon glyphicon-ok"></span>
+    </button>
+    <button class="btn btn-danger btn-sm edit-modeECT" style="display:none" onclick="DisFldsEditCat($(this))">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
 }
-                </text>,style:"column16 text-center")
+                        </text>,style:"column10 text-center"),
             })
         </div>
     }

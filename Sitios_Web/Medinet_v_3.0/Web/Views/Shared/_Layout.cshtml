@@ -29,6 +29,19 @@
 
 </head>
 <body id="_body">
+    <div class="pantalla_bloqueo" id="bloqueo">
+        <div id="mensaje_bloqueador">
+            <h3 style="color:#0d468f">  CARGANDO... </h3>
+        </div>
+        <div id="imagen_bloqueador" class="contenedor">
+            <div class="progress contenido">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" id="divprogressbar"
+                     aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width: 100%; background-color: #003870">
+                    <span id="label"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="pushWrapper">
         <header class="pageHeader">
             <button class="menu-trigger">
@@ -123,7 +136,7 @@
                             @*
                                 Viewdata["_notifications"] = recibira el número de tareas pendientes que tenga el usuario.
                             *@
-                            <div data-count="@ViewData["_notifications"] 3" align="center" class="notification notify show-count"></div>
+                            <div data-count="@ViewData["_notifications"] 3" align="center" class="notification @*notify*@ show-count"></div>
                             <span style="padding-left:10px;" class="text">Notificaciones</span>
                         </a>
                     </li>
@@ -261,3 +274,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $(".ldr").click(function () {
+            $("#bloqueo").show();
+        })
+    })
+</script>
+<script>
+    load();
+</script>

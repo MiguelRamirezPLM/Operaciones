@@ -22,6 +22,7 @@ namespace Web.Models
         public int InternalPackId { get; set; }
         public string InternalPackName { get; set; }
         public bool Active { get; set; }
+        public string True { get; set; }
     
         public virtual ICollection<Presentations> Presentations { get; set; }
     }

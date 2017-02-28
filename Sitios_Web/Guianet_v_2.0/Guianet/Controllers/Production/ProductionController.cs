@@ -4460,7 +4460,7 @@ namespace Guianet.Controllers.Production
                     return Json(false, JsonRequestBehavior.AllowGet);
                 }
 
-                List<LeafCategories> LS = db.Database.SqlQuery<LeafCategories>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName='" + TableName + "', @CategoryThreeId=" + CategoryId + "").ToList();
+                List<LeafCategories> LS = db.Database.SqlQuery<LeafCategories>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName='" + TableName + "', @CategoryId=" + CategoryId + "").ToList();
 
                 if (LS.LongCount() > 0)
                 {

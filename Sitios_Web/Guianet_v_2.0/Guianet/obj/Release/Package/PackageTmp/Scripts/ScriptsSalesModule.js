@@ -905,7 +905,7 @@ function saveCategoriesSM() {
             Type: "POST",
             dataType: "Json",
             url: "../SalesModule/saveCategories",
-            data: { ListItems: jsonresponse, ArraySize: size,Edition:EId },
+            data: { ListItems: jsonresponse, ArraySize: size, Edition: EId },
             success: function (data) {
                 setTimeout('document.location.reload()');
             }
@@ -5292,8 +5292,6 @@ function getlevel4LI(value) {
 
     var elmls = document.getElementById(lstid);
 
-    //var CId = $("#clientid").val();
-    //var PId = $("#ProductId").val();
     $.ajax({
         Type: "POST",
         dataType: "Json",
@@ -5302,7 +5300,7 @@ function getlevel4LI(value) {
         success: function (data) {
             $(elmls).empty();
             $.each(data, function (index, val) {
-                $(elmls).append($("<li></li>").append("<label style='font-weight:100'>" + val.LeafCategory + "</label>"));
+                $(elmls).append($("<li></li>").append("<label style='font-weight:100;cursor:pointer' data-toggle=\"tooltip\" title=\"Doble click en el Nombre para Editar " + val.LeafCategory + "\" ondblclick=\"OpenEditLeafCategory($('" + val.LeafCategoryId + "'),$('" + val.LeafCategory + "'))\">" + val.LeafCategory + "</label>"));
             });
         }
     })
@@ -6443,5 +6441,178 @@ function SaveAddPDF(item) {
                 }
             })
         }
+    }
+}
+
+
+function ActFldsEditCat(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    tr.find(".display-modeECT").hide();
+    tr.find(".edit-modeECT").show();
+
+    sessionStorage.CTName = tr.find("#lblCategoryThree").text();
+
+}
+
+function DisFldsEditCat(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    tr.find(".display-modeECT").show();
+    tr.find(".edit-modeECT").hide();
+
+    tr.find("#txtCategoryThree").val(sessionStorage.CTName);
+}
+
+
+function SaveFldsEditCat(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    tr.find(".display-modeECT").hide();
+    tr.find(".edit-modeECT").show();
+
+    var CTId = tr.find("#lblCategoryThreeId").val();
+    var CTName = tr.find("#txtCategoryThree").val();
+
+    if (!CTName.trim() == true) {
+        var message = "El campo Nombre de Categor&iacute;a no puede quedar vac&iacute;o";
+        var d = "";
+        d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+        apprise("" + d + "", { 'animate': true });
+    }
+    else {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Production/EditCategoryName",
+            data: { Category: CTId, CategoryName: CTName, TableName: 'CategoryThree' },
+            success: function (data) {
+                if (data == true) {
+                    tr.find("#lblCategoryThree").text(CTName);
+                    tr.find(".display-modeECT").show();
+                    tr.find(".edit-modeECT").hide();
+                }
+                else if (data == false) {
+                    var message = "Ya existe una Categor&iacute;a con el mismo nombre.";
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+                    d += "<p></p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+                }
+            }
+        })
+    }
+}
+
+
+function OpenEditCategory(ValId, ValName) {
+
+    $("#inputCategoryThreeId").val(ValId.selector);
+    $("#InputCategoryThree").val(ValName.selector);
+
+    $('#BtnEditCategory').trigger('click');
+}
+
+function EditCategoriesLI() {
+
+    $("#bloqueo").show();
+
+    var CTId = $("#inputCategoryThreeId").val();
+    var CTName = $("#InputCategoryThree").val();
+
+    if (!CTName.trim() == true) {
+        var message = "El campo Nombre de Categor&iacute;a no puede quedar vac&iacute;o";
+        var d = "";
+        d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Production/EditCategoryName",
+            data: { Category: CTId, CategoryName: CTName, TableName: 'CategoryThree' },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else if (data == false) {
+                    var message = "Ya existe una Categor&iacute;a con el mismo nombre.";
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+                    d += "<p></p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+
+                    $("#bloqueo").hide();
+                }
+            }
+        })
+    }
+}
+
+function OpenEditLeafCategory(ValId, ValName) {
+
+    $("#inputLeafCategoryId").val(ValId.selector);
+    $("#InputLeafCategory").val(ValName.selector);
+
+    $('#BtnEditLeafCategory').trigger('click');
+}
+
+function EditLeafCategoriesLI() {
+
+    $("#bloqueo").show();
+
+    var CTId = $("#inputLeafCategoryId").val();
+    var CTName = $("#InputLeafCategory").val();
+
+    if (!CTName.trim() == true) {
+        var message = "El campo Nombre de Categor&iacute;a no puede quedar vac&iacute;o";
+        var d = "";
+        d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Production/EditCategoryName",
+            data: { Category: CTId, CategoryName: CTName, TableName: 'LeafCategories' },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else if (data == false) {
+                    var message = "Ya existe una Categor&iacute;a con el mismo nombre.";
+                    var d = "";
+                    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+                    d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+                    d += "<p></p>"
+                    d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
+                    apprise("" + d + "", { 'animate': true });
+
+                    $("#bloqueo").hide();
+                }
+            }
+        })
     }
 }

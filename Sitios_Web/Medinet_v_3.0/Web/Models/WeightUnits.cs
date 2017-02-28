@@ -23,6 +23,7 @@ namespace Web.Models
         public string UnitName { get; set; }
         public string ShortName { get; set; }
         public bool Active { get; set; }
+        public string True { get; set; }
     
         public virtual ICollection<Presentations> Presentations { get; set; }
     }
