@@ -2,20 +2,24 @@
 @using Web.Models;
 @{
     ViewBag.Title = "Content";
-    Web.Models.Sessions.SessionM _Session = (Web.Models.Sessions.SessionM)Session["SessionM"];
+    Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
     Medinet db = new Medinet();
 
-    int CountryId, DivisionId;
+    int CountryId, DivisionId, BookId, EditionIdS;
 
     if (_Session != null)
     {
         CountryId = _Session.CountryId;
         DivisionId = _Session.DivisionId;
+        BookId = _Session.BookId;
+        EditionIdS = _Session.EditionId;
     }
     else
     {
         CountryId = 0;
         DivisionId = 0;
+        BookId = 0;
+        EditionIdS = 0;
     }
 }
 <br />
@@ -101,6 +105,26 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var b = db.Books.Where(x => x.BookId == BookId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Obra: <span style="color: #de5145">@b[0].Description</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var e = db.Editions.Where(x => x.EditionId == EditionIdS).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Edición: <span style="color: #de5145">@e[0].NumberEdition</span> </span>
+                                    </p>
+                                </div>
+                            </div>
                             <div class="title_new">
                                 <div class="title-word_new">
                                     <p>
@@ -161,7 +185,7 @@
 
 <div class="row">
     <div class="col-lg-12  table-responsive">
-        <table border="1" class="table table-hover" id="TableClasificationProducts">
+        <table border="1" class="table table-hover table-responsive" id="TableClasificationProducts">
             <thead>
                 <tr>
                     <th class="tdback">
@@ -201,23 +225,23 @@
                             <td>
                                 <select class="form-control labelcnttbl" style="color:red" id="ProductTypes" onchange="ChangeProductType($(this))">
                                     @{
-                                        byte ProductTypeId = 0;
+                        byte ProductTypeId = 0;
 
-                                        List<ProductTypes> LPT = db.ProductTypes.Where(x => x.Active == true).OrderBy(x => x.ProductTypeId).ToList();
+                        List<ProductTypes> LPT = db.ProductTypes.Where(x => x.Active == true).OrderBy(x => x.ProductTypeId).ToList();
 
-                                        foreach (ProductTypes _pt in LPT)
-                                        {
-                                            if (_pt.TypeName.ToUpper().Trim() == item.ProductType.ToUpper().Trim())
-                                            {
-                                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId" selected="selected">@_pt.TypeName</option>
+                        foreach (ProductTypes _pt in LPT)
+                        {
+                            if (_pt.TypeName.ToUpper().Trim() == item.ProductType.ToUpper().Trim())
+                            {
+                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId" selected="selected">@_pt.TypeName</option>
 
-                                                ProductTypeId = _pt.ProductTypeId;
-                                            }
-                                            else
-                                            {
-                                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId">@_pt.TypeName</option>
-                                            }
-                                        }
+                                ProductTypeId = _pt.ProductTypeId;
+                            }
+                            else
+                            {
+                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId">@_pt.TypeName</option>
+                            }
+                        }
                                     }
                                 </select>
                                 <input type="text" value="@ProductTypeId" id="ProductTypeId" style="display:none" />
@@ -244,7 +268,7 @@
                                 <input type="checkbox" checked="@true" disabled="disabled" />
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-primary">
+                                <button class="btn btn-sm btn-primary ldr" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, EditionId = EditionIdS })';return false;">
                                     <span class="glyphicon glyphicon-cog"></span>
                                 </button>
                             </td>
