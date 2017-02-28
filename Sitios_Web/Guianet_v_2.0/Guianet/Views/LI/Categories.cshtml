@@ -36,12 +36,8 @@
                                 <button class="btn btn-success btn-sm" style="border-radius:50%" value="@_cat.HomogeneousCategory" onclick="GetDataAddCategory(@_cat.HomogeneousCategoryId, $(this))">
                                     <span class="glyphicon glyphicon-plus" style="position:static"></span>
                                 </button>
-
-                                
-
                                 <span class="glyphicon glyphicon-plus" id="Expand_@_cat.HomogeneousCategoryId" onclick="getlevel4LI(@_cat.HomogeneousCategoryId)" style="cursor:pointer"></span>
-
-                                <span class="glyphicon glyphicon-minus" style="display:none" id="Collapse_@_cat.HomogeneousCategoryId" onclick="collapselevel4LI(@_cat.HomogeneousCategoryId)"></span>
+                                <span class="glyphicon glyphicon-minus" style="display:none;cursor:pointer" id="Collapse_@_cat.HomogeneousCategoryId" onclick="collapselevel4LI(@_cat.HomogeneousCategoryId)"></span>
                                 <label style="font-weight:100;cursor:pointer" data-toggle="tooltip" title="Doble click en el Nombre para Editar @_cat.HomogeneousCategory" ondblclick="OpenEditCategory($('@_cat.HomogeneousCategoryId'),$('@_cat.HomogeneousCategory'))">@_cat.HomogeneousCategory</label>
                                 <ul id="ListL2_@_cat.HomogeneousCategoryId" style='margin-left:30px; list-style:initial'></ul>
                             </li>
@@ -66,7 +62,7 @@
                         </div>
                         <div class="col-lg-10">
                             <div class="form-group has-feedback" id="divCategoryName" style="margin-bottom: 0;">
-                                <input type="text" class="form-control" id="CategoryName" placeholder="Categoría" onkeypress="removerequieredfieldCats()" />
+                                <input type="text" class="form-control" id="CategoryName" style="text-transform:uppercase" placeholder="Categoría" onkeypress="removerequieredfieldCats()" />
                                 <span class="glyphicon glyphicon-remove form-control-feedback errorC" style="display:none"></span>
                             </div>
                         </div>
@@ -106,7 +102,7 @@
                         </div>
                         <div class="col-lg-10">
                             <div class="form-group has-feedback" id="divCategoryName3" style="margin-bottom: 0;">
-                                <input type="text" class="form-control" id="CategoryName3" placeholder="Categoría" onkeypress="removerequieredfieldCats3()" />
+                                <input type="text" class="form-control" id="CategoryName3" style="text-transform:uppercase" placeholder="Categoría" onkeypress="removerequieredfieldCats3()" />
                                 <span class="glyphicon glyphicon-remove form-control-feedback errorC3" style="display:none"></span>
                             </div>
                         </div>
@@ -145,7 +141,7 @@
             </div>
             <div class="modal-body" id="contenteditions">
                 <input type="text" id="inputCategoryThreeId" style="display:none" />
-                <input type="text" id="InputCategoryThree" class="form-control" style="color:red"/>
+                <input type="text" id="InputCategoryThree" class="form-control" style="color:red;text-transform:uppercase"/>
             </div>
             <div class="modal-footer" id="divbtncloseerror">
                 <button class="btn btn-primary" onclick="EditCategoriesLI()">
@@ -161,56 +157,28 @@
     </div>
 </div>
 
-<script>
-    function OpenEditCategory(ValId, ValName) {
-
-        $("#inputCategoryThreeId").val(ValId.selector);
-        $("#InputCategoryThree").val(ValName.selector);
-
-        $('#BtnEditCategory').trigger('click');
-    }
-
-    function EditCategoriesLI() {
-
-        $("#bloqueo").show();
-
-        var CTId = $("#inputCategoryThreeId").val();
-        var CTName = $("#InputCategoryThree").val();
-
-        if (!CTName.trim() == true) {
-            var message = "El campo Nombre de Categor&iacute;a no puede quedar vac&iacute;o";
-            var d = "";
-            d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
-            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
-            d += "<p></p>"
-            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
-            apprise("" + d + "", { 'animate': true });
-
-            $("#bloqueo").hide();
-        }
-        else {
-            $.ajax({
-                Type: "POST",
-                dataType: "Json",
-                url: "../Production/EditCategoryName",
-                data: { Category: CTId, CategoryName: CTName, TableName: 'CategoryThree' },
-                success: function (data) {
-                    if (data == true) {
-                        setTimeout("document.location.reload()");
-                    }
-                    else if (data == false) {
-                        var message = "Ya existe una Categor&iacute;a con el mismo nombre.";
-                        var d = "";
-                        d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
-                        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
-                        d += "<p></p>"
-                        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
-                        apprise("" + d + "", { 'animate': true });
-
-                        $("#bloqueo").hide();
-                    }
-                }
-            })
-        }
-    }
-</script>
+<button id="BtnEditLeafCategory" data-toggle="modal" data-target="#ModalEditLeafCategory" style="display:none"></button>
+<div class="modal fade" id="ModalEditLeafCategory" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Editar Categoría</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <input type="text" id="inputLeafCategoryId" style="display:none" />
+                <input type="text" id="InputLeafCategory" class="form-control" style="color:red;text-transform:uppercase" />
+            </div>
+            <div class="modal-footer" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="EditLeafCategoriesLI()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

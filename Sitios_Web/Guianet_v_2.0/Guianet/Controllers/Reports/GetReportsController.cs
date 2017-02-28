@@ -1622,6 +1622,194 @@ namespace Guianet.Controllers.Reports
             return File(renderedBytes, mimeType);
         }
 
+        public ActionResult GetReportAdvertsByClientLI(string id)
+        {
+            SessionClasification index = (SessionClasification)Session["SessionClasification"];
+            int EditionId = index.EId;
+            int ClientId = index.ClId;
+            int BookId = index.BId;
+
+            var plm = db.Database.SqlQuery<GetClientAdverts>("plm_spGetReportAdvertsByClient @ClientId=" + ClientId + ", @EditionId=" + EditionId + "").ToList();
+
+            LocalReport lr = new LocalReport();
+            string path = Path.Combine(Server.MapPath("~/GetReport"), "GetAdvertsByClient.rdlc");
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+            else
+            {
+                return View("error");
+            }
+
+            List<GetClientAdverts> cm = new List<GetClientAdverts>();
+            GetClientAdverts GetClientAdverts = new GetClientAdverts();
+
+            int Count = 0;
+
+            foreach (GetClientAdverts _plm in plm)
+            {
+                GetClientAdverts = new GetClientAdverts();
+
+                GetClientAdverts.EditionId = _plm.EditionId;
+                GetClientAdverts.NumberEdition = _plm.NumberEdition;
+                GetClientAdverts.ClientId = _plm.ClientId;
+                GetClientAdverts.CompanyName = _plm.CompanyName;
+                GetClientAdverts.CategoryThreeId = _plm.CategoryThreeId;
+                GetClientAdverts.CategoryThree = _plm.CategoryThree;
+
+                GetClientAdverts.AdvertId = _plm.AdvertId;
+                GetClientAdverts.AdvertName = _plm.AdvertName;
+                GetClientAdverts.AdvertDescription = _plm.AdvertDescription;
+                GetClientAdverts.AdvertFile = _plm.AdvertFile;
+                GetClientAdverts.Description = _plm.Description;
+
+                GetClientAdverts.QtyAdvers = _plm.QtyAdvers;
+
+
+                cm.Add(GetClientAdverts);
+            }
+
+            if (plm.LongCount() > 0)
+            {
+                cm[0].Count = Convert.ToInt32(plm.LongCount());
+
+                var u = dbusers.Users.Where(x => x.UserId == c.userId).ToList();
+
+                cm[0].Adviser = u[0].Name + " " + u[0].LastName + " " + u[0].SecondLastName;
+
+            }
+
+            ReportDataSource rd = new ReportDataSource("AdvertsByClient", cm);
+            lr.DataSources.Add(rd);
+            string reportType = id;
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+
+
+
+            string deviceInfo =
+
+            "<DeviceInfo>" +
+            "  <OutputFormat>" + id + "</OutputFormat>" +
+            "  <PageWidth>8.5in</PageWidth>" +
+            "  <PageHeight>11in</PageHeight>" +
+            "  <MarginTop>0.5in</MarginTop>" +
+            "  <MarginLeft>0.1in</MarginLeft>" +
+            "  <MarginRight>0.1in</MarginRight>" +
+            "  <MarginBottom>0.5in</MarginBottom>" +
+            "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+
+            renderedBytes = lr.Render(
+                reportType,
+                deviceInfo,
+                out mimeType,
+                out encoding,
+                out fileNameExtension,
+                out streams,
+                out warnings);
+
+
+            return File(renderedBytes, mimeType);
+        }
+
+        public ActionResult GetReportAdvertsByEditionLI(string id)
+        {
+            SessionClasification index = (SessionClasification)Session["SessionClasification"];
+            int EditionId = index.EId;
+            int ClientId = index.ClId;
+            int BookId = index.BId;
+
+            var plm = db.Database.SqlQuery<GetClientAdverts>("plm_spGetReportAdvertsByClient @EditionId=" + EditionId + "").ToList();
+
+            LocalReport lr = new LocalReport();
+            string path = Path.Combine(Server.MapPath("~/GetReport"), "GetAdvertsByEdition.rdlc");
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+            else
+            {
+                return View("error");
+            }
+
+            List<GetClientAdverts> cm = new List<GetClientAdverts>();
+            GetClientAdverts GetClientAdverts = new GetClientAdverts();
+
+            int Count = 0;
+
+            foreach (GetClientAdverts _plm in plm)
+            {
+                GetClientAdverts = new GetClientAdverts();
+
+                GetClientAdverts.EditionId = _plm.EditionId;
+                GetClientAdverts.NumberEdition = _plm.NumberEdition;
+                GetClientAdverts.ClientId = _plm.ClientId;
+                GetClientAdverts.CompanyName = _plm.CompanyName;
+                GetClientAdverts.CategoryThreeId = _plm.CategoryThreeId;
+                GetClientAdverts.CategoryThree = _plm.CategoryThree;
+
+                GetClientAdverts.AdvertId = _plm.AdvertId;
+                GetClientAdverts.AdvertName = _plm.AdvertName;
+                GetClientAdverts.AdvertDescription = _plm.AdvertDescription;
+                GetClientAdverts.AdvertFile = _plm.AdvertFile;
+                GetClientAdverts.Description = _plm.Description;
+
+                cm.Add(GetClientAdverts);
+            }
+
+            if (plm.LongCount() > 0)
+            {
+                cm[0].Count = Convert.ToInt32(plm.LongCount());
+
+                var u = dbusers.Users.Where(x => x.UserId == c.userId).ToList();
+
+                cm[0].Adviser = u[0].Name + " " + u[0].LastName + " " + u[0].SecondLastName;
+
+            }
+            ReportDataSource rd = new ReportDataSource("AdvertsByClient", cm);
+            lr.DataSources.Add(rd);
+            string reportType = id;
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+
+
+
+            string deviceInfo =
+
+            "<DeviceInfo>" +
+            "  <OutputFormat>" + id + "</OutputFormat>" +
+            "  <PageWidth>8.5in</PageWidth>" +
+            "  <PageHeight>11in</PageHeight>" +
+            "  <MarginTop>0.5in</MarginTop>" +
+            "  <MarginLeft>0.1in</MarginLeft>" +
+            "  <MarginRight>0.1in</MarginRight>" +
+            "  <MarginBottom>0.5in</MarginBottom>" +
+            "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+
+            renderedBytes = lr.Render(
+                reportType,
+                deviceInfo,
+                out mimeType,
+                out encoding,
+                out fileNameExtension,
+                out streams,
+                out warnings);
+
+
+            return File(renderedBytes, mimeType);
+        }
+
         public ActionResult GetReportAdvertsByEditionProd(string id)
         {
             SessionAdvertsProd index = (SessionAdvertsProd)Session["SessionAdvertsProd"];

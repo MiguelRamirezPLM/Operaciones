@@ -4460,11 +4460,11 @@ namespace Guianet.Controllers.Production
                     return Json(false, JsonRequestBehavior.AllowGet);
                 }
 
-                List<LeafCategories> LS = db.Database.SqlQuery<LeafCategories>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName=" + TableName + ", @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "").ToList();
+                List<LeafCategories> LS = db.Database.SqlQuery<LeafCategories>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName='" + TableName + "', @CategoryThreeId=" + CategoryId + "").ToList();
 
                 if (LS.LongCount() > 0)
                 {
-                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDCategories @CRUDType=" + CRUD.Update + ", @TableName=" + TableName + ", @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "");
+                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDCategories @CRUDType=" + CRUD.Update + ", @TableName='" + TableName + "', @CategoryName='" + CategoryName.Trim() + "', @CategoryId=" + CategoryId + "");
 
                     if (TableName == "LeafCategories")
                     {
@@ -4483,11 +4483,11 @@ namespace Guianet.Controllers.Production
                     return Json(false, JsonRequestBehavior.AllowGet);
                 }
 
-                List<CategoriesThree> LS = db.Database.SqlQuery<CategoriesThree>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName=" + TableName + ", @CategoryThreeId=" + CategoryId + "").ToList();
+                List<CategoriesThree> LS = db.Database.SqlQuery<CategoriesThree>("plm_spCRUDCategories @CRUDType=" + CRUD.Read + ", @TableName='" + TableName + "', @CategoryThreeId=" + CategoryId + "").ToList();
 
                 if (LS.LongCount() > 0)
                 {
-                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDCategories @CRUDType=" + CRUD.Update + ", @TableName=" + TableName + ", @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "");
+                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDCategories @CRUDType=" + CRUD.Update + ", @TableName='" + TableName + "', @CategoryName='" + CategoryName.Trim() + "', @CategoryThreeId=" + CategoryId + "");
 
                     if (TableName == "CategoryThree")
                     {
