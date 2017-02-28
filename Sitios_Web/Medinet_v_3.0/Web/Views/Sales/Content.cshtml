@@ -672,6 +672,8 @@
         $("._modalProductLine").modal('hide');
         $('._modalParticipantEdi').trigger('reset');
         $("._modalParticipantEdi").modal('hide');
+        $('._modalprices').modal('hide');
+        $('._modalIpp').modal('hide');
         $('html').css('overflow', 'auto');
     }
 </script>
@@ -1273,8 +1275,7 @@
 <script>
     function Prices(item)
     {
-        $('html').css('overflow', 'hidden');
-
+        
         var tr = $(item).parents("tr:first");
         var _vlproductId = tr.find("#_productId").val();
         var _vlpharmaformId = tr.find("#_pharmaFormId").val();
@@ -1527,6 +1528,7 @@
 <script>
     function addBarCode()
     {
+       
         var _ProductId = $("#_PproductName").val();
         var _ProductName = $("#_PproductName").text();
         var _PharmaceuticalFormId = $("#_PpharmaceuticalForm").val();
@@ -1680,6 +1682,45 @@
     }
 </script>
 
+@*Buscadores...*@
+<script>
+    function filter(element) {
+        var value = $(element).val();
+        $("#_elementBook li").each(function () {
+            if ($(this).text().search(new RegExp(value, "i")) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+<script>
+    function filterEdition(element) {
+        var value = $(element).val();
+            $("#_elementEdition li").each(function () {
+            if ($(this).text().search(new RegExp(value, "i")) > -1) {
+                
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+<script>
+    function filterLaboratory(element) {
+        var value = $(element).val();
+        $("#_elementLaboratory li").each(function () {
+            if ($(this).text().search(new RegExp(value, "i")) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
 
 
 
@@ -1940,25 +1981,25 @@
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span style="margin-left: 5px; color: black; " class="caret"></span></a>
-                        <ul class="dropdown-menu vertical" role="menu">
-                            <li>
+                        <ul id="_elementEdition"  class="dropdown-menu vertical" role="menu">
+                            <ol>
                                 <div id="custom-search-input">
                                     <div class="input-group col-md-11">
-                                        <input id="_charEdition" type="text" class="form-control" placeholder="Buscar" />
+                                        <input type='text' onkeyup='filterEdition(this)' class='form-control' placeholder='Buscar' />
                                     </div>
                                 </div>
-                            </li>
+                            </ol>
                             <li><p></p></li>
                             @{
-                                var _getEditions = (from _e in db.Editions
-                                                    where _e.BookId == _Session.ed
-                                                    && _e.CountryId == _Session.id
-                                                    orderby _e.NumberEdition 
-                                                    select _e).ToList();
-                                foreach (var _row in _getEditions)
-                                {
-                                    <li class="searchEdition"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + _row.EditionId + "/" + @_Session.ud)">@_row.NumberEdition</a></li>
-                                }
+                            var _getEditions = (from _e in db.Editions
+                            where _e.BookId == _Session.ed
+                            && _e.CountryId == _Session.id
+                            orderby _e.NumberEdition
+                            select _e).ToList();
+                            foreach (var _row in _getEditions)
+                            {
+                            <li class="searchEdition"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + _row.EditionId + "/" + @_Session.ud)">@_row.NumberEdition</a></li>
+                            }
                             }
                         </ul>
                     </li>
@@ -1966,21 +2007,21 @@
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laboratorios<span style="margin-left: 5px; color: black; " class="caret"></span></a>
-                        <ul class="dropdown-menu vertical" role="menu">
-                            <li>
+                        <ul id="_elementLaboratory" class="dropdown-menu vertical" role="menu">
+                            <ol>
                                 <div id="custom-search-input">
                                     <div class="input-group col-md-11">
-                                        <input id="_charLab" type="text" class="form-control" placeholder="Buscar" />
+                                        <input type="text" onkeyup="filterLaboratory(this)" class="form-control" placeholder="Buscar" />
                                     </div>
                                 </div>
-                            </li>
+                            </ol>
                             <li><p></p></li>
                             @{
-                                var _getDivisions =  db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
-                                foreach (var _row in _getDivisions)
-                                {
-                                    <li class="searchLab"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_row.DivisionId)">@_row.Description</a></li>
-                                }
+                            var _getDivisions =  db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
+                            foreach (var _row in _getDivisions)
+                            {
+                            <li class="searchLab"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_row.DivisionId)">@_row.Description</a></li>
+                            }
                             }
                         </ul>
                     </li>
@@ -3062,7 +3103,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #2184be">
-                <button onclick="cambiar" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 style="font-size: 18px; color: white" class="modal-title" id="myModalLabel" align="center"> <span>Precios</span></h4>
             </div>
             <div class="modal-body">
@@ -3122,7 +3163,7 @@
             </div>
             <div class="modal-footer" align="center">
                 <div align="center">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose" onclick="cambiar">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose">
                         <span class="glyphicon glyphicon-remove"></span>
                         <span>&nbsp; Cancelar</span>
                     </button>
@@ -3138,7 +3179,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #2184be">
-                <button onclick="cambiar" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" onclick="canceladdpharmaformtoproduct()">&times;</button>
                 <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Agregar código de barras</span></h4>
             </div>
             <div class="modal-body">
@@ -3250,7 +3291,10 @@
                     <span class="glyphicon glyphicon-save"></span>
                     <span>&nbsp; Guardar</span>
                 </button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
             </div>
             <br />
         </div>
