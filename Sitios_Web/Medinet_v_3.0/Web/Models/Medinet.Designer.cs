@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'C:\Users\luis.vega\Desktop\Actual Medinet 3.0\ProductionSites\Web\Models\Medinet.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'C:\Entrega Operaciones\Operaciones\Sitios_Web\Medinet_v_3.0\Web\Models\Medinet.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.

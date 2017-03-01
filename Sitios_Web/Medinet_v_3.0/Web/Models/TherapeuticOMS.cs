@@ -14,11 +14,6 @@ namespace Web.Models
     
     public partial class TherapeuticOMS
     {
-        public TherapeuticOMS()
-        {
-            this.ProductTherapeuticOMS = new HashSet<ProductTherapeuticOMS>();
-        }
-    
         public int TherapeuticOMSId { get; set; }
         public Nullable<int> ParentId { get; set; }
         public string TherapeuticKey { get; set; }
@@ -26,7 +21,5 @@ namespace Web.Models
         public string SpanishDescription { get; set; }
         public bool Active { get; set; }
         public Nullable<byte> Level { get; set; }
-    
-        public virtual ICollection<ProductTherapeuticOMS> ProductTherapeuticOMS { get; set; }
     }
 }

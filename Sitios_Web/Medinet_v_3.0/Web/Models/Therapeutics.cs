@@ -17,7 +17,6 @@ namespace Web.Models
         public Therapeutics()
         {
             this.Therapeutics1 = new HashSet<Therapeutics>();
-            this.ProductTherapeutics = new HashSet<ProductTherapeutics>();
         }
     
         public int TherapeuticId { get; set; }
@@ -30,6 +29,5 @@ namespace Web.Models
     
         public virtual ICollection<Therapeutics> Therapeutics1 { get; set; }
         public virtual Therapeutics Therapeutics2 { get; set; }
-        public virtual ICollection<ProductTherapeutics> ProductTherapeutics { get; set; }
     }
 }
