@@ -219,6 +219,37 @@
       <End Role="ProductShotTypes" EntitySet="ProductShotTypes" />
       <End Role="EditionProductShots" EntitySet="EditionProductShots" />
     </AssociationSet>
+    <EntitySet Name="FamilyPrefixes" EntityType="Model1.FamilyPrefixes" />
+    <EntitySet Name="PrefixTypes" EntityType="Model1.PrefixTypes" />
+    <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Model1.FK_FamilyPrefixes_PrefixTypes">
+      <End Role="PrefixTypes" EntitySet="PrefixTypes" />
+      <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+    </AssociationSet>
+    <EntitySet Name="Families" EntityType="Model1.Families" />
+    <AssociationSet Name="FK_Families_FamilyPrefixes" Association="Model1.FK_Families_FamilyPrefixes">
+      <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+      <End Role="Families" EntitySet="Families" />
+    </AssociationSet>
+    <EntitySet Name="BarCodes" EntityType="Model1.BarCodes" />
+    <EntitySet Name="PriceSources" EntityType="Model1.PriceSources" />
+    <EntitySet Name="ProductBarCodes" EntityType="Model1.ProductBarCodes" />
+    <EntitySet Name="ProductPrices" EntityType="Model1.ProductPrices" />
+    <AssociationSet Name="R_492" Association="Model1.R_492">
+      <End Role="BarCodes" EntitySet="BarCodes" />
+      <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_491" Association="Model1.R_491">
+      <End Role="Presentations" EntitySet="Presentations" />
+      <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_494" Association="Model1.R_494">
+      <End Role="PriceSources" EntitySet="PriceSources" />
+      <End Role="ProductPrices" EntitySet="ProductPrices" />
+    </AssociationSet>
+    <AssociationSet Name="R_493" Association="Model1.R_493">
+      <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+      <End Role="ProductPrices" EntitySet="ProductPrices" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -641,6 +672,7 @@
     <NavigationProperty Name="WeightUnits" Relationship="Model1.Presentations_WeightUnits_FK" FromRole="Presentations" ToRole="WeightUnits" />
     <NavigationProperty Name="ProductImages" Relationship="Model1.R_192" FromRole="Presentations" ToRole="ProductImages" />
     <NavigationProperty Name="EditionPresentations" Relationship="Model1.PresentationsEditionPresentations" FromRole="Presentations" ToRole="EditionPresentations" />
+    <NavigationProperty Name="ProductBarCodes" Relationship="Model1.R_491" FromRole="Presentations" ToRole="ProductBarCodes" />
   </EntityType>
   <EntityType Name="WeightUnits">
     <Key>
@@ -1251,6 +1283,160 @@
       </Principal>
       <Dependent Role="EditionProductShots">
         <PropertyRef Name="PSTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="FamilyPrefixes">
+    <Key>
+      <PropertyRef Name="PrefixId" />
+    </Key>
+    <Property Name="PrefixId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EditionId" Type="Int32" Nullable="false" />
+    <Property Name="PrefixName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CurrentValue" Type="Int32" Nullable="false" />
+    <Property Name="PrefixDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="PrefixTypeId" Type="Byte" />
+    <NavigationProperty Name="PrefixTypes" Relationship="Model1.FK_FamilyPrefixes_PrefixTypes" FromRole="FamilyPrefixes" ToRole="PrefixTypes" />
+    <NavigationProperty Name="Families" Relationship="Model1.FK_Families_FamilyPrefixes" FromRole="FamilyPrefixes" ToRole="Families" />
+  </EntityType>
+  <EntityType Name="PrefixTypes">
+    <Key>
+      <PropertyRef Name="PrefixTypeId" />
+    </Key>
+    <Property Name="PrefixTypeId" Type="Byte" Nullable="false" />
+    <Property Name="TypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="FamilyPrefixes" Relationship="Model1.FK_FamilyPrefixes_PrefixTypes" FromRole="PrefixTypes" ToRole="FamilyPrefixes" />
+  </EntityType>
+  <Association Name="FK_FamilyPrefixes_PrefixTypes">
+    <End Type="Model1.PrefixTypes" Role="PrefixTypes" Multiplicity="0..1" />
+    <End Type="Model1.FamilyPrefixes" Role="FamilyPrefixes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PrefixTypes">
+        <PropertyRef Name="PrefixTypeId" />
+      </Principal>
+      <Dependent Role="FamilyPrefixes">
+        <PropertyRef Name="PrefixTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Families">
+    <Key>
+      <PropertyRef Name="FamilyId" />
+    </Key>
+    <Property Name="FamilyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PrefixId" Type="Int32" Nullable="false" />
+    <Property Name="FamilyString" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="FamilyPrefixes" Relationship="Model1.FK_Families_FamilyPrefixes" FromRole="Families" ToRole="FamilyPrefixes" />
+  </EntityType>
+  <Association Name="FK_Families_FamilyPrefixes">
+    <End Type="Model1.FamilyPrefixes" Role="FamilyPrefixes" Multiplicity="1" />
+    <End Type="Model1.Families" Role="Families" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FamilyPrefixes">
+        <PropertyRef Name="PrefixId" />
+      </Principal>
+      <Dependent Role="Families">
+        <PropertyRef Name="PrefixId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BarCodes">
+    <Key>
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BarCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductBarCodes" Relationship="Model1.R_492" FromRole="BarCodes" ToRole="ProductBarCodes" />
+  </EntityType>
+  <EntityType Name="PriceSources">
+    <Key>
+      <PropertyRef Name="PriceSourceId" />
+    </Key>
+    <Property Name="PriceSourceId" Type="Byte" Nullable="false" />
+    <Property Name="SourceName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SourceShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductPrices" Relationship="Model1.R_494" FromRole="PriceSources" ToRole="ProductPrices" />
+  </EntityType>
+  <EntityType Name="ProductBarCodes">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+    <Property Name="AveragePrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="BarCodes" Relationship="Model1.R_492" FromRole="ProductBarCodes" ToRole="BarCodes" />
+    <NavigationProperty Name="Presentations" Relationship="Model1.R_491" FromRole="ProductBarCodes" ToRole="Presentations" />
+    <NavigationProperty Name="ProductPrices" Relationship="Model1.R_493" FromRole="ProductBarCodes" ToRole="ProductPrices" />
+  </EntityType>
+  <EntityType Name="ProductPrices">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="BarCodeId" />
+      <PropertyRef Name="PriceSourceId" />
+    </Key>
+    <Property Name="PresentationId" Type="Int32" Nullable="false" />
+    <Property Name="BarCodeId" Type="Int32" Nullable="false" />
+    <Property Name="PriceSourceId" Type="Byte" Nullable="false" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="PriceSources" Relationship="Model1.R_494" FromRole="ProductPrices" ToRole="PriceSources" />
+    <NavigationProperty Name="ProductBarCodes" Relationship="Model1.R_493" FromRole="ProductPrices" ToRole="ProductBarCodes" />
+  </EntityType>
+  <Association Name="R_492">
+    <End Type="Model1.BarCodes" Role="BarCodes" Multiplicity="1" />
+    <End Type="Model1.ProductBarCodes" Role="ProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ProductBarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_491">
+    <End Type="Model1.Presentations" Role="Presentations" Multiplicity="1" />
+    <End Type="Model1.ProductBarCodes" Role="ProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Presentations">
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ProductBarCodes">
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_494">
+    <End Type="Model1.PriceSources" Role="PriceSources" Multiplicity="1" />
+    <End Type="Model1.ProductPrices" Role="ProductPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PriceSources">
+        <PropertyRef Name="PriceSourceId" />
+      </Principal>
+      <Dependent Role="ProductPrices">
+        <PropertyRef Name="PriceSourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_493">
+    <End Type="Model1.ProductBarCodes" Role="ProductBarCodes" Multiplicity="1" />
+    <End Type="Model1.ProductPrices" Role="ProductPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductBarCodes">
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ProductPrices">
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="BarCodeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

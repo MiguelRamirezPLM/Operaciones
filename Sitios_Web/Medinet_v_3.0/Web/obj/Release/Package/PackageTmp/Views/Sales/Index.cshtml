@@ -271,11 +271,13 @@
                             <ul id="_elementCountry" class="dropdown-menu" role="menu">
                                 @{
                             List<string> _list = _CountriesUsers.var;
+                            _list.Sort();
                             foreach (string _row in _list)
                             {
                                 var _countries = (from country in db.Countries
                                                   where country.ID == _row
-                                                  select country);
+                                                  orderby country.CountryName
+                                                  select country).ToList();
                                 foreach (Countries _rowCountries in _countries)
                                 {
                                     <li><a> <input type="hidden" id="_vlCountryId" value="@_rowCountries.CountryId" /> @_rowCountries.CountryName</a></li>
