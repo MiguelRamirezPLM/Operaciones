@@ -65,5 +65,6 @@ namespace Web.Models
         public virtual DbSet<ProductPrices> ProductPrices { get; set; }
         public virtual DbSet<TherapeuticOMS> TherapeuticOMS { get; set; }
         public virtual DbSet<Therapeutics> Therapeutics { get; set; }
+        public virtual DbSet<ClinicalReferences> ClinicalReferences { get; set; }
     }
 }

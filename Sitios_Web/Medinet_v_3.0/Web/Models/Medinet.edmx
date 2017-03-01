@@ -38,6 +38,15 @@
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ClinicalReferences">
+          <Key>
+            <PropertyRef Name="ClinicalReferenceId" />
+          </Key>
+          <Property Name="ClinicalReferenceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClinicalReference" Type="varchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ReferenceSource" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="ContentTypes">
           <Key>
             <PropertyRef Name="ContentTypeId" />
@@ -214,6 +223,20 @@
           <Property Name="ImageName" Type="varchar" MaxLength="20" />
           <Property Name="CourtesyImage" Type="varchar" MaxLength="25" />
           <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NewProducts">
+          <Key>
+            <PropertyRef Name="EditionId" />
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="EditionId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OffMarkets">
           <Key>
@@ -660,6 +683,36 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             </Principal>
             <Dependent Role="FamilyPrefixes">
               <PropertyRef Name="PrefixTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NewProducts_Editions">
+          <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+          <End Role="NewProducts" Type="Self.NewProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editions">
+              <PropertyRef Name="EditionId" />
+            </Principal>
+            <Dependent Role="NewProducts">
+              <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NewProducts_ProductCategories">
+          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+          <End Role="NewProducts" Type="Self.NewProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategories">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="NewProducts">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1148,6 +1201,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClinicalReferences" EntityType="Self.ClinicalReferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentUnits" EntityType="Self.ContentUnits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
@@ -1165,6 +1219,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewProducts" EntityType="Self.NewProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OffMarkets" EntityType="Self.OffMarkets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" Schema="dbo" store:Type="Tables" />
@@ -1280,6 +1335,14 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Self.FK_FamilyPrefixes_PrefixTypes">
             <End Role="PrefixTypes" EntitySet="PrefixTypes" />
             <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NewProducts_Editions" Association="Self.FK_NewProducts_Editions">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="NewProducts" EntitySet="NewProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NewProducts_ProductCategories" Association="Self.FK_NewProducts_ProductCategories">
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+            <End Role="NewProducts" EntitySet="NewProducts" />
           </AssociationSet>
           <AssociationSet Name="FK_ParticipantProducts_Editions" Association="Self.FK_ParticipantProducts_Editions">
             <End Role="Editions" EntitySet="Editions" />
@@ -1694,6 +1757,11 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <End Role="Therapeutics" EntitySet="Therapeutics" />
             <End Role="Therapeutics1" EntitySet="Therapeutics" />
           </AssociationSet>
+          <AssociationSet Name="NewProducts" Association="Model1.NewProducts">
+            <End Role="Editions" EntitySet="Editions" />
+            <End Role="ProductCategories" EntitySet="ProductCategories" />
+          </AssociationSet>
+          <EntitySet Name="ClinicalReferences" EntityType="Model1.ClinicalReferences" />
         </EntityContainer>
         <EntityType Name="Countries">
           <Key>
@@ -1801,6 +1869,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <NavigationProperty Name="EditionTypes" Relationship="Model1.EditionTypes_Fk" FromRole="Editions" ToRole="EditionTypes" />
           <NavigationProperty Name="EditionPresentations" Relationship="Model1.EditionsEditionPresentations" FromRole="Editions" ToRole="EditionPresentations" />
           <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_Editions_Fk" FromRole="Editions" ToRole="EditionProductShots" />
+          <NavigationProperty Name="ProductCategories" Relationship="Model1.NewProducts" FromRole="Editions" ToRole="ProductCategories" />
         </EntityType>
         <EntityType Name="ParticipantProducts">
           <Key>
@@ -1944,6 +2013,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <NavigationProperty Name="ProductPharmaForms" Relationship="Model1.FK_ProductCategories_ProductPharmaForms" FromRole="ProductCategories" ToRole="ProductPharmaForms" />
           <NavigationProperty Name="OffMarkets" Relationship="Model1.R_701" FromRole="ProductCategories" ToRole="OffMarkets" />
           <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_ProductCategories_Fk" FromRole="ProductCategories" ToRole="EditionProductShots" />
+          <NavigationProperty Name="Editions" Relationship="Model1.NewProducts" FromRole="ProductCategories" ToRole="Editions" />
         </EntityType>
         <Association Name="FK_ParticipantProducts_ProductCategories">
           <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
@@ -2922,6 +2992,19 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="NewProducts">
+          <End Type="Model1.Editions" Role="Editions" Multiplicity="*" />
+          <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ClinicalReferences">
+          <Key>
+            <PropertyRef Name="ClinicalReferenceId" />
+          </Key>
+          <Property Name="ClinicalReferenceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClinicalReference" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3418,6 +3501,27 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
                 <ScalarProperty Name="TherapeuticKey" ColumnName="TherapeuticKey" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="TherapeuticId" ColumnName="TherapeuticId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="NewProducts" TypeName="Model1.NewProducts" StoreEntitySet="NewProducts">
+            <EndProperty Name="ProductCategories">
+              <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+              <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+            </EndProperty>
+            <EndProperty Name="Editions">
+              <ScalarProperty Name="EditionId" ColumnName="EditionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ClinicalReferences">
+            <EntityTypeMapping TypeName="Model1.ClinicalReferences">
+              <MappingFragment StoreEntitySet="ClinicalReferences">
+                <ScalarProperty Name="ReferenceSource" ColumnName="ReferenceSource" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ClinicalReference" ColumnName="ClinicalReference" />
+                <ScalarProperty Name="ClinicalReferenceId" ColumnName="ClinicalReferenceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
