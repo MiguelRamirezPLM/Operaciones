@@ -211,7 +211,7 @@
                 </a>
             </h4>
         </div>
-        <div id="collapse1" class="panel-collapse collapse in">
+        <div id="collapse1" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
@@ -306,7 +306,7 @@
                 </a>
             </h4>
         </div>
-        <div id="collapse2" class="panel-collapse collapse">
+        <div id="collapse2" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
@@ -323,9 +323,11 @@
                                         foreach (Web.Models.Class.GetPhysiologicalContraindications item in Count.GetPhysiologicalContraindications)
                                         {
                                             <tr>
-                                                <td style="width:90%">@item.PhysContraindicationName</td>
+                                                <td style="width:90%">
+                                                    <span id="spnPhysContraindicationName">@item.PhysContraindicationName</span>
+                                                </td>
                                                 <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-success btn-sm">
+                                                    <button class="btn btn-success btn-sm" value="@item.PhysContraindicationId" onclick="CheckPhysiologicalContraindications($(this))">
                                                         <span class="glyphicon glyphicon-plus"></span>
                                                     </button>
                                                 </td>
@@ -350,10 +352,16 @@
                                     foreach (Web.Models.Class.GetProductPhysContraindications item in Count.GetProductPhysContraindications)
                                     {
                                         <tr>
-                                            <td style="width:45%">@item.ActiveSubstance</td>
-                                            <td style="width:45%">@item.PhysContraindicationName</td>
+                                            <td style="width:45%">
+                                                <span>@item.ActiveSubstance</span>
+                                                <input type="text" value="@item.ActiveSubstanceId" id="PCActiveSubstanceId" style="display:none"/>
+                                            </td>
+                                            <td style="width:45%">
+                                                <span>@item.PhysContraindicationName</span>
+                                                <input type="text" value="@item.PhysContraindicationId" id="PCPhysContraindicationId" style="display:none"/>
+                                            </td>
                                             <td style="width:10%" class="text-center">
-                                                <button class="btn btn-danger btn-sm">
+                                                <button class="btn btn-danger btn-sm" onclick="DeletePhysiologicalContraindications($(this))">
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
                                             </td>
@@ -828,6 +836,30 @@
                     <span>&nbsp; Aceptar</span>
                 </button>
                 <button class="btn btn-danger" data-dismiss="modal" onclick="CancelAddAOENT()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnPCCNT" data-toggle="modal" data-target="#PCCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="PCCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderPCCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivPCCNT"></div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="SavePhysiologicalContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelPhysiologicalContraindications()">
                     <span class="glyphicon glyphicon-remove"></span>
                     <span>&nbsp; Cancelar</span>
                 </button>

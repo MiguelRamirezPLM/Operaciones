@@ -278,5 +278,33 @@ namespace Web.Models.Class
                 return "Ok";
             }
         }
+
+        public string CheckProductContraindication(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId)
+        {
+            try
+            {
+                List<CheckProductInteraction> LS = db.Database.SqlQuery<CheckProductInteraction>("plm_spCheckProductContraindication @productId=" + ProductId + ",@substanceId=" + ActiveSubstanceId + ",@divisionId=" + DivisionId + ",@categoryId=" + CategoryId + ",@pharmaFormId=" + PharmaFormId + "").ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return "";
+        }
+
+        public string SavePhysContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
+        {
+            if (OperationId == CRUD.Create)
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductPhysContraindications @CRUDType=" + CRUD.Create + ", @categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @physContraindicationId=" + PhysContraindicationId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
+            }
+            else
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductPhysContraindications @CRUDType=" + CRUD.Delete + ", @categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @physContraindicationId=" + PhysContraindicationId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
+            }
+
+            return "Ok";
+        }
     }
 }
