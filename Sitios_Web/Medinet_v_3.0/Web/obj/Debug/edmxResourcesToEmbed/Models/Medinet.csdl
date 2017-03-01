@@ -256,6 +256,15 @@
       <End Role="Therapeutics" EntitySet="Therapeutics" />
       <End Role="Therapeutics1" EntitySet="Therapeutics" />
     </AssociationSet>
+    <AssociationSet Name="NewProducts" Association="Model1.NewProducts">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+    </AssociationSet>
+    <EntitySet Name="ICD" EntityType="Model1.ICD" />
+    <AssociationSet Name="FK_ICD_ICD" Association="Model1.FK_ICD_ICD">
+      <End Role="ICD" EntitySet="ICD" />
+      <End Role="ICD1" EntitySet="ICD" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -363,6 +372,7 @@
     <NavigationProperty Name="EditionTypes" Relationship="Model1.EditionTypes_Fk" FromRole="Editions" ToRole="EditionTypes" />
     <NavigationProperty Name="EditionPresentations" Relationship="Model1.EditionsEditionPresentations" FromRole="Editions" ToRole="EditionPresentations" />
     <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_Editions_Fk" FromRole="Editions" ToRole="EditionProductShots" />
+    <NavigationProperty Name="ProductCategories" Relationship="Model1.NewProducts" FromRole="Editions" ToRole="ProductCategories" />
   </EntityType>
   <EntityType Name="ParticipantProducts">
     <Key>
@@ -506,6 +516,7 @@
     <NavigationProperty Name="ProductPharmaForms" Relationship="Model1.FK_ProductCategories_ProductPharmaForms" FromRole="ProductCategories" ToRole="ProductPharmaForms" />
     <NavigationProperty Name="OffMarkets" Relationship="Model1.R_701" FromRole="ProductCategories" ToRole="OffMarkets" />
     <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_ProductCategories_Fk" FromRole="ProductCategories" ToRole="EditionProductShots" />
+    <NavigationProperty Name="Editions" Relationship="Model1.NewProducts" FromRole="ProductCategories" ToRole="Editions" />
   </EntityType>
   <Association Name="FK_ParticipantProducts_ProductCategories">
     <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
@@ -1480,6 +1491,37 @@
         <PropertyRef Name="TherapeuticId" />
       </Principal>
       <Dependent Role="Therapeutics1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NewProducts">
+    <End Type="Model1.Editions" Role="Editions" Multiplicity="*" />
+    <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="*" />
+  </Association>
+  <EntityType Name="ICD">
+    <Key>
+      <PropertyRef Name="ICDId" />
+    </Key>
+    <Property Name="ICDId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="ICDKey" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="Level" Type="Int32" />
+    <Property Name="JSONFormat" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ICD1" Relationship="Model1.FK_ICD_ICD" FromRole="ICD" ToRole="ICD1" />
+    <NavigationProperty Name="ICD2" Relationship="Model1.FK_ICD_ICD" FromRole="ICD1" ToRole="ICD" />
+  </EntityType>
+  <Association Name="FK_ICD_ICD">
+    <End Type="Model1.ICD" Role="ICD" Multiplicity="0..1" />
+    <End Type="Model1.ICD" Role="ICD1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICD">
+        <PropertyRef Name="ICDId" />
+      </Principal>
+      <Dependent Role="ICD1">
         <PropertyRef Name="ParentId" />
       </Dependent>
     </ReferentialConstraint>

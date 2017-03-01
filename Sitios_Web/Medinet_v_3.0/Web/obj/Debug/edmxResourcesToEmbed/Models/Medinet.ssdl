@@ -183,6 +183,19 @@
     <Property Name="Active" Type="bit" Nullable="false" />
     <Property Name="PrefixTypeId" Type="tinyint" />
   </EntityType>
+  <EntityType Name="ICD">
+    <Key>
+      <PropertyRef Name="ICDId" />
+    </Key>
+    <Property Name="ICDId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="ICDKey" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="EnglishDescription" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="Level" Type="int" />
+    <Property Name="JSONFormat" Type="varchar(max)" Nullable="false" />
+  </EntityType>
   <EntityType Name="ImageSizes">
     <Key>
       <PropertyRef Name="ImageSizeId" />
@@ -209,6 +222,20 @@
     <Property Name="ImageName" Type="varchar" MaxLength="20" />
     <Property Name="CourtesyImage" Type="varchar" MaxLength="25" />
     <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NewProducts">
+    <Key>
+      <PropertyRef Name="EditionId" />
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="OffMarkets">
     <Key>
@@ -655,6 +682,48 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
       </Principal>
       <Dependent Role="FamilyPrefixes">
         <PropertyRef Name="PrefixTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ICD_ICD">
+    <End Role="ICD" Type="Self.ICD" Multiplicity="0..1" />
+    <End Role="ICD1" Type="Self.ICD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICD">
+        <PropertyRef Name="ICDId" />
+      </Principal>
+      <Dependent Role="ICD1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NewProducts_Editions">
+    <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
+    <End Role="NewProducts" Type="Self.NewProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editions">
+        <PropertyRef Name="EditionId" />
+      </Principal>
+      <Dependent Role="NewProducts">
+        <PropertyRef Name="EditionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NewProducts_ProductCategories">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="NewProducts" Type="Self.NewProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="NewProducts">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1157,9 +1226,11 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
     <EntitySet Name="ExternalPacks" EntityType="Self.ExternalPacks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FamilyPrefixes" EntityType="Self.FamilyPrefixes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ICD" EntityType="Self.ICD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NewProducts" EntityType="Self.NewProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OffMarkets" EntityType="Self.OffMarkets" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" Schema="dbo" store:Type="Tables" />
@@ -1275,6 +1346,18 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
     <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Self.FK_FamilyPrefixes_PrefixTypes">
       <End Role="PrefixTypes" EntitySet="PrefixTypes" />
       <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ICD_ICD" Association="Self.FK_ICD_ICD">
+      <End Role="ICD" EntitySet="ICD" />
+      <End Role="ICD1" EntitySet="ICD" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NewProducts_Editions" Association="Self.FK_NewProducts_Editions">
+      <End Role="Editions" EntitySet="Editions" />
+      <End Role="NewProducts" EntitySet="NewProducts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NewProducts_ProductCategories" Association="Self.FK_NewProducts_ProductCategories">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="NewProducts" EntitySet="NewProducts" />
     </AssociationSet>
     <AssociationSet Name="FK_ParticipantProducts_Editions" Association="Self.FK_ParticipantProducts_Editions">
       <End Role="Editions" EntitySet="Editions" />

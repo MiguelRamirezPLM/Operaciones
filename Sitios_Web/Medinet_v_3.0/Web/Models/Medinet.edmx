@@ -38,15 +38,6 @@
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="ClinicalReferences">
-          <Key>
-            <PropertyRef Name="ClinicalReferenceId" />
-          </Key>
-          <Property Name="ClinicalReferenceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClinicalReference" Type="varchar(max)" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="ReferenceSource" Type="varchar(max)" />
-        </EntityType>
         <EntityType Name="ContentTypes">
           <Key>
             <PropertyRef Name="ContentTypeId" />
@@ -196,6 +187,19 @@
           <Property Name="PrefixDescription" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="PrefixTypeId" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="ICD">
+          <Key>
+            <PropertyRef Name="ICDId" />
+          </Key>
+          <Property Name="ICDId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="ICDKey" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="EnglishDescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Level" Type="int" />
+          <Property Name="JSONFormat" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="ImageSizes">
           <Key>
@@ -683,6 +687,18 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             </Principal>
             <Dependent Role="FamilyPrefixes">
               <PropertyRef Name="PrefixTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ICD_ICD">
+          <End Role="ICD" Type="Self.ICD" Multiplicity="0..1" />
+          <End Role="ICD1" Type="Self.ICD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICD">
+              <PropertyRef Name="ICDId" />
+            </Principal>
+            <Dependent Role="ICD1">
+              <PropertyRef Name="ParentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1201,7 +1217,6 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ClinicalReferences" EntityType="Self.ClinicalReferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentUnits" EntityType="Self.ContentUnits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
@@ -1216,6 +1231,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySet Name="ExternalPacks" EntityType="Self.ExternalPacks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilyPrefixes" EntityType="Self.FamilyPrefixes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ICD" EntityType="Self.ICD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
@@ -1335,6 +1351,10 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Self.FK_FamilyPrefixes_PrefixTypes">
             <End Role="PrefixTypes" EntitySet="PrefixTypes" />
             <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ICD_ICD" Association="Self.FK_ICD_ICD">
+            <End Role="ICD" EntitySet="ICD" />
+            <End Role="ICD1" EntitySet="ICD" />
           </AssociationSet>
           <AssociationSet Name="FK_NewProducts_Editions" Association="Self.FK_NewProducts_Editions">
             <End Role="Editions" EntitySet="Editions" />
@@ -1761,7 +1781,11 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <End Role="Editions" EntitySet="Editions" />
             <End Role="ProductCategories" EntitySet="ProductCategories" />
           </AssociationSet>
-          <EntitySet Name="ClinicalReferences" EntityType="Model1.ClinicalReferences" />
+          <EntitySet Name="ICD" EntityType="Model1.ICD" />
+          <AssociationSet Name="FK_ICD_ICD" Association="Model1.FK_ICD_ICD">
+            <End Role="ICD" EntitySet="ICD" />
+            <End Role="ICD1" EntitySet="ICD" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Countries">
           <Key>
@@ -2996,15 +3020,33 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <End Type="Model1.Editions" Role="Editions" Multiplicity="*" />
           <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="*" />
         </Association>
-        <EntityType Name="ClinicalReferences">
+        <EntityType Name="ICD">
           <Key>
-            <PropertyRef Name="ClinicalReferenceId" />
+            <PropertyRef Name="ICDId" />
           </Key>
-          <Property Name="ClinicalReferenceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClinicalReference" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ICDId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="ICDKey" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SpanishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EnglishDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="JSONFormat" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ICD1" Relationship="Model1.FK_ICD_ICD" FromRole="ICD" ToRole="ICD1" />
+          <NavigationProperty Name="ICD2" Relationship="Model1.FK_ICD_ICD" FromRole="ICD1" ToRole="ICD" />
         </EntityType>
+        <Association Name="FK_ICD_ICD">
+          <End Type="Model1.ICD" Role="ICD" Multiplicity="0..1" />
+          <End Type="Model1.ICD" Role="ICD1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICD">
+              <PropertyRef Name="ICDId" />
+            </Principal>
+            <Dependent Role="ICD1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3515,13 +3557,17 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
               <ScalarProperty Name="EditionId" ColumnName="EditionId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="ClinicalReferences">
-            <EntityTypeMapping TypeName="Model1.ClinicalReferences">
-              <MappingFragment StoreEntitySet="ClinicalReferences">
-                <ScalarProperty Name="ReferenceSource" ColumnName="ReferenceSource" />
+          <EntitySetMapping Name="ICD">
+            <EntityTypeMapping TypeName="Model1.ICD">
+              <MappingFragment StoreEntitySet="ICD">
+                <ScalarProperty Name="JSONFormat" ColumnName="JSONFormat" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="ClinicalReference" ColumnName="ClinicalReference" />
-                <ScalarProperty Name="ClinicalReferenceId" ColumnName="ClinicalReferenceId" />
+                <ScalarProperty Name="EnglishDescription" ColumnName="EnglishDescription" />
+                <ScalarProperty Name="SpanishDescription" ColumnName="SpanishDescription" />
+                <ScalarProperty Name="ICDKey" ColumnName="ICDKey" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ICDId" ColumnName="ICDId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

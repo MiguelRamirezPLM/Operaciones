@@ -12,11 +12,23 @@ namespace Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ClinicalReferences
+    public partial class ICD
     {
-        public int ClinicalReferenceId { get; set; }
-        public string ClinicalReference { get; set; }
+        public ICD()
+        {
+            this.ICD1 = new HashSet<ICD>();
+        }
+    
+        public int ICDId { get; set; }
+        public Nullable<int> ParentId { get; set; }
+        public string ICDKey { get; set; }
+        public string SpanishDescription { get; set; }
+        public string EnglishDescription { get; set; }
         public bool Active { get; set; }
-        public string ReferenceSource { get; set; }
+        public Nullable<int> Level { get; set; }
+        public string JSONFormat { get; set; }
+    
+        public virtual ICollection<ICD> ICD1 { get; set; }
+        public virtual ICD ICD2 { get; set; }
     }
 }
