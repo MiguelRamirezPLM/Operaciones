@@ -56,9 +56,5 @@ namespace Web.Models
         public Nullable<int> NumberOfTherapeutics { get; set; }
         public Nullable<int> NumberOfOMSTherapeutics { get; set; }
         public string CountryCodes { get; set; }
-        public string WithoutContent { get; set; }
-        public string ContentType { get; set; }
-        public string SanitaryRegister { get; set; }
-        public string SSFraction { get; set; }
     }
 }
