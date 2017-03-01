@@ -67,5 +67,6 @@ namespace Web.Models
         public virtual DbSet<Therapeutics> Therapeutics { get; set; }
         public virtual DbSet<ICD> ICD { get; set; }
         public virtual DbSet<ClinicalReferences> ClinicalReferences { get; set; }
+        public virtual DbSet<ATCPharmacologicalGroups> ATCPharmacologicalGroups { get; set; }
     }
 }

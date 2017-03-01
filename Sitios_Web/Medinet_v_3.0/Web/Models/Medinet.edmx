@@ -13,6 +13,14 @@
           <Property Name="Letter" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ATCPharmacologicalGroups">
+          <Key>
+            <PropertyRef Name="PharmaGroupId" />
+          </Key>
+          <Property Name="PharmaGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PharmaGroupName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="BarCodes">
           <Key>
             <PropertyRef Name="BarCodeId" />
@@ -1223,6 +1231,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
         </Association>
         <EntityContainer Name="Model1StoreContainer">
           <EntitySet Name="Alphabet" EntityType="Self.Alphabet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ATCPharmacologicalGroups" EntityType="Self.ATCPharmacologicalGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
@@ -1797,6 +1806,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <End Role="ICD1" EntitySet="ICD" />
           </AssociationSet>
           <EntitySet Name="ClinicalReferences" EntityType="Model1.ClinicalReferences" />
+          <EntitySet Name="ATCPharmacologicalGroups" EntityType="Model1.ATCPharmacologicalGroups" />
         </EntityContainer>
         <EntityType Name="Countries">
           <Key>
@@ -3067,6 +3077,14 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="ATCPharmacologicalGroups">
+          <Key>
+            <PropertyRef Name="PharmaGroupId" />
+          </Key>
+          <Property Name="PharmaGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PharmaGroupName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3598,6 +3616,15 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ClinicalReference" ColumnName="ClinicalReference" />
                 <ScalarProperty Name="ClinicalReferenceId" ColumnName="ClinicalReferenceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ATCPharmacologicalGroups">
+            <EntityTypeMapping TypeName="Model1.ATCPharmacologicalGroups">
+              <MappingFragment StoreEntitySet="ATCPharmacologicalGroups">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PharmaGroupName" ColumnName="PharmaGroupName" />
+                <ScalarProperty Name="PharmaGroupId" ColumnName="PharmaGroupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
