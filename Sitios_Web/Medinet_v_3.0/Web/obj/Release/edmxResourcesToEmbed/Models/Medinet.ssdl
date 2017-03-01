@@ -8,6 +8,14 @@
     <Property Name="Letter" Type="char" MaxLength="1" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="BarCodes">
+    <Key>
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="BarCodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BarCode" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="Books">
     <Key>
       <PropertyRef Name="BookId" />
@@ -154,6 +162,27 @@
     <Property Name="ExternalPackName" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="Families">
+    <Key>
+      <PropertyRef Name="FamilyId" />
+    </Key>
+    <Property Name="FamilyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PrefixId" Type="int" Nullable="false" />
+    <Property Name="FamilyString" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FamilyPrefixes">
+    <Key>
+      <PropertyRef Name="PrefixId" />
+    </Key>
+    <Property Name="PrefixId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EditionId" Type="int" Nullable="false" />
+    <Property Name="PrefixName" Type="varchar" MaxLength="50" />
+    <Property Name="CurrentValue" Type="int" Nullable="false" />
+    <Property Name="PrefixDescription" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="PrefixTypeId" Type="tinyint" />
+  </EntityType>
   <EntityType Name="ImageSizes">
     <Key>
       <PropertyRef Name="ImageSizeId" />
@@ -223,6 +252,14 @@
     <Property Name="EnglishDescription" Type="varchar" MaxLength="150" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="PrefixTypes">
+    <Key>
+      <PropertyRef Name="PrefixTypeId" />
+    </Key>
+    <Property Name="PrefixTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="TypeName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="Presentations">
     <Key>
       <PropertyRef Name="PresentationId" />
@@ -243,6 +280,26 @@
     <Property Name="Presentation" Type="varchar" MaxLength="255" />
     <Property Name="Active" Type="bit" Nullable="false" />
     <Property Name="JSONFormat" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="PriceSources">
+    <Key>
+      <PropertyRef Name="PriceSourceId" />
+    </Key>
+    <Property Name="PriceSourceId" Type="tinyint" Nullable="false" />
+    <Property Name="SourceName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="SourceShortName" Type="varchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductBarCodes">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="BarCodeId" />
+    </Key>
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+    <Property Name="BarCodeId" Type="int" Nullable="false" />
+    <Property Name="AveragePrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductCategories">
     <Key>
@@ -291,6 +348,18 @@
     <Property Name="Active" Type="bit" Nullable="false" />
     <Property Name="ReferenceUrl" Type="varchar" MaxLength="100" />
   </EntityType>
+  <EntityType Name="ProductPrices">
+    <Key>
+      <PropertyRef Name="PresentationId" />
+      <PropertyRef Name="BarCodeId" />
+      <PropertyRef Name="PriceSourceId" />
+    </Key>
+    <Property Name="PresentationId" Type="int" Nullable="false" />
+    <Property Name="BarCodeId" Type="int" Nullable="false" />
+    <Property Name="PriceSourceId" Type="tinyint" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+  </EntityType>
   <EntityType Name="Products">
     <Key>
       <PropertyRef Name="ProductId" />
@@ -331,7 +400,7 @@
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
   <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="plm_vwProductsByEdition">
     <Key>
       <PropertyRef Name="CountryId" />
@@ -538,6 +607,30 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
       </Principal>
       <Dependent Role="DivisionInformation">
         <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Families_FamilyPrefixes">
+    <End Role="FamilyPrefixes" Type="Self.FamilyPrefixes" Multiplicity="1" />
+    <End Role="Families" Type="Self.Families" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FamilyPrefixes">
+        <PropertyRef Name="PrefixId" />
+      </Principal>
+      <Dependent Role="Families">
+        <PropertyRef Name="PrefixId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FamilyPrefixes_PrefixTypes">
+    <End Role="PrefixTypes" Type="Self.PrefixTypes" Multiplicity="0..1" />
+    <End Role="FamilyPrefixes" Type="Self.FamilyPrefixes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PrefixTypes">
+        <PropertyRef Name="PrefixTypeId" />
+      </Principal>
+      <Dependent Role="FamilyPrefixes">
+        <PropertyRef Name="PrefixTypeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -857,6 +950,56 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="R_491">
+    <End Role="Presentations" Type="Self.Presentations" Multiplicity="1" />
+    <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Presentations">
+        <PropertyRef Name="PresentationId" />
+      </Principal>
+      <Dependent Role="ProductBarCodes">
+        <PropertyRef Name="PresentationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_492">
+    <End Role="BarCodes" Type="Self.BarCodes" Multiplicity="1" />
+    <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ProductBarCodes">
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_493">
+    <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="1" />
+    <End Role="ProductPrices" Type="Self.ProductPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductBarCodes">
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="BarCodeId" />
+      </Principal>
+      <Dependent Role="ProductPrices">
+        <PropertyRef Name="PresentationId" />
+        <PropertyRef Name="BarCodeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_494">
+    <End Role="PriceSources" Type="Self.PriceSources" Multiplicity="1" />
+    <End Role="ProductPrices" Type="Self.ProductPrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PriceSources">
+        <PropertyRef Name="PriceSourceId" />
+      </Principal>
+      <Dependent Role="ProductPrices">
+        <PropertyRef Name="PriceSourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_5">
     <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
     <End Role="Editions" Type="Self.Editions" Multiplicity="*" />
@@ -961,6 +1104,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
   </Association>
   <EntityContainer Name="Model1StoreContainer">
     <EntitySet Name="Alphabet" EntityType="Self.Alphabet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
@@ -975,17 +1119,23 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EditionTypes" EntityType="Self.EditionTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ExternalPacks" EntityType="Self.ExternalPacks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FamilyPrefixes" EntityType="Self.FamilyPrefixes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OffMarkets" EntityType="Self.OffMarkets" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PharmaceuticalForms" EntityType="Self.PharmaceuticalForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PrefixTypes" EntityType="Self.PrefixTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Presentations" EntityType="Self.Presentations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PriceSources" EntityType="Self.PriceSources" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductBarCodes" EntityType="Self.ProductBarCodes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductImageSizes" EntityType="Self.ProductImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductPrices" EntityType="Self.ProductPrices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductShotTypes" EntityType="Self.ProductShotTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
@@ -1079,6 +1229,14 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <AssociationSet Name="FK_DivisionInformation_Divisions" Association="Self.FK_DivisionInformation_Divisions">
       <End Role="Divisions" EntitySet="Divisions" />
       <End Role="DivisionInformation" EntitySet="DivisionInformation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Families_FamilyPrefixes" Association="Self.FK_Families_FamilyPrefixes">
+      <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
+      <End Role="Families" EntitySet="Families" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FamilyPrefixes_PrefixTypes" Association="Self.FK_FamilyPrefixes_PrefixTypes">
+      <End Role="PrefixTypes" EntitySet="PrefixTypes" />
+      <End Role="FamilyPrefixes" EntitySet="FamilyPrefixes" />
     </AssociationSet>
     <AssociationSet Name="FK_ParticipantProducts_Editions" Association="Self.FK_ParticipantProducts_Editions">
       <End Role="Editions" EntitySet="Editions" />
@@ -1179,6 +1337,22 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <AssociationSet Name="R_47" Association="Self.R_47">
       <End Role="Laboratories" EntitySet="Laboratories" />
       <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_491" Association="Self.R_491">
+      <End Role="Presentations" EntitySet="Presentations" />
+      <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_492" Association="Self.R_492">
+      <End Role="BarCodes" EntitySet="BarCodes" />
+      <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+    </AssociationSet>
+    <AssociationSet Name="R_493" Association="Self.R_493">
+      <End Role="ProductBarCodes" EntitySet="ProductBarCodes" />
+      <End Role="ProductPrices" EntitySet="ProductPrices" />
+    </AssociationSet>
+    <AssociationSet Name="R_494" Association="Self.R_494">
+      <End Role="PriceSources" EntitySet="PriceSources" />
+      <End Role="ProductPrices" EntitySet="ProductPrices" />
     </AssociationSet>
     <AssociationSet Name="R_5" Association="Self.R_5">
       <End Role="Countries" EntitySet="Countries" />

@@ -92,7 +92,8 @@
         var _fabid = $("#selecfabri").val();
         var _UserID = $("#_iduser").val(); 
         var _HasKey = $("#_haskey").val();
-        if ((!_pname.trim() == false) && (_pfid != 0) && (_cat != 0) && (_pt != null) && (_pt != "null")) {
+        if ((!_pname.trim() == false) && (_pfid != 0) && (_cat != 0) && (_pt != null) && (_pt != "null"))
+        {
             $.ajax({
                 Type: "POST",
                 dataType: "Json",
@@ -217,7 +218,8 @@
     function editproduct(item) {
 
         var tr = $(item).parents("tr:first");
-
+        $('#LSC').empty();
+        $('#LSPS').empty();
         var pid = tr.find("#_productId").val();
         var PTId = tr.find("#_ProductTypeId").val();
         var elmpn = document.getElementById("txtProductNameEdit");
@@ -273,6 +275,62 @@
         $(elmPTId).val(PTId);
         $(elmPFId).val(PFId);
         $(elmCId).val(CId);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "@Url.Content("~/Sales/GetFamilyContents")",
+            data: { Edition: EId, Division: DId },
+            success: function (data) {
+                $('#LSC').empty();
+                $('#LSC')
+                   .append($("<option></option>")
+                   .attr("value", 0)
+                   .text("Seleccione..."));
+
+                $('#LSC')
+                  .append($("<option></option>")
+                  .attr("value", -1)
+                  .text("AGREGAR NUEVA"));
+
+                $.each(data, function (index, val) {
+                    $('#LSC')
+                    .append($("<option></option>")
+                    .attr("value", val.FamilyId)
+                    .text(val.FamilyString));
+                });
+
+            }
+        })
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "@Url.Content("~/Sales/GetFamilyProductShots")",
+            data: { Edition: EId, Division: DId },
+            success: function (data) {
+
+                $('#LSPS').empty();
+
+                $('#LSPS')
+                   .append($("<option></option>")
+                   .attr("value", 0)
+                   .text("Seleccione..."));
+
+                $('#LSPS')
+                .append($("<option></option>")
+                .attr("value", -1)
+                .text("AGREGAR NUEVA"));
+
+                $.each(data, function (index, val) {
+                    $('#LSPS')
+                    .append($("<option></option>")
+                    .attr("value", val.FamilyId)
+                    .text(val.FamilyString));
+                });
+
+            }
+        })
     }
 </script>
 <script>
@@ -335,7 +393,98 @@
                     HashKey: _HasKey
                 },
                 success: function (data) {
-                    if (data == true) {
+                    if (data == true)
+                    {
+                        var LSC = $("#LSC").val();
+                        var LSPS = $("#LSPS").val();
+
+                        if ((LSC == "-1") || (LSC == -1)) {
+                            $.ajax({
+                                Type: "POST",
+                                dataType: "Json",
+                                url: "@Url.Content("~/Sales/AddFamilyContent")",
+                                data: {
+                                    Edition: EId,
+                                    Product: PId,
+                                    PharmaForm: PFId,
+                                    Category: CId,
+                                    Division: DId,
+                                    UserId: _UserID,
+                                    HashKey: _HasKey
+                                },
+                                success: function (data) {
+                                    setTimeout("document.location.reload()");
+                                }
+                            })
+                        }
+
+                        else if ((LSPS == -1) || (LSPS == "-1")) {
+                            $.ajax({
+                                Type: "POST",
+                                dataType: "Json",
+                                url: "@Url.Content("~/Sales/AddFamilyProductShot")",
+                                data: {
+                                    Edition: EId,
+                                    Product: PId,
+                                    PharmaForm: PFId,
+                                    Category: CId,
+                                    Division: DId,
+                                    UserId: _UserID,
+                                    HashKey: _HasKey
+                                },
+                                success: function (data) {
+                                    setTimeout("document.location.reload()");
+                                }
+                            })
+                        }
+                        else {
+                            if ((LSC != 0) || (LSC != "0")) {
+                                $.ajax({
+                                    Type: "POST",
+                                    dataType: "Json",
+                                    url: "@Url.Content("~/Sales/InsertFamilyProducts")",
+                                    data: {
+                                        Edition: EId,
+                                        Product: PId,
+                                        PharmaForm: PFId,
+                                        Category: CId,
+                                        Division: DId,
+                                        Family: LSC,
+                                        UserId: _UserID,
+                                        HashKey: _HasKey
+                                    },
+                                    success: function (data) {
+                                        setTimeout("document.location.reload()");
+                                    }
+                                })
+                            }
+                            else if ((LSPS != 0) || (LSPS != "0")) {
+                                $.ajax({
+                                    Type: "POST",
+                                    dataType: "Json",
+                                    url: "@Url.Content("~/Sales/InsertFamilyProductShot")",
+                                    data: {
+                                        Edition: EId,
+                                        Product: PId,
+                                        PharmaForm: PFId,
+                                        Category: CId,
+                                        Division: DId,
+                                        Family: LSPS,
+                                        UserId: _UserID,
+                                        HashKey: _HasKey
+                                    },
+                                    success: function (data) {
+                                        setTimeout("document.location.reload()");
+                                    }
+                                })
+                            }
+                            else {
+                                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                                $('.editproducts').modal('hide');
+                                setTimeout("document.location.reload()");
+                            }
+                        }
+
                         swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
                         $('.editproducts').modal('hide');
                         setTimeout("document.location.reload()");
@@ -523,11 +672,13 @@
         $("._modalProductLine").modal('hide');
         $('._modalParticipantEdi').trigger('reset');
         $("._modalParticipantEdi").modal('hide');
+        $('._modalprices').modal('hide');
+        $('._modalIpp').modal('hide');
         $('html').css('overflow', 'auto');
     }
 </script>
 
-@*Ediciones que participa un producto*@
+@*Ediciones que participa un producto "n" Ediciones*@
 <script>
     function _getParticipantEdi(item) {
         $('html').css('overflow', 'hidden');
@@ -550,240 +701,110 @@
 
         $("#_EcategoryName").empty();
         $("#_EcategoryName").append(_vlcategoryName).val(_vlcategoryId);
-        $("#_SEdition").val(0);
-        $("#MEditions").val(0);
-        $("#participantP").prop("checked", false);
-        $("#_elementTableE").val(0);
-    }
-</script>
-<script>
-    function getEditionsM(item) {
-        var tr = $(item).parents("tr:first");
-        var ed = tr.find("#_SEdition");
-        var EditionType = tr.find("#_SEdition").val();
-        var book = tr.find("#_MbookId").val(); 
-        var idcountry = $("#_countryId").val();
-        tr.find("#participantP").prop("checked", false);
-        tr.find("#MEditions").empty();
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "@Url.Content("~/Sales/getEditions")",
-            traditional: true,
-            data: { CountryId: idcountry, BookId: book, EditionType: EditionType },
-            success: function (data) {
-                tr.find("#MEditions")
-                    .append($("<option></option>")
-                    .attr("value", 0)
-                    .text("Seleccione..."));
-                $.each(data, function (index, val) {
-                    tr.find("#MEditions")
-                    .append($("<option></option>")
-                    .attr("value", val.EditionId)
-                    .text(val.NumberEdition));
-                });
-            }
-        });
-    }
-</script>
-<script>
-    function getParticipantM(item)
-    {
-        var tr = $(item).parents("tr:first");
-        var ed = tr.find("#_SEdition");
-        var _EditionType = tr.find("#_SEdition").val();
-        var book = tr.find("#_MbookId").val();
-        var idcountry = $("#_countryId").val();
-        var _Edition = tr.find("#MEditions").val();
-        var _ProductId = $("#_EproductName").val();
-        var _PharmaFormId = $("#_EpharmaceuticalForm").val();
-        var _CategoryId = $("#_EcategoryName").val();
-        var idcountry = $("#_countryId").val();
-        var _DivisionId = $("#_divisionId").val(); 
 
+        $("#_elementTableE tbody").empty();
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "@Url.Content("~/Sales/getParticipant")",
+            url: "@Url.Content("~/Sales/getBookEdition")",
             traditional: true,
         data: {
-            ProductId: _ProductId,
-            PharmaFormId: _PharmaFormId,
-            CategoryId: _CategoryId,
-            EditionId: _Edition,
-            EditionType: _EditionType,
-            DivisionId : _DivisionId   
+            CountryId: cid,
+            ProductId: _vlproductId,
+            PharmaFormId: _vlpharmaformId,
+            CategoryId: _vlcategoryId,
+            DivisionId: _vldivisionid
         },
         success: function (data) {
-            if (data == true)
-            {
-              tr.find("#participantP").prop("checked", true);
-              getParticipantB(item)
-            }
-            else {
-                tr.find("#participantP").prop("checked", false);
-            }
+            
+            $.each(data, function (index, item) {
+                var check = "";
+                if (item.Participant == 1)
+                {
+                    check = "<td><input id='participantP' type='checkbox' onchange='getParticipantN($(this))' checked='true' /></td>";   @*<input id="PartProduct"  type="checkbox" checked="@_participant" onclick="participantproducts($(this))" />*@
+                }
+                else if (item.Participant == 0)
+                {
+                    check = "<td><input id='participantP' type='checkbox' onchange='getParticipantN($(this))' /></td>";
+                }
+                if (item.ISBN == null || item.ISBN == "null")
+                {
+                    item.ISBN = "";
+                }
+                $("#_elementTableE tbody").append(
+                    "<tr>"
+                    + "<td>" + item.Description + "</td>"
+                    + "<td>" + item.TypeName + "</td>"               
+                    + "<td>" + item.ISBN + "</td>"
+                    + "<td>"+ item.NumberEdition + "<input type='hidden' id='_EditionID' value='" + item.EditionId +"'/</td>"   
+                    + check
+                    + "</tr>"
+                    );
+            });
         }
     });
-
     }
 </script>
 <script>
-    var ParticipantProduct = [];
-    function getParticipantB(item) {
-        var tr = $(item).parents("tr:first");
-
-        var bookId = tr.find("#_MbookId").val();
-        var editionType = tr.find("#_SEdition").val();
-        var editionId = tr.find("#MEditions").val();
-        //tr.find("#participantP").prop("checked", false);////// 
-
-        if (editionType > 0 && editionId > 0)
-        {
-            if (tr.find("#participantP").is(":checked")) {
-                ParticipantProduct.push({
-                    'bookId': bookId,
-                    'editionType': editionType,
-                    'editionId': editionId
-                });
-                var Size = $(ParticipantProduct).size();
-            }
-            else if (tr.find("#participantP").is(":not(:checked)")) {
-
-                var index = DeleteListItem(ParticipantProduct, "bookId", "editionType", "editionId", bookId, editionType, editionId);
-
-                if (index == null) {
-                } else if (index >= 0) {
-
-                    ParticipantProduct.splice(index, 1);
-                }
-
-            }
-        }
-        else 
-        {
-            tr.find("#participantP").prop("checked", false);
-        }
-
-    }
-</script>
-<script>
-    function DeleteListItem(arraytosearch, bookId, editionType, editionId,valuetobookId, valueeditionType, valueeditionId) {
-        for (var i = 0; i < arraytosearch.length; i++) {
-
-            if (arraytosearch[i][bookId] == valuetobookId) {
-                if (arraytosearch[i][editionType] == valueeditionType) {
-                    if (arraytosearch[i][editionId] == valueeditionId) {
-                            return i;
-                    }
-                }
-            }
-        }
-        return null;
-    };
-</script>
-<script>
-    function SaveParticipant()
+    function getParticipantN(item)
     {
-        $("#bloqueo").show();
-
-        var jsonresponse = JSON.stringify(ParticipantProduct);
-        var Size = $(ParticipantProduct).size();
+        var tr = $(item).parents("tr:first");
         var _countryId = $("#_countryId").val();
         var _ProductId = $("#_EproductName").val();
         var _PharmaFormId = $("#_EpharmaceuticalForm").val();
         var _CategoryId = $("#_EcategoryName").val();
         var _DivisionId = $("#_divisionId").val();
-
+        var _EditionId = tr.find("#_EditionID").val();
         var _UserID = $("#_iduser").val();
         var _HasKey = $("#_haskey").val();
-
-        if (Size == 0) {
-
-            swal({ title: "¡Atención!", type: "error", text: "No se ha seleccionado ningun registro" });
-
-        }
-        else {
+        
+        if (tr.find("#participantP").is(":checked")) {
             $.ajax({
                 Type: "POST",
                 dataType: "Json",
-                url: "@Url.Content("~/Sales/getParticipantBook")",
+                url: "@Url.Content("~/Sales/participantproducts")",
                 data: {
-                    ListItems: jsonresponse,
-                    ArraySize: Size,
-                    DivisionId: _DivisionId,
-                    CategoryId: _CategoryId,
-                    PharmaFormId: _PharmaFormId,
-                    ProductId: _ProductId,
-                    CountryId: _countryId,
+                    Product: _ProductId,
+                    PharmaForm: _PharmaFormId,
+                    Category: _CategoryId,
+                    Edition: _EditionId,
+                    Division: _DivisionId,
                     UserId: _UserID,
                     HashKey: _HasKey
                 },
-                success: function (data) {
-                    if (data == true) {
-                        swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
-                        setTimeout("document.location.reload()");
-                    }
-                }
-            })
-        }
-
-        //$('._modalParticipantEdi').trigger('reset');
-        //$("._modalParticipantEdi").modal('hide');
-        //$('html').css('overflow', 'auto');
-        //setTimeout("document.location.reload()");
-    }
-</script>
-<script>
-    function DeleteParticipant()
-    {
-        $("#bloqueo").show();
-
-        var jsonresponse = JSON.stringify(ParticipantProduct);
-        var Size = $(ParticipantProduct).size();
-        var _countryId = $("#_countryId").val();
-        var _ProductId = $("#_EproductName").val();
-        var _PharmaFormId = $("#_EpharmaceuticalForm").val();
-        var _CategoryId = $("#_EcategoryName").val();
-        var _DivisionId = $("#_divisionId").val();
-
-        var _UserID = $("#_iduser").val();
-        var _HasKey = $("#_haskey").val();
-
-        if (Size == 0) {
-
-            swal({ title: "¡Atención!", type: "error", text: "No se ha seleccionado ningun registro" });
-
-        }
-        else {
-            $.ajax({
-                Type: "POST",
-                dataType: "Json",
-                url: "@Url.Content("~/Sales/DeleteParticipant")",
-                data: {
-                ListItems: jsonresponse,
-                ArraySize: Size,
-                DivisionId: _DivisionId,
-                CategoryId: _CategoryId,
-                PharmaFormId: _PharmaFormId,
-                ProductId: _ProductId,
-                CountryId: _countryId,
-                UserId: _UserID,
-                HashKey: _HasKey
-                },
             success: function (data) {
-                if (data == true) {
-                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
-                    setTimeout("document.location.reload()");
+                if (data == false) {
+
+                    var content = "";
+
+                    content += "<h3 style='text-align:center'><span class='glyphicon glyphicon-remove'></span> <i><span>&nbsp; ERROR. </span></i></h3>";
+
+                    content += "Ocurrio un Error al realizar la operación";
+                    apprise("" + content + "", { 'animate': true })
+                    $(item).prop("checked", false);
                 }
             }
         })
         }
-
-    //$('._modalParticipantEdi').trigger('reset');
-    //$("._modalParticipantEdi").modal('hide');
-    //$('html').css('overflow', 'auto');
-    //setTimeout("document.location.reload()");
+        else if (tr.find("#participantP").is(":not(:checked)")) {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "@Url.Content("~/Sales/deleteparticipantproducts")",
+            data: {
+                Product: _ProductId,
+                PharmaForm: _PharmaFormId,
+                Category: _CategoryId,
+                Edition: _EditionId,
+                Division: _DivisionId,
+                UserId: _UserID,
+                HashKey: _HasKey
+            },
+        success: function (data) {
+            
+        }
+    })
+    }
     }
 </script>
 <script>
@@ -795,7 +816,6 @@
         setTimeout("document.location.reload()");
     }
 </script>
-
 
 
 @*Línea de productos*@
@@ -1251,6 +1271,458 @@
     }
 </script>
 
+@*Precios*@
+<script>
+    function Prices(item)
+    {
+        
+        var tr = $(item).parents("tr:first");
+        var _vlproductId = tr.find("#_productId").val();
+        var _vlpharmaformId = tr.find("#_pharmaFormId").val();
+        var _vlcategoryId = tr.find("#_categoryId").val();
+        var _vldivisionid = $("#_divisionId").val();
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var cid = $("#CountryId").val();
+        $("#_PproductName").empty();
+        $("#_PproductName").append(_vlproductName).val(_vlproductId);
+
+        $("#_PpharmaceuticalForm").empty();
+        $("#_PpharmaceuticalForm").append(_vlpharmaceuticalForm).val(_vlpharmaformId);
+
+        $("#_PcategoryName").empty();
+        $("#_PcategoryName").append(_vlcategoryName).val(_vlcategoryId);
+
+        $("#_elementTableP tbody").empty();
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Sales/getProductPrices")",
+            traditional: true,
+            data: {
+                ProductId: _vlproductId,
+                PharmaFormId: _vlpharmaformId,
+                CategoryId: _vlcategoryId,
+                DivisionId: _vldivisionid
+            },
+            success: function (data) {
+                if (data == false)
+                {
+                    $('._modalprices').modal('hide');
+                    swal({ title: "¡Atención!", type: "error", text: "El producto no contiene presentración", timer: 2000, });
+                    
+                }
+
+                else
+                {
+                    $.each(data, function (index, item) {
+                        if (item.SourceName == null && item.Price == null && item.AveragePrice == null)
+                        {
+                            item.SourceName = "";
+                            item.Price = "";
+                            item.AveragePrice = "";
+                            $("#_elementTableP tbody").append(
+                       "<tr>"
+                       + "<td><span id='_Presentation'>" + item.Presentation + "</span> <input type='hidden' id='_PresentationId' value='" + item.PresentationId + "' /></td>"
+                       + "<td><label class='labelsgnr show-EAN' id='lblEAN'>" + item.BarCode + "</label><textarea class='form-control edit-EAN' style='color:red; display:none' id='DVSEAN'>" + item.BarCode + "</textarea><input type='hidden' id='_BarCodeId' value='" + item.BarCodeId + "' /></td>"
+                       + "<td><label class='labelsgnr show-EAN' id='lblPrice'>" + item.Price + "</label><textarea class='form-control edit-EAN' style='color: red; display: none' id='DVSSEAN' onchange='getPriceSource($(this))'>" + item.Price + "</textarea></td>"
+                       + "<td>" + item.AveragePrice + "</td>"
+                       + "<td><label class='labelsgnr show-EAN' id='_SourceName'>" + item.SourceName + "</label> <select style='color: red; display: none'  class='form-control edit-EAN' id='_PriceSourceId'></select><input type='hidden' id='UpdatePriceByPriceSource' value='1' /></td>"
+                       + "<td class='column9  text-center'><button class='btn btn-warning btn-sm show-EAN' onclick='activatefields($(this))'><span class='glyphicon glyphicon-pencil'></span></button><button class='btn btn-primary btn-sm edit-EAN' onclick='savechanges($(this))' style='display:none'><span class='glyphicon glyphicon-ok'></span></button><button class='btn btn-danger btn-sm edit-EAN' onclick='disablefields($(this))' style='display:none'><span class='glyphicon glyphicon-remove'></span></button></td>"
+                       + "</tr>"
+                       );
+                        }
+                        
+                        else
+                        {
+                            $("#_elementTableP tbody").append(
+                         "<tr>"
+                         + "<td><span id='_Presentation'>" + item.Presentation + "</span> <input type='hidden' id='_PresentationId' value='" + item.PresentationId + "' /></td>"
+                         + "<td><label class='labelsgnr show-EAN' id='lblEAN'>" + item.BarCode + "</label><textarea class='form-control edit-EAN' style='color:red; display:none' id='DVSEAN'>" + item.BarCode + "</textarea><input type='hidden' id='_BarCodeId' value='" + item.BarCodeId + "' /></td>"
+                         + "<td><label class='labelsgnr show-EAN' id='lblPrice'>" + item.Price + "</label><textarea class='form-control edit-EAN' style='color: red; display: none' id='DVSSEAN' >" + item.Price + "</textarea></td>"
+                         + "<td>" + item.AveragePrice + "</td>"
+                         + "<td><span id='_SourceName'>" + item.SourceName + "</span> <input  type='hidden' id='_PriceSourceId' value='" + item.PriceSourceId + "' /></td>"
+                         + "<td class='column9  text-center'><button class='btn btn-warning btn-sm show-EAN' onclick='activatefields($(this))'><span class='glyphicon glyphicon-pencil'></span></button><button class='btn btn-primary btn-sm edit-EAN' onclick='savechanges($(this))' style='display:none'><span class='glyphicon glyphicon-ok'></span></button><button class='btn btn-danger btn-sm edit-EAN' onclick='disablefields($(this))' style='display:none'><span class='glyphicon glyphicon-remove'></span></button></td>"
+                         + "</tr>"
+                         );
+                        }
+                        
+
+                    });
+                }
+            }
+        });
+    }
+</script>
+<script>
+    function activatefields(item)
+    {
+        var tr = $(item).parents("tr:first");
+
+        tr.find('.show-EAN').hide();
+        tr.find('.edit-EAN').show();
+        $("#DVSEAN").empty();
+        $("#DVSSEAN").empty();
+        
+
+        var desc = tr.find("#lblEAN").text(); 
+        var sn = tr.find("#lblPrice").text();
+
+        $("#DVSEAN").val(desc);
+        $("#DVSSEAN").val(sn);
+
+        sessionStorage.lblEAN = desc;
+        sessionStorage.lblPrice = sn;
+
+    }
+</script>
+<script>
+    function disablefields(item)
+    {
+        var tr = $(item).parents("tr:first");
+
+        tr.find('.show-EAN').show();
+        tr.find('.edit-EAN').hide();
+
+        tr.find("#lblEAN").val(sessionStorage.lblEAN);
+        tr.find("#lblPrice").val(sessionStorage.lblPrice);
+    }
+</script>
+<script>
+    function savechanges(item)
+    {
+        var tr = $(item).parents("tr:first");
+        var _ProductId = $("#_PproductName").val();
+        var _PharmaceuticalForm = $("#_PpharmaceuticalForm").val();
+        var _CategoryId = $("#_PcategoryName").val();
+        var _Division = $("#_divisionId").val();
+        var _PresentationId = tr.find("#_PresentationId").val();
+        var _SourceNameId = tr.find("#_PriceSourceId").val();
+        var _EAN = tr.find("#_BarCodeId").val();
+        var _BarCode = tr.find("#DVSEAN").val();
+        var _Price = tr.find("#DVSSEAN").val();
+        var _BarCodeOr = tr.find("#lblEAN").val();
+        var _PriceOr = tr.find("#lblPrice").val();
+        var _UpdatePriceByPriceSource = tr.find("#UpdatePriceByPriceSource").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+       
+        alert(_UpdatePriceByPriceSource);
+        if ((!_BarCode.trim() == true) && (!_Price.trim() == true))
+        {
+            swal({ title: "¡Atención!", type: "error", text: "El Código de barras y el precio no puede quedar vacio", timer: 1000, });
+            tr.find("#lblEAN").val(sessionStorage.lblEAN);
+            tr.find("#lblPrice").val(sessionStorage.lblPrice);
+            tr.find('.show-EAN').show();
+            tr.find('.edit-EAN').hide();
+
+            
+        }
+        else if ((!_BarCode.trim() == true) && (!_Price.trim() == false))
+        {
+            swal({ title: "¡Atención!", type: "error", text: "El Código de barras no puede quedar vacio", timer: 1000, });
+            tr.find("#lblEAN").val(sessionStorage.lblEAN);
+            tr.find("#lblPrice").val(sessionStorage.lblPrice);
+            tr.find('.show-EAN').show();
+            tr.find('.edit-EAN').hide();
+        }
+        else if ((!_BarCode.trim() == false) && (!_Price.trim() == true))
+        {
+            swal({ title: "¡Atención!", type: "error", text: "El Precio no puede quedar vacio", timer: 1000, });
+            tr.find("#lblEAN").val(sessionStorage.lblEAN);
+            tr.find("#lblPrice").val(sessionStorage.lblPrice);
+            tr.find('.show-EAN').show();
+            tr.find('.edit-EAN').hide();
+        }
+        else
+        {
+            if (tr.find("#DVSSEAN").val().match(/^(|([0-9]{1,50}(\.([0-9]{1,50})?)?))$/))
+            {
+
+                if (_SourceNameId == null)
+                {
+                    
+                }
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "@Url.Content("~/Sales/UpdateProductPrices")",
+                    traditional: true,
+                data: {
+                    ProductId: _ProductId,
+                    PharmaFormId: _PharmaceuticalForm,
+                    CategoryId: _CategoryId,
+                    DivisionId: _Division,
+                    PresentationId: _PresentationId,
+                    EANId: _EAN,
+                    BarCode: _BarCode,
+                    Price : _Price,
+                    SourceNameId: _SourceNameId,
+                    UpdatePriceByPriceSource : _UpdatePriceByPriceSource,
+                    UserId: _UserID,
+                    HashKey: _HasKey
+                },
+                success: function (data) {
+                    if (data == true) {
+                        swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                        tr.find("#lblEAN").text(_BarCode);
+                        tr.find("#lblPrice").text(_Price);
+                        $('.show-EAN').show();
+                        $('.edit-EAN').hide();
+
+                    }
+                    else if (data == false) {
+                        swal({ title: "¡Atención!", type: "error", text: "El registro ya existe o el código de barras pertenece a otra presentación", timer: 2500, });
+                        tr.find("#lblEAN").val(sessionStorage.lblEAN);
+                        tr.find("#lblPrice").val(sessionStorage.lblPrice);
+                        tr.find('.show-EAN').show();
+                        tr.find('.edit-EAN').hide();
+                    }
+
+                }
+            });
+            }
+            else
+            {
+             swal({ title: "¡Atención!", type: "error", text: "Ingrese un Precio válido", timer: 2000, }); 
+            }
+        }
+        
+
+    }
+</script>
+<script>
+    function getPriceSource(item)
+    {
+        var tr = $(item).parents("tr:first");
+        var textPrice = "Precio";
+        tr.find("#_PriceSourceId").empty();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Sales/getPriceSources")",
+            traditional: true,
+        data: {
+            TextPrice: textPrice
+        },
+        success: function (data) {
+            tr.find("#_PriceSourceId").append(
+        "<option value='0'>Seleccione</option>"
+        );
+            $.each(data, function (index, item) {
+                tr.find("#_PriceSourceId").append(
+                     "<option value='" + item.PriceSourceId + "'>" + item.SourceName + "</option>"
+                     );
+            });
+
+                    
+        }
+    });
+    }
+</script>
+
+@*Agregar precios*@
+<script>
+    function addBarCode()
+    {
+       
+        var _ProductId = $("#_PproductName").val();
+        var _ProductName = $("#_PproductName").text();
+        var _PharmaceuticalFormId = $("#_PpharmaceuticalForm").val();
+        var _PharmaceuticalForm = $("#_PpharmaceuticalForm").text();
+        var _CategoryId = $("#_PcategoryName").val();
+        var _Category = $("#_PcategoryName").text();
+        var _DivisionId = $("#_divisionId").val();
+        var _textPrecio = $("#addPrice").text();
+
+      $("#_AddPproductName").empty();
+      $("#_AddPproductName").append(_ProductName).val(_ProductId);
+
+      $("#_AddPharmaceuticalForm").empty();
+      $("#_AddPharmaceuticalForm").append(_PharmaceuticalForm).val(_PharmaceuticalFormId);
+
+      $("#_AddPcategoryName").empty();
+      $("#_AddPcategoryName").append(_Category).val(_CategoryId);
+      $("#selectPresentation").empty();
+      $("#selectpaddPriceSource").empty(); 
+      $("#addPrice").val("");
+      $("#addEAN").val("");
+
+          $.ajax({
+              type: "POST",
+              dataType: "json",
+              url: "@Url.Content("~/Sales/getPresentations")",
+              traditional: true,
+          data: {
+              ProductId: _ProductId,
+              PharmaFormId: _PharmaceuticalFormId,
+              CategoryId: _CategoryId,
+              DivisionId: _DivisionId
+          },
+          success: function (data) {
+              $("#selectPresentation").append(
+                      "<option value='0'>Seleccione</option>"
+                      );
+              $.each(data, function (index, item) {
+
+                  $("#selectPresentation").append(
+                      "<option value='" + item.PresentationId + "'>" + item.Presentation + "</option>"
+                      );
+              });
+          }
+      });
+
+      
+    }
+</script>
+<script>
+    function SourcePrice()
+    {
+        $("#selectpaddPriceSource").empty();
+        var textPrice = $("#addPrice").val();
+        if (!textPrice.trim() == false)
+        {
+            if ($("#addPrice").val().match(/^(|([0-9]{1,50}(\.([0-9]{1,50})?)?))$/)) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "@Url.Content("~/Sales/getPriceSources")",
+                    traditional: true,
+                data: {
+                    TextPrice: textPrice
+                },
+                success: function (data) {
+                    $("#selectpaddPriceSource").append(
+                "<option value='0'>Seleccione</option>"
+                );
+                    $.each(data, function (index, item) {
+                        $("#selectpaddPriceSource").append(
+                             "<option value='" + item.PriceSourceId + "'>" + item.SourceName + "</option>"
+                             );
+                    });
+
+                    
+                }
+            });
+            }
+            else { swal({ title: "¡Atención!", type: "error", text: "Ingrese un Precio válido", timer: 2000, }); }
+
+          
+        }
+        else
+        {
+            $("#selectpaddPriceSource").empty();
+        }
+
+    }
+</script>
+<script>
+    function AddProductBarCodes()
+    {
+        var _PresentationId = $("#selectPresentation").val();
+        var _EAN = $("#addEAN").val();
+        var _Price = $("#addPrice").val();
+        var _PriceSourceId = $("#selectpaddPriceSource").val();
+        var _ProductId = $("#_PproductName").val();
+        var _PharmaceuticalForm = $("#_PpharmaceuticalForm").val();
+        var _CategoryId = $("#_PcategoryName").val();
+        var _Division = $("#_divisionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+
+        if (_PresentationId > 0)
+        {
+            if (!_EAN.trim() == true && !_Price.trim() == false) {
+                swal({ title: "¡Atención!", type: "error", text: "No puede ingresar el precio sin el Código de Barras EAN", timer: 2000, });
+            }
+            else if (!_EAN.trim() == false && !_Price.trim() == false && (_PriceSourceId == 0 || _PriceSourceId == null || _PriceSourceId == "null"))
+            {
+                swal({ title: "¡Atención!", type: "error", text: "Selecione la fuente del precio", timer: 2000, });
+            }
+
+            else
+            {
+               
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "@Url.Content("~/Sales/AddProductBarCodes")",
+                    traditional: true,
+                    data: {
+                        ProductId: _ProductId,
+                        PharmaFormId: _PharmaceuticalForm,
+                        CategoryId: _CategoryId,
+                        DivisionId: _Division,
+                        PresentationId: _PresentationId,
+                        EAN: _EAN,
+                        Price: _Price,
+                        PriceSourceId: _PriceSourceId,
+                        UserId: _UserID,
+                        HashKey: _HasKey
+                           },
+                    success: function (data)
+                    {
+                        swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 2000, });
+                        $('._modalprices').modal('hide');
+                        $('._modalIpp').modal('hide');
+                    }
+                 });
+                
+            }
+        }
+        else
+        {
+            swal({ title: "¡Atención!", type: "error", text: "Ingrese la Presentación", timer: 2000, });
+        }
+        
+    }
+</script>
+
+@*Buscadores...*@
+<script>
+    function filter(element) {
+        var value = $(element).val();
+        $("#_elementBook li").each(function () {
+            if ($(this).text().search(new RegExp(value, "i")) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+<script>
+    function filterEdition(element) {
+        var value = $(element).val();
+            $("#_elementEdition li").each(function () {
+            if ($(this).text().search(new RegExp(value, "i")) > -1) {
+                
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+<script>
+    function filterLaboratory(element) {
+        var value = $(element).val();
+        $("#_elementLaboratory li").each(function () {
+            if ($(this).text().search(new RegExp(value, "i")) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+
+
 
 
 
@@ -1509,25 +1981,25 @@
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span style="margin-left: 5px; color: black; " class="caret"></span></a>
-                        <ul class="dropdown-menu vertical" role="menu">
-                            <li>
+                        <ul id="_elementEdition"  class="dropdown-menu vertical" role="menu">
+                            <ol>
                                 <div id="custom-search-input">
                                     <div class="input-group col-md-11">
-                                        <input id="_charEdition" type="text" class="form-control" placeholder="Buscar" />
+                                        <input type='text' onkeyup='filterEdition(this)' class='form-control' placeholder='Buscar' />
                                     </div>
                                 </div>
-                            </li>
+                            </ol>
                             <li><p></p></li>
                             @{
-                                var _getEditions = (from _e in db.Editions
-                                                    where _e.BookId == _Session.ed
-                                                    && _e.CountryId == _Session.id
-                                                    orderby _e.NumberEdition descending
-                                                    select _e).ToList();
-                                foreach (var _row in _getEditions)
-                                {
-                                    <li class="searchEdition"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + _row.EditionId + "/" + @_Session.ud)">@_row.NumberEdition</a></li>
-                                }
+                            var _getEditions = (from _e in db.Editions
+                            where _e.BookId == _Session.ed
+                            && _e.CountryId == _Session.id
+                            orderby _e.NumberEdition
+                            select _e).ToList();
+                            foreach (var _row in _getEditions)
+                            {
+                            <li class="searchEdition"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + _row.EditionId + "/" + @_Session.ud)">@_row.NumberEdition</a></li>
+                            }
                             }
                         </ul>
                     </li>
@@ -1535,21 +2007,21 @@
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laboratorios<span style="margin-left: 5px; color: black; " class="caret"></span></a>
-                        <ul class="dropdown-menu vertical" role="menu">
-                            <li>
+                        <ul id="_elementLaboratory" class="dropdown-menu vertical" role="menu">
+                            <ol>
                                 <div id="custom-search-input">
                                     <div class="input-group col-md-11">
-                                        <input id="_charLab" type="text" class="form-control" placeholder="Buscar" />
+                                        <input type="text" onkeyup="filterLaboratory(this)" class="form-control" placeholder="Buscar" />
                                     </div>
                                 </div>
-                            </li>
+                            </ol>
                             <li><p></p></li>
                             @{
-                                var _getDivisions =  db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
-                                foreach (var _row in _getDivisions)
-                                {
-                                    <li class="searchLab"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_row.DivisionId)">@_row.Description</a></li>
-                                }
+                            var _getDivisions =  db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
+                            foreach (var _row in _getDivisions)
+                            {
+                            <li class="searchLab"><a class="zindex" href="@Url.Content("~/Sales/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_row.DivisionId)">@_row.Description</a></li>
+                            }
                             }
                         </ul>
                     </li>
@@ -1558,7 +2030,7 @@
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exportar productos<span style="margin-left: 5px; color: black" class="caret"></span></a>
                         <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
-                            <li><a href="@Url.Content("~/Sales/ExcelProductsByEdition/" + _Session.ad + "/" + _Session.ud)" class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
+                            <li><a href="@Url.Content("~/Sales/ExcelProductsByEdition/" + @_Session.id + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_Session.ud + "/" + @_CountriesUsersSales.userId)" class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -1735,8 +2207,10 @@
                 <td align="center" style="vertical-align:middle" class="tdback">SIDEF</td>
                 <td width="100" align="center" style="vertical-align:middle" class="tdback">Registro sanitario</td>
                 <td width="70" align="center" style="vertical-align:middle" class="tdback">Fracción COFEPRIS</td>
+                <td width="70" align="center" style="vertical-align:middle" class="tdback">Familia de Contenido</td>
+                <td width="70" align="center" style="vertical-align:middle" class="tdback">Familia de ProductShot</td>
                 <td align="center" style="vertical-align:middle" class="tdback">Fuera del mercado</td>
-                
+                <td align="center" style="vertical-align:middle" class="tdback">Precios</td>
                 <td align="center" style="vertical-align:middle" class="tdback">Editar</td>
 
             </tr>
@@ -1866,6 +2340,14 @@
                     }
                         }
                     </td>
+                        @*Familia de Contenidos*@
+                        <td align="center">
+                            <span>@_row.ContentFamilyString</span>
+                        </td>
+                        @*Familia de ProductShot*@
+                        <td align="center">
+                            <span>@_row.PSFamilyString</span>
+                        </td>
                         <td align="center">
                             @*OffMarket*@
                             @{
@@ -1884,7 +2366,13 @@
                         <input onclick="_Off($(this))" id="_offMarkets" class="true" type="checkbox" />
                     }
                    }
-                            
+                         
+                        </td>
+                        @*Precio*@
+                        <td align="center">
+                            <button onclick="Prices($(this))"  class="btn btn-primary btn-sm" style="background-color: #4597a3; color: white; border-color: #3a848f;" data-toggle="modal" data-target="._modalprices">
+                                <span class="glyphicon glyphicon-usd"></span>
+                            </button>
                         </td>
                         @*Editar Producto*@
                     <td align="center"><button onclick="editproduct($(this))" style="cursor:pointer" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editproducts">
@@ -2037,6 +2525,7 @@
                             <tr>
                                 <td style="width:25%">
                                    <label class="labels">Nombre de Producto:</label>
+                                    <label class='labelsgnr' style="color: red;font-size: 22pt">*</label>
                                 </td>
                                 <td>
                                     <div class="form-group has-feedback" id="divProductName">
@@ -2054,6 +2543,7 @@
                             <tr>
                                 <td style="width:25%">
                                     <label class="labels">Forma Farmacéutica:</label>
+                                    <label class='labelsgnr' style="color: red;font-size: 22pt">*</label>
                                 </td>
                                 <td>
                                     @{
@@ -2081,6 +2571,7 @@
                             <tr>
                                 <td style="width:25%">
                                     <label class="labels">Fabricante:</label>
+                                    <label class='labelsgnr' style="color: red;font-size: 22pt">*</label>
                                 </td>
                                 <td>
                                     @{
@@ -2108,18 +2599,14 @@
                             <tr>
                                 <td>
                                     <label class="labels">Categoría:</label>
+                                    <label class='labelsgnr' style="color: red;font-size: 22pt">*</label>
                                 </td>
                                 <td>
                                     <div class="form-group has-feedback" id="divCategories">
                                         <select class="form-control" id="Categories" onchange="$('#divCategories').removeClass('has-error'), $('.errorC').hide()">
                                             <option value="0" id="cat0">Seleccione...</option>
                                             @{
-                                                 @*var c = db.Categories.Where(x => x.Active == true).OrderBy(x => x.Description).ToList();
-                                                foreach (Categories _c in c)
-                                                {
-                                                    <option value="@_c.CategoryId">@_c.Description</option>
-                                                }*@
-                                                //SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
+                                                
                                                 var Coun = _Session.CountryId;
                                                 var Div = _Session.DivisionId;
                                                 var c = (from _d in db.Divisions
@@ -2499,6 +2986,28 @@
                             </div>
 
                         </td>
+
+                    </tr>
+                    <tr>
+                        <td style="width:25%">
+                            <label class="labels">Familia de Contenido:</label>
+                        </td>
+                        <td>
+                            <select class="form-control" id="LSC"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%">
+                            <label class="labels">Familia de ProductShop:</label>
+                        </td>
+                        <td>
+                            <select class="form-control" id="LSPS"></select>
+                        </td>
                     </tr>
 
                 </table>
@@ -2565,36 +3074,13 @@
                             <tr>
                                 <td class="tdback">Obra</td>
                                 <td class="tdback">Tipo de edición</td>
+                                <td class="tdback">ISBN</td>
                                 <td class="tdback">Edición</td>
                                 <td class="tdback">Participante</td>
                             </tr>
                         </thead>
                         <tbody>
-                                @{
-                                    var getBook = (from _b in db.Books
-                                                   select _b).ToList().OrderBy(model => model.Description);
-                                    foreach (var _row in getBook)
-                                    {
-                                    <tr>
-                                        <td><span>@_row.Description</span><input type="hidden" id="_MbookId" value="@_row.BookId" /></td>
-
-                                        <td><select id="_SEdition" class="form-control" onchange="getEditionsM($(this))" >
-                                                <option id="_MEditionTypeId" value="0">Seleccione...</option>
-                                                 @{
-                                        var et = db.EditionTypes.Where(x => x.Active == true).ToList();
-                                        foreach (var _item in et)
-                                        {
-                                            <option id="_MEditionTypeId" value="@_item.EditionTypeId">@_item.TypeName</option>
-                                        }
-                                              }
-                                             </select>
-                                         </td>
-                                        <td><select class="form-control" id="MEditions" onchange="getParticipantM($(this))"></select>
-                                        </td>
-                                        <td><input id="participantP" type="checkbox" onchange="getParticipantB($(this))" /></td>"
-                                    </tr>
-                                    }
-                                }
+                                            
                             
                             </tbody>
                         </table>
@@ -2602,20 +3088,215 @@
             </div>
             <div class="modal-footer" align="center">
                 <div align="center">
-                    <button class="btn btn-primary" onclick="SaveParticipant() ">
-                        <span class="glyphicon glyphicon-save"></span>
-                        <span>&nbsp; Guardar Cambios</span>
-                    </button>
-                    <button class="btn btn-primary" onclick="DeleteParticipant() ">
-                        <span class="glyphicon glyphicon-save"></span>
-                        <span>&nbsp; Borrar</span>
-                    </button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose" onclick="_closePBooks($(this))">
                         <span class="glyphicon glyphicon-remove"></span>
                         <span>&nbsp; Cancelar</span>
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+@*Modal para mostrar precios y actualizar*@
+<div class="modal fade _modalprices" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2184be">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="font-size: 18px; color: white" class="modal-title" id="myModalLabel" align="center"> <span>Precios</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id=" wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_PproductName" style="color: #de5145;"></span></span>
+
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_PpharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_PcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well well-white mini-profile-widget col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/ediciones.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="col-sm-6 col-sm-1">
+                    <button onclick="addBarCode()" class="btn btn-warning btn-sm loading" data-toggle="modal" data-target="._modalIpp">
+                        <span class="glyphicon glyphicon-send"></span>
+                        <span>&nbsp; Agregar código de barras</span>
+                    </button>
+                </div>
+                <br />
+                <div align="center">
+                    <span style="font-size:18px;">Precios</span>
+                </div>
+                <br />
+                <div id="_dvparticipant" class="table-responsive heightdivp">
+                    <table id="_elementTableP" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td class="tdback">Presentación</td>
+                                <td class="tdback">Código de barras EAN</td>
+                                <td class="tdback">Precio</td>
+                                <td class="tdback">Precio Promedio</td>
+                                <td class="tdback">Fuente de precio</td>
+                                <td class="tdback">Editar</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" align="center">
+                <div align="center">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span>&nbsp; Cancelar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Agregar precios a un producto*@
+<div class="modal fade _modalIpp" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2184be">
+                <button type="button" class="close" data-dismiss="modal" onclick="canceladdpharmaformtoproduct()">&times;</button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Agregar código de barras</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id=" wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_AddPproductName" style="color: #de5145;"></span></span>
+
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_AddPharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_AddPcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well well-white mini-profile-widget col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/ediciones.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <table border="0" class="widthtable">
+                            <tr>
+                                <td colspan="2">
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%">
+                                    <label class="labels">Presentación:</label>
+                                    <label class='labelsgnr' style="color: red;font-size: 22pt">*</label>
+                                </td>
+                                <td>
+                                    @{
+                                        <div class="form-group has-feedback" id="addPresentation">
+                                            <select class="form-control" id="selectPresentation" >
+                                                
+
+                                            </select>
+                                            <span class="glyphicon glyphicon-remove form-control-feedback errorPF" style="display:none"></span>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%">
+                                    <label class="labels">Código de Barras EAN:</label>
+                                    <label class='labelsgnr' style="color: red;font-size: 22pt">*</label>
+                                </td>
+                                <td>
+                                    <input class="form-control" placeholder="EAN" id="addEAN" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="labels">Precio:</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="Precio" id="addPrice" onchange="SourcePrice()" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:25%">
+                                    <label class="labels">Fuente de precio:</label>
+                                </td>
+                                <td>
+                                    @{
+                                        <div class="form-group has-feedback" id="addPriceSource">
+                                        <select class="form-control" id="selectpaddPriceSource" >
+                                        
+                                        </select>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback errorPF" style="display:none"></span>
+                                    </div>
+                                    }
+                                    
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div align="center">
+                <button type="button" class="btn btn-primary " id="insertproduct" onclick="AddProductBarCodes()">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <span>&nbsp; Guardar</span>
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnClose">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+            <br />
         </div>
     </div>
 </div>

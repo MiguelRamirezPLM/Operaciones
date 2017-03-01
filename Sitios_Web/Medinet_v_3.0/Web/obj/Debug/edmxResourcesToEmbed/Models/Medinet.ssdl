@@ -390,30 +390,6 @@
     <Property Name="TypeName" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
-  <EntityType Name="TherapeuticOMS">
-    <Key>
-      <PropertyRef Name="TherapeuticOMSId" />
-    </Key>
-    <Property Name="TherapeuticOMSId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ParentId" Type="int" />
-    <Property Name="TherapeuticKey" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="Active" Type="bit" Nullable="false" />
-    <Property Name="Level" Type="tinyint" />
-  </EntityType>
-  <EntityType Name="Therapeutics">
-    <Key>
-      <PropertyRef Name="TherapeuticId" />
-    </Key>
-    <Property Name="TherapeuticId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ParentId" Type="int" />
-    <Property Name="TherapeuticKey" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="SpanishDescription" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="Active" Type="bit" Nullable="false" />
-    <Property Name="Level" Type="tinyint" />
-  </EntityType>
   <EntityType Name="WeightUnits">
     <Key>
       <PropertyRef Name="WeightUnitId" />
@@ -740,6 +716,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
       </Dependent>
     </ReferentialConstraint>
   </Association>
+<<<<<<< HEAD
   <Association Name="FKPARENTID_TH">
     <End Role="Therapeutics" Type="Self.Therapeutics" Multiplicity="0..1" />
     <End Role="Therapeutics1" Type="Self.Therapeutics" Multiplicity="*" />
@@ -752,6 +729,8 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
       </Dependent>
     </ReferentialConstraint>
   </Association>
+=======
+>>>>>>> origin/master
   <Association Name="FKPHARMAFORM_PF">
     <End Role="PharmaceuticalForms" Type="Self.PharmaceuticalForms" Multiplicity="1" />
     <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
@@ -1175,8 +1154,6 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductShotTypes" EntityType="Self.ProductShotTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TherapeuticOMS" EntityType="Self.TherapeuticOMS" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Therapeutics" EntityType="Self.Therapeutics" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WeightUnits" EntityType="Self.WeightUnits" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="plm_vwProductsByEdition" EntityType="Self.plm_vwProductsByEdition" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -1300,10 +1277,13 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
       <End Role="Countries" EntitySet="Countries" />
       <End Role="Products" EntitySet="Products" />
     </AssociationSet>
+<<<<<<< HEAD
     <AssociationSet Name="FKPARENTID_TH" Association="Self.FKPARENTID_TH">
       <End Role="Therapeutics" EntitySet="Therapeutics" />
       <End Role="Therapeutics1" EntitySet="Therapeutics" />
     </AssociationSet>
+=======
+>>>>>>> origin/master
     <AssociationSet Name="FKPHARMAFORM_PF" Association="Self.FKPHARMAFORM_PF">
       <End Role="PharmaceuticalForms" EntitySet="PharmaceuticalForms" />
       <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
