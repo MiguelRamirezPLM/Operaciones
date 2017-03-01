@@ -38,6 +38,15 @@
           <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ClinicalReferences">
+          <Key>
+            <PropertyRef Name="ClinicalReferenceId" />
+          </Key>
+          <Property Name="ClinicalReferenceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClinicalReference" Type="varchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ReferenceSource" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="ContentTypes">
           <Key>
             <PropertyRef Name="ContentTypeId" />
@@ -1217,6 +1226,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClinicalReferences" EntityType="Self.ClinicalReferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentUnits" EntityType="Self.ContentUnits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
@@ -1786,6 +1796,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <End Role="ICD" EntitySet="ICD" />
             <End Role="ICD1" EntitySet="ICD" />
           </AssociationSet>
+          <EntitySet Name="ClinicalReferences" EntityType="Model1.ClinicalReferences" />
         </EntityContainer>
         <EntityType Name="Countries">
           <Key>
@@ -3047,6 +3058,15 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ClinicalReferences">
+          <Key>
+            <PropertyRef Name="ClinicalReferenceId" />
+          </Key>
+          <Property Name="ClinicalReferenceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClinicalReference" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3568,6 +3588,16 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
                 <ScalarProperty Name="ICDKey" ColumnName="ICDKey" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="ICDId" ColumnName="ICDId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClinicalReferences">
+            <EntityTypeMapping TypeName="Model1.ClinicalReferences">
+              <MappingFragment StoreEntitySet="ClinicalReferences">
+                <ScalarProperty Name="ReferenceSource" ColumnName="ReferenceSource" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ClinicalReference" ColumnName="ClinicalReference" />
+                <ScalarProperty Name="ClinicalReferenceId" ColumnName="ClinicalReferenceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
