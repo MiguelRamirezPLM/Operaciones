@@ -306,7 +306,7 @@
                 </a>
             </h4>
         </div>
-        <div id="collapse2" class="panel-collapse collapse in">
+        <div id="collapse2" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
@@ -400,9 +400,11 @@
                                         foreach (Web.Models.Class.GetPharmaContraindications item in Count.GetPharmaContraindications)
                                         {
                                             <tr>
-                                                <td style="width:90%">@item.PharmaContraindicationName</td>
+                                                <td style="width:90%">
+                                                    <span id="spnPharmaContraindicationName">@item.PharmaContraindicationName</span>
+                                                </td>
                                                 <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-success btn-sm">
+                                                    <button class="btn btn-success btn-sm" value="@item.PharmaContraindicationId" onclick="CheckPharmacologicalContraindications($(this))">
                                                         <span class="glyphicon glyphicon-plus"></span>
                                                     </button>
                                                 </td>
@@ -418,7 +420,8 @@
                             <table>
                                 <thead class="webgrid-header">
                                     <tr>
-                                        <th style="width:90%">Nombre de la Contraindicación</th>
+                                        <th style="width:45%">Sustancia del Producto</th>
+                                        <th style="width:45%">Contraindicación</th>
                                         <th style="width:10%" class="text-center">Quitar</th>
                                     </tr>
                                 </thead>
@@ -427,9 +430,16 @@
                                         foreach (Web.Models.Class.ProductPharmaContraindications item in Count.GetProductPharmaContraindications)
                                         {
                                             <tr>
-                                                <td style="width:90%">@item.PharmaContraindicationName</td>
+                                                <td style="width:45%">
+                                                    <span>@item.ActiveSubstance</span>
+                                                    <input type="text" value="@item.ActiveSubstanceId" id="PharmaCActiveSubstanceId" style="display:none"/>
+                                                </td>
+                                                <td style="width:45%">
+                                                    <span>@item.PharmaContraindicationName</span>
+                                                    <input type="text" value="@item.PharmaContraindicationId" id="PharmaCPharmaContraindicationId" style="display:none"/>
+                                                </td>
                                                 <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-danger btn-sm">
+                                                    <button class="btn btn-danger btn-sm" onclick="DeletePharmacologicalContraindications($(this))">
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
                                                 </td>
@@ -471,7 +481,7 @@
                                             <tr>
                                                 <td style="width:90%">@item.HypersensibilityName</td>
                                                 <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-success btn-sm">
+                                                    <button class="btn btn-success btn-sm" value="@item.HypersensibilityId" onclick="CheckHyperContraindications($(this))">
                                                         <span class="glyphicon glyphicon-plus"></span>
                                                     </button>
                                                 </td>
@@ -497,10 +507,16 @@
                                         foreach (Web.Models.Class.GetProductHypersensibilities item in Count.GetProductHypersensibilities)
                                         {
                                             <tr>
-                                                <td style="width:45%">@item.ActiveSubstance</td>
-                                                <td style="width:45%">@item.HypersensibilityName</td>
+                                                <td style="width:45%">
+                                                    <span>@item.ActiveSubstance</span>
+                                                    <input type="text" value="@item.ActiveSubstanceId" id="HyperActiveSubstanceId" style="display:none"/>
+                                                </td>
+                                                <td style="width:45%">
+                                                    <span>@item.HypersensibilityName</span>
+                                                    <input type="text" value="@item.HypersensibilityId" id="HyperHypersensibilityId" style="display:none"/>
+                                                </td>
                                                 <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-danger btn-sm">
+                                                    <button class="btn btn-danger btn-sm" onclick="DeleteHyperContraindications($(this))">
                                                         <span class="glyphicon glyphicon-remove"></span>
                                                     </button>
                                                 </td>
@@ -523,7 +539,7 @@
                 </a>
             </h4>
         </div>
-        <div id="collapse5" class="panel-collapse collapse">
+        <div id="collapse5" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
@@ -548,7 +564,7 @@
                         </div>
                         <br />
                         <div class="table-responsive">
-                            @_datagridAS.GetHtml(
+                            @_datagridPG.GetHtml(
                         headerStyle: "webgrid-header",
                         footerStyle: "webgrid-footer",
                         alternatingRowStyle: "webgrid-alternating-row",
@@ -558,16 +574,15 @@
                         mode: WebGridPagerModes.All,
                                  htmlAttributes: new { id = "GridDiv" },
                         columns: new[] {
-                        _datagridAS.Column("", header: "Nombre de Sustancia", format: @<text>
+                        _datagridPG.Column("", header: "Nombre de Sustancia", format: @<text>
                                 @{
-                                    <span id="spnDescription">@item.Description</span>
-                                    <input id="lblActiveSubstanceId" style="display:none;" value="@item.ActiveSubstanceId" />
-                                }
+    <span id="lblGroupName">@item.GroupName</span>
+    <input id="lblPharmaGroupId" style="display:none;" value="@item.PharmaGroupId" />
+}
                         </text>),
-                    _datagridAS.Column("", header: "Agregar", format: @<text>
+                        _datagridPG.Column("", header: "Agregar", format: @<text>
                                 @{
-                                    @*<button class="btn btn-success btn-sm" value="@item.ActiveSubstanceId" onclick="AddProductSubstanceInteractions($(this).val())">*@
-                                    <button class="btn btn-success btn-sm" value="@item.ActiveSubstanceId" onclick="CheckActiveSubstancesByProduct($(this))">
+                                    <button class="btn btn-success btn-sm" onclick="CheckPharmacologicalGroupsContraindications($(this))">
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 }
@@ -860,6 +875,78 @@
                     <span>&nbsp; Aceptar</span>
                 </button>
                 <button class="btn btn-danger" data-dismiss="modal" onclick="CancelPhysiologicalContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnPharCCNT" data-toggle="modal" data-target="#PharCCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="PharCCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderPharCCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivPharCCNT"></div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="SavePharmacologicalContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelPharmacologicalContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnHyperCNT" data-toggle="modal" data-target="#HyperCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="HyperCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderHyperCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivHyperCNT"></div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="SaveHyperContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelHyperContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnPGINT" data-toggle="modal" data-target="#PGINT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" id="PGINT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderPGINT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivPGINT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="AddPharmaGroupContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelAddAPGNT()">
                     <span class="glyphicon glyphicon-remove"></span>
                     <span>&nbsp; Cancelar</span>
                 </button>

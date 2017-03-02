@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Web.Models.Class
 {
-    public class ProductPharmaContraindications
+    public class GetProductPharmaContraindications
     {
         public int? CategoryId { get; set; }
         public int? DivisionId { get; set; }
@@ -15,5 +15,6 @@ namespace Web.Models.Class
         public byte? PharmaContraindicationId { get; set; }
         public string ActiveSubstance { get; set; }
         public string PharmaContraindicationName { get; set; }
+
     }
 }
