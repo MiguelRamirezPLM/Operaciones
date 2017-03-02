@@ -651,7 +651,12 @@
             },
             success: function (data) {
                 $.each(data, function (index, item) {
-                    
+                    if (item.LongCount >= 13) {
+                        $("#_dvparticipant").addClass("heightdivp");
+                    }
+                    else {
+                        $("#_dvparticipant").removeClass("heightdivp");
+                    }
                     $("#_elementTable tbody").append(
                         "<tr>"
                         + "<td>" + item.ShortName + "</td>"
@@ -666,6 +671,7 @@
         });
     }
 </script>
+
 <script>
     function _closeParticipant(item) {
         $("._modalParticipant").modal('hide'); 
@@ -850,14 +856,16 @@
             },
             success: function (data) {
                 $.each(data, function (index, item) {
-
-                        $("#_elementTableline tbody").append(
-                        "<tr>"
-                        + "<td>" + item.ProductLine + "</td>"
-                        );
-
-
-
+                    if (item.LongCount >= 13) {
+                        $("#_dvproductlines").addClass("heightdivl");
+                    }
+                    else {
+                        $("#_dvproductlines").removeClass("heightdivl");
+                    }
+                    $("#_elementTableline tbody").append(
+                       "<tr>"
+                       + "<td>" + item.ProductLine + "</td>"
+                       );
                 });
             }
         });
@@ -1161,39 +1169,51 @@
     function _new(item) {
         var tr = $(item).parents("tr:first");
         var _productId = tr.find("#_productId").val();
-        var _pharmaformId = tr.find("#_pharmaformId").val();
+        var _pharmaformId = tr.find("#_pharmaFormId").val();
         var _categoryId = tr.find("#_categoryId").val();
-        var _divisionid = tr.find("#_divisionId").val();
-        if (tr.find("#_new").is(":checked")) {
-            tr.find("#_changes").prop("checked", false);
-            tr.find("#_chargeOrthographic").prop("checked", false);
+        var _divisionid = $("#DivisionId").val();
+        var _editionid = $("#EditionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+
+        if (tr.find("#_new").is(":checked"))
+        {
+            tr.find("#_modified_cf").prop("checked", false);
+            tr.find("#_modified_co").prop("checked", false);
             $.ajax({
                 type: "POST",
-                dataType: "json",
+                dataType: "Json",
                 url: "@Url.Content("~/Sales/itsNew")",
                 traditional: true,
                 data: {
                     ProductId: _productId,
                     PharmaFormId: _pharmaformId,
                     Categoryid: _categoryId,
-                    DivisionId: _divisionid
+                    DivisionId: _divisionid,
+                    EditionId :_editionid,
+                    UserId: _UserID,
+                    HashKey: _HasKey
                 },
                 success: function (data) {
                     swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
                 }
             });
         }
-        else if (tr.find("#_new").is(":not(:checked)")) {
+        else if (tr.find("#_new").is(":not(:checked)"))
+        {
             $.ajax({
                 type: "POST",
-                dataType: "json",
+                dataType: "Json",
                 url: "@Url.Content("~/Sales/notNew")",
                 traditional: true,
                 data: {
                     ProductId: _productId,
                     PharmaFormId: _pharmaformId,
                     Categoryid: _categoryId,
-                    DivisionId: _divisionid
+                    DivisionId: _divisionid,
+                    EditionId: _editionid,
+                    UserId: _UserID,
+                    HashKey: _HasKey
                 },
                 success: function (data) {
                     swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
@@ -1725,7 +1745,6 @@
 
 
 
-
 @*Producto Cambio Ortográfico*@
 <script>
     // desmarcar __chargeOrthographic, _new
@@ -2078,6 +2097,13 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Versión: <span style="color: #de5145">@ViewData["TypeName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
                             <div class="title_new">
                                 <div class="title-word_new">
                                     <p>
@@ -2260,12 +2286,15 @@
                         <td align="center">
                             @{
                     var NewProduct = _row.NewProduct;
-                    bool _newproduct = false;
                     if (NewProduct > 0)
                     {
-                        _newproduct = true;
+                        <input checked id="_new" onclick="_new($(this))" class="true" type="checkbox" />
                     }
-                    <input type="checkbox" disabled="disabled" checked="@_newproduct" id="_newproduct" />
+                    else
+                    {
+                        <input id="_new" onclick="_new($(this))" class="true" type="checkbox" />
+                    }
+
 }
                     </td>
                     @*Cambio fondos*@
@@ -2490,7 +2519,7 @@
                     <span style="font-size:18px;">Líneas de Producto</span>
                 </div>
                 <br />
-                <div id="_productlines" class="table-responsive heightdivp">
+                <div id="_dvproductlines" class="table-responsive heightdivl">
                     <table id="_elementTableline" class="table table-bordered table-hover">
                         <thead>
                             <tr style=" box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);">
@@ -3145,7 +3174,7 @@
                     <span style="font-size:18px;">Precios</span>
                 </div>
                 <br />
-                <div id="_dvparticipant" class="table-responsive heightdivp">
+                <div id="_dvprice" class="table-responsive heightdivp">
                     <table id="_elementTableP" class="table table-bordered table-hover">
                         <thead>
                             <tr>

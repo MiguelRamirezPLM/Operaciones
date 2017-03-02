@@ -46,7 +46,7 @@ namespace Web.Models
         public string PSFamilyString { get; set; }
         public string ProductType { get; set; }
         public byte? ProductTypeId { get; set; }
-
+        public string HTMLContent { get; set; }
         
     }
 }

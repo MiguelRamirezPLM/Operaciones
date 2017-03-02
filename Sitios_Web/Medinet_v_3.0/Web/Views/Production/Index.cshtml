@@ -3,7 +3,12 @@
     ViewBag.Title = "Producción";
     PLMUsers plm = new PLMUsers();
     Medinet db = new Medinet();
+    
     ViewData["Pagination"] = "True";
+    ViewData["Medicos"] = "True";
+    ViewData["Producción"] = "True";
+    ViewData["Inicio"] = "True";
+    ViewData["Ventas"] = "True";
 }
 @*Buscadores...*@
 <script>
@@ -69,7 +74,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Production/getBooks")",
+                url: "@Url.Content("~/Sales/getBooks")",
                 traditional: true,
                 data: { CountryId: _vlCountryId },
                 success: function (data) {
@@ -117,14 +122,15 @@
             $("#_elementEdition").removeClass("hide");
             var _vlBookId = $(this).find("#_vlBookId").val();
             var _vlCountryId = $(this).find("#_vlCountryId").val();
+            var EditionTypeT = -20;
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Production/getEditions")",
+                url: "@Url.Content("~/Sales/getEditions")",
                 traditional: true,
-                data: { CountryId: _vlCountryId, BookId: _vlBookId },
+                data: { CountryId: _vlCountryId, BookId: _vlBookId, EditionType: EditionTypeT },
                 success: function (data) {
-                    $("#_elementEdition").append("<ol style='margin-top:-5px;'>"
+                    $("#_elementEdition").append("<ol>"
                         + "<div id='custom-search-input'>"
                         + "<div class='input-group col-md-11'>"
                         + "<input type='text' onkeyup='filterEdition(this)' class='form-control' placeholder='Buscar' />"
@@ -170,7 +176,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Production/getLaboratories")",
+                url: "@Url.Content("~/Sales/getLaboratories")",
                 traditional: true,
                 data: { CountryId: _vlCountryId, BookId: _vlBookId, EditionId: _vlEditionId },
                 success: function (data) {
@@ -189,7 +195,7 @@
                     $.each(data, function (index, val) {
                         $("#_elementLaboratory")
                         .append($("<li>"
-                            + "<a onclick='_zindex()' href='" + baseSiteURL + "Production/Content/" + val.CountryId + "/" + val.BookId + "/" + val.EditionId + "/" + val.DivisionId + "'>" + val.DivisionName + "</a>"
+                            + "<a onclick='_zindex()' href='" + baseSiteURL + "Production1/Content/" + val.CountryId + "/" + val.BookId + "/" + val.EditionId + "/" + val.DivisionId + "'>" + val.DivisionName + "</a>"
                             + "</li>"));
                     });
                 }
@@ -238,19 +244,21 @@
                             List<string> _listCountries = _CountriesUsers.var;
                             <a id="_title" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">País<span style="margin-left:5px;" class="caret"></span></a>
                             <ul style="border-radius:10px;" id="_elementCountry" class="dropdown-menu" role="menu">
-                                @{
+                               @{
                             List<string> _list = _CountriesUsers.var;
+                            _list.Sort();
                             foreach (string _row in _list)
                             {
                                 var _countries = (from country in db.Countries
                                                   where country.ID == _row
-                                                  select country);
+                                                  orderby country.CountryName
+                                                  select country).ToList();
                                 foreach (Countries _rowCountries in _countries)
                                 {
                                     <li><a> <input type="hidden" id="_vlCountryId" value="@_rowCountries.CountryId" /> @_rowCountries.CountryName</a></li>
                                 }
                             }
-                                }
+}
                             </ul>
                         }
                     }

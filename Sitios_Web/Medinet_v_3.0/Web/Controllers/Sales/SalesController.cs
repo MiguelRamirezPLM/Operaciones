@@ -12,7 +12,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace Web.Controllers.Sales
@@ -80,6 +79,12 @@ namespace Web.Controllers.Sales
             ViewData["BookId"] = Book;
             ViewData["EditionId"] = Edition;
             ViewData["DivisionId"] = Division;
+            var _editionType = (from _e in db.Editions
+                                join _et in db.EditionTypes
+                                    on _e.EditionTypeId equals _et.EditionTypeId
+                                where _e.EditionId == ad
+                                select new { _et.TypeName }).ToList();
+            ViewData["TypeName"] = _editionType.FirstOrDefault().TypeName;
 
             SessionM sessionSM = new SessionM(Country, Book, EditionType, Edition, Division);
             Session["sessionSM"] = sessionSM;
@@ -239,69 +244,6 @@ namespace Web.Controllers.Sales
                 return Json(LS, JsonRequestBehavior.AllowGet);
             }
             
-        }
-
-        public ActionResult saveSanitary(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string SanitaryRegister)
-        {
-            var _productCategories = (from _pc in db.ProductCategories
-                                      where _pc.ProductId == ProductId
-                                      && _pc.PharmaFormId == PharmaFormId
-                                      && _pc.CategoryId == CategoryId
-                                      && _pc.DivisionId == DivisionId
-                                      select _pc).ToList();
-            foreach (var _row in _productCategories)
-            {
-                if (SanitaryRegister == "")
-                {
-                    _row.SanitaryRegister = null;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    _row.SanitaryRegister = SanitaryRegister;
-                    db.SaveChanges();
-                }
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction)
-        {
-            var _productCategories = (from _pc in db.ProductCategories
-                                      where _pc.ProductId == ProductId
-                                      && _pc.PharmaFormId == PharmaFormId
-                                      && _pc.CategoryId == CategoryId
-                                      && _pc.DivisionId == DivisionId
-                                      select _pc).ToList();
-            foreach (var _row in _productCategories)
-            {
-                if (Fraction == "")
-                {
-                    _row.SSFraction = null;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    _row.SSFraction = Fraction;
-                    db.SaveChanges();
-                }
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult itsNew(int ProductId, int PharmaFormId, int CategoryId, int DivisionId)
-        {
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult notNew(int ProductId, int PharmaFormId, int CategoryId, int DivisionId)
-        {
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult withChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId)
-        {
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult AddProduct(string ProductName,
@@ -2049,6 +1991,17 @@ namespace Web.Controllers.Sales
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
 
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult itsNew(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, int UserId, string HashKey)
+        {
+            bool _resultnewproducts = Inserts.insertnewproducts(EditionId, DivisionId, CategoryId, PharmaFormId, ProductId, UserId, HashKey);
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult notNew(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, int UserId, string HashKey)
+        {
+            bool _resultnewproducts = Inserts.deletenewproducts(EditionId, DivisionId, CategoryId, PharmaFormId, ProductId, UserId, HashKey);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
     }

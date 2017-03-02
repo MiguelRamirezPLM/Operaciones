@@ -174,11 +174,15 @@ namespace Web.Models
             }
         }
 
-        public bool deletenewproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId)
+        public bool deletenewproducts(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int UserIdP, string HashKeyP)
         {
             try
             {
+                string primaryKeyAffected;
                 var _response = db.Database.ExecuteSqlCommand("plm_spCRUDNewProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Delete + "");
+                List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+                primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.NewProducts + ",@operationId=" + Action.Eliminar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
 
                 return true;
             }
