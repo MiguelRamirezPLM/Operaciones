@@ -68,5 +68,16 @@ namespace Web.Models
         public virtual DbSet<ICD> ICD { get; set; }
         public virtual DbSet<ClinicalReferences> ClinicalReferences { get; set; }
         public virtual DbSet<ATCPharmacologicalGroups> ATCPharmacologicalGroups { get; set; }
+        public virtual DbSet<ProductTherapeutics> ProductTherapeutics { get; set; }
+        public virtual DbSet<ProductTherapeuticOMS> ProductTherapeuticOMS { get; set; }
+        public virtual DbSet<ProductSubstanceInteractions> ProductSubstanceInteractions { get; set; }
+        public virtual DbSet<ActiveSubstances> ActiveSubstances { get; set; }
+        public virtual DbSet<IPPAProductInteractions> IPPAProductInteractions { get; set; }
+        public virtual DbSet<ProductInteractions> ProductInteractions { get; set; }
+        public virtual DbSet<Indications> Indications { get; set; }
+        public virtual DbSet<ProductIndications> ProductIndications { get; set; }
+        public virtual DbSet<ProductICD> ProductICD { get; set; }
+        public virtual DbSet<PharmacologicalGroups> PharmacologicalGroups { get; set; }
+        public virtual DbSet<OtherElements> OtherElements { get; set; }
     }
 }

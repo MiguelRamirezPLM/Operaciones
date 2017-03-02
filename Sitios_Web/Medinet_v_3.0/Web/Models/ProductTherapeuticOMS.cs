@@ -12,21 +12,13 @@ namespace Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TherapeuticOMS
+    public partial class ProductTherapeuticOMS
     {
-        public TherapeuticOMS()
-        {
-            this.ProductTherapeuticOMS = new HashSet<ProductTherapeuticOMS>();
-        }
-    
         public int TherapeuticOMSId { get; set; }
-        public Nullable<int> ParentId { get; set; }
-        public string TherapeuticKey { get; set; }
-        public string Description { get; set; }
-        public string SpanishDescription { get; set; }
-        public bool Active { get; set; }
-        public Nullable<byte> Level { get; set; }
+        public int PharmaFormId { get; set; }
+        public int ProductId { get; set; }
     
-        public virtual ICollection<ProductTherapeuticOMS> ProductTherapeuticOMS { get; set; }
+        public virtual TherapeuticOMS TherapeuticOMS { get; set; }
+        public virtual ProductPharmaForms ProductPharmaForms { get; set; }
     }
 }

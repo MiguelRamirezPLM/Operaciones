@@ -12,24 +12,22 @@ namespace Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Therapeutics
+    public partial class Indications
     {
-        public Therapeutics()
+        public Indications()
         {
-            this.Therapeutics1 = new HashSet<Therapeutics>();
-            this.ProductTherapeutics = new HashSet<ProductTherapeutics>();
+            this.Indications1 = new HashSet<Indications>();
+            this.ProductIndications = new HashSet<ProductIndications>();
         }
     
-        public int TherapeuticId { get; set; }
+        public int IndicationId { get; set; }
         public Nullable<int> ParentId { get; set; }
-        public string TherapeuticKey { get; set; }
+        public string IndicationKey { get; set; }
         public string Description { get; set; }
-        public string SpanishDescription { get; set; }
         public bool Active { get; set; }
-        public Nullable<byte> Level { get; set; }
     
-        public virtual ICollection<Therapeutics> Therapeutics1 { get; set; }
-        public virtual Therapeutics Therapeutics2 { get; set; }
-        public virtual ICollection<ProductTherapeutics> ProductTherapeutics { get; set; }
+        public virtual ICollection<Indications> Indications1 { get; set; }
+        public virtual Indications Indications2 { get; set; }
+        public virtual ICollection<ProductIndications> ProductIndications { get; set; }
     }
 }
