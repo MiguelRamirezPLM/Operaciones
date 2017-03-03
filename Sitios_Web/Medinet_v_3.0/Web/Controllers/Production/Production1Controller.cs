@@ -19,7 +19,7 @@ namespace Web.Controllers.Production
     public class Production1Controller : Controller
     {
         //
-        // GET: /Production1/
+        // GET: /Production1//
 
         Medinet db = new Medinet();
         CRUD CRUD = new CRUD();
