@@ -79,5 +79,53 @@ namespace Web.Controllers.Production
             return View(LS);
            
         }
+
+        public JsonResult saveSanitary(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string SanitaryRegister)
+        {
+            var _productCategories = (from _pc in db.ProductCategories
+                                      where _pc.ProductId == ProductId
+                                      && _pc.PharmaFormId == PharmaFormId
+                                      && _pc.CategoryId == CategoryId
+                                      && _pc.DivisionId == DivisionId
+                                      select _pc).ToList();
+            foreach (var _row in _productCategories)
+            {
+                if (SanitaryRegister == "")
+                {
+                    _row.SanitaryRegister = null;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    _row.SanitaryRegister = SanitaryRegister;
+                    db.SaveChanges();
+                }
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction)
+        {
+            var _productCategories = (from _pc in db.ProductCategories
+                                      where _pc.ProductId == ProductId
+                                      && _pc.PharmaFormId == PharmaFormId
+                                      && _pc.CategoryId == CategoryId
+                                      && _pc.DivisionId == DivisionId
+                                      select _pc).ToList();
+            foreach (var _row in _productCategories)
+            {
+                if (Fraction == "")
+                {
+                    _row.SSFraction = null;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    _row.SSFraction = Fraction;
+                    db.SaveChanges();
+                }
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
 	}
 }

@@ -188,6 +188,176 @@
         }
 </script>
 
+@*Registro Sanitario*@
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionSanitary;
+    function _plusRegister(item) {
+        var tr = $(item).parents("tr:first");
+        _positionSanitary = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlsanitaryRegister = tr.find("#_sanitaryRegister").text();
+        $("#_vlmessageRegister").empty();
+        $("#_vlmessageRegister").append("Agregue el Registro Sanitario");
+        $("#_vladdRegister").removeClass("hide");
+        $("#_vlsaveRegister").addClass("hide");
+        $("#_rlproductName").empty();
+        $("#_rlproductName").append(_vlproductName);
+        $("#_rlpharmaceuticalForm").empty();
+        $("#_rlpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_rlcategoryName").empty();
+        $("#_rlcategoryName").append(_vlcategoryName);
+        $("#_vlsetSanitary").val(_vlsanitaryRegister);
+    }
+</script>
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionSanitary;
+    function _vlgetsanitary(item) {
+        var tr = $(item).parents("tr:first");
+        _positionSanitary = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlsanitaryRegister = tr.find("#_sanitaryRegister").text();
+        $("#_vlmessageRegister").empty();
+        $("#_vlmessageRegister").append("Modifique el registro sanitario");
+        $("#_vladdRegister").addClass("hide");
+        $("#_vlsaveRegister").removeClass("hide");
+        $("#_rlproductName").empty();
+        $("#_rlproductName").append(_vlproductName);
+        $("#_rlpharmaceuticalForm").empty();
+        $("#_rlpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_rlcategoryName").empty();
+        $("#_rlcategoryName").append(_vlcategoryName);
+        $("#_vlsetSanitary").val(_vlsanitaryRegister);
+    }
+</script>
+@*Keeps changes to the health record entered*@
+<script>
+    function _vlsaveRegister(item) {
+        var _vlgetsanitary = $("#_vlsetSanitary").val();
+        _positionSanitary.find("#_sanitaryRegister").empty();
+        _positionSanitary.find("#_sanitaryRegister").append(_vlgetsanitary);
+        var _rlproductId = _positionSanitary.find("#_productId").val();
+        var _rlpharmaFormid = _positionSanitary.find("#_pharmaFormId").val();
+        var _rlcategoryId = _positionSanitary.find("#_categoryId").val();
+        var _rldivisionId = _positionSanitary.find("#_divisionId").val();
+        if (_vlgetsanitary.trim() == false) {
+            _positionSanitary.find("#_plusRegister").removeClass("hide");
+            _positionSanitary.find("#_pencilRegister").addClass("hide");
+        }
+        if (_vlgetsanitary.trim() != false) {
+            _positionSanitary.find("#_plusRegister").addClass("hide");
+            _positionSanitary.find("#_pencilRegister").removeClass("hide");
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production1/saveSanitary")",
+            traditional: true,
+            data: {
+                ProductId: _rlproductId,
+                PharmaFormId: _rlpharmaFormid,
+                Categoryid: _rlcategoryId,
+                DivisionId: _rldivisionId,
+                SanitaryRegister: _vlgetsanitary
+            },
+            success: function (data) {
+                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                $("._modalSanitary").modal("hide");
+            }
+        });
+    }
+</script>
+
+@*Fracción COFEPRIS*@
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionFraction;
+    function _vlgetFraction(item) {
+        var tr = $(item).parents("tr:first");
+        _positionFraction = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlgetFraction = tr.find("#_fraction").text();
+        $("#_messageFraction").empty();
+        $("#_messageFraction").append("Agregue la Fracción Cofepris");
+        $("#_addFraction").removeClass("hide");
+        $("#_saveFraction").addClass("hide");
+        $("#_fproductName").empty();
+        $("#_fproductName").append(_vlproductName);
+        $("#_fpharmaceuticalForm").empty();
+        $("#_fpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_fcategoryName").empty();
+        $("#_fcategoryName").append(_vlcategoryName);
+        $("#_setFraction").val(_vlgetFraction);
+    }
+</script>
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionFraction;
+    function _fractionPencil(item) {
+        var tr = $(item).parents("tr:first");
+        _positionFraction = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlgetFraction = tr.find("#_fraction").text();
+        $("#_messageFraction").empty();
+        $("#_messageFraction").append("Modifique la Fracción Cofepris");
+        $("#_addFraction").addClass("hide");
+        $("#_saveFraction").removeClass("hide");
+        $("#_fproductName").empty();
+        $("#_fproductName").append(_vlproductName);
+        $("#_fpharmaceuticalForm").empty();
+        $("#_fpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_fcategoryName").empty();
+        $("#_fcategoryName").append(_vlcategoryName);
+        $("#_setFraction").val(_vlgetFraction);
+    }
+</script>
+@*Saves the changes of the fraction COFEPRIS entered*@
+<script>
+    function _saveFraction(item) {
+        var _vlgetFraction = $("#_setFraction").val();
+        _positionFraction.find("#_fraction").empty();
+        _positionFraction.find("#_fraction").append(_vlgetFraction);
+        var _flproductId = _positionFraction.find("#_productId").val();
+        var _flpharmaFormid = _positionFraction.find("#_pharmaFormId").val();
+        var _flcategoryId = _positionFraction.find("#_categoryId").val();
+        var _fldivisionId = _positionFraction.find("#_divisionId").val();
+
+        if (_vlgetFraction.trim() == false) {
+            _positionFraction.find("#_plusFraction").removeClass("hide");
+            _positionFraction.find("#_fractionPencil").addClass("hide");
+        }
+        if (_vlgetFraction.trim() != false) {
+            _positionFraction.find("#_plusFraction").addClass("hide");
+            _positionFraction.find("#_fractionPencil").removeClass("hide");
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production1/saveFraction")",
+            traditional: true,
+            data: {
+                ProductId: _flproductId,
+                PharmaFormId: _flpharmaFormid,
+                Categoryid: _flcategoryId,
+                DivisionId: _fldivisionId,
+                Fraction: _vlgetFraction
+            },
+            success: function (data) {
+                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                $('._modalFraction').modal('hide');
+            }
+        });
+    }
+</script>
 
 <div class="row col-md-10">
     <div class="headergroup">
@@ -504,17 +674,45 @@
                             {
                             <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Contenido</span></td>
                             <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Contenido</span></td>
+                            <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Contenido</span></td>
                             }
                         }
 
 
 
 
-                        @*Remplazar*@
+                        @*Registro Sanitario*@
                         
-                        <td style="vertical-align:middle" align="center"><a onclick="_getParticipant($(this))" data-toggle="modal" data-target="._modalParticipant" class="btn btn-primary  btn-sm loading"><span class="glyphicon glyphicon-indent-right"></span></a></td>
-                        <td style="vertical-align:middle" align="center"><a onclick="_getParticipant($(this))" data-toggle="modal" data-target="._modalParticipant" class="btn btn-primary  btn-sm loading"><span class="glyphicon glyphicon-indent-right"></span></a></td>
-                        <td style="vertical-align:middle" align="center"><a onclick="_getParticipant($(this))" data-toggle="modal" data-target="._modalParticipant" class="btn btn-primary  btn-sm loading"><span class="glyphicon glyphicon-indent-right"></span></a></td>
+                        <td style="vertical-align:middle" align="right">
+                            @{
+                                if (_row.SanitaryRegister == null)
+                                {
+                                  <span id="_sanitaryRegister" style="margin-right:10px;"></span><button id="_plusRegister" onclick="_plusRegister($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-success  btn-sm loading"><i class="glyphicon glyphicon-plus"></i></button>
+                                  <button id="_pencilRegister" onclick="_vlgetsanitary($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-default  btn-sm loading hide"><i class="glyphicon glyphicon-pencil"></i></button>
+                                }
+                                else
+                               {
+                                 <span id="_sanitaryRegister" style="margin-right:10px;">@_row.SanitaryRegister</span><button id="_plusRegister" onclick="_plusRegister($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-success  btn-sm loading hide"><i class="glyphicon glyphicon-plus"></i></button>
+                                 <button id="_pencilRegister" onclick="_vlgetsanitary($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-default  btn-sm loading"><i class="glyphicon glyphicon-pencil"></i></button>
+                               }
+                            }
+                        </td>
+                        @*COFEPRIS*@
+                        <td style="vertical-align:middle" align="right">
+                            @{
+                               if (_row.SSFraction == null)
+                               {
+                                 <span id="_fraction" style="margin-right:10px;"></span><button id="_plusFraction" onclick="_vlgetFraction($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-success  btn-sm loading"><i class="glyphicon glyphicon-plus"></i></button>
+                                 <button id="_fractionPencil" onclick="_fractionPencil($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-default  btn-sm loading hide"><i class="glyphicon glyphicon-pencil"></i></button>
+                               }
+                              else
+                               {
+                                <span id="_fraction" style="margin-right:10px;">@_row.SSFraction</span><button id="_plusFraction" onclick="_vlgetFraction($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-success  btn-sm loading hide"><i class="glyphicon glyphicon-plus"></i></button>
+                                <button id="_fractionPencil" onclick="_fractionPencil($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-default  btn-sm loading"><i class="glyphicon glyphicon-pencil"></i></button>
+                               }
+                            }
+                        </td>
+                        <td style="vertical-align:middle" align="center"><a onclick="_getPresentation($(this))" data-toggle="modal" data-target="._modalPresentation" class="btn btn-danger btn-sm loading"><span class="glyphicon glyphicon-picture"></span></a></td>
                      </tr>
                 }
             }
@@ -582,6 +780,110 @@
                     <button onclick="_closeParticipant($(this))" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+@*Modal Registro sanitario Agregar/Editar*@
+<div class="modal fade _modalSanitary" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Registro sanitario</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_rlproductName" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_rlpharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_rlcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/registro.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div align="center">
+                    <span id="_vlmessageRegister" style="font-size:18px;"></span>
+                </div>
+                <br />
+                <div class="input-group col-md-4 col-xs-4 center">
+                    <input id="_vlsetSanitary" type="text" class="form-control">
+                </div>
+            </div>
+            <div align="center">
+                <button id="_vlsaveRegister" onclick="_vlsaveRegister($(this))" class="btn btn-default"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                <button id="_vladdRegister" onclick="_vlsaveRegister($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-plus"></span>Agregar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+@*Modal Fracción Cofepris Agregar/Editar*@
+<div class="modal fade _modalFraction" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Fracción Cofepris</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_fproductName" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_fpharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_fcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/cofepris.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div align="center">
+                    <span id="_messageFraction" style="font-size:18px;"></span>
+                </div>
+                <br />
+                <div class="input-group col-md-4 col-xs-4 center">
+                    <input id="_setFraction" type="text" class="form-control">
+                </div>
+            </div>
+            <div align="center">
+                <button id="_addFraction" onclick="_saveFraction($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-plus"></span>Agregar</button>
+                <button id="_saveFraction" onclick="_saveFraction($(this))" class="btn btn-default"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            <br />
         </div>
     </div>
 </div>
