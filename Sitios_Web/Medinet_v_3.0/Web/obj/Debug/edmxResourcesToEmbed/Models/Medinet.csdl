@@ -338,15 +338,6 @@
     </AssociationSet>
     <EntitySet Name="PharmacologicalGroups" EntityType="Model1.PharmacologicalGroups" />
     <EntitySet Name="OtherElements" EntityType="Model1.OtherElements" />
-    <EntitySet Name="IPPAProductContraindications" EntityType="Model1.IPPAProductContraindications" />
-    <AssociationSet Name="R_481" Association="Model1.R_481">
-      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
-      <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
-    </AssociationSet>
-    <AssociationSet Name="R_480" Association="Model1.R_480">
-      <End Role="ProductCategories" EntitySet="ProductCategories" />
-      <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
-    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -601,7 +592,6 @@
     <NavigationProperty Name="EditionProductShots" Relationship="Model1.EditionProductShots_ProductCategories_Fk" FromRole="ProductCategories" ToRole="EditionProductShots" />
     <NavigationProperty Name="Editions" Relationship="Model1.NewProducts" FromRole="ProductCategories" ToRole="Editions" />
     <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.R_402" FromRole="ProductCategories" ToRole="IPPAProductInteractions" />
-    <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.R_480" FromRole="ProductCategories" ToRole="IPPAProductContraindications" />
   </EntityType>
   <Association Name="FK_ParticipantProducts_ProductCategories">
     <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
@@ -1743,7 +1733,6 @@
     <NavigationProperty Name="ProductInteractions" Relationship="Model1.ProductInteractionsSubstances_FK" FromRole="ActiveSubstances" ToRole="ProductInteractions" />
     <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.R_403" FromRole="ActiveSubstances" ToRole="IPPAProductInteractions" />
     <NavigationProperty Name="ProductInteractions1" Relationship="Model1.SubstanceInteraction_FK" FromRole="ActiveSubstances" ToRole="ProductInteractions" />
-    <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.R_481" FromRole="ActiveSubstances" ToRole="IPPAProductContraindications" />
   </EntityType>
   <Association Name="R_274">
     <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -1978,51 +1967,4 @@
     <Property Name="ElementName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
   </EntityType>
-  <EntityType Name="IPPAProductContraindications">
-    <Key>
-      <PropertyRef Name="DivisionId" />
-      <PropertyRef Name="CategoryId" />
-      <PropertyRef Name="PharmaFormId" />
-      <PropertyRef Name="ProductId" />
-      <PropertyRef Name="ActiveSubstanceId" />
-    </Key>
-    <Property Name="DivisionId" Type="Int32" Nullable="false" />
-    <Property Name="CategoryId" Type="Int32" Nullable="false" />
-    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
-    <Property Name="ProductId" Type="Int32" Nullable="false" />
-    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
-    <Property Name="StatusId" Type="Byte" />
-    <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_481" FromRole="IPPAProductContraindications" ToRole="ActiveSubstances" />
-    <NavigationProperty Name="ProductCategories" Relationship="Model1.R_480" FromRole="IPPAProductContraindications" ToRole="ProductCategories" />
-  </EntityType>
-  <Association Name="R_481">
-    <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
-    <End Type="Model1.IPPAProductContraindications" Role="IPPAProductContraindications" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ActiveSubstances">
-        <PropertyRef Name="ActiveSubstanceId" />
-      </Principal>
-      <Dependent Role="IPPAProductContraindications">
-        <PropertyRef Name="ActiveSubstanceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="R_480">
-    <End Type="Model1.ProductCategories" Role="ProductCategories" Multiplicity="1" />
-    <End Type="Model1.IPPAProductContraindications" Role="IPPAProductContraindications" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ProductCategories">
-        <PropertyRef Name="DivisionId" />
-        <PropertyRef Name="CategoryId" />
-        <PropertyRef Name="PharmaFormId" />
-        <PropertyRef Name="ProductId" />
-      </Principal>
-      <Dependent Role="IPPAProductContraindications">
-        <PropertyRef Name="DivisionId" />
-        <PropertyRef Name="CategoryId" />
-        <PropertyRef Name="PharmaFormId" />
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

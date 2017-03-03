@@ -140,8 +140,7 @@
         var _editionid = $("#_editionId").val();
         var _UserID = $("#_iduser").val();
         var _HasKey = $("#_haskey").val();
-        alert(_divisionid);
-        alert(_editionid);
+
         if (tr.find("#_new").is(":checked")) {
             tr.find("#_changes").prop("checked", false);
             tr.find("#_btnChanges").addClass("hide");
@@ -245,6 +244,10 @@
         var _rlpharmaFormid = _positionSanitary.find("#_pharmaFormId").val();
         var _rlcategoryId = _positionSanitary.find("#_categoryId").val();
         var _rldivisionId = _positionSanitary.find("#_divisionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+        alert(_UserID);
+        alert(_HasKey);
         if (_vlgetsanitary.trim() == false) {
             _positionSanitary.find("#_plusRegister").removeClass("hide");
             _positionSanitary.find("#_pencilRegister").addClass("hide");
@@ -263,7 +266,9 @@
                 PharmaFormId: _rlpharmaFormid,
                 Categoryid: _rlcategoryId,
                 DivisionId: _rldivisionId,
-                SanitaryRegister: _vlgetsanitary
+                SanitaryRegister: _vlgetsanitary,
+                UserId: _UserID,
+                HashKey: _HasKey
             },
             success: function (data) {
                 swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
@@ -330,6 +335,8 @@
         var _flpharmaFormid = _positionFraction.find("#_pharmaFormId").val();
         var _flcategoryId = _positionFraction.find("#_categoryId").val();
         var _fldivisionId = _positionFraction.find("#_divisionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
 
         if (_vlgetFraction.trim() == false) {
             _positionFraction.find("#_plusFraction").removeClass("hide");
@@ -349,7 +356,9 @@
                 PharmaFormId: _flpharmaFormid,
                 Categoryid: _flcategoryId,
                 DivisionId: _fldivisionId,
-                Fraction: _vlgetFraction
+                Fraction: _vlgetFraction,
+                UserId: _UserID,
+                HashKey: _HasKey
             },
             success: function (data) {
                 swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });

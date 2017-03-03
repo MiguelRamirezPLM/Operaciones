@@ -21,8 +21,17 @@ namespace Web.Controllers.Production
         //
         // GET: /Production1/
 
-        private DataTable table = new DataTable();
         Medinet db = new Medinet();
+        CRUD CRUD = new CRUD();
+        Inserts Inserts = new Inserts();
+        getData _data = new getData();
+        PLMUsers plm = new PLMUsers();
+        PLMUserActions Action = new PLMUserActions();
+        PLMUserTables Tables = new PLMUserTables();
+        private DataTable table = new DataTable();
+        private DataTable table2 = new DataTable();
+        private DataTable ParticipantPro = new DataTable();
+
         public ActionResult Index()
         {
             CountriesUsers _counTries = (CountriesUsers)Session["CountriesUsers"];
@@ -80,8 +89,13 @@ namespace Web.Controllers.Production
            
         }
 
-        public JsonResult saveSanitary(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string SanitaryRegister)
+        public JsonResult saveSanitary(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string SanitaryRegister, int UserId, string HashKey)
         {
+            string primaryKeyAffected = "(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")"; ;
+            string FieldsAffected = "(SanitaryRegister," + SanitaryRegister.Trim() + ")";
+
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
             var _productCategories = (from _pc in db.ProductCategories
                                       where _pc.ProductId == ProductId
                                       && _pc.PharmaFormId == PharmaFormId
@@ -94,18 +108,24 @@ namespace Web.Controllers.Production
                 {
                     _row.SanitaryRegister = null;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
                 else
                 {
                     _row.SanitaryRegister = SanitaryRegister;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction)
+        public JsonResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction, int UserId, string HashKey)
         {
+            string FieldsAffected = "(SSFraction," + Fraction.Trim() + ")";
+            string primaryKeyAffected = "(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")"; ;
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
             var _productCategories = (from _pc in db.ProductCategories
                                       where _pc.ProductId == ProductId
                                       && _pc.PharmaFormId == PharmaFormId
@@ -118,11 +138,13 @@ namespace Web.Controllers.Production
                 {
                     _row.SSFraction = null;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
                 else
                 {
                     _row.SSFraction = Fraction;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
