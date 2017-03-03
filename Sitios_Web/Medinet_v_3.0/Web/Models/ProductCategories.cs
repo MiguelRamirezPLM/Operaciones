@@ -21,6 +21,7 @@ namespace Web.Models
             this.EditionProductShots = new HashSet<EditionProductShots>();
             this.Editions = new HashSet<Editions>();
             this.IPPAProductInteractions = new HashSet<IPPAProductInteractions>();
+            this.IPPAProductContraindications = new HashSet<IPPAProductContraindications>();
         }
     
         public int DivisionId { get; set; }
@@ -43,5 +44,6 @@ namespace Web.Models
         public virtual ICollection<EditionProductShots> EditionProductShots { get; set; }
         public virtual ICollection<Editions> Editions { get; set; }
         public virtual ICollection<IPPAProductInteractions> IPPAProductInteractions { get; set; }
+        public virtual ICollection<IPPAProductContraindications> IPPAProductContraindications { get; set; }
     }
 }

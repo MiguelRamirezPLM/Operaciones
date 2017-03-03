@@ -177,7 +177,7 @@ namespace Web.Models.Class
             }
         }
 
-        public string IPPAProductInteractions(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId, string Operation)
+        public String IPPAProductInteractions(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId, string Operation)
         {
             try
             {
@@ -197,7 +197,7 @@ namespace Web.Models.Class
             return "";
         }
 
-        public string CheckProductInteraction(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId)
+        public String CheckProductInteraction(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId)
         {
             try
             {
@@ -279,7 +279,7 @@ namespace Web.Models.Class
             }
         }
 
-        public string CheckProductContraindication(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId)
+        public String CheckProductContraindication(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId)
         {
             try
             {
@@ -293,7 +293,7 @@ namespace Web.Models.Class
             return "";
         }
 
-        public string SavePhysContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
+        public String SavePhysContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
         {
             if (OperationId == CRUD.Create)
             {
@@ -307,7 +307,7 @@ namespace Web.Models.Class
             return "Ok";
         }
 
-        public string SavePharmaContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
+        public String SavePharmaContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
         {
             if (OperationId == CRUD.Create)
             {
@@ -321,7 +321,7 @@ namespace Web.Models.Class
             return "Ok";
         }
 
-        public string SaveHyperContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
+        public String SaveHyperContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int PhysContraindicationId, int ActiveSubstanceId, int OperationId)
         {
             if (OperationId == CRUD.Create)
             {
@@ -339,43 +339,59 @@ namespace Web.Models.Class
         {
             if (Operation == CRUD.Create)
             {
-                try
-                {
-                    List<GetProductPharmaGroupInteractions> LS = db.Database.SqlQuery<GetProductPharmaGroupInteractions>("plm_spCRUDProductPharmaGroupContraindications @pharmaGroupId=" + PharmaGroupId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@CRUDType =" + CRUD.Read + "").ToList();
-
-                    if (LS.LongCount() == 0)
-                    {
-                        var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductPharmaGroupContraindications @pharmaGroupId=" + PharmaGroupId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
-
-                        return "Ok";
-                    }
-                    else
-                    {
-                        var AS = db.PharmacologicalGroups.Where(x => x.PharmaGroupId == PharmaGroupId).Select(x => x.GroupName).ToList();
-
-                        string ActiveSubstance = AS[0];
-
-                        return ActiveSubstance;
-                    }
-                }
-                catch (Exception e)
-                {
-
-                }
-
-                return "Ok";
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductPharmaGroupContraindications @pharmaGroupId=" + PharmaGroupId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
             }
             else
             {
-                List<GetProductPharmaGroupInteractions> LS = db.Database.SqlQuery<GetProductPharmaGroupInteractions>("plm_spCRUDProductPharmaGroupContraindications @pharmaGroupId=" + PharmaGroupId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Read + "").ToList();
-
-                if (LS.LongCount() > 0)
-                {
-                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductPharmaGroupContraindications @pharmaGroupId=" + PharmaGroupId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Delete + "");
-                }
-
-                return "Ok";
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductPharmaGroupContraindications @pharmaGroupId=" + PharmaGroupId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Delete + "");
             }
+            return "Ok";
+        }
+
+        public String SaveProductSubstanceContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int SubstanceInteractId, int ActiveSubstanceId, int Operation)
+        {
+            if (Operation == CRUD.Create)
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductSubstanceContraindications @subsContraindicationId=" + SubstanceInteractId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
+            }
+            else
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductSubstanceContraindications @subsContraindicationId=" + SubstanceInteractId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Delete + "");
+            }
+            return "Ok";
+        }
+
+        public String IPPAProductContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId, string Operation)
+        {
+            try
+            {
+                List<IPPAProductContraindications> LS = db.Database.SqlQuery<IPPAProductContraindications>("plm_spCRUDIppaProductContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@substanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Read + "").ToList();
+
+                if (LS.LongCount() == 0)
+                {
+                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDIppaProductContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@substanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return "";
+        }
+
+        public String SaveProductOtherContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ElementId, int ActiveSubstanceId, int Operation)
+        {
+            if (Operation == CRUD.Create)
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductOtherContraindications @elementId=" + ElementId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
+            }
+            else
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductOtherContraindications @elementId=" + ElementId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Delete + "");
+            }
+            return "Ok";
         }
     }
 }
