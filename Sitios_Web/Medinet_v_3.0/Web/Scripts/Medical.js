@@ -2438,8 +2438,7 @@ function CheckPhysiologicalContraindications(item) {
             else if (data.Data == false) {
                 setTimeout("document.location.reload()");
             }
-            else if (data.Data == "_notdata")
-            {
+            else if (data.Data == "_notdata") {
                 var d = "";
                 d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
                 d += "<label> El registro seleccionado ya ha sido asociado a la(s) sustancia(s) del Producto.</label> <br/>"
@@ -3533,4 +3532,31 @@ function DeleteOtherElementsContraindications(item) {
             setTimeout("document.location.reload()");
         }
     })
+}
+
+function GetIdOfElement(item) {
+
+    var Id = $(item).attr("Id");
+
+    sessionStorage.Contraindications = Id;
+
+}
+
+function loadContraindications() {
+
+    var Id = sessionStorage.Contraindications;
+
+    if ((Id != null) && (Id != undefined)) {
+
+        Id = Id.replace("cnt_", "");
+
+        var elem = document.getElementById(Id);
+
+        $(elem).addClass("in");
+    }
+    else {
+        var elem = document.getElementById("collapse1");
+
+        $(elem).addClass("in");
+    }
 }
