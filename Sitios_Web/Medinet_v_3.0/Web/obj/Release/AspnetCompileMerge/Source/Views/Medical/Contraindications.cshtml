@@ -1,0 +1,1028 @@
+﻿@using Web.Models;
+@{
+    ViewBag.Title = "Contraindications";
+    Web.Models.Class.GetContraindications Count = Model;
+    Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
+    Medinet db = new Medinet();
+    getData getData = new Web.Models.getData();
+    List<Web.Models.Class.GetRowsPerPage> Rows = getData.GetRowsPerPageContraindications(Model);
+
+    WebGrid _datagridAS = new WebGrid(Count.GetActiveSubstances, rowsPerPage: Convert.ToInt32(Rows[0].Pager));
+    WebGrid _datagridCM = new WebGrid(Count.GetICDByProductPharmaform, rowsPerPage: 25);
+    WebGrid _datagridPG = new WebGrid(Count.GetPharmacologicalGroupsWithoutInteraction, rowsPerPage: Convert.ToInt32(Rows[0].PagerPG));
+    WebGrid _datagridOE = new WebGrid(Count.GetOtherElemensWithoutInteractions, rowsPerPage: Convert.ToInt32(Rows[0].PagerOE));
+    
+    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS, BookId;
+
+    if (_Session != null)
+    {
+        CountryId = _Session.CountryId;
+        DivisionId = _Session.DivisionId;
+        ProductId = Convert.ToInt32(_Session.ProductId);
+        PharmaFormId = Convert.ToInt32(_Session.PharmaFormId);
+        CategoryId = Convert.ToInt32(_Session.CategoryId);
+        EditionIdS = Convert.ToInt32(_Session.EditionId);
+        BookId = Convert.ToInt32(_Session.BookId);
+    }
+    else
+    {
+        CountryId = 0;
+        DivisionId = 0;
+        ProductId = 0;
+        PharmaFormId = 0;
+        CategoryId = 0;
+        EditionIdS = 0;
+        BookId = 0;
+    }
+}
+<script>
+    var html = $.parseHTML("@Count.HTMLContraindications.Trim()");
+
+    $(function () {
+        $("#divhtml").append(html[0].textContent);
+    })
+</script>
+
+<script>
+    $(function () {
+        LoadAccordionId();
+    })
+</script>
+
+
+<div class="row">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Médicos</strong> | Laboratorios y productos</div>
+        </div>
+    </div>
+    <br />
+    <nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default">
+        <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                            Productos
+                            <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contraindicaciones<span style="margin-left:5px;" class="glyphicon glyphicon-chevron-right"></span></a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand ldr" title="Anterior" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                            <span class="glyphicon glyphicon-home"></span>
+                            <span>&nbsp; Regresar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+        <div class="message-item" id="m16">
+            <div class="message-inner">
+                <div class="avatar pull-left"></div>
+                <div class="user-detail">
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">País: <span style="color: #de5145">@c[0].CountryName</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@d[0].Description</span></span>
+                                        <input type="text" value="@d[0].DivisionId" id="DivisionId" style="display:none"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var p = db.Products.Where(x => x.ProductId == ProductId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Producto: <span style="color: #de5145; ">@p[0].Brand</span></span>
+                                        <input type="text" class="form-control" value="@p[0].ProductId" id="ProductId" style="display:none" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var pf = db.PharmaceuticalForms.Where(x => x.PharmaFormId == PharmaFormId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Forma Farmacéutica: <span style="color: #de5145; ">@pf[0].Description</span></span>
+                                        <input type="text" class="form-control" value="@pf[0].PharmaFormId" id="PharmaFormId" style="display:none" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        @{
+                                            var ct = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
+                                        }
+                                        <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Categoría: <span style="color: #de5145; ">@ct[0].Description</span></span>
+                                        <input type="text" value="@ct[0].CategoryId" id="CategoryId" style="display:none"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<ul class="nav nav-tabs">
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Sustancias Activas</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("ATCEphMRA", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC EphMRA</a></li>
+    <li class="active ldr"><a href="#" onclick="location.href='@Url.Action("Contraindications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Contraindicaciones</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("CIE", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">CIE-10</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("ATCOMS", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC OMS</a></li>
+    <li class="ldr"><a href="#">Vías de Administración</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Interactions", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Interacciones Medicamentosas</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Indications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Indicaciones</a></li>
+</ul>
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-3">
+        <table style="width:100%" class="table-hover">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>Sustancias del Producto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (Web.Models.Class.GetActiveSubstancesWithoutInteractions item in Count.GetActiveSubstancesWithoutInteractions)
+                    {
+                        <tr>
+                            <td class="SubstanceInteract">
+                                <span>@item.Description</span>
+                                <input type="text" value="@item.ActiveSubstanceId" id="inpActiveSubstanceId" style="display:none" />
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-7">
+        <div id="divhtml" class="form-control scrollbar1" style="width:100%; height:250px; text-align:justify;"></div><br />
+        <button class="btn btn-danger btn-sm pull-right">
+            <span class="glyphicon glyphicon-ban-circle"></span>
+            <span>&nbsp; No reporta Contraindicaciones</span>
+        </button>
+    </div>
+    <div class="col-lg-2" style="vertical-align:middle">
+        <button class="btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-print"></span>
+            <span>&nbsp; Imprimir</span>
+        </button>
+    </div>
+</div>
+<br />
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" id="cnt_collapse1" onclick="GetAccordionId($(this))" href="#collapse1">
+                    Contraindicaciones Médicas
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <br />
+                        <div style="text-align:center">
+                            <button class="btn btn-success">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                <span>&nbsp; Asociar</span>
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="scrollbar1">
+
+                            @{
+                                <ul style="list-style: none; font-family: Arial;font-size:12px">
+                                    @{
+                                        foreach (Web.Models.Class.GetICDs item in Count.GetICDs)
+                                        {
+                                            <li>
+                                                <span class="glyphicon glyphicon-plus" id="Expand_@item.ICDId" onclick="GetLevelTwoCICD(@item.ICDId)" style="cursor:pointer"></span>
+                                                <span class="glyphicon glyphicon-minus" style="display:none" id="Collapse_@item.ICDId" onclick="collapselevel2(@item.ICDId)"></span>
+                                                <input type="checkbox" value="@item.ICDId" onclick="CheckCIE10Contraindications($(this))" />
+                                                <label style="font-weight: bold; color: #065977; margin-bottom: 5px"><b>@item.ICDKey</b></label> - <span style="font-weight:100">@item.SpanishDescription</span>
+                                                <ul id="ListL2_@item.ICDId" style="list-style: none;margin-left:30px"></ul>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            }
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        @{
+                                @_datagridCM.GetHtml(
+                                headerStyle: "webgrid-header",
+                                footerStyle: "webgrid-footer",
+                                alternatingRowStyle: "webgrid-alternating-row",
+                                selectedRowStyle: "webgrid-selected-row",
+                                rowStyle: "webgrid-row-style",
+                                tableStyle: "webgrid-table1",
+                                mode: WebGridPagerModes.All,
+                                columns: new[] {
+                                _datagridCM.Column("", header: "Nombre de Sustancia", format: @<text>
+                                        @{
+                                            <span id="spnDescription">@item.SpanishDescription</span>
+                                            
+                                        }
+                                </text>),
+                                _datagridCM.Column("", header: "Referencia", format: @<text>
+                                        @{
+                                            <span id="spnDescription">@item.ParentICDKey</span>
+                                        }
+                                </text>),
+                                _datagridCM.Column("", header: "ICDKey", format: @<text>
+                                        @{
+                                            <span id="spnDescription">@item.ICDKey</span>
+                                        }
+                                </text>),
+                                _datagridCM.Column("", header: "Contraindicación", format: @<text>
+                                        @{
+                                            <span id="spnDescription">@item.SpanishDescription</span>
+                                            <input id="lblActiveSubstanceId" style="display:none;" value="@item.ICDId" />
+                                        }
+                                </text>),
+                            _datagridCM.Column("", header: "Quitar", format: @<text>
+                                        @{
+                                            <button class="btn btn-danger btn-sm">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        }
+                            </text>, style:"column5 text-center")
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" id="cnt_collapse2" onclick="GetAccordionId($(this))">
+                    Contraindicaciones Fisiológicas
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="scrollbar1">
+                            <table style="width:100%; font-size:12px">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:90%">Nombre de la Contraindicación</th>
+                                        <th style="width:10%" class="text-center">Agregar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Web.Models.Class.GetPhysiologicalContraindications item in Count.GetPhysiologicalContraindications)
+                                        {
+                                            <tr>
+                                                <td style="width:90%">
+                                                    <span id="spnPhysContraindicationName">@item.PhysContraindicationName</span>
+                                                </td>
+                                                <td style="width:10%" class="text-center">
+                                                    <button class="btn btn-success btn-sm" value="@item.PhysContraindicationId" onclick="CheckPhysiologicalContraindications($(this))">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <table style="width:100%; font-size:12px">
+                            <thead class="webgrid-header">
+                                <tr>
+                                    <th style="width:45%">Sustancia del Producto</th>
+                                    <th style="width:45%">Contraindicación</th>
+                                    <th style="width:10%" class="text-center">Borrar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (Web.Models.Class.GetProductPhysContraindications item in Count.GetProductPhysContraindications)
+                                    {
+                                        <tr>
+                                            <td style="width:45%">
+                                                <span>@item.ActiveSubstance</span>
+                                                <input type="text" value="@item.ActiveSubstanceId" id="PCActiveSubstanceId" style="display:none" />
+                                            </td>
+                                            <td style="width:45%">
+                                                <span>@item.PhysContraindicationName</span>
+                                                <input type="text" value="@item.PhysContraindicationId" id="PCPhysContraindicationId" style="display:none" />
+                                            </td>
+                                            <td style="width:10%" class="text-center">
+                                                <button class="btn btn-danger btn-sm" onclick="DeletePhysiologicalContraindications($(this))">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" id="cnt_collapse3" onclick="GetAccordionId($(this))">
+                    Contraindicaciones Farmacológicas
+                </a>
+            </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="scrollbar1">
+                            <table style="width:100%; font-size:12px">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:90%">Nombre de la Contraindicación</th>
+                                        <th style="width:10%" class="text-center">Agregar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Web.Models.Class.GetPharmaContraindications item in Count.GetPharmaContraindications)
+                                        {
+                                            <tr>
+                                                <td style="width:90%">
+                                                    <span id="spnPharmaContraindicationName">@item.PharmaContraindicationName</span>
+                                                </td>
+                                                <td style="width:10%" class="text-center">
+                                                    <button class="btn btn-success btn-sm" value="@item.PharmaContraindicationId" onclick="CheckPharmacologicalContraindications($(this))">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="scrollbar1">
+                            <table style="width:100%; font-size:12px">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:45%">Sustancia del Producto</th>
+                                        <th style="width:45%">Contraindicación</th>
+                                        <th style="width:10%" class="text-center">Quitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Web.Models.Class.ProductPharmaContraindications item in Count.GetProductPharmaContraindications)
+                                        {
+                                            <tr>
+                                                <td style="width:45%">
+                                                    <span>@item.ActiveSubstance</span>
+                                                    <input type="text" value="@item.ActiveSubstanceId" id="PharmaCActiveSubstanceId" style="display:none" />
+                                                </td>
+                                                <td style="width:45%">
+                                                    <span>@item.PharmaContraindicationName</span>
+                                                    <input type="text" value="@item.PharmaContraindicationId" id="PharmaCPharmaContraindicationId" style="display:none" />
+                                                </td>
+                                                <td style="width:10%" class="text-center">
+                                                    <button class="btn btn-danger btn-sm" onclick="DeletePharmacologicalContraindications($(this))">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" id="cnt_collapse4" onclick="GetAccordionId($(this))">
+                    Contraindicaciones por Hipersensibilidad
+                </a>
+            </h4>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div>
+                            <table>
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:90%">Nombre de la Contraindicación</th>
+                                        <th style="width:10%" class="text-center">Agregar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Web.Models.Class.GetHypersensibilities item in Count.GetHypersensibilities)
+                                        {
+                                            <tr>
+                                                <td style="width:90%">@item.HypersensibilityName</td>
+                                                <td style="width:10%" class="text-center">
+                                                    <button class="btn btn-success btn-sm" value="@item.HypersensibilityId" onclick="CheckHyperContraindications($(this))">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div>
+                            <table style="width:100%; font-size:12px">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:45%">Nombre de la Sustancia</th>
+                                        <th style="width:45%">Nombre de la Contraindicación</th>
+                                        <th style="width:10%" class="text-center">Quitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Web.Models.Class.GetProductHypersensibilities item in Count.GetProductHypersensibilities)
+                                        {
+                                            <tr>
+                                                <td style="width:45%">
+                                                    <span>@item.ActiveSubstance</span>
+                                                    <input type="text" value="@item.ActiveSubstanceId" id="HyperActiveSubstanceId" style="display:none" />
+                                                </td>
+                                                <td style="width:45%">
+                                                    <span>@item.HypersensibilityName</span>
+                                                    <input type="text" value="@item.HypersensibilityId" id="HyperHypersensibilityId" style="display:none" />
+                                                </td>
+                                                <td style="width:10%" class="text-center">
+                                                    <button class="btn btn-danger btn-sm" onclick="DeleteHyperContraindications($(this))">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse5" id="cnt_collapse5" onclick="GetAccordionId($(this))">
+                    Contraindicaciones por Grupos Farmacológicos
+                </a>
+            </h4>
+        </div>
+        <div id="collapse5" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <select class="form-control" style="color:red" onchange="GetRowsPerPageInteractions()" id="RowsPerPageActiveSubstances">
+                                    <option value="0" id="IdAS_0">Seleccione...</option>
+                                    <option value="10" id="IdAS_10">10</option>
+                                    <option value="20" id="IdAS_20">20</option>
+                                    <option value="50" id="IdAS_50">50</option>
+                                    <option value="100" id="IdAS_100">100</option>
+                                    <option value="1000" id="IdAS_1000">1000</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-9">
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                }
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            @_datagridPG.GetHtml(
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        tableStyle: "webgrid-table1",
+                        mode: WebGridPagerModes.All,
+                                 htmlAttributes: new { id = "GridDiv" },
+                        columns: new[] {
+                        _datagridPG.Column("", header: "Nombre de Sustancia", format: @<text>
+                                @{
+    <span id="lblGroupName">@item.GroupName</span>
+    <input id="lblPharmaGroupId" style="display:none;" value="@item.PharmaGroupId" />
+}
+                        </text>),
+                        _datagridPG.Column("", header: "Agregar", format: @<text>
+                                @{
+                                    <button class="btn btn-success btn-sm" onclick="CheckPharmacologicalGroupsContraindications($(this))">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                }
+                    </text>, style:"column5 text-center")
+                    })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <table style="width:100%; font-size:12px">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:45%">Nombre de la Sustancia</th>
+                                        <th style="width:45%">Nombre de la Contraindicación</th>
+                                        <th style="width:10%" class="text-center">Quitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Web.Models.Class.GetProductPharmaGroupInteractions item in Count.GetProductPharmaGroupInteractions)
+                                        {
+                                            <tr>
+                                                <td style="width:45%">
+                                                    <span>@item.ActiveSubstance</span>
+                                                    <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdPGCNT" style="display:none" />
+                                                </td>
+                                                <td style="width:45%">
+                                                    <span>@item.GroupName</span>
+                                                    <input type="text" value="@item.PharmaGroupId" id="lblPharmaGroupIdPGCNT" style="display:none" />
+                                                </td>
+                                                <td style="width:10%" class="text-center">
+                                                    <button class="btn btn-danger btn-sm" onclick="DeletePharmaGroupContraindications($(this))">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse6" id="cnt_collapse6" onclick="GetAccordionId($(this))">
+                    Contraindicaciones por Sustancias Activas
+                </a>
+            </h4>
+        </div>
+        <div id="collapse6" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <select class="form-control" style="color:red" onchange="GetRowsPerPageInteractions()" id="RowsPerPageActiveSubstances">
+                                    <option value="0" id="IdAS_0">Seleccione...</option>
+                                    <option value="10" id="IdAS_10">10</option>
+                                    <option value="20" id="IdAS_20">20</option>
+                                    <option value="50" id="IdAS_50">50</option>
+                                    <option value="100" id="IdAS_100">100</option>
+                                    <option value="1000" id="IdAS_1000">1000</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-9">
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                }
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            @_datagridAS.GetHtml(
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        tableStyle: "webgrid-table1",
+                        mode: WebGridPagerModes.All,
+                                 htmlAttributes: new { id = "GridDiv" },
+                        columns: new[] {
+                        _datagridAS.Column("", header: "Nombre de Sustancia", format: @<text>
+                                @{
+                                    <span id="spnDescriptionASCNT">@item.Description</span>
+                                    <input id="lblActiveSubstanceIdCNT" style="display:none;" value="@item.ActiveSubstanceId" />
+                                }
+                        </text>),
+                    _datagridAS.Column("", header: "Agregar", format: @<text>
+                                @{
+                                    @*<button class="btn btn-success btn-sm" value="@item.ActiveSubstanceId" onclick="AddProductSubstanceInteractions($(this).val())">*@
+                                    <button class="btn btn-success btn-sm" value="@item.ActiveSubstanceId" onclick="CheckActiveSubstancesContraindications($(this))">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                }
+                    </text>, style:"column5 text-center")
+                    })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <table style="width:100%; font-size:12px">
+                            <thead class="webgrid-header">
+                                <tr>
+                                    <th style="width:45%">Nombre de la Sustancia</th>
+                                    <th style="width:45%">Nombre de la Contraindicación</th>
+                                    <th style="width:10%" class="text-center">Quitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (Web.Models.Class.GetProductSubstanceContraindications item in Count.GetProductSubstanceContraindications)
+                                    {
+                                        <tr>
+                                            <td style="width:45%">
+                                                <span>@item.ActiveSubstance</span>
+                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdASCNT" style="display:none"/>
+                                            </td>
+                                            <td style="width:45%">
+                                                <span>@item.SubstanceContraindication</span>
+                                                <input type="text" value="@item.SubsContraindicationId" id="lblSubsContraindicationIdASCNT" style="display:none"/>
+                                            </td>
+                                            <td style="width:10%" class="text-center">
+                                                <button class="btn btn-danger btn-sm" onclick="DeleteActiveSubstancesContraindications($(this))">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse7" id="cnt_collapse7" onclick="GetAccordionId($(this))">
+                    Contraindicaciones por Otros Elementos
+                </a>
+            </h4>
+        </div>
+        <div id="collapse7" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <select class="form-control" style="color:red" onchange="GetRowsPerPageInteractions()" id="RowsPerPageOtherElements">
+                                    <option value="0" id="IdOE_0">Seleccione...</option>
+                                    <option value="10" id="IdOE_10">10</option>
+                                    <option value="20" id="IdOE_20">20</option>
+                                    <option value="50" id="IdOE_50">50</option>
+                                    <option value="100" id="IdOE_100">100</option>
+                                    <option value="1" id="IdOE_1">Ilimitado</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-9">
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.TextBox("ElementName", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                }
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            @_datagridOE.GetHtml(
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        tableStyle: "webgrid-table1",
+                        mode: WebGridPagerModes.All,
+                        columns: new[] {
+                        _datagridOE.Column("", header: "Nombre del Elemento", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblElementName">@item.ElementName</label> </span>
+                                    <input id="lblElementId" style="display:none;" value="@item.ElementId" />
+                                }
+                        </text>),
+                        _datagridOE.Column("", header: "Agregar", format: @<text>
+                                @{
+                                    <button class="btn btn-success btn-sm" onclick="CheckOtherElementsContraindications($(this))">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                }
+                        </text>, style:"column5 text-center")
+                    })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <table style="width:100%; font-size:12px">
+                            <thead class="webgrid-header">
+                                <tr>
+                                    <th style="width:45%">Nombre de la Sustancia</th>
+                                    <th style="width:45%">Nombre de la Contraindicación</th>
+                                    <th style="width:10%" class="text-center">Quitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (Web.Models.Class.GetProductotherInteractions item in Count.GetProductOtherInteractions)
+                                    {
+                                        <tr>
+                                            <td style="width:45%">
+                                                <span>@item.ActiveSubstance</span>
+                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdOECNT" style="display:none"/>
+                                            </td>
+                                            <td style="width:45%">
+                                                <span>@item.ElementName</span>
+                                                <input type="text" value="@item.ElementId" id="lblElementIdOECNT" style="display:none"/>
+                                            </td>
+                                            <td style="width:10%" class="text-center">
+                                                <button class="btn btn-danger btn-sm" onclick="DeleteOtherElementsContraindications($(this))">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse8" id="cnt_collapse8" onclick="GetAccordionId($(this))">
+                    Contraindicaciones por Comentarios
+                </a>
+            </h4>
+        </div>
+        <div id="collapse8" class="panel-collapse collapse">
+            <div class="panel-body">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                commodo consequat.
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnCIECNT" data-toggle="modal" data-target="#CIECNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="CIECNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderCIECNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivCIECNT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="SaveCIE10Contraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelAddAOENT()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnPCCNT" data-toggle="modal" data-target="#PCCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="PCCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderPCCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivPCCNT"></div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="SavePhysiologicalContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelPhysiologicalContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnPharCCNT" data-toggle="modal" data-target="#PharCCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="PharCCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderPharCCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivPharCCNT"></div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="SavePharmacologicalContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelPharmacologicalContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnHyperCNT" data-toggle="modal" data-target="#HyperCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" data-backdrop="false" id="HyperCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderHyperCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivHyperCNT"></div>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="SaveHyperContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelHyperContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnPGINT" data-toggle="modal" data-target="#PGINT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" id="PGINT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderPGINT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivPGINT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="AddPharmaGroupContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelAddAPGNT()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnASCNT" data-toggle="modal" data-target="#ASCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" id="ASCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderASCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivASCNT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="SaveActiveSubstancesContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelActiveSubstancesContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnOECNT" data-toggle="modal" data-target="#OECNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<div class="modal fade" id="OECNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderOECNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivOECNT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="SaveOtherElementsContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelOtherElementsContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

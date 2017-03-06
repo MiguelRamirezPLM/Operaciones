@@ -240,7 +240,7 @@
                                             <li>
                                                 <span class="glyphicon glyphicon-plus" id="Expand_@item.ICDId" onclick="GetLevelTwoCICD(@item.ICDId)" style="cursor:pointer"></span>
                                                 <span class="glyphicon glyphicon-minus" style="display:none" id="Collapse_@item.ICDId" onclick="collapselevel2(@item.ICDId)"></span>
-                                                <input type="checkbox" value="@item.ICDId" onclick="CheckCIE10Contraindications($(this))" />
+                                                @*<input type="checkbox" value="@item.ICDId" onclick="CheckCIE10Contraindications($(this))" />*@
                                                 <label style="font-weight: bold; color: #065977; margin-bottom: 5px"><b>@item.ICDKey</b></label> - <span style="font-weight:100">@item.SpanishDescription</span>
                                                 <ul id="ListL2_@item.ICDId" style="list-style: none;margin-left:30px"></ul>
                                             </li>
@@ -850,16 +850,55 @@
         </div>
         <div id="collapse8" class="panel-collapse collapse">
             <div class="panel-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat.
+                <div class="row">
+                    <div class="col-lg-6">
+                        <textarea placeholder="Agregar un comentario" class="form-control"></textarea><br />
+                        <button class="btn btn-sm btn-primary">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span>&nbsp; Guardar</span>
+                        </button>
+                    </div>
+                    <div class="col-lg-6">
+
+                        <table style="width:100%; font-size:12px">
+                            <thead class="webgrid-header">
+                                <tr>
+                                    <th style="width:45%">Nombre de la Sustancia</th>
+                                    <th style="width:45%">Contraindicación</th>
+                                    <th style="width:10%" class="text-center">Quitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (Web.Models.Class.GetProductCommentContraindications item in Count.GetProductCommentContraindications)
+                                    {
+                                        <tr>
+                                            <td style="width:45%">
+                                                <span>@item.ActiveSubstance</span>
+                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdOECNT" style="display:none" />
+                                            </td>
+                                            <td style="width:45%">
+                                                <span>@item.Comments</span>
+                                                <input type="text" value="@item.ProductCommentId" id="lblElementIdOECNT" style="display:none" />
+                                            </td>
+                                            <td style="width:10%" class="text-center">
+                                                <button class="btn btn-danger btn-sm">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<button id="btnCIECNT" data-toggle="modal" data-target="#CIECNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnCIECNT" data-toggle="modal" data-target="#CIECNT" style="display:none" class="btn btn-danger btn-sm">CIE-10</button>
 <div class="modal fade" data-backdrop="false" id="CIECNT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -883,7 +922,7 @@
     </div>
 </div>
 
-<button id="btnPCCNT" data-toggle="modal" data-target="#PCCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnPCCNT" data-toggle="modal" data-target="#PCCNT" style="display:none" class="btn btn-danger btn-sm">Physiological</button>
 <div class="modal fade" data-backdrop="false" id="PCCNT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -907,7 +946,7 @@
     </div>
 </div>
 
-<button id="btnPharCCNT" data-toggle="modal" data-target="#PharCCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnPharCCNT" data-toggle="modal" data-target="#PharCCNT" style="display:none" class="btn btn-danger btn-sm">Pharmacological</button>
 <div class="modal fade" data-backdrop="false" id="PharCCNT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -931,7 +970,7 @@
     </div>
 </div>
 
-<button id="btnHyperCNT" data-toggle="modal" data-target="#HyperCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnHyperCNT" data-toggle="modal" data-target="#HyperCNT" style="display:none" class="btn btn-danger btn-sm">Hipersensibility</button>
 <div class="modal fade" data-backdrop="false" id="HyperCNT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -955,7 +994,7 @@
     </div>
 </div>
 
-<button id="btnPGINT" data-toggle="modal" data-target="#PGINT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnPGINT" data-toggle="modal" data-target="#PGINT" style="display:none" class="btn btn-danger btn-sm">PharmacologicalGroups</button>
 <div class="modal fade" id="PGINT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -979,7 +1018,7 @@
     </div>
 </div>
 
-<button id="btnASCNT" data-toggle="modal" data-target="#ASCNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnASCNT" data-toggle="modal" data-target="#ASCNT" style="display:none" class="btn btn-danger btn-sm">ActiveSubstances</button>
 <div class="modal fade" id="ASCNT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1003,7 +1042,7 @@
     </div>
 </div>
 
-<button id="btnOECNT" data-toggle="modal" data-target="#OECNT" style="display:none" class="btn btn-danger btn-sm">Messages</button>
+<button id="btnOECNT" data-toggle="modal" data-target="#OECNT" style="display:none" class="btn btn-danger btn-sm">OtherElements</button>
 <div class="modal fade" id="OECNT" role="dialog" style="top:25%">
     <div class="modal-dialog">
         <div class="modal-content">

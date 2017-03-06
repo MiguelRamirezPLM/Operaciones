@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="PLMUsers">
+    <EntitySetMapping Name="ActivityLogs">
+      <EntityTypeMapping TypeName="Model.ActivityLogs">
+        <MappingFragment StoreEntitySet="ActivityLogs">
+          <ScalarProperty Name="ActivityLogId" ColumnName="ActivityLogId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="TableId" ColumnName="TableId" />
+          <ScalarProperty Name="OperationId" ColumnName="OperationId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="PrimaryKeyAffected" ColumnName="PrimaryKeyAffected" />
+          <ScalarProperty Name="FieldsAffected" ColumnName="FieldsAffected" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivitySessions">
+      <EntityTypeMapping TypeName="Model.ActivitySessions">
+        <MappingFragment StoreEntitySet="ActivitySessions">
+          <ScalarProperty Name="ActivitySessionId" ColumnName="ActivitySessionId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Applications">
+      <EntityTypeMapping TypeName="Model.Applications">
+        <MappingFragment StoreEntitySet="Applications">
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="HashKey" ColumnName="HashKey" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="RootUrl" ColumnName="RootUrl" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="DocumentFile" ColumnName="DocumentFile" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ApplicationUsers">
+      <EntityTypeMapping TypeName="Model.ApplicationUsers">
+        <MappingFragment StoreEntitySet="ApplicationUsers">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Countries_Users">
+      <EntityTypeMapping TypeName="Model.Countries_Users">
+        <MappingFragment StoreEntitySet="Countries">
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="Model.Roles">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tables">
+      <EntityTypeMapping TypeName="Model.Tables">
+        <MappingFragment StoreEntitySet="Tables">
+          <ScalarProperty Name="TableId" ColumnName="TableId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="Model.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="SecondLastName" ColumnName="SecondLastName" />
+          <ScalarProperty Name="NickName" ColumnName="NickName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="plm_spLoginApplications" FunctionName="Model.Store.plm_spLoginApplications">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model.plm_spLoginApplications_Result">
+          <ScalarProperty Name="UsrUserId" ColumnName="UsrUserId" />
+          <ScalarProperty Name="UserActive" ColumnName="UserActive" />
+          <ScalarProperty Name="UserCountryId" ColumnName="UserCountryId" />
+          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+          <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserNickName" ColumnName="UserNickName" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserApplicationId" ColumnName="UserApplicationId" />
+          <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+          <ScalarProperty Name="UserUserId" ColumnName="UserUserId" />
+          <ScalarProperty Name="RoleActive" ColumnName="RoleActive" />
+          <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="ApplicationsApplicationId" ColumnName="ApplicationsApplicationId" />
+          <ScalarProperty Name="ApplicationsActive" ColumnName="ApplicationsActive" />
+          <ScalarProperty Name="ApplicationsDescription" ColumnName="ApplicationsDescription" />
+          <ScalarProperty Name="ApplicationsHashKey" ColumnName="ApplicationsHashKey" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="UserCountries">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.UserCountries)">
+        <MappingFragment StoreEntitySet="UserCountries">
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BinnacleActivities">
+      <EntityTypeMapping TypeName="Model.BinnacleActivities">
+        <MappingFragment StoreEntitySet="BinnacleActivities">
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+          <ScalarProperty Name="BinnacleId" ColumnName="BinnacleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Binnacles">
+      <EntityTypeMapping TypeName="Model.Binnacles">
+        <MappingFragment StoreEntitySet="Binnacles">
+          <ScalarProperty Name="FinalDate" ColumnName="FinalDate" />
+          <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="BinnacleDescription" ColumnName="BinnacleDescription" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="BinnacleId" ColumnName="BinnacleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BinnacleStatus">
+      <EntityTypeMapping TypeName="Model.BinnacleStatus">
+        <MappingFragment StoreEntitySet="BinnacleStatus">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Errors">
+      <EntityTypeMapping TypeName="Model.Errors">
+        <MappingFragment StoreEntitySet="Errors">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Folio" ColumnName="Folio" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="ErrorId" ColumnName="ErrorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Folios">
+      <EntityTypeMapping TypeName="Model.Folios">
+        <MappingFragment StoreEntitySet="Folios">
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="CurrentNumber" ColumnName="CurrentNumber" />
+          <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+          <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="FolioId" ColumnName="FolioId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Menues">
+      <EntityTypeMapping TypeName="Model.Menues">
+        <MappingFragment StoreEntitySet="Menues">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OperationRoles">
+      <EntityTypeMapping TypeName="Model.OperationRoles">
+        <MappingFragment StoreEntitySet="OperationRoles">
+          <ScalarProperty Name="OperationId" ColumnName="OperationId" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Operations">
+      <EntityTypeMapping TypeName="Model.Operations">
+        <MappingFragment StoreEntitySet="Operations">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="OperationId" ColumnName="OperationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectActivities">
+      <EntityTypeMapping TypeName="Model.ProjectActivities">
+        <MappingFragment StoreEntitySet="ProjectActivities">
+          <ScalarProperty Name="BinnacleId" ColumnName="BinnacleId" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="ActivityDescription" ColumnName="ActivityDescription" />
+          <ScalarProperty Name="InvestedTime" ColumnName="InvestedTime" />
+          <ScalarProperty Name="ActivityDate" ColumnName="ActivityDate" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="Model.Projects">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="InvestedTime" ColumnName="InvestedTime" />
+          <ScalarProperty Name="FinalDate" ColumnName="FinalDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+          <ScalarProperty Name="ProjectDescription" ColumnName="ProjectDescription" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Regions">
+      <EntityTypeMapping TypeName="Model.Regions">
+        <MappingFragment StoreEntitySet="Regions">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="Model.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserProjects">
+      <EntityTypeMapping TypeName="Model.UserProjects">
+        <MappingFragment StoreEntitySet="UserProjects">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebPages">
+      <EntityTypeMapping TypeName="Model.WebPages">
+        <MappingFragment StoreEntitySet="WebPages">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="PageDescription" ColumnName="PageDescription" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebPageSectionMenues">
+      <EntityTypeMapping TypeName="Model.WebPageSectionMenues">
+        <MappingFragment StoreEntitySet="WebPageSectionMenues">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="MenuOrder" ColumnName="MenuOrder" />
+          <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+          <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+          <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebPageSections">
+      <EntityTypeMapping TypeName="Model.WebPageSections">
+        <MappingFragment StoreEntitySet="WebPageSections">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+          <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebSections">
+      <EntityTypeMapping TypeName="Model.WebSections">
+        <MappingFragment StoreEntitySet="WebSections">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="RolMenues" TypeName="Model.RolMenues" StoreEntitySet="RolMenues">
+      <EndProperty Name="WebPageSectionMenues">
+        <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+        <ScalarProperty Name="WebSectionId" ColumnName="WebSectionId" />
+        <ScalarProperty Name="WebPageId" ColumnName="WebPageId" />
+      </EndProperty>
+      <EndProperty Name="Roles">
+        <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

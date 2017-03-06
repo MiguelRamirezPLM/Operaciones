@@ -171,7 +171,7 @@
                             <li>
                                 <span class="glyphicon glyphicon-plus" id="Expand_@item.ICDId" onclick="GetLevelTwoICD(@item.ICDId)" style="cursor:pointer"></span>
                                 <span class="glyphicon glyphicon-minus" style="display:none" id="Collapse_@item.ICDId" onclick="collapselevel2(@item.ICDId)"></span>
-                                <input type="checkbox" value="@item.ICDId" onclick="AddCIE10($(this))" />
+                                @*<input type="checkbox" value="@item.ICDId" onclick="AddCIE10($(this))" />*@
                                 <label style="font-weight: bold; color: #065977; margin-bottom: 5px"><b>@item.ICDKey</b></label> - <span style="font-weight:100">@item.SpanishDescription</span>
                                 <ul id="ListL2_@item.ICDId" style="list-style: none;margin-left:30px"></ul>
                             </li>
@@ -202,7 +202,7 @@
             </thead>
             <tbody>
                 @{
-    foreach (Web.Models.Class.GetICDByProductPharmaform item in Model)
+                    foreach (Web.Models.Class.GetICDByProductPharmaform item in Model)
                     {
                         <tr>
                             <td>@item.ParentICDKey</td>

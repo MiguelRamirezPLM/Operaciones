@@ -1,0 +1,898 @@
+﻿@model IEnumerable<plm_spGetProductsToEditByDivisionMedinet3>
+@using Web.Models;
+@{
+    ViewBag.Title = "Producción ";
+    SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
+    Medinet db = new Medinet();
+    PLMUsers plm = new PLMUsers();
+
+    CountriesUsers _CountriesUsersSales = (CountriesUsers)Session["CountriesUsers"];
+    int iduser = _CountriesUsersSales.userId;
+    int AppId = _CountriesUsersSales.ApplicationId;
+    string HasKey = null;
+
+    var Hkey = (from _A in plm.Applications
+                where _A.ApplicationId == _CountriesUsersSales.ApplicationId
+                select _A).ToList();
+
+    foreach (var _item in Hkey)
+    {
+        HasKey = _item.HashKey;
+    }
+
+    var RoleIdU = (from _R in plm.ApplicationUsers
+                   where _R.ApplicationId == _CountriesUsersSales.ApplicationId
+                          && _R.UserId == _CountriesUsersSales.userId
+                   select _R).ToList();
+    //foreach (var _row in RoleIdU)
+    //{
+    //    if (_row.RoleId == 5)
+    //    {
+    //        ViewData["Pagination"] = null;
+    //        ViewData["Medicos"] = null;
+    //        ViewData["Producción"] = null;
+    //        ViewData["Inicio"] = null;
+    //    }
+    //    else
+    //    {
+    //        ViewData["Pagination"] = "True";
+    //        ViewData["Medicos"] = "True";
+    //        ViewData["Producción"] = "True";
+    //        ViewData["Inicio"] = "True";
+    //    }
+    //}
+    ViewData["Ventas"] = "True";
+    ViewData["Pagination"] = "True";
+    ViewData["Medicos"] = "True";
+    ViewData["Producción"] = "True";
+    ViewData["Inicio"] = "True";
+
+    var ct_co = db.ContentTypes.Where(x => x.ContentType == "CON CAMBIO ORTOGRÁFICO" && x.Active == true).ToList();
+    var ct_cf = db.ContentTypes.Where(x => x.ContentType == "CON CAMBIO DE FONDO" && x.Active == true).ToList();
+
+    int DivisionId, EditionId, BookId, CountryId;
+    if (_Session != null)
+    {
+        DivisionId = _Session.DivisionId;
+        EditionId = _Session.EditionId;
+        BookId = _Session.BookId;
+        CountryId = _Session.CountryId;
+    }
+    else
+    {
+        DivisionId = 0;
+        EditionId = 0;
+        BookId = 0;
+        CountryId = 0;
+    }
+}
+<link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+<script src="~/Scripts/fileinput.min.js"></script>
+<script src="~/Content/bootstrap-fileinput/themes/fa/theme.js"></script>
+
+@*Edicion que participa un produto*@
+<script>
+    function _getParticipant(item) {
+        $('html').css('overflow', 'hidden');
+        var tr = $(item).parents("tr:first");
+        var _vlproductId = tr.find("#_productId").val();
+        var _vlpharmaformId = tr.find("#_pharmaFormId").val();
+        var _vlcategoryId = tr.find("#_categoryId").val();
+        var _vldivisionid = tr.find("#_divisionId").val();
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        $("#_wlproductName").empty();
+        $("#_wlproductName").append(_vlproductName);
+        $("#_wlpharmaceuticalForm").empty();
+        $("#_wlpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_wlcategoryName").empty();
+        $("#_wlcategoryName").append(_vlcategoryName);
+        $("#_elementTable tbody").empty();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Sales/getParticipantProducts")",
+            traditional: true,
+            data: {
+                ProductId: _vlproductId,
+                PharmaFormId: _vlpharmaformId,
+                Categoryid: _vlcategoryId,
+                DivisionId: _vldivisionid
+            },
+            success: function (data) {
+                $.each(data, function (index, item) {
+                    if (item.LongCount >= 13) {
+                        $("#_dvparticipant").addClass("heightdivp");
+                    }
+                    else {
+                        $("#_dvparticipant").removeClass("heightdivp");
+                    }
+                    $("#_elementTable tbody").append(
+                        "<tr>"
+                        + "<td>" + item.ShortName + "</td>"
+                        + "<td>" + item.NumberEdition + "</td>"
+                        + "<td>" + item.TypeName + "</td>"
+                        + "<td>" + item.ISBN + "</td>"
+                        + "<td>" + item.ParentName + "<span style='padding-left:5px;'>" + item.NumberEditionParent + "</span>" + "</td>"
+                        + "</tr>"
+                        );
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function _closeParticipant(item) {
+        $("._modalParticipant").modal('hide');
+        $('html').css('overflow', 'auto');
+    }
+</script>
+
+@*Producto nuevo*@
+<script>
+    function _new(item) {
+        var tr = $(item).parents("tr:first");
+        var _vlproductId = tr.find("#_productId").val();
+        var _vlpharmaformId = tr.find("#_pharmaFormId").val();
+        var _vlcategoryId = tr.find("#_categoryId").val();
+        var _divisionid = $("#_divisionId").val();
+        var _editionid = $("#_editionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+
+        if (tr.find("#_new").is(":checked")) {
+            tr.find("#_changes").prop("checked", false);
+            tr.find("#_btnChanges").addClass("hide");
+            tr.find("#_chargeOrthographic").prop("checked", false);
+            $.ajax({
+                type: "POST",
+                dataType: "Json",
+                url: "@Url.Content("~/Sales/itsNew")",
+                traditional: true,
+                data: {
+                    ProductId: _productId,
+                    PharmaFormId: _pharmaformId,
+                    Categoryid: _categoryId,
+                    DivisionId: _divisionid,
+                    EditionId :_editionid,
+                    UserId: _UserID,
+                    HashKey: _HasKey
+                },
+                success: function (data) {
+                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                }
+            });
+        }
+        else if (tr.find("#_new").is(":not(:checked)")) {
+            $.ajax({
+                type: "POST",
+                dataType: "Json",
+                url: "@Url.Content("~/Sales/notNew")",
+                traditional: true,
+                data: {
+                    ProductId: _productId,
+                    PharmaFormId: _pharmaformId,
+                    Categoryid: _categoryId,
+                    DivisionId: _divisionid,
+                    EditionId: _editionid,
+                    UserId: _UserID,
+                    HashKey: _HasKey
+                },
+                success: function (data) {
+                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                }
+            });
+        }
+        }
+</script>
+
+@*Registro Sanitario*@
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionSanitary;
+    function _plusRegister(item) {
+        var tr = $(item).parents("tr:first");
+        _positionSanitary = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlsanitaryRegister = tr.find("#_sanitaryRegister").text();
+        $("#_vlmessageRegister").empty();
+        $("#_vlmessageRegister").append("Agregue el Registro Sanitario");
+        $("#_vladdRegister").removeClass("hide");
+        $("#_vlsaveRegister").addClass("hide");
+        $("#_rlproductName").empty();
+        $("#_rlproductName").append(_vlproductName);
+        $("#_rlpharmaceuticalForm").empty();
+        $("#_rlpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_rlcategoryName").empty();
+        $("#_rlcategoryName").append(_vlcategoryName);
+        $("#_vlsetSanitary").val(_vlsanitaryRegister);
+    }
+</script>
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionSanitary;
+    function _vlgetsanitary(item) {
+        var tr = $(item).parents("tr:first");
+        _positionSanitary = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlsanitaryRegister = tr.find("#_sanitaryRegister").text();
+        $("#_vlmessageRegister").empty();
+        $("#_vlmessageRegister").append("Modifique el registro sanitario");
+        $("#_vladdRegister").addClass("hide");
+        $("#_vlsaveRegister").removeClass("hide");
+        $("#_rlproductName").empty();
+        $("#_rlproductName").append(_vlproductName);
+        $("#_rlpharmaceuticalForm").empty();
+        $("#_rlpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_rlcategoryName").empty();
+        $("#_rlcategoryName").append(_vlcategoryName);
+        $("#_vlsetSanitary").val(_vlsanitaryRegister);
+    }
+</script>
+@*Keeps changes to the health record entered*@
+<script>
+    function _vlsaveRegister(item) {
+        var _vlgetsanitary = $("#_vlsetSanitary").val();
+        _positionSanitary.find("#_sanitaryRegister").empty();
+        _positionSanitary.find("#_sanitaryRegister").append(_vlgetsanitary);
+        var _rlproductId = _positionSanitary.find("#_productId").val();
+        var _rlpharmaFormid = _positionSanitary.find("#_pharmaFormId").val();
+        var _rlcategoryId = _positionSanitary.find("#_categoryId").val();
+        var _rldivisionId = _positionSanitary.find("#_divisionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+        alert(_UserID);
+        alert(_HasKey);
+        if (_vlgetsanitary.trim() == false) {
+            _positionSanitary.find("#_plusRegister").removeClass("hide");
+            _positionSanitary.find("#_pencilRegister").addClass("hide");
+        }
+        if (_vlgetsanitary.trim() != false) {
+            _positionSanitary.find("#_plusRegister").addClass("hide");
+            _positionSanitary.find("#_pencilRegister").removeClass("hide");
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production1/saveSanitary")",
+            traditional: true,
+            data: {
+                ProductId: _rlproductId,
+                PharmaFormId: _rlpharmaFormid,
+                Categoryid: _rlcategoryId,
+                DivisionId: _rldivisionId,
+                SanitaryRegister: _vlgetsanitary,
+                UserId: _UserID,
+                HashKey: _HasKey
+            },
+            success: function (data) {
+                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                $("._modalSanitary").modal("hide");
+            }
+        });
+    }
+</script>
+
+@*Fracción COFEPRIS*@
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionFraction;
+    function _vlgetFraction(item) {
+        var tr = $(item).parents("tr:first");
+        _positionFraction = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlgetFraction = tr.find("#_fraction").text();
+        $("#_messageFraction").empty();
+        $("#_messageFraction").append("Agregue la Fracción Cofepris");
+        $("#_addFraction").removeClass("hide");
+        $("#_saveFraction").addClass("hide");
+        $("#_fproductName").empty();
+        $("#_fproductName").append(_vlproductName);
+        $("#_fpharmaceuticalForm").empty();
+        $("#_fpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_fcategoryName").empty();
+        $("#_fcategoryName").append(_vlcategoryName);
+        $("#_setFraction").val(_vlgetFraction);
+    }
+</script>
+@*Obtains the data and position of the selected product*@
+<script>
+    var _positionFraction;
+    function _fractionPencil(item) {
+        var tr = $(item).parents("tr:first");
+        _positionFraction = tr;
+        var _vlproductName = tr.find("#_productName").text();
+        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
+        var _vlcategoryName = tr.find("#_categoryName").text();
+        var _vlgetFraction = tr.find("#_fraction").text();
+        $("#_messageFraction").empty();
+        $("#_messageFraction").append("Modifique la Fracción Cofepris");
+        $("#_addFraction").addClass("hide");
+        $("#_saveFraction").removeClass("hide");
+        $("#_fproductName").empty();
+        $("#_fproductName").append(_vlproductName);
+        $("#_fpharmaceuticalForm").empty();
+        $("#_fpharmaceuticalForm").append(_vlpharmaceuticalForm);
+        $("#_fcategoryName").empty();
+        $("#_fcategoryName").append(_vlcategoryName);
+        $("#_setFraction").val(_vlgetFraction);
+    }
+</script>
+@*Saves the changes of the fraction COFEPRIS entered*@
+<script>
+    function _saveFraction(item) {
+        var _vlgetFraction = $("#_setFraction").val();
+        _positionFraction.find("#_fraction").empty();
+        _positionFraction.find("#_fraction").append(_vlgetFraction);
+        var _flproductId = _positionFraction.find("#_productId").val();
+        var _flpharmaFormid = _positionFraction.find("#_pharmaFormId").val();
+        var _flcategoryId = _positionFraction.find("#_categoryId").val();
+        var _fldivisionId = _positionFraction.find("#_divisionId").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+
+        if (_vlgetFraction.trim() == false) {
+            _positionFraction.find("#_plusFraction").removeClass("hide");
+            _positionFraction.find("#_fractionPencil").addClass("hide");
+        }
+        if (_vlgetFraction.trim() != false) {
+            _positionFraction.find("#_plusFraction").addClass("hide");
+            _positionFraction.find("#_fractionPencil").removeClass("hide");
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production1/saveFraction")",
+            traditional: true,
+            data: {
+                ProductId: _flproductId,
+                PharmaFormId: _flpharmaFormid,
+                Categoryid: _flcategoryId,
+                DivisionId: _fldivisionId,
+                Fraction: _vlgetFraction,
+                UserId: _UserID,
+                HashKey: _HasKey 
+            },
+            success: function (data) {
+                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                $('._modalFraction').modal('hide');
+            }
+        });
+    }
+</script>
+
+<div class="row col-md-10">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Producción</strong> | Laboratorios y productos</div>
+        </div>
+    </div>
+    <br />
+    <nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default">
+        <div style="margin-left: 15px;" class="container-fluid">
+            <div class="navbar-header">
+                <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                @{
+
+                    CountriesUsers _CountriesUsers = (CountriesUsers)Session["CountriesUsers"];
+                    if (_CountriesUsers.country.LongCount() >= 1)
+                    {
+                        <a href="@Url.Content("~/Production1/Index")" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Content("~/Production/FilterIndex/" + _Session.id)" class="btn navbar-brand zindex" title="Filtros">
+                            <i style="color:#b3dca1" class="glyphicon glyphicon-bookmark"></i>
+                        </a>
+                    }
+                }
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ediciones<span style="margin-left: 5px; color: black; " class="caret"></span></a>
+                        <ul style="border-radius:10px;" class="dropdown-menu vertical" role="menu">
+                            <li style="margin-top:-5px;">
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="_charEdition" type="text" class="form-control" placeholder="Buscar" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li><p></p></li>
+                            @{
+                                var _getEditions = (from _e in db.Editions
+                                                    where _e.BookId == _Session.ed
+                                                    && _e.CountryId == _Session.id
+                                                    orderby _e.NumberEdition descending
+                                                    select _e).ToList();
+                                foreach (var _row in _getEditions)
+                                {
+                                    <li class="searchEdition"><a class="zindex" href="@Url.Content("~/Production1/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + _row.EditionId + "/" + @_Session.ud)">@_row.NumberEdition</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laboratorios<span style="margin-left: 5px; color: black; " class="caret"></span></a>
+                        <ul style="border-radius:10px;" class="dropdown-menu vertical" role="menu">
+                            <li style="margin-top:-5px;">
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-11">
+                                        <input id="_charLab" type="text" class="form-control" placeholder="Buscar" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li><p></p></li>
+                            @{
+                                var _getDivisions = db.Database.SqlQuery<plm_spGetDivisionsByEditionByCountry_Result>("plm_spGetDivisionsByEditionByCountry @countryId=" + _Session.id + ",@editionId=" + _Session.ad).ToList();
+                                foreach (var _row in _getDivisions)
+                                {
+                                    <li class="searchLab"><a class="zindex" href="@Url.Content("~/Production1/Content/" + @_row.CountryId + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_row.DivisionId)">@_row.DivisionName</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav hov">
+                    <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exportar productos<span style="margin-left: 5px; color: black" class="caret"></span></a>
+                        <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
+                            <li><a href="@Url.Content("~/Sales/ExcelProductsByEdition/" + @_Session.id + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_Session.ud + "/" + @_CountriesUsersSales.userId)" class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                @{
+                    var _editionType = (from _e in db.Editions
+                                        join _et in db.EditionTypes
+                                            on _e.EditionTypeId equals _et.EditionTypeId
+                                        where _e.EditionId == _Session.ad
+                                        select new { _et.TypeName }).ToList();
+                    ViewData["TypeName"] = _editionType.FirstOrDefault().TypeName;
+                    if (_editionType.FirstOrDefault().TypeName == "IMPRESO")
+                    {
+                        <ul class="nav navbar-nav hov">
+                            <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
+                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paginación<span style="margin-left: 5px; color: black" class="caret"></span></a>
+                                <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
+                                    <li><a href="@Url.Content("~/Production/Pagination/" + _Session.id + "/" + _Session.ed + "/" + _Session.ad)" class="zindex"><span class="glyphiconr glyphicon glyphicon-sort-by-order-alt" style="color: #de5145;"></span>Paginar @ViewData["ShortName"] @ViewData["EditionNumber"]</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                }
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="btn navbar-brand" title="Anterior" onclick="history.back();">
+                            <i style="color:#324887" class="glyphicon glyphicon-arrow-left"></i>
+                        </a>
+                        <a class="btn navbar-brand" title="Siguiente" onclick="history.forward();">
+                            <i style="color:#324887;" class="glyphicon glyphicon-arrow-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+        <div class="message-item" id="m16">
+            <div class="message-inner">
+                <div class="avatar pull-left"></div>
+                <div class="user-detail">
+                    <div class="post-meta">
+                        <div class="asker-meta">
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">País: <span style="color: #de5145">@ViewData["CountryName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Obra: <span style="color: #de5145">@ViewData["BookName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Edición: <span style="color: #de5145">@ViewData["EditionNumber"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new" align="left">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size:16px; text-transform:none; font-weight:normal;">Versión: <span style="color: #de5145">@ViewData["TypeName"]</span> </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="title_new">
+                                <div class="title-word_new">
+                                    <p>
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@ViewData["DivisionName"]</span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="width:0;" class="col-md-1"></div>
+<div class="row col-md-2">
+    <div class="title_new">
+        <div class="title-word_new">
+            <div class="image-container" align="center">
+                @{
+                    var _getImg = (from _d in db.DivisionImages
+                                   where _d.DivisionId == _Session.ud
+                                   select _d).ToList();
+                    if (_getImg.LongCount() != 0)
+                    {
+                        foreach (var _row in _getImg)
+                        {
+                            string _fullPath = Request.MapPath("~/DivisionImages/" + _row.ImageName);
+                            if (System.IO.File.Exists(_fullPath))
+                            {
+                                <img id="_srcImage" src="@Url.Content("~/DivisionImages/" + _row.ImageName)" class="img-responsive" alt="Logo">
+                                <br />
+                                <span id="_notLogo" style="font-size:15px; text-transform:none">@_row.ImageName</span>
+                            }
+                            else
+                            {
+                                <img id="_srcImage" src="@Url.Content("~/Images/sinLogo.gif")" class="img-responsive" alt="Logo">
+                                <br />
+                                <span id="_notLogo" style="font-size:15px; text-transform:none">No se encontro el logo</span>
+                            }
+                            <input type="hidden" id="_vllogoName" value="@_row.ImageName" />
+                        }
+                        <div class="details">
+                            <hr>
+                            <button id="_chargeLogo" onclick="_createLogo($(this))" data-toggle="modal" data-target="._modalLogo" class="btn btn-default btn-sm loading hide"><span class="glyphicon glyphiconr glyphicon glyphicon-picture"></span>Cargar logo</button>
+                            <button id="_changeLogo" onclick="_changeLogo($(this))" data-toggle="modal" data-target="._modalLogo" class="btn btn-default btn-sm loading"><span class="glyphicon glyphiconr glyphicon-picture"></span>Cambiar</button>
+                            <button id="_deleteLogo" onclick="_deleteLogo($(this))" class="btn btn-danger btn-sm loading"><span class="glyphicon glyphiconr glyphicon-remove"></span>Eliminar</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <img id="_srcImage" src="@Url.Content("~/Images/sinLogo.gif")" class="img-responsive" alt="avatar">
+                        <br />
+                        <span id="_notLogo" style="font-size:15px; text-transform:none">Sin logo</span>
+                        <div class="details">
+                            <hr>
+                            <button id="_chargeLogo" onclick="_createLogo($(this))" data-toggle="modal" data-target="._modalLogo" class="btn btn-default btn-sm loading"><span class="glyphicon glyphiconr glyphicon glyphicon-picture"></span>Cargar logo</button>
+                            <button id="_changeLogo" onclick="_changeLogo($(this))" data-toggle="modal" data-target="._modalLogo" class="btn btn-default btn-sm loading hide"><span class="glyphicon glyphiconr glyphicon glyphicon-picture"></span>Cambiar</button>
+                            <button id="_deleteLogo" onclick="_deleteLogo($(this))" class="btn btn-danger btn-sm loading hide"><span class="glyphicon glyphiconr glyphicon-remove"></span>Eliminar</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row col-md-12" align="center">
+    <span class="Titles">Productos</span>
+</div>
+<script src="~/Scripts/DataTables/jqueryDataTablesProducts.js"></script>
+<script src="~/Scripts/DataTables/dataTables.scroller.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $('#example').dataTable({
+                "columnDefs": [{ "searchable": false, "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }],
+                "language": {
+                    "lengthMenu": "<div class='col-md-3 title_filter'>" +
+                        "<div class='title-word' style='font-weight:normal; text-transform:none; font-size:17px;'> Mostrar <select class='form-control input-sm'> </div>" +
+                      '<option value="10">10</option>' +
+                      '<option value="20">20</option>' +
+                      '<option value="30">30</option>' +
+                      '<option value="40">40</option>' +
+                      '<option value="50">50</option>' +
+                      '<option value="-1">Todo</option>' +
+                      '</select> productos' + '</div>'
+                }
+            });
+        });
+    });
+</script>
+<input type="hidden" id="_countryId" value="@_Session.id" />
+<input type="hidden" id="_bookId" value="@_Session.ed" />
+<input type="hidden" id="_editionId" value="@_Session.ad" />
+<input type="hidden" id="_divisionId" value="@_Session.ud" />
+<input type="hidden" id="_iduser" value="@_CountriesUsersSales.userId" />
+<input type="hidden" id="_appId" value="@AppId" />
+<input type="hidden" id="_haskey" value="@HasKey" />
+
+
+<div class="row col-md-12 table-responsive">
+    <table style="font-size:13px;" id="example" class="display table table-bordered table-hover" cellspacing="0">
+        <thead>
+            <tr style=" box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);">
+                <td align="center" style="vertical-align:middle" class="tdback">Producto</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Forma farmaceútica</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Categoría</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Descripción</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Tipo de producto</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Ediciónes</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Nuevo</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Con cambios</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Rubros</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Cambio ortográfico</td>
+                <td width="100" align="center" style="vertical-align:middle" class="tdback">Registro sanitario</td>
+                <td width="70" align="center" style="vertical-align:middle" class="tdback">Fracción cofepris</td>
+                <td align="center" style="vertical-align:middle" class="tdback">Presentación</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var _row in Model)
+                {
+                    <tr>
+                        <td style="vertical-align:middle" align="center"><span id="_productName">@_row.Brand</span> <input type="hidden" id="_divisionId" value="@_row.DivisionId" /> <input type="hidden" id="_productId" value="@_row.ProductId" /></td>
+                        <td style="vertical-align:middle" align="center"><span id="_pharmaceuticalForm">@_row.PharmaForm</span>  <input type="hidden" id="_pharmaFormId" value="@_row.PharmaFormId" /></td>
+                        <td style="vertical-align:middle" align="center"><span id="_categoryName">@_row.CategoryName</span> <input type="hidden" id="_categoryId" value="@_row.CategoryId" /></td>
+                        <td style="vertical-align:middle" align="center">@_row.ProductDescription</td>
+                        <td style="vertical-align:middle" align="center">@_row.ProductType</td>
+                        <td style="vertical-align:middle" align="center"><a onclick="_getParticipant($(this))" data-toggle="modal" data-target="._modalParticipant" class="btn btn-primary  btn-sm loading"><span class="glyphicon glyphicon-indent-right"></span></a></td>
+                        @*Nuevo*@
+                        <td align="center">
+                           @{
+                              var NewProduct = _row.NewProduct;
+                              if (NewProduct > 0)
+                               {
+                                  <input checked id="_new" onclick="_new($(this))" class="true" type="checkbox" />
+                               }
+                              else
+                               {
+                                  <input id="_new" onclick="_new($(this))" class="true" type="checkbox" />
+                               }
+
+                            }
+                        </td>
+                        @{
+                          if (_row.HTMLContent == null || _row.HTMLContent == "null")
+                            {
+                                <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Sin contenido</span></td>
+                                <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Sin contenido</span></td>
+                                <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Sin contenido</span></td>
+                            }
+                            else
+                            {
+                            <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Contenido</span></td>
+                            <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Contenido</span></td>
+                            <td align="center" style="vertical-align:middle"><span style="color:#c4473d">Contenido</span></td>
+                            }
+                        }
+
+
+
+
+                        @*Registro Sanitario*@
+                        
+                        <td style="vertical-align:middle" align="right">
+                            @{
+                                if (_row.SanitaryRegister == null)
+                                {
+                                  <span id="_sanitaryRegister" style="margin-right:10px;"></span><button id="_plusRegister" onclick="_plusRegister($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-success  btn-sm loading"><i class="glyphicon glyphicon-plus"></i></button>
+                                  <button id="_pencilRegister" onclick="_vlgetsanitary($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-default  btn-sm loading hide"><i class="glyphicon glyphicon-pencil"></i></button>
+                                }
+                                else
+                               {
+                                 <span id="_sanitaryRegister" style="margin-right:10px;">@_row.SanitaryRegister</span><button id="_plusRegister" onclick="_plusRegister($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-success  btn-sm loading hide"><i class="glyphicon glyphicon-plus"></i></button>
+                                 <button id="_pencilRegister" onclick="_vlgetsanitary($(this))" data-toggle="modal" data-target="._modalSanitary" class="btn btn-default  btn-sm loading"><i class="glyphicon glyphicon-pencil"></i></button>
+                               }
+                            }
+                        </td>
+                        @*COFEPRIS*@
+                        <td style="vertical-align:middle" align="right">
+                            @{
+                               if (_row.SSFraction == null)
+                               {
+                                 <span id="_fraction" style="margin-right:10px;"></span><button id="_plusFraction" onclick="_vlgetFraction($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-success  btn-sm loading"><i class="glyphicon glyphicon-plus"></i></button>
+                                 <button id="_fractionPencil" onclick="_fractionPencil($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-default  btn-sm loading hide"><i class="glyphicon glyphicon-pencil"></i></button>
+                               }
+                              else
+                               {
+                                <span id="_fraction" style="margin-right:10px;">@_row.SSFraction</span><button id="_plusFraction" onclick="_vlgetFraction($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-success  btn-sm loading hide"><i class="glyphicon glyphicon-plus"></i></button>
+                                <button id="_fractionPencil" onclick="_fractionPencil($(this))" data-toggle="modal" data-target="._modalFraction" class="btn btn-default  btn-sm loading"><i class="glyphicon glyphicon-pencil"></i></button>
+                               }
+                            }
+                        </td>
+                        <td style="vertical-align:middle" align="center"><a onclick="_getPresentation($(this))" data-toggle="modal" data-target="._modalPresentation" class="btn btn-danger btn-sm loading"><span class="glyphicon glyphicon-picture"></span></a></td>
+                     </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+
+@*Modal Ediciones participantes*@
+<div class="modal fade _modalParticipant" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2184be">
+                <button onclick="_closeParticipant($(this))" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size: 18px; color: white" class="modal-title" id="myModalLabel" align="center"> <span>Ediciones</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id=" wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_wlproductName" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_wlpharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_wlcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well well-white mini-profile-widget col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/ediciones.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div align="center">
+                    <span style="font-size:18px;">Participaciones</span>
+                </div>
+                <br />
+                <div id="_dvparticipant" class="table-responsive heightdivp">
+                    <table id="_elementTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr style=" box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);">
+                                <td class="tdback">Obra</td>
+                                <td class="tdback">Edición</td>
+                                <td class="tdback">Tipo de edición</td>
+                                <td class="tdback">Versión</td>
+                                <td class="tdback">Obra de la que emana</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" align="center">
+                <div align="center">
+                    <button onclick="_closeParticipant($(this))" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal Registro sanitario Agregar/Editar*@
+<div class="modal fade _modalSanitary" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Registro sanitario</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_rlproductName" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_rlpharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_rlcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/registro.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div align="center">
+                    <span id="_vlmessageRegister" style="font-size:18px;"></span>
+                </div>
+                <br />
+                <div class="input-group col-md-4 col-xs-4 center">
+                    <input id="_vlsetSanitary" type="text" class="form-control">
+                </div>
+            </div>
+            <div align="center">
+                <button id="_vlsaveRegister" onclick="_vlsaveRegister($(this))" class="btn btn-default"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                <button id="_vladdRegister" onclick="_vlsaveRegister($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-plus"></span>Agregar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+@*Modal Fracción Cofepris Agregar/Editar*@
+<div class="modal fade _modalFraction" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="font-size:18px;" class="modal-title" id="myModalLabel" align="center"> <span>Fracción Cofepris</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top:18px;" class="qa-message-list col-md-8" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Producto: <span id="_fproductName" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Forma farmacéutica: <span id="_fpharmaceuticalForm" style="color: #de5145;"></span></span>
+                                    </p>
+                                    <p style="padding-left:18px;">
+                                        <span class="qa-message-when-data" style="font-size: 16px; text-transform: none; font-weight: normal;">Categoría: <span id="_fcategoryName" style="color: #de5145;"></span></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-3">
+                        <div class="image-container" align="center">
+                            <img src="@Url.Content("~/Images/cofepris.gif")" class="img-responsive" alt="avatar">
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div align="center">
+                    <span id="_messageFraction" style="font-size:18px;"></span>
+                </div>
+                <br />
+                <div class="input-group col-md-4 col-xs-4 center">
+                    <input id="_setFraction" type="text" class="form-control">
+                </div>
+            </div>
+            <div align="center">
+                <button id="_addFraction" onclick="_saveFraction($(this))" class="btn btn-success"><span class="glyphicon glyphiconr glyphicon glyphicon-plus"></span>Agregar</button>
+                <button id="_saveFraction" onclick="_saveFraction($(this))" class="btn btn-default"><span class="glyphicon glyphiconr glyphicon glyphicon-floppy-disk"></span>Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
