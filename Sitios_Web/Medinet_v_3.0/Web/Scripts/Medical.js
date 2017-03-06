@@ -2996,8 +2996,6 @@ function DeleteHyperContraindications(item) {
             }
         }
     })
-
-
 }
 
 function AddPharmaGroupContraindications() {
@@ -3061,8 +3059,8 @@ function DeletePharmaGroupContraindications(item) {
 
     var tr = $(item).parents("tr:first");
 
-    var ASId = tr.find("#lblPharmaGroupIdPG").val();
-    var value = tr.find("#lblActiveSubstanceIdPG").val();
+    var ASId = tr.find("#lblPharmaGroupIdPGCNT").val();
+    var value = tr.find("#lblActiveSubstanceIdPGCNT").val();
     var PId = $("#ProductId").val();
     var CId = $("#CategoryId").val();
     var DId = $("#DivisionId").val();
@@ -3071,7 +3069,7 @@ function DeletePharmaGroupContraindications(item) {
     $.ajax({
         Type: "POST",
         dataType: "Json",
-        url: "../Medical/DeleteProductSubstanceInteractions",
+        url: "../Medical/DeleteProductPharmacologicalGroupsContraindications",
         data: { ActiveSubstance: value, SubstanceInteraction: ASId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
         success: function (data) {
             setTimeout("document.location.reload()");
@@ -3080,6 +3078,8 @@ function DeletePharmaGroupContraindications(item) {
 }
 
 function CheckPharmacologicalGroupsContraindications(item) {
+
+    $("#bloqueo").show();
 
     var tr = $(item).parents("tr:first");
 
@@ -3117,10 +3117,436 @@ function CheckPharmacologicalGroupsContraindications(item) {
 
                 $("#DivPGINT").append(Content);
                 $("#btnPGINT").trigger("click");
+
+                $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                //AddProductPharmacologicalGroupsInteractions(value, null);
+                setTimeout("document.location.reload()");
+            }
+            else if (data.Data == "_notdata") {
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                d += "<label> El registro seleccionado ya ha sido asociado a la(s) sustancia(s) del Producto.</label> <br/>"
+
+                apprise("" + d + "", { 'animate': true });
+                $("#bloqueo").hide();
             }
         }
     })
+}
+
+
+var ListAddASCNT = [];
+
+function CheckActiveSubstancesContraindications(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var value = tr.find("#lblActiveSubstanceIdCNT").val();
+    var Group = tr.find("#spnDescriptionASCNT").text()
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    CancelActiveSubstancesContraindications();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/CheckActiveSubstancesContraindications",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, Pharmacological: value },
+        success: function (data) {
+            if (data.Data == true) {
+                $("#messageheaderASCNT").text("Aviso");
+
+                var Content = "";
+                Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdAS\" />";
+                Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdAS\"/>";
+                Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdAS\"/>";
+                Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdAS\"/>";
+                Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceIdAS\"/></div>";
+                Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con la sustancia: <label style='font-weight:bold'>" + Group + "</label></span><br /><br />";
+
+                $.each(data.Items, function (index, val) {
+                    Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddActiveSubstancesContraindications($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
+                    console.log(val.Description);
+
+                });
+
+                $("#DivASCNT").append(Content);
+                $("#btnASCNT").trigger("click");
+
+                $("#bloqueo").hide();
+            }
+            else if (data.Data == false) {
+                setTimeout("document.location.reload()");
+            }
+            else if (data.Data == "_notdata") {
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                d += "<label> El registro seleccionado ya ha sido asociado a la(s) sustancia(s) del Producto.</label> <br/>"
+
+                apprise("" + d + "", { 'animate': true });
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+function CancelActiveSubstancesContraindications() {
+
+    $("#DivASCNT").empty();
+
+}
+
+function AddActiveSubstancesContraindications(item) {
+
+    var ASId = $("#MdlActiveSubstanceIdAS").val();
+    var value = $(item).val();
+    var PId = $("#MdlProductIdAS").val();
+    var CId = $("#MdlCategoryIdAS").val();
+    var DId = $("#MdlDivisionIdAS").val();
+    var PFId = $("#MdlPharmaFormIdAS").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddASCNT.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": value,
+                        "ActiveSubstance": ASId
+                    });
+
+        console.log(ListAddASCNT);
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = RemoveItemOfJsonListTI(ListAddASCNT, "Division", "Category", "PharmaForm", "Product", "SubstanceInteract", "ActiveSubstance", DId, CId, PFId, PId, value, ASId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+
+            ListAddASCNT.splice(index, 1);
+
+            console.log(ListAddASCNT);
+        }
+    }
+}
+
+function SaveActiveSubstancesContraindications() {
+
+    var Size = $(ListAddASCNT).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddASCNT);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveActiveSubstancesContraindications",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+function DeleteActiveSubstancesContraindications(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = tr.find("#lblSubsContraindicationIdASCNT").val();
+    var value = tr.find("#lblActiveSubstanceIdASCNT").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteProductActiveSubstancesContraindications",
+        data: { ActiveSubstance: value, SubstanceInteraction: ASId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+
+var ListAddOECNT = [];
+
+function CheckOtherElementsContraindications(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var value = tr.find("#lblElementId").val();
+    var Group = tr.find("#lblElementName").text()
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    CancelActiveSubstancesContraindications();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/CheckOtherElementsContraindications",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, Element: value },
+        success: function (data) {
+            if (data.Data == true) {
+                $("#messageheaderOECNT").text("Aviso");
+
+                var Content = "";
+                Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdOECNT\" />";
+                Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdOECNT\"/>";
+                Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdOECNT\"/>";
+                Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdOECNT\"/>";
+                Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceIdOECNT\"/></div>";
+                Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con la sustancia: <label style='font-weight:bold'>" + Group + "</label></span><br /><br />";
+
+                $.each(data.Items, function (index, val) {
+                    Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddOtherElementsContraindications($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
+                    console.log(val.Description);
+
+                });
+
+                $("#DivOECNT").append(Content);
+                $("#btnOECNT").trigger("click");
+
+                $("#bloqueo").hide();
+            }
+            else if (data.Data == false) {
+                setTimeout("document.location.reload()");
+            }
+            else if (data.Data == "_notdata") {
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                d += "<label> El registro seleccionado ya ha sido asociado a la(s) sustancia(s) del Producto.</label> <br/>"
+
+                apprise("" + d + "", { 'animate': true });
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+function CancelOtherElementsContraindications() {
+
+    $("#DivOECNT").empty();
+
+}
+
+function AddOtherElementsContraindications(item) {
+
+    var ASId = $("#MdlActiveSubstanceIdOECNT").val();
+    var value = $(item).val();
+    var PId = $("#MdlProductIdOECNT").val();
+    var CId = $("#MdlCategoryIdOECNT").val();
+    var DId = $("#MdlDivisionIdOECNT").val();
+    var PFId = $("#MdlPharmaFormIdOECNT").val();
+
+    if ($(item).is(":checked")) {
+
+        ListAddOECNT.push(
+                    {
+                        "Division": DId,
+                        "Category": CId,
+                        "PharmaForm": PFId,
+                        "Product": PId,
+                        "SubstanceInteract": value,
+                        "ActiveSubstance": ASId
+                    });
+
+        console.log(ListAddOECNT);
+    }
+    else if ($(item).is(":not(:checked)")) {
+
+        var index = RemoveItemOfJsonListTI(ListAddOECNT, "Division", "Category", "PharmaForm", "Product", "SubstanceInteract", "ActiveSubstance", DId, CId, PFId, PId, value, ASId);
+
+        if (index == null) {
+        }
+        else if (index >= 0) {
+
+            ListAddOECNT.splice(index, 1);
+
+            console.log(ListAddOECNT);
+        }
+    }
+}
+
+function SaveOtherElementsContraindications() {
+
+    var Size = $(ListAddOECNT).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddOECNT);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveOtherElementsContraindications",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
+}
+
+function DeleteOtherElementsContraindications(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var OEId = tr.find("#lblElementIdOECNT").val();
+    var value = tr.find("#lblActiveSubstanceIdOECNT").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteOtherElementsContraindications",
+        data: { ActiveSubstance: value, Element: OEId, Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function GetAccordionId(item) {
+
+    var Id = $(item).attr("Id");
+
+    sessionStorage.GetAccordionId = Id;
+
+}
+
+function LoadAccordionId() {
+
+    var Id = sessionStorage.GetAccordionId;
+
+    console.log(Id);
+
 }

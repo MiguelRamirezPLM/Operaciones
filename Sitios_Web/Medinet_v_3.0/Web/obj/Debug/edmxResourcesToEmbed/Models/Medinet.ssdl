@@ -251,6 +251,21 @@
     <Property Name="InternalPackName" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="IPPAProductContraindications">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+    </Key>
+    <Property Name="DivisionId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="StatusId" Type="tinyint" />
+  </EntityType>
   <EntityType Name="IPPAProductInteractions">
     <Key>
       <PropertyRef Name="DivisionId" />
@@ -1341,6 +1356,36 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="R_480">
+    <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="1" />
+    <End Role="IPPAProductContraindications" Type="Self.IPPAProductContraindications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="IPPAProductContraindications">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_481">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="IPPAProductContraindications" Type="Self.IPPAProductContraindications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="IPPAProductContraindications">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_491">
     <End Role="Presentations" Type="Self.Presentations" Multiplicity="1" />
     <End Role="ProductBarCodes" Type="Self.ProductBarCodes" Multiplicity="*" />
@@ -1557,6 +1602,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
     <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Indications" EntityType="Self.Indications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IPPAProductContraindications" EntityType="Self.IPPAProductContraindications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IPPAProductInteractions" EntityType="Self.IPPAProductInteractions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Laboratories" EntityType="Self.Laboratories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NewProducts" EntityType="Self.NewProducts" Schema="dbo" store:Type="Tables" />
@@ -1843,6 +1889,14 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
     <AssociationSet Name="R_47" Association="Self.R_47">
       <End Role="Laboratories" EntitySet="Laboratories" />
       <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="R_480" Association="Self.R_480">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
+    </AssociationSet>
+    <AssociationSet Name="R_481" Association="Self.R_481">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
     </AssociationSet>
     <AssociationSet Name="R_491" Association="Self.R_491">
       <End Role="Presentations" EntitySet="Presentations" />
