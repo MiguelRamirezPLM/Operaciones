@@ -393,5 +393,46 @@ namespace Web.Models.Class
             }
             return "Ok";
         }
+
+        public String SaveProductCommentContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, string Comments, int ActiveSubstanceId, int Operation)
+        {
+            if (Operation == CRUD.Create)
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductCommentContraindications @comments='" + Comments + "',@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
+            }
+            else
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductCommentContraindications @comments='" + Comments + "',@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Delete + "");
+            }
+            return "Ok";
+        }
+
+        public String DeleteProductCommentContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ProductCommentId, int ActiveSubstanceId, int Operation)
+        {
+            try
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductCommentContraindications @productCommentId=" + ProductCommentId + ",@divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@activeSubstanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Delete + "");
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return "Ok";
+        }
+
+        public String DeleteAllCommentsContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int Operation)
+        {
+            try
+            {
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductCommentContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@CRUDType =" + CRUD.Delete + "");
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return "Ok";
+        }
     }
 }

@@ -997,7 +997,7 @@ namespace Web.Controllers.Medical
                 int ProductId = Convert.ToInt32(Array[i]["Product"]);
                 int PharmaGroupId = Convert.ToInt32(Array[i]["ActiveSubstance"]);
 
-                Operations.CheckProductInteraction(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
+                Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
 
                 Operations.IPPAProductInteractions(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId, "Insert");
 
@@ -1121,7 +1121,7 @@ namespace Web.Controllers.Medical
                 int ProductId = Convert.ToInt32(Array[i]["Product"]);
                 int ActiveSubstanceId = Convert.ToInt32(Array[i]["ActiveSubstance"]);
 
-                Operations.CheckProductInteraction(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
+                Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
 
                 Operations.IPPAProductContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId, "Insert");
 
@@ -1245,7 +1245,7 @@ namespace Web.Controllers.Medical
                 int ProductId = Convert.ToInt32(Array[i]["Product"]);
                 int ActiveSubstanceId = Convert.ToInt32(Array[i]["ActiveSubstance"]);
 
-                Operations.CheckProductInteraction(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
+                Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
 
                 Operations.IPPAProductContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId, "Insert");
 
@@ -1286,6 +1286,89 @@ namespace Web.Controllers.Medical
             int PharmaFormId = int.Parse(PharmaForm);
 
             Operations.SaveProductOtherContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, ElementId, ActiveSubstanceId, CRUD.Delete);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        /*          COMMENTS            */
+
+        public JsonResult CheckCommentsContraindications(string Product)
+        {
+            int ProductId = int.Parse(Product);
+
+            List<GetActiveSubstancesWithoutInteractions> LS = db.Database.SqlQuery<GetActiveSubstancesWithoutInteractions>("plm_spGetActiveSubstanceByProduct @productId=" + ProductId + "").ToList();
+
+            if (LS.LongCount() > 1)
+            {
+                var result = new { Data = true, Items = LS };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new { Data = false };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult SaveCommentsContraindications(String List, string Size)
+        {
+            List<ReturnAddedInteractions> LR = new List<ReturnAddedInteractions>();
+            ReturnAddedInteractions r = new ReturnAddedInteractions();
+
+            int SizeId = int.Parse(Size);
+
+            dynamic Array = JsonConvert.DeserializeObject(List);
+
+            for (var i = 0; i <= (SizeId - 1); i++)
+            {
+                string Comments = Array[i]["Comment"].ToString();
+                int DivisionId = Convert.ToInt32(Array[i]["Division"]);
+                int CategoryId = Convert.ToInt32(Array[i]["Category"]);
+                int PharmaFormId = Convert.ToInt32(Array[i]["PharmaForm"]);
+                int ProductId = Convert.ToInt32(Array[i]["Product"]);
+                int ActiveSubstanceId = Convert.ToInt32(Array[i]["ActiveSubstance"]);
+
+                //  Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
+
+                string result = Operations.SaveProductCommentContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, Comments, ActiveSubstanceId, CRUD.Create);
+            }
+
+            if (LR.LongCount() == SizeId)
+            {
+                return Json(LR, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult DeleteCommentsContraindications(string ActiveSubstance, string ProductComment, string Product, string Category, string Division, string PharmaForm)
+        {
+            int ActiveSubstanceId = int.Parse(ActiveSubstance);
+            int ProductCommentId = int.Parse(ProductComment);
+            int ProductId = int.Parse(Product);
+            int CategoryId = int.Parse(Category);
+            int DivisionId = int.Parse(Division);
+            int PharmaFormId = int.Parse(PharmaForm);
+
+            Operations.DeleteProductCommentContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, ProductCommentId, ActiveSubstanceId, CRUD.Delete);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteAllCommentsContraindications(string Product, string Category, string Division, string PharmaForm)
+        {
+            int ProductId = int.Parse(Product);
+            int CategoryId = int.Parse(Category);
+            int DivisionId = int.Parse(Division);
+            int PharmaFormId = int.Parse(PharmaForm);
+
+            Operations.DeleteAllCommentsContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, CRUD.Delete);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -2239,6 +2322,12 @@ namespace Web.Controllers.Medical
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
+        #region Comments
+
+
 
         #endregion
     }

@@ -852,14 +852,31 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <textarea placeholder="Agregar un comentario" class="form-control"></textarea><br />
-                        <button class="btn btn-sm btn-primary">
-                            <span class="glyphicon glyphicon-ok"></span>
-                            <span>&nbsp; Guardar</span>
-                        </button>
+                        <br />
+                        <br />
+                        <br />
+                        <textarea placeholder="Agregar un comentario" class="form-control" id="txtAddComment"></textarea><br />
+                        <div style="text-align:right">
+                            <button class="btn btn-sm btn-primary" onclick="CheckCommentsContraindications()">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <span>&nbsp; Guardar</span>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="CancelAddComment()">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span>&nbsp; Cancelar</span>
+                            </button>
+                        </div>
+                        <br />
+                        <br />
                     </div>
                     <div class="col-lg-6">
-
+                        <button class="btn btn-sm btn-danger" style="float:right" onclick="DeleteAllCommentsContraindications()">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>&nbsp; Borrar clasificación</span>
+                        </button>
+                        <br />
+                        <br />
+                        <br />
                         <table style="width:100%; font-size:12px">
                             <thead class="webgrid-header">
                                 <tr>
@@ -875,14 +892,14 @@
                                         <tr>
                                             <td style="width:45%">
                                                 <span>@item.ActiveSubstance</span>
-                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdOECNT" style="display:none" />
+                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdCMTCNT" style="display:none" />
                                             </td>
                                             <td style="width:45%">
                                                 <span>@item.Comments</span>
-                                                <input type="text" value="@item.ProductCommentId" id="lblElementIdOECNT" style="display:none" />
+                                                <input type="text" value="@item.ProductCommentId" id="lblProductCommentIdCMTCNT" style="display:none" />
                                             </td>
                                             <td style="width:10%" class="text-center">
-                                                <button class="btn btn-danger btn-sm">
+                                                <button class="btn btn-danger btn-sm" onclick="DeleteCommentsContraindications($(this))">
                                                     <span class="glyphicon glyphicon-remove"></span>
                                                 </button>
                                             </td>
@@ -1058,6 +1075,31 @@
                     <span>&nbsp; Aceptar</span>
                 </button>
                 <button class="btn btn-danger" data-dismiss="modal" onclick="CancelOtherElementsContraindications()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button id="btnCMTCNT" data-toggle="modal" data-target="#CMTCNT" style="display:none" class="btn btn-danger btn-sm">OtherElements</button>
+<div class="modal fade" id="CMTCNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderCMTCNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivCMTCNT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" onclick="SaveCommentsContraindications()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelCommentsContraindications()">
                     <span class="glyphicon glyphicon-remove"></span>
                     <span>&nbsp; Cancelar</span>
                 </button>
