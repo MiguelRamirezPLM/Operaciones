@@ -290,6 +290,7 @@ function AddATCEphMRARemove(item) {
 }
 
 function functiontofindIndexByKeyValue(arraytosearch, TId, PId, PFId, valuetTId, valuePId, valuePFId) {
+
     for (var i = 0; i < arraytosearch.length; i++) {
 
         if (arraytosearch[i][TId] == valuetTId) {
@@ -2344,11 +2345,11 @@ function CheckCIE10Contraindications(item) {
                     $("#messageheaderCIECNT").text("Aviso");
 
                     var Content = "";
-                    Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdOE\" />";
-                    Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdOE\"/>";
-                    Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdOE\"/>";
-                    Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdOE\"/>";
-                    Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlActiveSubstanceIdOE\"/></div>";
+                    Content += "<div style=\"display:none\"><input type=\"text\" value=\"" + PId + "\" id=\"MdlProductIdCIECNT\" />";
+                    Content += "<input type=\"text\" value=\"" + CId + "\" id=\"MdlCategoryIdCIECNT\"/>";
+                    Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdCIECNT\"/>";
+                    Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdCIECNT\"/>";
+                    Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlICDIdCIECNT\"/></div>";
                     Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con el Elemento: <label style='font-weight:bold'>" + Element + "</label></span><br /><br />";
 
                     $.each(data.Items, function (index, val) {
@@ -2366,6 +2367,25 @@ function CheckCIE10Contraindications(item) {
             }
         })
     }
+    else if ($(item).is(":not(:checked)")) {
+
+        var size = $(ListAddCIECNT).size();
+
+        for (var e = 0; e <= size - 1; e++) {
+
+            var index = functiontofindIndexByKeyValueCIECNT(ListAddCIECNT, "ICDId", "PId", "PFId", value, PId, PFId);
+
+            if (index == null) {
+            } else if (index >= 0) {
+
+                ListAddCIECNT.splice(index, 1);
+            }
+        }
+
+        console.log(ListAddCIECNT);
+
+        $("#bloqueo").hide();
+    }
 }
 
 function CancelAddCIECNT() {
@@ -2376,14 +2396,16 @@ function CancelAddCIECNT() {
 
 function AddCIE10Contraindications(item) {
 
-    var ICDId = $(item).val();
+    var ICDId = $("#MdlICDIdCIECNT").val();
+    var ASId = $(item).val();
     var PFId = $("#PharmaFormId").val();
     var PId = $("#ProductId").val();
 
     if ($(item).is(":checked")) {
 
         ListAddCIECNT.push({
-            'TId': ICDId,
+            'ICDId': ICDId,
+            'ASId': ASId,
             'PFId': PFId,
             'PId': PId
         });
@@ -2393,7 +2415,7 @@ function AddCIE10Contraindications(item) {
     }
     else if ($(item).is(":not(:checked)")) {
 
-        var index = functiontofindIndexByKeyValue(ListAddCIECNT, "TId", "PId", "PFId", ICDId, PId, PFId);
+        var index = functiontofindIndexByKeyValueCIECNTELM(ListAddCIECNT, "ASId", "ICDId", "PId", "PFId", ASId, ICDId, PId, PFId);
 
         if (index == null) {
         } else if (index >= 0) {
@@ -2405,11 +2427,109 @@ function AddCIE10Contraindications(item) {
     }
 }
 
+function functiontofindIndexByKeyValueCIECNT(arraytosearch, ICDId, PId, PFId, valuetICDId, valuePId, valuePFId) {
+
+    for (var i = 0; i < arraytosearch.length; i++) {
+
+        if (arraytosearch[i][ICDId] == valuetICDId) {
+            if (arraytosearch[i][PId] == valuePId) {
+                if (arraytosearch[i][PFId] == valuePFId) {
+                    return i;
+                }
+            }
+        }
+    }
+    return null;
+};
+
+function functiontofindIndexByKeyValueCIECNTELM(arraytosearch, ASId, ICDId, PId, PFId, valueASId, valuetICDId, valuePId, valuePFId) {
+
+    for (var i = 0; i < arraytosearch.length; i++) {
+
+        if (arraytosearch[i][ASId] == valueASId) {
+            if (arraytosearch[i][ICDId] == valuetICDId) {
+                if (arraytosearch[i][PId] == valuePId) {
+                    if (arraytosearch[i][PFId] == valuePFId) {
+                        return i;
+                    }
+                }
+            }
+        }
+    }
+    return null;
+};
+
 function SaveCIE10Contraindications() {
 
-    var Json = JSON.stringify(ListAddCIECNT);
+    $("#bloqueo").show();
 
-    console.log(Json);
+    var Size = $(ListAddCIECNT).size();
+
+    if ((Size != 0) && (Size != "0")) {
+        $('#bloqueo').show();
+
+        var Json = JSON.stringify(ListAddCIECNT);
+
+        console.log(Json);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveCIE10Contraindications",
+            data: { List: Json, size: Size },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else {
+
+                    var s = $(data).size();
+
+                    if (s != Size) {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+                        apprise("" + d + "", { 'animate': true }, function (r) {
+                            if (r) {
+                                setTimeout("document.location.reload()");
+                            }
+                            else {
+                                alert("error");
+                            }
+                        })
+                        $("#bloqueo").hide();
+                    }
+                    else {
+                        var d = "";
+                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
+                        d += "<br/>";
+                        d += "<ul style='list-style:none'>";
+                        $.each(data, function (index, val) {
+                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                        });
+                        d += "</ul>";
+
+                        apprise("" + d + "", { 'animate': true });
+                        $("#bloqueo").hide();
+                    }
+                }
+            }
+        })
+    }
+    else {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+        d += "<label> No se ha seleccionado ningun registro para asociar.</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
+    }
 
 }
 

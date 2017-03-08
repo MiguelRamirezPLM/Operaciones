@@ -448,13 +448,13 @@ namespace Web.Controllers.Medical
                 {
                     Field = "<span class=\"glyphicon glyphicon-plus\" id=\"Expand_" + item.ICDId + "\" onclick=\"GetLevelThreeCICD(" + item.ICDId + ")\" style=\"cursor:pointer\"></span>" +
                             "<span class=\"glyphicon glyphicon-minus\" style=\"display:none;cursor:pointer\" id=\"Collapse_" + item.ICDId + "\" onclick=\"collapselevel3(" + item.ICDId + ")\"></span>" +
-                            "&nbsp;&nbsp; <input type='checkbox' value='" + item.ICDId + "' onclick=\"CheckCIE10Contraindications($(this)) \" />" +
+                            "&nbsp;&nbsp; <input type='checkbox' value='" + item.ICDId + "' Id=\"" + item.SpanishDescription + "\" onclick=\"CheckCIE10Contraindications($(this)) \" />" +
                             "&nbsp;&nbsp; <label style=\"font-weight: bold; color: #065977;margin-bottom:5px\"><b>" + item.ICDKey + "</b></label> - <span style=\"font-weight:100\">" + item.SpanishDescription + "</span>" +
                             "<ul id=\"ListL3_" + item.ICDId + "\" style=\"list-style: none;margin-left:50px\"></ul>";
                 }
                 else
                 {
-                    Field = "<input type='checkbox' value='" + item.ICDId + "' onclick=\"CheckCIE10Contraindications($(this)) \" />" +
+                    Field = "<input type='checkbox' value='" + item.ICDId + "' Id=\"" + item.SpanishDescription + "\" onclick=\"CheckCIE10Contraindications($(this)) \" />" +
                         //"<span class=\"glyphicon glyphicon-plus\" id=\"Expand_" + item.ICDId + "\" onclick=\"GetLevelTwoICD(" + item.ICDId + ")\" style=\"cursor:pointer\"></span>" +
                             "&nbsp;&nbsp; <label style=\"font-weight: bold; color: #065977;margin-bottom:5px\"><b>" + item.ICDKey + "</b></label> - <span style=\"font-weight:100\">" + item.SpanishDescription + "</span>";
                 }
@@ -483,13 +483,13 @@ namespace Web.Controllers.Medical
                 {
                     Field = "<span class=\"glyphicon glyphicon-plus\" id=\"Expand_" + item.ICDId + "\" onclick=\"GetLevelTwoCICD(" + item.ICDId + ")\" style=\"cursor:pointer\"></span>" +
                             "<span class=\"glyphicon glyphicon-minus\" style=\"display:none;cursor:pointer\" id=\"Collapse_" + item.ICDId + "\" onclick=\"collapselevel4(" + item.ICDId + ")\"></span>" +
-                            "&nbsp;&nbsp; <input type='checkbox' value='" + item.ICDId + "' onclick=\"CheckCIE10Contraindications($(this)) \" />" +
+                            "&nbsp;&nbsp; <input type='checkbox' value='" + item.ICDId + "' Id=\"" + item.SpanishDescription + "\" onclick=\"CheckCIE10Contraindications($(this)) \" />" +
                             "&nbsp;&nbsp; <label style=\"font-weight: bold; color: #065977;margin-bottom:5px\"><b>" + item.ICDKey + "</b></label> - <span style=\"font-weight:100\">" + item.SpanishDescription + "</span>" +
                             "<ul id=\"ListL3_" + item.ICDId + "\" style=\"list-style: none;margin-left:30px\"></ul>";
                 }
                 else
                 {
-                    Field = "<input type='checkbox' value='" + item.ICDId + "' onclick=\"CheckCIE10Contraindications($(this)) \" />" +
+                    Field = "<input type='checkbox' value='" + item.ICDId + "' Id=\"" + item.SpanishDescription + "\" onclick=\"CheckCIE10Contraindications($(this)) \" />" +
                         //"<span class=\"glyphicon glyphicon-plus\" id=\"Expand_" + item.ICDId + "\" onclick=\"GetLevelTwoICD(" + item.ICDId + ")\" style=\"cursor:pointer\"></span>" +
                             "&nbsp;&nbsp; <label style=\"font-weight: bold; color: #065977;margin-bottom:5px\"><b>" + item.ICDKey + "</b></label> - <span style=\"font-weight:100\">" + item.SpanishDescription + "</span>";
                 }
@@ -565,6 +565,23 @@ namespace Web.Controllers.Medical
             }
         }
 
+        public JsonResult SaveCIE10Contraindications(String List, string size)
+        {
+            int SizeId = int.Parse(size);
+
+            dynamic item = JsonConvert.DeserializeObject(List);
+
+            for (var i = 0; i <= (SizeId - 1); i++)
+            {
+                int ProductId = Convert.ToInt32(item[i]["PId"]);
+                int PharmaFormId = Convert.ToInt32(item[i]["PFId"]);
+                int ActiveSubstanceId = Convert.ToInt32(item[i]["ASId"]);
+                int ICDId = Convert.ToInt32(item[i]["ICDId"]);
+            }
+
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
 
         /*          FISIOLOGICAS            */
 
@@ -1332,7 +1349,7 @@ namespace Web.Controllers.Medical
                 int ProductId = Convert.ToInt32(Array[i]["Product"]);
                 int ActiveSubstanceId = Convert.ToInt32(Array[i]["ActiveSubstance"]);
 
-                //  Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, SubstanceInteractId);
+                Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId);
 
                 string result = Operations.SaveProductCommentContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, Comments, ActiveSubstanceId, CRUD.Create);
             }
