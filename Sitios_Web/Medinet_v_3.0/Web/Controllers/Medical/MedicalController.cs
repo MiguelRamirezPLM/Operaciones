@@ -384,7 +384,7 @@ namespace Web.Controllers.Medical
             GetContraindications.GetActiveSubstancesWithoutInteractions = db.Database.SqlQuery<GetActiveSubstancesWithoutInteractions>("plm_spGetActiveSubstanceByProduct @productId=" + ProductId + "").ToList();
 
             /*          MEDICAL CONTRAINDICATIONS         */
-            GetContraindications.GetICDByProductPharmaform = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spGetICDByProductPharmaform @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @EditionId=" + EditionId + "").OrderBy(x => x.ICDKey).ToList();
+            GetContraindications.GetICDByProductPharmaform = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spGetICDContraindicationsByProduct @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @EditionId=" + EditionId + "").OrderBy(x => x.ICDKey).ToList();
 
             //Catálogo
             GetContraindications.GetICDs = db.Database.SqlQuery<GetICDs>("plm_spGetICDs @ParentId=NULL").ToList();
