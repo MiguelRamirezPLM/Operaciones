@@ -361,25 +361,25 @@ namespace Web.Models.Class
             return "Ok";
         }
 
-        public String IPPAProductContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId, string Operation)
-        {
-            try
-            {
-                List<IPPAProductContraindications> LS = db.Database.SqlQuery<IPPAProductContraindications>("plm_spCRUDIppaProductContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@substanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Read + "").ToList();
+        //public String IPPAProductContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ActiveSubstanceId, string Operation)
+        //{
+        //    try
+        //    {
+        //        List<IPPAProductContraindications> LS = db.Database.SqlQuery<IPPAProductContraindications>("plm_spCRUDIppaProductContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@substanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Read + "").ToList();
 
-                if (LS.LongCount() == 0)
-                {
-                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDIppaProductContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@substanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
-                }
-            }
-            catch (Exception e)
-            {
+        //        if (LS.LongCount() == 0)
+        //        {
+        //            var result = db.Database.ExecuteSqlCommand("plm_spCRUDIppaProductContraindications @divisionId =" + DivisionId + ",@categoryId = " + CategoryId + ",@pharmaFormId = " + PharmaFormId + ",@productId = " + ProductId + ",@substanceId = " + ActiveSubstanceId + ",@CRUDType =" + CRUD.Create + "");
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
 
-            }
+        //    }
 
 
-            return "";
-        }
+        //    return "";
+        //}
 
         public String SaveProductOtherContraindications(int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int ElementId, int ActiveSubstanceId, int Operation)
         {
