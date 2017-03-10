@@ -76,6 +76,8 @@ namespace Web.Controllers.Medical
             return Json(LS, JsonRequestBehavior.AllowGet);
         }
 
+        #region Substances
+
         public ActionResult Clasification(int? ProductId, int? PharmaFormId, int? CategoryId, int? EditionId)
         {
             if ((!Request.IsAuthenticated) || (ProductId == null) || (PharmaFormId == null) || (CategoryId == null))
@@ -122,9 +124,7 @@ namespace Web.Controllers.Medical
             return RedirectToAction("Clasification", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId });
         }
 
-
-
-        /*          ATCEphMRA           */
+        #endregion
 
         #region ATCEphMRA
 
@@ -343,8 +343,6 @@ namespace Web.Controllers.Medical
         }
 
         #endregion
-
-        /*          CONTRAINDICATIONS           */
 
         #region Contraindications
 
@@ -565,9 +563,12 @@ namespace Web.Controllers.Medical
             }
         }
 
-        public JsonResult SaveCIE10Contraindications(String List, string size)
+        public JsonResult SaveCIE10Contraindications(String List, string size, string Division, string Category)
         {
             int SizeId = int.Parse(size);
+            int CategoryId = int.Parse(Division);
+            int DivisionId = int.Parse(Category);
+            string ICDKey = string.Empty;
 
             dynamic item = JsonConvert.DeserializeObject(List);
 
@@ -577,8 +578,50 @@ namespace Web.Controllers.Medical
                 int PharmaFormId = Convert.ToInt32(item[i]["PFId"]);
                 int ActiveSubstanceId = Convert.ToInt32(item[i]["ASId"]);
                 int ICDId = Convert.ToInt32(item[i]["ICDId"]);
-            }
 
+                List<ICD> LICD = db.ICD.Where(x => x.ICDId == ICDId).ToList();
+
+                if (LICD.LongCount() > 0)
+                {
+                    ICDKey = LICD[0].ICDKey;
+                }
+
+                List<ProductContraindicationsByICD> LS = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + "").ToList();
+
+                foreach (ProductContraindicationsByICD itemls in LS)
+                {
+                    if (ICDKey.Substring(0, 3) == itemls.ICDKey.Substring(0, 3) && ICDKey.Length == 3 && itemls.ActiveSubstanceId == ActiveSubstanceId)
+                    {
+                        return Json("_asosParent", JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId);
+
+                if ((ActiveSubstanceId != 0) && (CategoryId != 0) && (DivisionId != 0) && (PharmaFormId != 0) && (ProductId != 0) && (ICDId != 0))
+                {
+                    try
+                    {
+                        var _result = (List<string>)db.Database.SqlQuery<string>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
+
+                        if (_result[0] == "1")
+                        {
+                            var check = db.Database.SqlQuery<int>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDId + "").ToList();
+
+                            if (check[0] == 1)
+                            {
+                                return Json("_errorInd", JsonRequestBehavior.AllowGet);
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        int msg = int.Parse(e.Message);
+                    }
+                }
+
+            }
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -2342,10 +2385,5 @@ namespace Web.Controllers.Medical
 
         #endregion
 
-        #region Comments
-
-
-
-        #endregion
     }
 }

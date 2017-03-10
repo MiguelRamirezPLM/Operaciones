@@ -2464,6 +2464,8 @@ function SaveCIE10Contraindications() {
     $("#bloqueo").show();
 
     var Size = $(ListAddCIECNT).size();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CategoryId").val();
 
     if ((Size != 0) && (Size != "0")) {
         $('#bloqueo').show();
@@ -2476,7 +2478,7 @@ function SaveCIE10Contraindications() {
             Type: "POST",
             dataType: "Json",
             url: "../Medical/SaveCIE10Contraindications",
-            data: { List: Json, size: Size },
+            data: { List: Json, size: Size, Division: DId, Category: CId },
             success: function (data) {
                 if (data == true) {
                     setTimeout("document.location.reload()");
