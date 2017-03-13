@@ -602,9 +602,9 @@ namespace Web.Controllers.Medical
                 {
                     try
                     {
-                        var _result = (List<string>)db.Database.SqlQuery<string>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
+                        var _result = db.Database.SqlQuery<bool>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
 
-                        if (_result[0] == "1")
+                        if (_result[0] == true)
                         {
                             var check = db.Database.SqlQuery<int>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDId + "").ToList();
 
