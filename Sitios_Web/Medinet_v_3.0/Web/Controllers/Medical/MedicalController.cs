@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using Web.Models.Class;
 using Microsoft.Reporting.WebForms;
 using System.IO;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Web.Controllers.Medical
 {
@@ -566,8 +568,8 @@ namespace Web.Controllers.Medical
         public JsonResult SaveCIE10Contraindications(String List, string size, string Division, string Category)
         {
             int SizeId = int.Parse(size);
-            int CategoryId = int.Parse(Division);
-            int DivisionId = int.Parse(Category);
+            int CategoryId = int.Parse(Category);
+            int DivisionId = int.Parse(Division);
             string ICDKey = string.Empty;
 
             dynamic item = JsonConvert.DeserializeObject(List);
@@ -595,6 +597,7 @@ namespace Web.Controllers.Medical
                         return Json("_asosParent", JsonRequestBehavior.AllowGet);
                     }
                 }
+                // res();
 
                 Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId);
 
@@ -602,16 +605,20 @@ namespace Web.Controllers.Medical
                 {
                     try
                     {
-                        var _result = db.Database.SqlQuery<bool>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
+                        var _result = db.Database.SqlQuery<int>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
 
-                        if (_result[0] == true)
+                        if (_result[0] == 1)
                         {
-                            var check = db.Database.SqlQuery<int>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDId + "").ToList();
+                            var check = db.Database.SqlQuery<ProductICD>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDId + "").ToList();
 
-                            if (check[0] == 1)
+                            if (check.LongCount() == 1)
                             {
                                 return Json("_errorInd", JsonRequestBehavior.AllowGet);
                             }
+                        }
+                        else
+                        {
+                            return Json(false, JsonRequestBehavior.AllowGet);
                         }
 
                     }
@@ -624,6 +631,129 @@ namespace Web.Controllers.Medical
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public int res()
+        {
+            //try
+            //{
+            //    System.Data.SqlClient.SqlConnection cn = new System.Data.SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["MedinetConnectionStrings"].ToString());
+
+            //    cn.Open();
+
+            //    System.Data.SqlClient.SqlCommand dbCmd = new System.Data.SqlClient.SqlCommand("plm_spCRUDProductContraindicationsByICD", cn);
+
+            //    dbCmd.Parameters.Add("@CRUDType", System.Data.SqlDbType.TinyInt).Value = CRUD.Read;
+
+            //    dbCmd.Parameters.Add("@categoryId", System.Data.SqlDbType.Int).Value = 101;
+            //    dbCmd.Parameters.Add("@divisionId", System.Data.SqlDbType.Int).Value = 95;
+            //    dbCmd.Parameters.Add("@pharmaFormId", System.Data.SqlDbType.Int).Value = 25;
+            //    dbCmd.Parameters.Add("@productId", System.Data.SqlDbType.Int).Value = 6363;
+            //    dbCmd.Parameters.Add("@activeSubstanceId", System.Data.SqlDbType.Int).Value = 1206;
+            //    dbCmd.Parameters.Add("@medicalICDContraindicationId", System.Data.SqlDbType.Int).Value = 14260;
+            //    dbCmd.Parameters.Add("@return", System.Data.SqlDbType.Int).Value = 0;
+
+            //    //var result = db.Database.ExecuteSqlCommand(dbCmd.ToString());
+
+
+            //    dbCmd.ExecuteNonQuery();
+
+            //    cn.Close();
+            //}
+            //catch (Exception e)
+            //{
+            //    //cn.Close();
+            //}
+
+
+            var param1 = new SqlParameter
+            {
+                ParameterName = "@CRUDType",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = CRUD.Create
+            };
+
+            var param2 = new SqlParameter
+            {
+                ParameterName = "@categoryId",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = 101
+            };
+
+            var param3 = new SqlParameter
+            {
+                ParameterName = "@divisionId",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = 95
+            };
+
+            var param4 = new SqlParameter
+            {
+                ParameterName = "@pharmaFormId",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = 25
+            };
+
+            var param5 = new SqlParameter
+            {
+                ParameterName = "@productId",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = 6363
+            };
+
+            var param6 = new SqlParameter
+            {
+                ParameterName = "@activeSubstanceId",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = 1206
+            };
+
+            var param7 = new SqlParameter
+            {
+                ParameterName = "@medicalICDContraindicationId",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = 14260
+            };
+
+            var param8 = new SqlParameter
+            {
+                ParameterName = "@Return",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+
+            //compose the SQL
+            var SQLString = "EXEC [dbo].[plm_spCRUDProductContraindicationsByICD] @CRUDType," +
+                            "@categoryId," +
+                            "@divisionId," +
+                            "@pharmaFormId," +
+                            "@productId," +
+                            "@activeSubstanceId," +
+                            "@medicalICDContraindicationId," +
+                            "@Return";
+
+            //Execute the stored procedure 
+            try
+            {
+                var employees = db.Database.SqlQuery<char>(SQLString, param1, param2, param3, param4, param5, param6, param7, param8);
+
+                //var dsd = employees["@Return"];
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            //  int returns = Convert.ToInt32(employees.Parameters["@return"].Value);
+            return 1;
         }
 
         /*          FISIOLOGICAS            */

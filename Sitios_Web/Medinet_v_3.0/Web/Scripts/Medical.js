@@ -2483,6 +2483,10 @@ function SaveCIE10Contraindications() {
                 if (data == true) {
                     setTimeout("document.location.reload()");
                 }
+                else if(data == false)
+                {
+                    setTimeout("document.location.reload()");
+                }
                 else {
 
                     var s = $(data).size();
