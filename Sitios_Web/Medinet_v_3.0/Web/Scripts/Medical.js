@@ -2637,7 +2637,6 @@ function AddPhysiologicalContraindications(item) {
         }
     }
 }
-
 function SavePhysiologicalContraindications() {
 
     $("#bloqueo").show();
@@ -3978,6 +3977,34 @@ function DeleteAllCommentsContraindications() {
         data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
         success: function (data) {
             setTimeout("document.location.reload()");
+        }
+    })
+}
+
+function DeleteCIE10Contraindications(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = tr.find("#spnActiveSubstanceId").val();
+    var ICDId = tr.find("#lblICDId").val();
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteICDContraindications",
+        data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId, ActiveSubstance: ASId, ICD: ICDId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            } else {
+                $("#bloqueo").hide();
+            }
         }
     })
 }

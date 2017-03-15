@@ -14,5 +14,7 @@ namespace Web.Models.Class
         public string EnglishDescription { get; set; }
         public bool? Active { get; set; }
         public string ParentICDKey { get; set; }
+        public int? ActiveSubstanceId { get; set; }
+        public string ActiveSubstance { get; set; }
     }
 }

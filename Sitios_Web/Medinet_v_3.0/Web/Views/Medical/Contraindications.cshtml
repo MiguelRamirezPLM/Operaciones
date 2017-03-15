@@ -11,7 +11,7 @@
     WebGrid _datagridCM = new WebGrid(Count.GetICDByProductPharmaform, rowsPerPage: 25);
     WebGrid _datagridPG = new WebGrid(Count.GetPharmacologicalGroupsWithoutInteraction, rowsPerPage: Convert.ToInt32(Rows[0].PagerPG));
     WebGrid _datagridOE = new WebGrid(Count.GetOtherElemensWithoutInteractions, rowsPerPage: Convert.ToInt32(Rows[0].PagerOE));
-    
+
     int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS, BookId;
 
     if (_Session != null)
@@ -113,7 +113,7 @@
                                             var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@d[0].Description</span></span>
-                                        <input type="text" value="@d[0].DivisionId" id="DivisionId" style="display:none"/>
+                                        <input type="text" value="@d[0].DivisionId" id="DivisionId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                                             var ct = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Categoría: <span style="color: #de5145; ">@ct[0].Description</span></span>
-                                        <input type="text" value="@ct[0].CategoryId" id="CategoryId" style="display:none"/>
+                                        <input type="text" value="@ct[0].CategoryId" id="CategoryId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -182,12 +182,12 @@
                 @{
                     foreach (Web.Models.Class.GetActiveSubstancesWithoutInteractions item in Count.GetActiveSubstancesWithoutInteractions)
                     {
-                        <tr>
-                            <td class="SubstanceInteract">
-                                <span>@item.Description</span>
-                                <input type="text" value="@item.ActiveSubstanceId" id="inpActiveSubstanceId" style="display:none" />
-                            </td>
-                        </tr>
+                <tr>
+                    <td class="SubstanceInteract">
+                        <span>@item.Description</span>
+                        <input type="text" value="@item.ActiveSubstanceId" id="inpActiveSubstanceId" style="display:none" />
+                    </td>
+                </tr>
                     }
                 }
             </tbody>
@@ -258,7 +258,7 @@
                         <br />
                         <br />
                         @{
-                                @_datagridCM.GetHtml(
+                            @_datagridCM.GetHtml(
                                 headerStyle: "webgrid-header",
                                 footerStyle: "webgrid-footer",
                                 alternatingRowStyle: "webgrid-alternating-row",
@@ -269,33 +269,34 @@
                                 columns: new[] {
                                 _datagridCM.Column("", header: "Nombre de Sustancia", format: @<text>
                                         @{
-                                            <span id="spnDescription">@item.SpanishDescription</span>
-                                            
+                                            <span id="spnDescription">@item.ActiveSubstance</span>
+                                            <input id="spnActiveSubstanceId" style="display:none;" value="@item.ActiveSubstanceId" />
                                         }
                                 </text>),
                                 _datagridCM.Column("", header: "Referencia", format: @<text>
-                                        @{
-                                            <span id="spnDescription">@item.ParentICDKey</span>
-                                        }
+                                @{
+                                    <span id="spnDescription">@item.ParentICDKey</span>
+                                }
                                 </text>),
                                 _datagridCM.Column("", header: "ICDKey", format: @<text>
-                                        @{
-                                            <span id="spnDescription">@item.ICDKey</span>
-                                        }
+                                @{
+                                    <span id="spnDescription">@item.ICDKey</span>
+                                }
                                 </text>),
                                 _datagridCM.Column("", header: "Contraindicación", format: @<text>
-                                        @{
-                                            <span id="spnDescription">@item.SpanishDescription</span>
-                                            <input id="lblActiveSubstanceId" style="display:none;" value="@item.ICDId" />
-                                        }
+                                @{
+                                    <span id="spnDescription">@item.SpanishDescription</span>
+    <input id="lblICDId" style="display:none;" value="@item.ICDId" />
+}
                                 </text>),
                             _datagridCM.Column("", header: "Quitar", format: @<text>
-                                        @{
-                                            <button class="btn btn-danger btn-sm">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                            </button>
-                                        }
+                                @{
+                                    <button class="btn btn-danger btn-sm" onclick="DeleteCIE10Contraindications($(this))">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                }
                             </text>, style:"column5 text-center")
+
                             })
                         }
                     </div>
@@ -327,16 +328,16 @@
                                     @{
                                         foreach (Web.Models.Class.GetPhysiologicalContraindications item in Count.GetPhysiologicalContraindications)
                                         {
-                                            <tr>
-                                                <td style="width:90%">
-                                                    <span id="spnPhysContraindicationName">@item.PhysContraindicationName</span>
-                                                </td>
-                                                <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-success btn-sm" value="@item.PhysContraindicationId" onclick="CheckPhysiologicalContraindications($(this))">
-                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td style="width:90%">
+                                            <span id="spnPhysContraindicationName">@item.PhysContraindicationName</span>
+                                        </td>
+                                        <td style="width:10%" class="text-center">
+                                            <button class="btn btn-success btn-sm" value="@item.PhysContraindicationId" onclick="CheckPhysiologicalContraindications($(this))">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -356,21 +357,21 @@
                                 @{
                                     foreach (Web.Models.Class.GetProductPhysContraindications item in Count.GetProductPhysContraindications)
                                     {
-                                        <tr>
-                                            <td style="width:45%">
-                                                <span>@item.ActiveSubstance</span>
-                                                <input type="text" value="@item.ActiveSubstanceId" id="PCActiveSubstanceId" style="display:none" />
-                                            </td>
-                                            <td style="width:45%">
-                                                <span>@item.PhysContraindicationName</span>
-                                                <input type="text" value="@item.PhysContraindicationId" id="PCPhysContraindicationId" style="display:none" />
-                                            </td>
-                                            <td style="width:10%" class="text-center">
-                                                <button class="btn btn-danger btn-sm" onclick="DeletePhysiologicalContraindications($(this))">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <td style="width:45%">
+                                        <span>@item.ActiveSubstance</span>
+                                        <input type="text" value="@item.ActiveSubstanceId" id="PCActiveSubstanceId" style="display:none" />
+                                    </td>
+                                    <td style="width:45%">
+                                        <span>@item.PhysContraindicationName</span>
+                                        <input type="text" value="@item.PhysContraindicationId" id="PCPhysContraindicationId" style="display:none" />
+                                    </td>
+                                    <td style="width:10%" class="text-center">
+                                        <button class="btn btn-danger btn-sm" onclick="DeletePhysiologicalContraindications($(this))">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
                                     }
                                 }
                             </tbody>
@@ -404,16 +405,16 @@
                                     @{
                                         foreach (Web.Models.Class.GetPharmaContraindications item in Count.GetPharmaContraindications)
                                         {
-                                            <tr>
-                                                <td style="width:90%">
-                                                    <span id="spnPharmaContraindicationName">@item.PharmaContraindicationName</span>
-                                                </td>
-                                                <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-success btn-sm" value="@item.PharmaContraindicationId" onclick="CheckPharmacologicalContraindications($(this))">
-                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td style="width:90%">
+                                            <span id="spnPharmaContraindicationName">@item.PharmaContraindicationName</span>
+                                        </td>
+                                        <td style="width:10%" class="text-center">
+                                            <button class="btn btn-success btn-sm" value="@item.PharmaContraindicationId" onclick="CheckPharmacologicalContraindications($(this))">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -434,21 +435,21 @@
                                     @{
                                         foreach (Web.Models.Class.ProductPharmaContraindications item in Count.GetProductPharmaContraindications)
                                         {
-                                            <tr>
-                                                <td style="width:45%">
-                                                    <span>@item.ActiveSubstance</span>
-                                                    <input type="text" value="@item.ActiveSubstanceId" id="PharmaCActiveSubstanceId" style="display:none" />
-                                                </td>
-                                                <td style="width:45%">
-                                                    <span>@item.PharmaContraindicationName</span>
-                                                    <input type="text" value="@item.PharmaContraindicationId" id="PharmaCPharmaContraindicationId" style="display:none" />
-                                                </td>
-                                                <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-danger btn-sm" onclick="DeletePharmacologicalContraindications($(this))">
-                                                        <span class="glyphicon glyphicon-remove"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td style="width:45%">
+                                            <span>@item.ActiveSubstance</span>
+                                            <input type="text" value="@item.ActiveSubstanceId" id="PharmaCActiveSubstanceId" style="display:none" />
+                                        </td>
+                                        <td style="width:45%">
+                                            <span>@item.PharmaContraindicationName</span>
+                                            <input type="text" value="@item.PharmaContraindicationId" id="PharmaCPharmaContraindicationId" style="display:none" />
+                                        </td>
+                                        <td style="width:10%" class="text-center">
+                                            <button class="btn btn-danger btn-sm" onclick="DeletePharmacologicalContraindications($(this))">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -483,14 +484,14 @@
                                     @{
                                         foreach (Web.Models.Class.GetHypersensibilities item in Count.GetHypersensibilities)
                                         {
-                                            <tr>
-                                                <td style="width:90%">@item.HypersensibilityName</td>
-                                                <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-success btn-sm" value="@item.HypersensibilityId" onclick="CheckHyperContraindications($(this))">
-                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td style="width:90%">@item.HypersensibilityName</td>
+                                        <td style="width:10%" class="text-center">
+                                            <button class="btn btn-success btn-sm" value="@item.HypersensibilityId" onclick="CheckHyperContraindications($(this))">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -511,21 +512,21 @@
                                     @{
                                         foreach (Web.Models.Class.GetProductHypersensibilities item in Count.GetProductHypersensibilities)
                                         {
-                                            <tr>
-                                                <td style="width:45%">
-                                                    <span>@item.ActiveSubstance</span>
-                                                    <input type="text" value="@item.ActiveSubstanceId" id="HyperActiveSubstanceId" style="display:none" />
-                                                </td>
-                                                <td style="width:45%">
-                                                    <span>@item.HypersensibilityName</span>
-                                                    <input type="text" value="@item.HypersensibilityId" id="HyperHypersensibilityId" style="display:none" />
-                                                </td>
-                                                <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-danger btn-sm" onclick="DeleteHyperContraindications($(this))">
-                                                        <span class="glyphicon glyphicon-remove"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td style="width:45%">
+                                            <span>@item.ActiveSubstance</span>
+                                            <input type="text" value="@item.ActiveSubstanceId" id="HyperActiveSubstanceId" style="display:none" />
+                                        </td>
+                                        <td style="width:45%">
+                                            <span>@item.HypersensibilityName</span>
+                                            <input type="text" value="@item.HypersensibilityId" id="HyperHypersensibilityId" style="display:none" />
+                                        </td>
+                                        <td style="width:10%" class="text-center">
+                                            <button class="btn btn-danger btn-sm" onclick="DeleteHyperContraindications($(this))">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -563,7 +564,7 @@
                             <div class="col-lg-9">
                                 @using (Html.BeginForm())
                                 {
-                                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
                                 }
                             </div>
                         </div>
@@ -581,9 +582,9 @@
                         columns: new[] {
                         _datagridPG.Column("", header: "Nombre de Sustancia", format: @<text>
                                 @{
-    <span id="lblGroupName">@item.GroupName</span>
-    <input id="lblPharmaGroupId" style="display:none;" value="@item.PharmaGroupId" />
-}
+                                    <span id="lblGroupName">@item.GroupName</span>
+                                    <input id="lblPharmaGroupId" style="display:none;" value="@item.PharmaGroupId" />
+                                }
                         </text>),
                         _datagridPG.Column("", header: "Agregar", format: @<text>
                                 @{
@@ -591,7 +592,7 @@
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 }
-                    </text>, style:"column5 text-center")
+                        </text>, style:"column5 text-center")
                     })
                         </div>
                     </div>
@@ -613,21 +614,21 @@
                                     @{
                                         foreach (Web.Models.Class.GetProductPharmaGroupInteractions item in Count.GetProductPharmaGroupInteractions)
                                         {
-                                            <tr>
-                                                <td style="width:45%">
-                                                    <span>@item.ActiveSubstance</span>
-                                                    <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdPGCNT" style="display:none" />
-                                                </td>
-                                                <td style="width:45%">
-                                                    <span>@item.GroupName</span>
-                                                    <input type="text" value="@item.PharmaGroupId" id="lblPharmaGroupIdPGCNT" style="display:none" />
-                                                </td>
-                                                <td style="width:10%" class="text-center">
-                                                    <button class="btn btn-danger btn-sm" onclick="DeletePharmaGroupContraindications($(this))">
-                                                        <span class="glyphicon glyphicon-remove"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td style="width:45%">
+                                            <span>@item.ActiveSubstance</span>
+                                            <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdPGCNT" style="display:none" />
+                                        </td>
+                                        <td style="width:45%">
+                                            <span>@item.GroupName</span>
+                                            <input type="text" value="@item.PharmaGroupId" id="lblPharmaGroupIdPGCNT" style="display:none" />
+                                        </td>
+                                        <td style="width:10%" class="text-center">
+                                            <button class="btn btn-danger btn-sm" onclick="DeletePharmaGroupContraindications($(this))">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -665,7 +666,7 @@
                             <div class="col-lg-9">
                                 @using (Html.BeginForm())
                                 {
-                                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
                                 }
                             </div>
                         </div>
@@ -715,21 +716,21 @@
                                 @{
                                     foreach (Web.Models.Class.GetProductSubstanceContraindications item in Count.GetProductSubstanceContraindications)
                                     {
-                                        <tr>
-                                            <td style="width:45%">
-                                                <span>@item.ActiveSubstance</span>
-                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdASCNT" style="display:none"/>
-                                            </td>
-                                            <td style="width:45%">
-                                                <span>@item.SubstanceContraindication</span>
-                                                <input type="text" value="@item.SubsContraindicationId" id="lblSubsContraindicationIdASCNT" style="display:none"/>
-                                            </td>
-                                            <td style="width:10%" class="text-center">
-                                                <button class="btn btn-danger btn-sm" onclick="DeleteActiveSubstancesContraindications($(this))">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <td style="width:45%">
+                                        <span>@item.ActiveSubstance</span>
+                                        <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdASCNT" style="display:none" />
+                                    </td>
+                                    <td style="width:45%">
+                                        <span>@item.SubstanceContraindication</span>
+                                        <input type="text" value="@item.SubsContraindicationId" id="lblSubsContraindicationIdASCNT" style="display:none" />
+                                    </td>
+                                    <td style="width:10%" class="text-center">
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteActiveSubstancesContraindications($(this))">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
                                     }
                                 }
                             </tbody>
@@ -767,7 +768,7 @@
                             <div class="col-lg-9">
                                 @using (Html.BeginForm())
                                 {
-                                    @Html.TextBox("ElementName", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                @Html.TextBox("ElementName", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
                                 }
                             </div>
                         </div>
@@ -815,21 +816,21 @@
                                 @{
                                     foreach (Web.Models.Class.GetProductotherInteractions item in Count.GetProductOtherInteractions)
                                     {
-                                        <tr>
-                                            <td style="width:45%">
-                                                <span>@item.ActiveSubstance</span>
-                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdOECNT" style="display:none"/>
-                                            </td>
-                                            <td style="width:45%">
-                                                <span>@item.ElementName</span>
-                                                <input type="text" value="@item.ElementId" id="lblElementIdOECNT" style="display:none"/>
-                                            </td>
-                                            <td style="width:10%" class="text-center">
-                                                <button class="btn btn-danger btn-sm" onclick="DeleteOtherElementsContraindications($(this))">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <td style="width:45%">
+                                        <span>@item.ActiveSubstance</span>
+                                        <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdOECNT" style="display:none" />
+                                    </td>
+                                    <td style="width:45%">
+                                        <span>@item.ElementName</span>
+                                        <input type="text" value="@item.ElementId" id="lblElementIdOECNT" style="display:none" />
+                                    </td>
+                                    <td style="width:10%" class="text-center">
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteOtherElementsContraindications($(this))">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
                                     }
                                 }
                             </tbody>
@@ -888,21 +889,21 @@
                                 @{
                                     foreach (Web.Models.Class.GetProductCommentContraindications item in Count.GetProductCommentContraindications)
                                     {
-                                        <tr>
-                                            <td style="width:45%">
-                                                <span>@item.ActiveSubstance</span>
-                                                <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdCMTCNT" style="display:none" />
-                                            </td>
-                                            <td style="width:45%">
-                                                <span>@item.Comments</span>
-                                                <input type="text" value="@item.ProductCommentId" id="lblProductCommentIdCMTCNT" style="display:none" />
-                                            </td>
-                                            <td style="width:10%" class="text-center">
-                                                <button class="btn btn-danger btn-sm" onclick="DeleteCommentsContraindications($(this))">
-                                                    <span class="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <td style="width:45%">
+                                        <span>@item.ActiveSubstance</span>
+                                        <input type="text" value="@item.ActiveSubstanceId" id="lblActiveSubstanceIdCMTCNT" style="display:none" />
+                                    </td>
+                                    <td style="width:45%">
+                                        <span>@item.Comments</span>
+                                        <input type="text" value="@item.ProductCommentId" id="lblProductCommentIdCMTCNT" style="display:none" />
+                                    </td>
+                                    <td style="width:10%" class="text-center">
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteCommentsContraindications($(this))">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
                                     }
                                 }
                             </tbody>
