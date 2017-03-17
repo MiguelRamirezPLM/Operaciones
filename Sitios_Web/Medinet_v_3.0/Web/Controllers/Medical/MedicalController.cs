@@ -590,13 +590,26 @@ namespace Web.Controllers.Medical
 
                 List<ProductContraindicationsByICD> LS = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + "").ToList();
 
-                foreach (ProductContraindicationsByICD itemls in LS)
+                if (LS.LongCount() > 0)
                 {
-                    if (ICDKey.Substring(0, 3) == itemls.ICDKey.Substring(0, 3) && ICDKey.Length == 3 && itemls.ActiveSubstanceId == ActiveSubstanceId)
+                    List<GetElementsAsociated> LEA = new List<GetElementsAsociated>();
+
+                    foreach (ProductContraindicationsByICD itemls in LS)
                     {
-                        return Json("_asosParent", JsonRequestBehavior.AllowGet);
+                        GetElementsAsociated GetElementsAsociated = new GetElementsAsociated();
+
+                        GetElementsAsociated.ActiveSubstance = itemls.ActiveSubstance;
+                        GetElementsAsociated.Element = itemls.SpanishDescription;
+
+                        LEA.Add(GetElementsAsociated);
                     }
+
+                    var res = new { Data = "ExistElementsAsoc", Lists = LEA };
+
+                    return Json(res, JsonRequestBehavior.AllowGet);
                 }
+
+
 
                 Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId);
 
@@ -604,25 +617,55 @@ namespace Web.Controllers.Medical
                 {
                     try
                     {
-                        var _result = db.Database.SqlQuery<int>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
+                        var check = db.Database.SqlQuery<ProductICD>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDId + "").ToList();
 
-                        if (_result[0] == 1)
+                        if (check.LongCount() == 1)
                         {
-                            var check = db.Database.SqlQuery<ProductICD>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDId + "").ToList();
+                            var ret = new { Data = "_errorInd", Node = (LICD[0].ICDKey + " - " + LICD[0].SpanishDescription) };
 
-                            if (check.LongCount() == 1)
+                            return Json(ret, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            int ParentId = Convert.ToInt32(LICD[0].ParentId);
+
+                            List<ICD> LS1 = db.ICD.Where(x => x.ICDId == ParentId).ToList();
+
+                            int ICDIdParent = LS1[0].ICDId;
+
+                            var check1 = db.Database.SqlQuery<ProductICD>("plm_spCRUDProductICD @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ",@pharmaformID=" + PharmaFormId + ", @icdId=" + ICDIdParent + "").ToList();
+
+                            if (check1.LongCount() == 1)
                             {
-                                return Json("_errorInd", JsonRequestBehavior.AllowGet);
+                                var ret = new { Data = "_errorIndParent", Element = (LS1[0].ICDKey + " - " + LS1[0].SpanishDescription), Node = (LICD[0].ICDKey + " - " + LICD[0].SpanishDescription) };
+
+                                return Json(ret, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                var _result = db.Database.SqlQuery<int>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Create + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "").ToList();
+
+                                if (_result[0] == 1)
+                                {
+
+                                }
                             }
                         }
                     }
                     catch (Exception e)
                     {
-                        int msg = int.Parse(e.Message);
+                        string msg = e.Message;
+
+                        var res = new { Data = "Error", Message = msg };
+
+                        return Json(res, JsonRequestBehavior.AllowGet);
                     }
                 }
             }
-            return Json(true, JsonRequestBehavior.AllowGet);
+
+            var rets = new { Data = true, Message = "" };
+
+            return Json(rets, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult DeleteICDContraindications(string Product, string Category, string Division, string PharmaForm, string ActiveSubstance, string ICD)

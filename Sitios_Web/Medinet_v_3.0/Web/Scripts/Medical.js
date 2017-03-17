@@ -2350,7 +2350,7 @@ function CheckCIE10Contraindications(item) {
                     Content += "<input type=\"text\" value=\"" + DId + "\" id=\"MdlDivisionIdCIECNT\"/>";
                     Content += "<input type=\"text\" value=\"" + PFId + "\" id=\"MdlPharmaFormIdCIECNT\"/>";
                     Content += "<input type=\"text\" value=\"" + value + "\" id=\"MdlICDIdCIECNT\"/></div>";
-                    Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con el Elemento: <label style='font-weight:bold'>" + Element + "</label></span><br /><br />";
+                    Content += "<span>El actual producto contiene mas de una sustancia sin interacción, marque cuál(es) hacen interaccion con el Elemento: <span style='font-weight:bold'>" + Element + "</span></span><br /><br />";
 
                     $.each(data.Items, function (index, val) {
                         Content += "<label style='cursor:pointer'><input type='checkbox' value=\"" + val.ActiveSubstanceId + "\" onclick=\"AddCIE10Contraindications($(this))\" />&nbsp;&nbsp;" + val.Description + "</label><br />";
@@ -2463,6 +2463,9 @@ function SaveCIE10Contraindications() {
 
     $("#bloqueo").show();
 
+    $("#messageheaderComments").empty();
+    $("#DivComments").empty();
+
     var Size = $(ListAddCIECNT).size();
     var DId = $("#DivisionId").val();
     var CId = $("#CategoryId").val();
@@ -2480,51 +2483,37 @@ function SaveCIE10Contraindications() {
             url: "../Medical/SaveCIE10Contraindications",
             data: { List: Json, size: Size, Division: DId, Category: CId },
             success: function (data) {
-                if (data == true) {
+                if (data.Data == true) {
                     setTimeout("document.location.reload()");
                 }
-                else if(data == false)
-                {
-                    setTimeout("document.location.reload()");
+                else if (data.Data == "_errorInd") {
+                    $("#messageheaderComments").append("Error al asociar");
+                    $("#DivComments").append("No se pudo realizar la asociación debido a que: <span style=\"font-weight:bold;font-style:italic\">" + data.Node + "</span> está indicado al medicamento en CIE-10</label>");
+                    $("#btnComments").trigger("click");
                 }
-                else {
+                else if (data.Data == "_errorIndParent") {
+                    $("#messageheaderComments").append("Error al asociar");
+                    $("#DivComments").append("<label>No se pudo realizar la asociación debido a que: " + data.Element + " Padre de: " + data.Node + " está indicado al medicamento en CIE-10</label>");
+                    $("#btnComments").trigger("click");
+                }
+                else if (data.Data == "Error") {
+                    $("#messageheaderComments").append("Error al asociar");
+                    $("#DivComments").append("<label>Ha ocurrido un error, contacte al administrador proporcionando el siguiente error:<br /> <span style=\"font-weight:bold;font-style:italic;color:#c9302c\">" + data.Message + "</span></label>");
+                    $("#btnComments").trigger("click");
+                }
+                else if (data.Data == "ExistElementsAsoc") {
+                    $("#messageheaderComments").text("Error al asociar");
 
-                    var s = $(data).size();
+                    var Content = "";
+                    Content += "<span> Ya existe asociacion entre elementos.</span><br /><br />";
 
-                    if (s != Size) {
-                        var d = "";
-                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
-                        d += "<br/>";
-                        d += "<ul style='list-style:none'>";
-                        $.each(data, function (index, val) {
-                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
-                        });
-                        d += "</ul>";
-                        apprise("" + d + "", { 'animate': true }, function (r) {
-                            if (r) {
-                                setTimeout("document.location.reload()");
-                            }
-                            else {
-                                alert("error");
-                            }
-                        })
-                        $("#bloqueo").hide();
-                    }
-                    else {
-                        var d = "";
-                        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-                        d += "<label> Los siguientes registros, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
-                        d += "<br/>";
-                        d += "<ul style='list-style:none'>";
-                        $.each(data, function (index, val) {
-                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
-                        });
-                        d += "</ul>";
+                    $.each(data.Lists, function (index, val) {
+                        Content += "<label style='cursor:pointer'>&nbsp;&nbsp; Sustancia: " + val.ActiveSubstance + " - Elemento: " + val.Element + "</label><br />";
+                    });
 
-                        apprise("" + d + "", { 'animate': true });
-                        $("#bloqueo").hide();
-                    }
+                    $("#DivComments").append(Content);
+                    $("#btnComments").trigger("click");
+
                 }
             }
         })
