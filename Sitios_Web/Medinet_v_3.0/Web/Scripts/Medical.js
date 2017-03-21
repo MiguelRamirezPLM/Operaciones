@@ -2364,6 +2364,33 @@ function CheckCIE10Contraindications(item) {
                 else if (data.Data == false) {
                     //AddProductOtherElementInteractions(value, null);
                 }
+                else if (data.Data == "Empty") {
+
+                    $(item).prop("checked", false);
+
+                    $("#messageheaderCIECNT").text("Aviso");
+
+                    var Content = "";
+                    Content += "<span> El registro seleccionado ya ha sido asociado a la(s) sustancia(s) del Producto.</span>";
+
+                    $("#DivCIECNT").append(Content);
+                    $("#btnCIECNT").trigger("click");
+
+                    $("#bloqueo").hide();
+                }
+                else if (data.Data == "AsocNode") {
+                    $(item).prop("checked", false);
+
+                    $("#messageheaderCIECNT").text("Aviso");
+
+                    var Content = "";
+                    Content += "<span> El registro que intentas asociar tiene un nodo hijo clasificado como contraindicación, desasocie el nodo hijo y vuelve a intentarlo.</span>";
+
+                    $("#DivCIECNT").append(Content);
+                    $("#btnCIECNT").trigger("click");
+
+                    $("#bloqueo").hide();
+                }
             }
         })
     }
@@ -2493,7 +2520,7 @@ function SaveCIE10Contraindications() {
                 }
                 else if (data.Data == "_errorIndParent") {
                     $("#messageheaderComments").append("Error al asociar");
-                    $("#DivComments").append("<label>No se pudo realizar la asociación debido a que: " + data.Element + " Padre de: " + data.Node + " está indicado al medicamento en CIE-10</label>");
+                    $("#DivComments").append("<label>No se pudo realizar la asociación debido a que: <span style=\"font-weight:bold;font-style:italic\">" + data.Element + "</span> Padre de: <span style=\"font-weight:bold;font-style:italic\">" + data.Node + "</span> está indicado al medicamento en CIE-10</label>");
                     $("#btnComments").trigger("click");
                 }
                 else if (data.Data == "Error") {
@@ -2508,7 +2535,7 @@ function SaveCIE10Contraindications() {
                     Content += "<span> Ya existe asociacion entre elementos.</span><br /><br />";
 
                     $.each(data.Lists, function (index, val) {
-                        Content += "<label style='cursor:pointer'>&nbsp;&nbsp; Sustancia: " + val.ActiveSubstance + " - Elemento: " + val.Element + "</label><br />";
+                        Content += "<label style='cursor:pointer'>&bull; Sustancia: <span style=\"font-weight:bold\">" + val.ActiveSubstance + "</span> - Elemento: <span style=\"font-weight:bold\">" + val.Element + "</span></label><br />";
                     });
 
                     $("#DivComments").append(Content);

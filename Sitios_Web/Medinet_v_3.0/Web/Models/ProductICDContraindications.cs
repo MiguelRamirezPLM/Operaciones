@@ -12,22 +12,16 @@ namespace Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IPPAProductContraindications
+    public partial class ProductICDContraindications
     {
-        public IPPAProductContraindications()
-        {
-            this.ProductICDContraindications = new HashSet<ProductICDContraindications>();
-        }
-    
         public int DivisionId { get; set; }
         public int CategoryId { get; set; }
         public int PharmaFormId { get; set; }
         public int ProductId { get; set; }
         public int ActiveSubstanceId { get; set; }
-        public Nullable<byte> StatusId { get; set; }
+        public int ICDId { get; set; }
     
-        public virtual ActiveSubstances ActiveSubstances { get; set; }
-        public virtual ProductCategories ProductCategories { get; set; }
-        public virtual ICollection<ProductICDContraindications> ProductICDContraindications { get; set; }
+        public virtual ICD ICD { get; set; }
+        public virtual IPPAProductContraindications IPPAProductContraindications { get; set; }
     }
 }

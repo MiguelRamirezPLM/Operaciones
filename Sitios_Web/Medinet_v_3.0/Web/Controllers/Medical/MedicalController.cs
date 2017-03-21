@@ -541,21 +541,62 @@ namespace Web.Controllers.Medical
             return Interaction;
         }
 
-        public JsonResult CheckSubstancesContraIndications(string Product, string Category, string Division, string PharmaForm, string PharmacologicalGroup)
+        public JsonResult CheckSubstancesContraIndications(string Product, string Category, string Division, string PharmaForm, string PharmacologicalGroup, string ICD)
         {
             int ProductId = int.Parse(Product);
             int CategoryId = int.Parse(Category);
             int DivisionId = int.Parse(Division);
             int PharmaFormId = int.Parse(PharmaForm);
-            int ActiveSubstanceId = int.Parse(PharmacologicalGroup);
+            int ICDId = int.Parse(PharmacologicalGroup);
+            //  int ICDId = int.Parse(ICD);
+
+            List<ICD> LICDS = (from lls in db.ICD
+                               join pic in db.ProductICDContraindications
+                                   on lls.ICDId equals pic.ICDId
+                               where pic.ProductId == ProductId &&
+                                     pic.PharmaFormId == PharmaFormId &&
+                                     pic.CategoryId == CategoryId &&
+                                     pic.DivisionId == DivisionId &&
+                                     lls.ParentId == ICDId
+                               select lls).ToList();
+
+            if (LICDS.LongCount() > 0)
+            {
+                var ret = new { Data = "AsocNode" };
+
+                return Json(ret, JsonRequestBehavior.AllowGet);
+            }
 
             List<GetActiveSubstancesWithoutInteractions> LS = db.Database.SqlQuery<GetActiveSubstancesWithoutInteractions>("plm_spGetActiveSubstanceByProduct @productId=" + ProductId + "").ToList();
 
             if (LS.LongCount() > 1)
             {
-                var result = new { Data = true, Items = LS };
+                List<ProductContraindicationsByICD> LS1 = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + "").ToList();
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+                if (LS1.LongCount() > 0)
+                {
+                    foreach (ProductContraindicationsByICD item in LS1)
+                    {
+                        int ActiveSubstanceId = Convert.ToInt32(item.ActiveSubstanceId);
+
+                        var res = LS.SingleOrDefault(x => x.ActiveSubstanceId == ActiveSubstanceId);
+
+                        LS.Remove(res);
+                    }
+                }
+
+                if (LS.LongCount() == 0)
+                {
+                    var result = new { Data = "Empty", Items = LS };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var result = new { Data = true, Items = LS };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
@@ -588,26 +629,7 @@ namespace Web.Controllers.Medical
                     ICDKey = LICD[0].ICDKey;
                 }
 
-                List<ProductContraindicationsByICD> LS = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + "").ToList();
-
-                if (LS.LongCount() > 0)
-                {
-                    List<GetElementsAsociated> LEA = new List<GetElementsAsociated>();
-
-                    foreach (ProductContraindicationsByICD itemls in LS)
-                    {
-                        GetElementsAsociated GetElementsAsociated = new GetElementsAsociated();
-
-                        GetElementsAsociated.ActiveSubstance = itemls.ActiveSubstance;
-                        GetElementsAsociated.Element = itemls.SpanishDescription;
-
-                        LEA.Add(GetElementsAsociated);
-                    }
-
-                    var res = new { Data = "ExistElementsAsoc", Lists = LEA };
-
-                    return Json(res, JsonRequestBehavior.AllowGet);
-                }
+                // List<ProductContraindicationsByICD> LS = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + "").ToList();
 
 
 

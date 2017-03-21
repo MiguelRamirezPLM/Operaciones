@@ -18,5 +18,6 @@ namespace Web.Models
         public string ClinicalReference { get; set; }
         public bool Active { get; set; }
         public string ReferenceSource { get; set; }
+        public Nullable<int> PMID { get; set; }
     }
 }

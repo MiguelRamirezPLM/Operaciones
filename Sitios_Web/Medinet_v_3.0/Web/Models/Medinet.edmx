@@ -66,6 +66,7 @@
           <Property Name="ClinicalReference" Type="varchar(max)" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="ReferenceSource" Type="varchar(max)" />
+          <Property Name="PMID" Type="int" />
         </EntityType>
         <EntityType Name="ContentTypes">
           <Key>
@@ -195,6 +196,7 @@
           <Property Name="ExternalPackId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ExternalPackName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="True" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Families">
           <Key>
@@ -255,6 +257,7 @@
           <Property Name="InternalPackId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InternalPackName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="True" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="IPPAProductContraindications">
           <Key>
@@ -448,6 +451,22 @@
           <Property Name="PharmaFormId" Type="int" Nullable="false" />
           <Property Name="ICDId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProductICDContraindications">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="ActiveSubstanceId" />
+            <PropertyRef Name="ICDId" />
+          </Key>
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+          <Property Name="ICDId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ProductImages">
           <Key>
             <PropertyRef Name="ProductImageId" />
@@ -607,9 +626,10 @@
           <Property Name="UnitName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ShortName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="True" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="plm_vwProductsByEdition">
           <Key>
             <PropertyRef Name="CountryId" />
@@ -637,6 +657,10 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <PropertyRef Name="BookId" />
             <PropertyRef Name="BookName" />
             <PropertyRef Name="BookActive" />
+            <PropertyRef Name="WithoutContent" />
+            <PropertyRef Name="ContentType" />
+            <PropertyRef Name="SanitaryRegister" />
+            <PropertyRef Name="SSFraction" />
           </Key>
           <Property Name="CountryId" Type="int" Nullable="false" />
           <Property Name="CountryName" Type="varchar" MaxLength="100" Nullable="false" />
@@ -680,6 +704,10 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="NumberOfTherapeutics" Type="int" />
           <Property Name="NumberOfOMSTherapeutics" Type="int" />
           <Property Name="CountryCodes" Type="varchar" MaxLength="1000" />
+          <Property Name="WithoutContent" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="ContentType" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="SanitaryRegister" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="SSFraction" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <Association Name="EditionPresentations_EditionId_FK">
           <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
@@ -1491,6 +1519,38 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_550">
+          <End Role="IPPAProductContraindications" Type="Self.IPPAProductContraindications" Multiplicity="1" />
+          <End Role="ProductICDContraindications" Type="Self.ProductICDContraindications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPPAProductContraindications">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ProductICDContraindications">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_551">
+          <End Role="ICD" Type="Self.ICD" Multiplicity="1" />
+          <End Role="ProductICDContraindications" Type="Self.ProductICDContraindications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICD">
+              <PropertyRef Name="ICDId" />
+            </Principal>
+            <Dependent Role="ProductICDContraindications">
+              <PropertyRef Name="ICDId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_578">
           <End Role="ContentTypes" Type="Self.ContentTypes" Multiplicity="0..1" />
           <End Role="ParticipantProducts" Type="Self.ParticipantProducts" Multiplicity="*" />
@@ -1622,6 +1682,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySet Name="ProductBarCodes" EntityType="Self.ProductBarCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductICD" EntityType="Self.ProductICD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductICDContraindications" EntityType="Self.ProductICDContraindications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductImageSizes" EntityType="Self.ProductImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductIndications" EntityType="Self.ProductIndications" Schema="dbo" store:Type="Tables" />
@@ -1680,7 +1741,11 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
     [plm_vwProductsByEdition].[NumberOfIndications] AS [NumberOfIndications], 
     [plm_vwProductsByEdition].[NumberOfTherapeutics] AS [NumberOfTherapeutics], 
     [plm_vwProductsByEdition].[NumberOfOMSTherapeutics] AS [NumberOfOMSTherapeutics], 
-    [plm_vwProductsByEdition].[CountryCodes] AS [CountryCodes]
+    [plm_vwProductsByEdition].[CountryCodes] AS [CountryCodes], 
+    [plm_vwProductsByEdition].[WithoutContent] AS [WithoutContent], 
+    [plm_vwProductsByEdition].[ContentType] AS [ContentType], 
+    [plm_vwProductsByEdition].[SanitaryRegister] AS [SanitaryRegister], 
+    [plm_vwProductsByEdition].[SSFraction] AS [SSFraction]
     FROM [dbo].[plm_vwProductsByEdition] AS [plm_vwProductsByEdition]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="EditionPresentations_EditionId_FK" Association="Self.EditionPresentations_EditionId_FK">
@@ -1934,6 +1999,14 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <AssociationSet Name="R_541" Association="Self.R_541">
             <End Role="TherapeuticOMS" EntitySet="TherapeuticOMS" />
             <End Role="ProductTherapeuticOMS" EntitySet="ProductTherapeuticOMS" />
+          </AssociationSet>
+          <AssociationSet Name="R_550" Association="Self.R_550">
+            <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
+            <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
+          </AssociationSet>
+          <AssociationSet Name="R_551" Association="Self.R_551">
+            <End Role="ICD" EntitySet="ICD" />
+            <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
           </AssociationSet>
           <AssociationSet Name="R_578" Association="Self.R_578">
             <End Role="ContentTypes" EntitySet="ContentTypes" />
@@ -2314,6 +2387,15 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <AssociationSet Name="R_480" Association="Model1.R_480">
             <End Role="ProductCategories" EntitySet="ProductCategories" />
             <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
+          </AssociationSet>
+          <EntitySet Name="ProductICDContraindications" EntityType="Model1.ProductICDContraindications" />
+          <AssociationSet Name="ICDProductICDContraindications" Association="Model1.ICDProductICDContraindications">
+            <End Role="ICD" EntitySet="ICD" />
+            <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
+          </AssociationSet>
+          <AssociationSet Name="IPPAProductContraindicationsProductICDContraindications" Association="Model1.IPPAProductContraindicationsProductICDContraindications">
+            <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
+            <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Countries">
@@ -2705,6 +2787,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="ExternalPackName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_ExternalPackId_FK" FromRole="ExternalPacks" ToRole="Presentations" />
+          <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="InternalPacks">
           <Key>
@@ -2714,6 +2797,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="InternalPackName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_InternalPackId_FK" FromRole="InternalPacks" ToRole="Presentations" />
+          <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Presentations">
           <Key>
@@ -2753,6 +2837,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="ShortName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_WeightUnits_FK" FromRole="WeightUnits" ToRole="Presentations" />
+          <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="Presentations_ContentUnitId_FK">
           <End Type="Model1.ContentUnits" Role="ContentUnits" Multiplicity="0..1" />
@@ -3246,6 +3331,10 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <PropertyRef Name="BookId" />
             <PropertyRef Name="BookName" />
             <PropertyRef Name="BookActive" />
+            <PropertyRef Name="WithoutContent" />
+            <PropertyRef Name="ContentType" />
+            <PropertyRef Name="SanitaryRegister" />
+            <PropertyRef Name="SSFraction" />
           </Key>
           <Property Name="CountryId" Type="Int32" Nullable="false" />
           <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -3289,6 +3378,10 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="NumberOfTherapeutics" Type="Int32" />
           <Property Name="NumberOfOMSTherapeutics" Type="Int32" />
           <Property Name="CountryCodes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="WithoutContent" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="SanitaryRegister" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="SSFraction" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="EditionProductShots">
           <Key>
@@ -3572,6 +3665,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <NavigationProperty Name="ICD1" Relationship="Model1.FK_ICD_ICD" FromRole="ICD" ToRole="ICD1" />
           <NavigationProperty Name="ICD2" Relationship="Model1.FK_ICD_ICD" FromRole="ICD1" ToRole="ICD" />
           <NavigationProperty Name="ProductICD" Relationship="Model1.ICDProductICD" FromRole="ICD" ToRole="ProductICD" />
+          <NavigationProperty Name="ProductICDContraindications" Relationship="Model1.ICDProductICDContraindications" FromRole="ICD" ToRole="ProductICDContraindications" />
         </EntityType>
         <Association Name="FK_ICD_ICD">
           <End Type="Model1.ICD" Role="ICD" Multiplicity="0..1" />
@@ -3593,6 +3687,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="ClinicalReference" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PMID" Type="Int32" />
         </EntityType>
         <EntityType Name="ATCPharmacologicalGroups">
           <Key>
@@ -3962,6 +4057,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <Property Name="StatusId" Type="Byte" />
           <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_481" FromRole="IPPAProductContraindications" ToRole="ActiveSubstances" />
           <NavigationProperty Name="ProductCategories" Relationship="Model1.R_480" FromRole="IPPAProductContraindications" ToRole="ProductCategories" />
+          <NavigationProperty Name="ProductICDContraindications" Relationship="Model1.IPPAProductContraindicationsProductICDContraindications" FromRole="IPPAProductContraindications" ToRole="ProductICDContraindications" />
         </EntityType>
         <Association Name="R_481">
           <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -3990,6 +4086,56 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
               <PropertyRef Name="CategoryId" />
               <PropertyRef Name="PharmaFormId" />
               <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductICDContraindications">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PharmaFormId" />
+            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="ActiveSubstanceId" />
+            <PropertyRef Name="ICDId" />
+          </Key>
+          <Property Name="DivisionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+          <Property Name="ICDId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ICD" Relationship="Model1.ICDProductICDContraindications" FromRole="ProductICDContraindications" ToRole="ICD" />
+          <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.IPPAProductContraindicationsProductICDContraindications" FromRole="ProductICDContraindications" ToRole="IPPAProductContraindications" />
+        </EntityType>
+        <Association Name="ICDProductICDContraindications">
+          <End Type="Model1.ICD" Role="ICD" Multiplicity="1" />
+          <End Type="Model1.ProductICDContraindications" Role="ProductICDContraindications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ICD">
+              <PropertyRef Name="ICDId" />
+            </Principal>
+            <Dependent Role="ProductICDContraindications">
+              <PropertyRef Name="ICDId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IPPAProductContraindicationsProductICDContraindications">
+          <End Type="Model1.IPPAProductContraindications" Role="IPPAProductContraindications" Multiplicity="1" />
+          <End Type="Model1.ProductICDContraindications" Role="ProductICDContraindications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPPAProductContraindications">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ProductICDContraindications">
+              <PropertyRef Name="DivisionId" />
+              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="PharmaFormId" />
+              <PropertyRef Name="ProductId" />
+              <PropertyRef Name="ActiveSubstanceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4146,6 +4292,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySetMapping Name="ExternalPacks">
             <EntityTypeMapping TypeName="Model1.ExternalPacks">
               <MappingFragment StoreEntitySet="ExternalPacks">
+                <ScalarProperty Name="True" ColumnName="True" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ExternalPackName" ColumnName="ExternalPackName" />
                 <ScalarProperty Name="ExternalPackId" ColumnName="ExternalPackId" />
@@ -4155,6 +4302,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySetMapping Name="InternalPacks">
             <EntityTypeMapping TypeName="Model1.InternalPacks">
               <MappingFragment StoreEntitySet="InternalPacks">
+                <ScalarProperty Name="True" ColumnName="True" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="InternalPackName" ColumnName="InternalPackName" />
                 <ScalarProperty Name="InternalPackId" ColumnName="InternalPackId" />
@@ -4186,6 +4334,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySetMapping Name="WeightUnits">
             <EntityTypeMapping TypeName="Model1.WeightUnits">
               <MappingFragment StoreEntitySet="WeightUnits">
+                <ScalarProperty Name="True" ColumnName="True" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ShortName" ColumnName="ShortName" />
                 <ScalarProperty Name="UnitName" ColumnName="UnitName" />
@@ -4323,6 +4472,10 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySetMapping Name="plm_vwProductsByEdition">
             <EntityTypeMapping TypeName="Model1.plm_vwProductsByEdition">
               <MappingFragment StoreEntitySet="plm_vwProductsByEdition">
+                <ScalarProperty Name="SSFraction" ColumnName="SSFraction" />
+                <ScalarProperty Name="SanitaryRegister" ColumnName="SanitaryRegister" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="WithoutContent" ColumnName="WithoutContent" />
                 <ScalarProperty Name="CountryCodes" ColumnName="CountryCodes" />
                 <ScalarProperty Name="NumberOfOMSTherapeutics" ColumnName="NumberOfOMSTherapeutics" />
                 <ScalarProperty Name="NumberOfTherapeutics" ColumnName="NumberOfTherapeutics" />
@@ -4520,6 +4673,7 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
           <EntitySetMapping Name="ClinicalReferences">
             <EntityTypeMapping TypeName="Model1.ClinicalReferences">
               <MappingFragment StoreEntitySet="ClinicalReferences">
+                <ScalarProperty Name="PMID" ColumnName="PMID" />
                 <ScalarProperty Name="ReferenceSource" ColumnName="ReferenceSource" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ClinicalReference" ColumnName="ClinicalReference" />
@@ -4653,6 +4807,18 @@ advertencia 6002: La tabla o vista 'Medinet.dbo.plm_vwProductsByEdition' no tien
             <EntityTypeMapping TypeName="Model1.IPPAProductContraindications">
               <MappingFragment StoreEntitySet="IPPAProductContraindications">
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductICDContraindications">
+            <EntityTypeMapping TypeName="IsTypeOf(Model1.ProductICDContraindications)">
+              <MappingFragment StoreEntitySet="ProductICDContraindications">
+                <ScalarProperty Name="ICDId" ColumnName="ICDId" />
                 <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />

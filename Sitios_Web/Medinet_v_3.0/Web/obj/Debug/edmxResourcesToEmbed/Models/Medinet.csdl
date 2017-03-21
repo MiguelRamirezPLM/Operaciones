@@ -347,6 +347,15 @@
       <End Role="ProductCategories" EntitySet="ProductCategories" />
       <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
     </AssociationSet>
+    <EntitySet Name="ProductICDContraindications" EntityType="Model1.ProductICDContraindications" />
+    <AssociationSet Name="ICDProductICDContraindications" Association="Model1.ICDProductICDContraindications">
+      <End Role="ICD" EntitySet="ICD" />
+      <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
+    </AssociationSet>
+    <AssociationSet Name="IPPAProductContraindicationsProductICDContraindications" Association="Model1.IPPAProductContraindicationsProductICDContraindications">
+      <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
+      <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -737,6 +746,7 @@
     <Property Name="ExternalPackName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_ExternalPackId_FK" FromRole="ExternalPacks" ToRole="Presentations" />
+    <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="InternalPacks">
     <Key>
@@ -746,6 +756,7 @@
     <Property Name="InternalPackName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_InternalPackId_FK" FromRole="InternalPacks" ToRole="Presentations" />
+    <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Presentations">
     <Key>
@@ -785,6 +796,7 @@
     <Property Name="ShortName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Presentations" Relationship="Model1.Presentations_WeightUnits_FK" FromRole="WeightUnits" ToRole="Presentations" />
+    <Property Name="True" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="Presentations_ContentUnitId_FK">
     <End Type="Model1.ContentUnits" Role="ContentUnits" Multiplicity="0..1" />
@@ -1278,6 +1290,10 @@
       <PropertyRef Name="BookId" />
       <PropertyRef Name="BookName" />
       <PropertyRef Name="BookActive" />
+      <PropertyRef Name="WithoutContent" />
+      <PropertyRef Name="ContentType" />
+      <PropertyRef Name="SanitaryRegister" />
+      <PropertyRef Name="SSFraction" />
     </Key>
     <Property Name="CountryId" Type="Int32" Nullable="false" />
     <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1321,6 +1337,10 @@
     <Property Name="NumberOfTherapeutics" Type="Int32" />
     <Property Name="NumberOfOMSTherapeutics" Type="Int32" />
     <Property Name="CountryCodes" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="WithoutContent" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="ContentType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="SanitaryRegister" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="SSFraction" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="EditionProductShots">
     <Key>
@@ -1604,6 +1624,7 @@
     <NavigationProperty Name="ICD1" Relationship="Model1.FK_ICD_ICD" FromRole="ICD" ToRole="ICD1" />
     <NavigationProperty Name="ICD2" Relationship="Model1.FK_ICD_ICD" FromRole="ICD1" ToRole="ICD" />
     <NavigationProperty Name="ProductICD" Relationship="Model1.ICDProductICD" FromRole="ICD" ToRole="ProductICD" />
+    <NavigationProperty Name="ProductICDContraindications" Relationship="Model1.ICDProductICDContraindications" FromRole="ICD" ToRole="ProductICDContraindications" />
   </EntityType>
   <Association Name="FK_ICD_ICD">
     <End Type="Model1.ICD" Role="ICD" Multiplicity="0..1" />
@@ -1625,6 +1646,7 @@
     <Property Name="ClinicalReference" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PMID" Type="Int32" />
   </EntityType>
   <EntityType Name="ATCPharmacologicalGroups">
     <Key>
@@ -1994,6 +2016,7 @@
     <Property Name="StatusId" Type="Byte" />
     <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_481" FromRole="IPPAProductContraindications" ToRole="ActiveSubstances" />
     <NavigationProperty Name="ProductCategories" Relationship="Model1.R_480" FromRole="IPPAProductContraindications" ToRole="ProductCategories" />
+    <NavigationProperty Name="ProductICDContraindications" Relationship="Model1.IPPAProductContraindicationsProductICDContraindications" FromRole="IPPAProductContraindications" ToRole="ProductICDContraindications" />
   </EntityType>
   <Association Name="R_481">
     <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -2022,6 +2045,56 @@
         <PropertyRef Name="CategoryId" />
         <PropertyRef Name="PharmaFormId" />
         <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductICDContraindications">
+    <Key>
+      <PropertyRef Name="DivisionId" />
+      <PropertyRef Name="CategoryId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="ICDId" />
+    </Key>
+    <Property Name="DivisionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="ICDId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ICD" Relationship="Model1.ICDProductICDContraindications" FromRole="ProductICDContraindications" ToRole="ICD" />
+    <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.IPPAProductContraindicationsProductICDContraindications" FromRole="ProductICDContraindications" ToRole="IPPAProductContraindications" />
+  </EntityType>
+  <Association Name="ICDProductICDContraindications">
+    <End Type="Model1.ICD" Role="ICD" Multiplicity="1" />
+    <End Type="Model1.ProductICDContraindications" Role="ProductICDContraindications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ICD">
+        <PropertyRef Name="ICDId" />
+      </Principal>
+      <Dependent Role="ProductICDContraindications">
+        <PropertyRef Name="ICDId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="IPPAProductContraindicationsProductICDContraindications">
+    <End Type="Model1.IPPAProductContraindications" Role="IPPAProductContraindications" Multiplicity="1" />
+    <End Type="Model1.ProductICDContraindications" Role="ProductICDContraindications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IPPAProductContraindications">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ProductICDContraindications">
+        <PropertyRef Name="DivisionId" />
+        <PropertyRef Name="CategoryId" />
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+        <PropertyRef Name="ActiveSubstanceId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

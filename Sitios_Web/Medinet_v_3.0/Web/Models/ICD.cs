@@ -18,6 +18,7 @@ namespace Web.Models
         {
             this.ICD1 = new HashSet<ICD>();
             this.ProductICD = new HashSet<ProductICD>();
+            this.ProductICDContraindications = new HashSet<ProductICDContraindications>();
         }
     
         public int ICDId { get; set; }
@@ -32,5 +33,6 @@ namespace Web.Models
         public virtual ICollection<ICD> ICD1 { get; set; }
         public virtual ICD ICD2 { get; set; }
         public virtual ICollection<ProductICD> ProductICD { get; set; }
+        public virtual ICollection<ProductICDContraindications> ProductICDContraindications { get; set; }
     }
 }
