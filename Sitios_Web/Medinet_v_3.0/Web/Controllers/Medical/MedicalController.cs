@@ -548,7 +548,6 @@ namespace Web.Controllers.Medical
             int DivisionId = int.Parse(Division);
             int PharmaFormId = int.Parse(PharmaForm);
             int ICDId = int.Parse(PharmacologicalGroup);
-            //  int ICDId = int.Parse(ICD);
 
             List<ICD> LICDS = (from lls in db.ICD
                                join pic in db.ProductICDContraindications
@@ -628,10 +627,6 @@ namespace Web.Controllers.Medical
                 {
                     ICDKey = LICD[0].ICDKey;
                 }
-
-                // List<ProductContraindicationsByICD> LS = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + "").ToList();
-
-
 
                 Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId);
 
@@ -1604,9 +1599,11 @@ namespace Web.Controllers.Medical
             return Json(LF, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SaveCIE10(String List, string size)
+        public JsonResult SaveCIE10(String List, string size, string Category, string Division)
         {
             int SizeId = int.Parse(size);
+            int CategoryId = int.Parse(Category);
+            int DivisionId = int.Parse(Division);
 
             dynamic item = JsonConvert.DeserializeObject(List);
 
@@ -1617,6 +1614,8 @@ namespace Web.Controllers.Medical
                 int ICDId = Convert.ToInt32(item[i]["TId"]);
                 int ProductId = Convert.ToInt32(item[i]["PId"]);
                 int PharmaFormId = Convert.ToInt32(item[i]["PFId"]);
+
+                List<ProductContraindicationsByICD> LS1 = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + "").ToList();
 
                 String response = Operations.SaveAddCIE10(ICDId, ProductId, PharmaFormId, "Insert");
 

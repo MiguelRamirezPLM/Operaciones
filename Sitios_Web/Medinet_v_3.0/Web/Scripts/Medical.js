@@ -2140,6 +2140,8 @@ function AddCCIE10Remove(item) {
 function SaveCCIE10() {
 
     var Size = $(ListAddCIE).size();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
 
     if ((Size != 0) && (Size != "0")) {
         $('#bloqueo').show();
@@ -2152,7 +2154,7 @@ function SaveCCIE10() {
             Type: "POST",
             dataType: "Json",
             url: "../Medical/SaveCIE10",
-            data: { List: Json, size: Size },
+            data: { List: Json, size: Size, Category: CId, Division: DId },
             success: function (data) {
                 if (data == true) {
                     setTimeout("document.location.reload()");
