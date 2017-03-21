@@ -119,7 +119,7 @@ namespace Web.Controllers.Production
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-
+        
         public JsonResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction, int UserId, string HashKey)
         {
             string FieldsAffected = "(SSFraction," + Fraction.Trim() + ")";

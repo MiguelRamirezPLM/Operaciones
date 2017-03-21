@@ -371,8 +371,6 @@
 </script>
 
 
-@*BORRRAR*@
-
 @*Prevents the user from writing letters on the input tag*@
 <script>
     function validate(evt) {
@@ -496,275 +494,8 @@
         $("._modalLogo").modal("hide");
     }
 </script>
-@*Obtains the editions in which the selected product was participating and shows them in a table*@
-<script>
-    function _getParticipant(item) {
-        $('html').css('overflow', 'hidden');
-        var tr = $(item).parents("tr:first");
-        var _vlproductId = tr.find("#_productId").val();
-        var _vlpharmaformId = tr.find("#_pharmaFormId").val();
-        var _vlcategoryId = tr.find("#_categoryId").val();
-        var _vldivisionid = tr.find("#_divisionId").val();
-        var _vlproductName = tr.find("#_productName").text();
-        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
-        var _vlcategoryName = tr.find("#_categoryName").text();
-        $("#_wlproductName").empty();
-        $("#_wlproductName").append(_vlproductName);
-        $("#_wlpharmaceuticalForm").empty();
-        $("#_wlpharmaceuticalForm").append(_vlpharmaceuticalForm);
-        $("#_wlcategoryName").empty();
-        $("#_wlcategoryName").append(_vlcategoryName);
-        $("#_elementTable tbody").empty();
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "@Url.Content("~/Production/getParticipantProducts")",
-            traditional: true,
-            data: {
-                ProductId: _vlproductId,
-                PharmaFormId: _vlpharmaformId,
-                Categoryid: _vlcategoryId,
-                DivisionId: _vldivisionid
-            },
-            success: function (data) {
-                $.each(data, function (index, item) {
-                    if (item.LongCount >= 13) {
-                        $("#_dvparticipant").addClass("heightdivp");
-                    }
-                    else {
-                        $("#_dvparticipant").removeClass("heightdivp");
-                    }
-                    $("#_elementTable tbody").append(
-                        "<tr>"
-                        + "<td>" + item.ShortName + "</td>"
-                        + "<td>" + item.NumberEdition + "</td>"
-                        + "<td>" + item.TypeName + "</td>"
-                        + "<td>" + item.ISBN + "</td>"
-                        + "<td>" + item.ParentName + "<span style='padding-left:5px;'>" + item.NumberEditionParent + "</span>" + "</td>"
-                        + "</tr>"
-                        );
-                });
-            }
-        });
-    }
-</script>
-@*Obtains the data and position of the selected product*@
-<script>
-    var _positionSanitary;
-    function _vlgetsanitary(item) {
-        var tr = $(item).parents("tr:first");
-        _positionSanitary = tr;
-        var _vlproductName = tr.find("#_productName").text();
-        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
-        var _vlcategoryName = tr.find("#_categoryName").text();
-        var _vlsanitaryRegister = tr.find("#_sanitaryRegister").text();
-        $("#_vlmessageRegister").empty();
-        $("#_vlmessageRegister").append("Modifique el registro sanitario");
-        $("#_vladdRegister").addClass("hide");
-        $("#_vlsaveRegister").removeClass("hide");
-        $("#_rlproductName").empty();
-        $("#_rlproductName").append(_vlproductName);
-        $("#_rlpharmaceuticalForm").empty();
-        $("#_rlpharmaceuticalForm").append(_vlpharmaceuticalForm);
-        $("#_rlcategoryName").empty();
-        $("#_rlcategoryName").append(_vlcategoryName);
-        $("#_vlsetSanitary").val(_vlsanitaryRegister);
-    }
-</script>
-@*Obtains the data and position of the selected product*@
-<script>
-    var _positionSanitary;
-    function _plusRegister(item) {
-        var tr = $(item).parents("tr:first");
-        _positionSanitary = tr;
-        var _vlproductName = tr.find("#_productName").text();
-        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
-        var _vlcategoryName = tr.find("#_categoryName").text();
-        var _vlsanitaryRegister = tr.find("#_sanitaryRegister").text();
-        $("#_vlmessageRegister").empty();
-        $("#_vlmessageRegister").append("Agregue el Registro Sanitario");
-        $("#_vladdRegister").removeClass("hide");
-        $("#_vlsaveRegister").addClass("hide");
-        $("#_rlproductName").empty();
-        $("#_rlproductName").append(_vlproductName);
-        $("#_rlpharmaceuticalForm").empty();
-        $("#_rlpharmaceuticalForm").append(_vlpharmaceuticalForm);
-        $("#_rlcategoryName").empty();
-        $("#_rlcategoryName").append(_vlcategoryName);
-        $("#_vlsetSanitary").val(_vlsanitaryRegister);
-    }
-</script>
-@*Keeps changes to the health record entered*@
-<script>
-    function _vlsaveRegister(item) {
-        var _vlgetsanitary = $("#_vlsetSanitary").val();
-        _positionSanitary.find("#_sanitaryRegister").empty();
-        _positionSanitary.find("#_sanitaryRegister").append(_vlgetsanitary);
-        var _rlproductId = _positionSanitary.find("#_productId").val();
-        var _rlpharmaFormid = _positionSanitary.find("#_pharmaFormId").val();
-        var _rlcategoryId = _positionSanitary.find("#_categoryId").val();
-        var _rldivisionId = _positionSanitary.find("#_divisionId").val();
-        if (_vlgetsanitary.trim() == false) {
-            _positionSanitary.find("#_plusRegister").removeClass("hide");
-            _positionSanitary.find("#_pencilRegister").addClass("hide");
-        }
-        if (_vlgetsanitary.trim() != false) {
-            _positionSanitary.find("#_plusRegister").addClass("hide");
-            _positionSanitary.find("#_pencilRegister").removeClass("hide");
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "@Url.Content("~/Production/saveSanitary")",
-            traditional: true,
-            data: {
-                ProductId: _rlproductId,
-                PharmaFormId: _rlpharmaFormid,
-                Categoryid: _rlcategoryId,
-                DivisionId: _rldivisionId,
-                SanitaryRegister: _vlgetsanitary
-            },
-            success: function (data) {
-                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
-                $("._modalSanitary").modal("hide");
-            }
-        });
-    }
-</script>
-@*Obtains the data and position of the selected product*@
-<script>
-    var _positionFraction;
-    function _vlgetFraction(item) {
-        var tr = $(item).parents("tr:first");
-        _positionFraction = tr;
-        var _vlproductName = tr.find("#_productName").text();
-        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
-        var _vlcategoryName = tr.find("#_categoryName").text();
-        var _vlgetFraction = tr.find("#_fraction").text();
-        $("#_messageFraction").empty();
-        $("#_messageFraction").append("Agregue la Fracción Cofepris");
-        $("#_addFraction").removeClass("hide");
-        $("#_saveFraction").addClass("hide");
-        $("#_fproductName").empty();
-        $("#_fproductName").append(_vlproductName);
-        $("#_fpharmaceuticalForm").empty();
-        $("#_fpharmaceuticalForm").append(_vlpharmaceuticalForm);
-        $("#_fcategoryName").empty();
-        $("#_fcategoryName").append(_vlcategoryName);
-        $("#_setFraction").val(_vlgetFraction);
-    }
-</script>
-@*Obtains the data and position of the selected product*@
-<script>
-    var _positionFraction;
-    function _fractionPencil(item) {
-        var tr = $(item).parents("tr:first");
-        _positionFraction = tr;
-        var _vlproductName = tr.find("#_productName").text();
-        var _vlpharmaceuticalForm = tr.find("#_pharmaceuticalForm").text();
-        var _vlcategoryName = tr.find("#_categoryName").text();
-        var _vlgetFraction = tr.find("#_fraction").text();
-        $("#_messageFraction").empty();
-        $("#_messageFraction").append("Modifique la Fracción Cofepris");
-        $("#_addFraction").addClass("hide");
-        $("#_saveFraction").removeClass("hide");
-        $("#_fproductName").empty();
-        $("#_fproductName").append(_vlproductName);
-        $("#_fpharmaceuticalForm").empty();
-        $("#_fpharmaceuticalForm").append(_vlpharmaceuticalForm);
-        $("#_fcategoryName").empty();
-        $("#_fcategoryName").append(_vlcategoryName);
-        $("#_setFraction").val(_vlgetFraction);
-    }
-</script>
-@*Saves the changes of the fraction COFEPRIS entered*@
-<script>
-    function _saveFraction(item) {
-        var _vlgetFraction = $("#_setFraction").val();
-        _positionFraction.find("#_fraction").empty();
-        _positionFraction.find("#_fraction").append(_vlgetFraction);
-        var _flproductId = _positionFraction.find("#_productId").val();
-        var _flpharmaFormid = _positionFraction.find("#_pharmaFormId").val();
-        var _flcategoryId = _positionFraction.find("#_categoryId").val();
-        var _fldivisionId = _positionFraction.find("#_divisionId").val();
 
-        if (_vlgetFraction.trim() == false) {
-            _positionFraction.find("#_plusFraction").removeClass("hide");
-            _positionFraction.find("#_fractionPencil").addClass("hide");
-        }
-        if (_vlgetFraction.trim() != false) {
-            _positionFraction.find("#_plusFraction").addClass("hide");
-            _positionFraction.find("#_fractionPencil").removeClass("hide");
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "@Url.Content("~/Production/saveFraction")",
-            traditional: true,
-            data: {
-                ProductId: _flproductId,
-                PharmaFormId: _flpharmaFormid,
-                Categoryid: _flcategoryId,
-                DivisionId: _fldivisionId,
-                Fraction: _vlgetFraction
-            },
-            success: function (data) {
-                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
-                $('._modalFraction').modal('hide');
-            }
-        });
-    }
-</script>
-@*Saves changes when a product is new and when it is not*@
-<script>
-    function _new(item) {
-        var tr = $(item).parents("tr:first");
-        var _vlproductId = tr.find("#_productId").val();
-        var _vlpharmaformId = tr.find("#_pharmaFormId").val();
-        var _vlcategoryId = tr.find("#_categoryId").val();
-        var _vldivisionid = tr.find("#_divisionId").val();
-        var _vleditionId = $("#_editionId").val();
-        if (tr.find("#_new").is(":checked")) {
-            tr.find("#_changes").prop("checked", false);
-            tr.find("#_btnChanges").addClass("hide");
-            tr.find("#_chargeOrthographic").prop("checked", false);
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "@Url.Content("~/Production/itsNew")",
-                traditional: true,
-                data: {
-                    ProductId: _vlproductId,
-                    PharmaFormId: _vlpharmaformId,
-                    Categoryid: _vlcategoryId,
-                    DivisionId: _vldivisionid,
-                    EditionId: _vleditionId
-                },
-                success: function (data) {
-                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
-                }
-            });
-        }
-        else if (tr.find("#_new").is(":not(:checked)")) {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "@Url.Content("~/Production/notNew")",
-                traditional: true,
-                data: {
-                    ProductId: _vlproductId,
-                    PharmaFormId: _vlpharmaformId,
-                    Categoryid: _vlcategoryId,
-                    DivisionId: _vldivisionid,
-                    EditionId: _vleditionId
-                },
-                success: function (data) {
-                    swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
-                }
-            });
-        }
-    }
-</script>
+
 @*Saves changes when a product changes and when it does not*@
 <script>
     function _changes(item) {
@@ -1342,6 +1073,8 @@
         var _vlzinternalPackId = $("#_getInternalPack option:selected").val();
         var _vlzcontentUnitsId = $("#_getContentUnits option:selected").val();
         var _vlzweightUnitsId = $("#_getWeightUnits option:selected").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
         $("#_tvlexternalPack").addClass("hide");
         $("#_fvlexternalPack").addClass("hide");
         $("#_fgetExternalPack").addClass("hide");
@@ -2489,12 +2222,7 @@
         $('._modalImages').modal('hide');
     }
 </script>
-<script>
-    function _closeParticipant(item) {
-        $("._modalParticipant").modal('hide');
-        $('html').css('overflow', 'auto');
-    }
-</script>
+
 <script>
     $(document).ready(function () {
         $('#_charEdition').keyup(function () {
