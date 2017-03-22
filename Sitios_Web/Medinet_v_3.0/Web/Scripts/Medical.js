@@ -541,16 +541,41 @@ function AddCIE10(item) {
     var PFId = $("#PharmaFormId").val();
     var PId = $("#ProductId").val();
 
+    $("#messageheaderCIECNT").text('');
+    $("#DivCIECNT").empty();
+
     if ($(item).is(":checked")) {
 
-        ListAddCIE.push({
-            'TId': ICDId,
-            'PFId': PFId,
-            'PId': PId
-        });
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/CheckCIE10",
+            data: { PharmaForm: PFId, Product: PId, ICD: ICDId },
+            success: function (data) {
+                if (data == true) {
+                    ListAddCIE.push({
+                        'TId': ICDId,
+                        'PFId': PFId,
+                        'PId': PId
+                    });
 
-        console.log(ListAddCIE);
+                    console.log(ListAddCIE);
+                }
+                else if (data.Data == "AsocNode") {
+                    $(item).prop("checked", false);
 
+                    $("#messageheaderCIECNT").text("Aviso");
+
+                    var Content = "";
+                    Content += "<span> El registro que intentas asociar tiene un nodo hijo clasificado como contraindicación, desasocie el nodo hijo y vuelve a intentarlo.</span>";
+
+                    $("#DivCIECNT").append(Content);
+                    $("#btnCIECNT").trigger("click");
+
+                    $("#bloqueo").hide();
+                }
+            }
+        })
     }
     else if ($(item).is(":not(:checked)")) {
 
@@ -599,6 +624,11 @@ function AddCIE10Remove(item) {
 function SaveCIE10() {
 
     var Size = $(ListAddCIE).size();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+
+    $("#messageheaderComments").empty();
+    $("#DivComments").empty();
 
     if ((Size != 0) && (Size != "0")) {
         $('#bloqueo').show();
@@ -611,10 +641,29 @@ function SaveCIE10() {
             Type: "POST",
             dataType: "Json",
             url: "../Medical/SaveCIE10",
-            data: { List: Json, size: Size },
+            data: { List: Json, size: Size, Category: CId, Division: DId },
             success: function (data) {
                 if (data == true) {
                     setTimeout("document.location.reload()");
+                }
+                else if (data.Data == "AsocCNT") {
+                    $("#messageheaderComments").append("Error al asociar");
+                    $("#DivComments").append("<label>No se pudo realizar la asociación debido a que:  <span style=\"font-weight:bold;font-style:italic\">" + data.ICDKey + " - " + data.Node + "</span> está contraindicado al medicamento</label>");
+                    $("#btnComments").trigger("click");
+                }
+                else if (data.Data == "ReplaceParentByNode") {
+                    $("#divbtnsModal").empty();
+                    var btn = "";
+
+                    btn += "<button class=\"btn btn-primary\" data-dismiss=\"modal\" onclick=\"setTimeout('document.location.reload()')\">";
+                    btn += "<span class=\"glyphicon glyphicon-ok\"></span>";
+                    btn += "<span>&nbsp; Aceptar</span>";
+                    btn += "</button>";
+
+                    $("#messageheaderComments").append("Aviso");
+                    $("#DivComments").append("<label>Fue agregado correctamente <span style=\"font-weight:bold\">" + data.ICDKeyNode + " - " + data.Node + " (Nodo hijo)</span> reemplazando a <span style=\"font-weight:bold\">" + data.ICDKeyParent + " - " + data.Parent + " (Nodo Padre)</span></label>");
+                    $("#divbtnsModal").append(btn);
+                    $("#btnComments").trigger("click");
                 }
                 else {
 
@@ -627,7 +676,7 @@ function SaveCIE10() {
                         d += "<br/>";
                         d += "<ul style='list-style:none'>";
                         $.each(data, function (index, val) {
-                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                            d += "<li><span style=\"font-weight:bold\">&bull;&nbsp;" + val + "</span></li>";
                         });
                         d += "</ul>";
                         apprise("" + d + "", { 'animate': true }, function (r) {
@@ -647,7 +696,7 @@ function SaveCIE10() {
                         d += "<br/>";
                         d += "<ul style='list-style:none'>";
                         $.each(data, function (index, val) {
-                            d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
+                            d += "<li><span style=\"font-weight:bold\">&bull;&nbsp;<b>" + val + "</b></span></li>";
                         });
                         d += "</ul>";
 
@@ -2140,8 +2189,6 @@ function AddCCIE10Remove(item) {
 function SaveCCIE10() {
 
     var Size = $(ListAddCIE).size();
-    var CId = $("#CategoryId").val();
-    var DId = $("#DivisionId").val();
 
     if ((Size != 0) && (Size != "0")) {
         $('#bloqueo').show();
@@ -2154,7 +2201,7 @@ function SaveCCIE10() {
             Type: "POST",
             dataType: "Json",
             url: "../Medical/SaveCIE10",
-            data: { List: Json, size: Size, Category: CId, Division: DId },
+            data: { List: Json, size: Size },
             success: function (data) {
                 if (data == true) {
                     setTimeout("document.location.reload()");

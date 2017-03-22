@@ -92,6 +92,7 @@
                                             var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@d[0].Description</span></span>
+                                        <input type="text" value="@d[0].DivisionId" id="DivisionId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -124,6 +125,7 @@
                                             var ct = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Categoría: <span style="color: #de5145; ">@ct[0].Description</span></span>
+                                        <input type="text" value="@ct[0].CategoryId" id="CategoryId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -219,5 +221,49 @@
                 }
             </tbody>
         </table>
+    </div>
+</div>
+
+<button id="btnCIECNT" data-toggle="modal" data-target="#CIECNT" style="display:none" class="btn btn-danger btn-sm">CIE-10</button>
+<div class="modal fade" data-backdrop="false" id="CIECNT" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderCIECNT"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivCIECNT"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtncloseerror">
+                <button class="btn btn-primary" data-dismiss="modal" @*onclick="SaveCIE10Contraindications()"*@>
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelAddAOENT()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnComments" data-toggle="modal" data-target="#Comments" style="display:none" class="btn btn-danger btn-sm">CIE-10</button>
+<div class="modal fade" data-backdrop="false" id="Comments" role="dialog" style="top:25%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderComments"><i></i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div id="DivComments"></div>
+            </div>
+            <div class="modal-footer text-center" id="divbtnsModal">
+                <button class="btn btn-primary" data-dismiss="modal" onclick="$('#bloqueo').hide();">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

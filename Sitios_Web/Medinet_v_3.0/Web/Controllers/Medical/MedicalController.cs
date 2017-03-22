@@ -1599,13 +1599,41 @@ namespace Web.Controllers.Medical
             return Json(LF, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult CheckCIE10(string PharmaForm, string Product, string ICD)
+        {
+            int ProductId = int.Parse(Product);
+            int PharmaFormId = int.Parse(PharmaForm);
+            int ICDId = int.Parse(ICD);
+
+            List<ICD> LICDS = (from lls in db.ICD
+                               join pic in db.ProductICD
+                                   on lls.ICDId equals pic.ICDId
+                               where pic.ProductId == ProductId &&
+                                     pic.PharmaFormId == PharmaFormId &&
+                                     lls.ParentId == ICDId
+                               select lls).ToList();
+
+            if (LICDS.LongCount() > 0)
+            {
+                var ret = new { Data = "AsocNode" };
+
+                return Json(ret, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult SaveCIE10(String List, string size, string Category, string Division)
         {
             int SizeId = int.Parse(size);
             int CategoryId = int.Parse(Category);
             int DivisionId = int.Parse(Division);
+            bool FlagParent = false;
+            string SpanishDescription = string.Empty;
+            string ICDKeyParent = string.Empty;
 
             dynamic item = JsonConvert.DeserializeObject(List);
+
 
             List<String> LS = new List<String>();
 
@@ -1615,13 +1643,51 @@ namespace Web.Controllers.Medical
                 int ProductId = Convert.ToInt32(item[i]["PId"]);
                 int PharmaFormId = Convert.ToInt32(item[i]["PFId"]);
 
+                List<ICD> LICDS = (from ic in db.ICD
+                                   join pic in db.ProductICD
+                                       on ic.ParentId equals pic.ICDId
+                                   where ic.ICDId == ICDId &&
+                                            pic.ProductId == ProductId &&
+                                            pic.PharmaFormId == PharmaFormId
+                                   select ic).ToList();
+
+                if (LICDS.LongCount() > 0)
+                {
+                    int ParentId = Convert.ToInt32(LICDS[0].ParentId);
+
+                    List<ICD> LICDP = db.ICD.Where(x => x.ICDId == ParentId).ToList();
+
+                    SpanishDescription = LICDP[0].SpanishDescription;
+                    ICDKeyParent = LICDP[0].ICDKey;
+
+                    String responses = Operations.SaveAddCIE10(ParentId, ProductId, PharmaFormId, "Delete");
+
+                    FlagParent = true;
+                }
+
+                List<ICD> LICD = db.ICD.Where(x => x.ICDId == ICDId).ToList();
+
                 List<ProductContraindicationsByICD> LS1 = db.Database.SqlQuery<ProductContraindicationsByICD>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ",@categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + "").ToList();
 
                 String response = Operations.SaveAddCIE10(ICDId, ProductId, PharmaFormId, "Insert");
 
-                if (response != "Ok")
+                if ((response != "Ok") && (response != "AsocCNT"))
                 {
                     LS.Add(response.ToUpper());
+                }
+
+                if (response == "AsocCNT")
+                {
+                    var res = new { Data = response, Node = LICD[0].SpanishDescription, ICDKey = LICD[0].ICDKey };
+
+                    return Json(res, JsonRequestBehavior.AllowGet);
+                }
+
+                if (FlagParent == true)
+                {
+                    var res = new { Data = "ReplaceParentByNode", Parent = SpanishDescription, Node = LICDS[0].SpanishDescription, ICDKeyParent = ICDKeyParent, ICDKeyNode = LICDS[0].ICDKey };
+
+                    return Json(res, JsonRequestBehavior.AllowGet);
                 }
             }
 

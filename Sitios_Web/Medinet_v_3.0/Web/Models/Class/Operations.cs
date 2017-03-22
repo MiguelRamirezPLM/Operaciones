@@ -65,9 +65,20 @@ namespace Web.Models.Class
 
                 if (LS.LongCount() == 0)
                 {
-                    var response = db.Database.ExecuteSqlCommand("plm_spCRUDProductICD @CRUDType=" + CRUD.Create + ", @productId=" + ProductId + ", @icdId=" + ICDId + ", @pharmaformID=" + PharmaFormId + "");
+                    var response = db.Database.SqlQuery<int>("plm_spCRUDProductICD @CRUDType=" + CRUD.Create + ", @productId=" + ProductId + ", @icdId=" + ICDId + ", @pharmaformID=" + PharmaFormId + "").ToList();
 
-                    return "Ok";
+                    if (response[0] == 0)
+                    {
+                        return "Ok";
+                    }
+                    else if (response[0] == 1)
+                    {
+                        return "AsocCNT";
+                    }
+                    else
+                    {
+                        return "error";
+                    }
                 }
                 else
                 {
