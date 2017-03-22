@@ -12,6 +12,7 @@ namespace Web.Models
         CRUD CRUD = new CRUD();
         PLMUserActions Action = new PLMUserActions();
         PLMUserTables Tables = new PLMUserTables();
+        CRUDContentTypes _CRUDContentTypes = new CRUDContentTypes();
 
         public int inserproduct(int CountryId, int LaboratoryId, int AlphabetId, int ProductTypeId, string ProductName, string Description, int UserIdP,string HashKeyP)
         {
@@ -123,7 +124,7 @@ namespace Web.Models
                 List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
                 primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")";
                 _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.NewProducts + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
-               
+                _CRUDContentTypes._deleteNew(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
                 return true;
             }
             catch (Exception e)
@@ -183,7 +184,7 @@ namespace Web.Models
                 List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
                 primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")";
                 _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserIdP + ",@tableId=" + Tables.NewProducts + ",@operationId=" + Action.Eliminar + ",@hashKey='" + HashKeyP + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
-
+                _CRUDContentTypes._deleteNew(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
                 return true;
             }
             catch (Exception e)

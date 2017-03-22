@@ -1,17 +1,33 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Data.SqlClient;
+using System.Web;
+using System.Web.Mvc;
+using Newtonsoft.Json;
+using Web.Models.Sessions;
+using Web.Models;
+using System.Data;
 using System.Data.Entity;
 using System.Drawing;
-using System.Linq;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Mvc;
-using Web.Models;
+using System.IO;
+using System.Web.UI.WebControls;
 namespace Web.Controllers.Production
 {
     public class ProductionController : Controller
     {
         Medinet db = new Medinet();
+        CRUD CRUD = new CRUD();
+        Inserts Inserts = new Inserts();
+        getData _data = new getData();
+        PLMUsers plm = new PLMUsers();
+        PLMUserActions Action = new PLMUserActions();
+        PLMUserTables Tables = new PLMUserTables();
+        private DataTable table = new DataTable();
+        private DataTable table2 = new DataTable();
+        private DataTable ParticipantPro = new DataTable();
+
         public ActionResult Index()
         {
             CountriesUsers _counTries = (CountriesUsers)Session["CountriesUsers"];
@@ -53,41 +69,8 @@ namespace Web.Controllers.Production
             ViewData["CountryName"] = db.Countries.SingleOrDefault(model => model.CountryId == id).CountryName;
             return View(_l_plm_vwProductsByEdition);
         }
-        public JsonResult getBooks(int CountryId)
-        {
-            var _getBook = (from _b in db.plm_vwProductsByEdition
-                            where _b.CountryId == CountryId
-                            select new { _b.BookId, _b.BookName, _b.CountryId }).Distinct().ToList().OrderBy(model => model.BookName);
-            plm_vwProductsByEdition _plm_vwProductsByEdition = new plm_vwProductsByEdition();
-            List<plm_vwProductsByEdition> _l_plm_vwProductsByEdition = new List<plm_vwProductsByEdition>();
-            foreach (var _row in _getBook)
-            {
-                _plm_vwProductsByEdition = new plm_vwProductsByEdition();
-                _plm_vwProductsByEdition.BookName = _row.BookName;
-                _plm_vwProductsByEdition.BookId = _row.BookId;
-                _plm_vwProductsByEdition.CountryId = _row.CountryId;
-                _l_plm_vwProductsByEdition.Add(_plm_vwProductsByEdition);
-            }
-            return Json(_l_plm_vwProductsByEdition, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult getEditions(int CountryId, int BookId)
-        {
-            List<plm_spGetEditionsByBook_Result> _getEditionsByBook = db.Database.SqlQuery<plm_spGetEditionsByBook_Result>
-                ("plm_spGetEditionsByBook @CountryId=" + CountryId + ", @BookId=" + BookId + "").OrderByDescending(model => model.NumberEdition).ToList();
-            plm_spGetEditionsByBook_Result _plm_spGetEditionsByBook = new plm_spGetEditionsByBook_Result();
-            List<plm_spGetEditionsByBook_Result> _lplm_spGetEditionsByBook = new List<plm_spGetEditionsByBook_Result>();
-            foreach (var _rowEdition in _getEditionsByBook)
-            {
-                _plm_spGetEditionsByBook = new plm_spGetEditionsByBook_Result();
-                _plm_spGetEditionsByBook.NumberEdition = _rowEdition.NumberEdition;
-                _plm_spGetEditionsByBook.EditionId = _rowEdition.EditionId;
-                _plm_spGetEditionsByBook.CountryId = _rowEdition.CountryId;
-                _plm_spGetEditionsByBook.BookId = _rowEdition.BookId;
-                _plm_spGetEditionsByBook.ISBN = _rowEdition.ISBN;
-                _lplm_spGetEditionsByBook.Add(_plm_spGetEditionsByBook);
-            }
-            return Json(_lplm_spGetEditionsByBook, JsonRequestBehavior.AllowGet);
-        }
+
+        
         public JsonResult getEditionsPage(int CountryId, int BookId)
         {
             List<plm_spGetEditionsByBook_Result> _getEditionsByBook = db.Database.SqlQuery<plm_spGetEditionsByBook_Result>
@@ -116,23 +99,7 @@ namespace Web.Controllers.Production
             }
             return Json(_lplm_spGetEditionsByBook, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult getLaboratories(int CountryId, int BookId, int EditionId)
-        {
-            var _getDivisionsByEdition = db.Database.SqlQuery<plm_spGetDivisionsByEditionByCountry_Result>("plm_spGetDivisionsByEditionByCountry @countryId=" + CountryId + ",@editionId=" + EditionId).ToList();
-            plm_spGetDivisionsByEditionByCountry_Result _plm_spGetDivisionsByEditionByCountry = new plm_spGetDivisionsByEditionByCountry_Result();
-            List<plm_spGetDivisionsByEditionByCountry_Result> _lplm_spGetDivisionsByEditionByCountry = new List<plm_spGetDivisionsByEditionByCountry_Result>();
-            foreach (var _row in _getDivisionsByEdition)
-            {
-                _plm_spGetDivisionsByEditionByCountry = new plm_spGetDivisionsByEditionByCountry_Result();
-                _plm_spGetDivisionsByEditionByCountry.DivisionId = _row.DivisionId;
-                _plm_spGetDivisionsByEditionByCountry.DivisionName = _row.DivisionName;
-                _plm_spGetDivisionsByEditionByCountry.CountryId = _row.CountryId;
-                _plm_spGetDivisionsByEditionByCountry.EditionId = EditionId;
-                _plm_spGetDivisionsByEditionByCountry.BookId = BookId;
-                _lplm_spGetDivisionsByEditionByCountry.Add(_plm_spGetDivisionsByEditionByCountry);
-            }
-            return Json(_lplm_spGetDivisionsByEditionByCountry, JsonRequestBehavior.AllowGet);
-        }
+       
         public ActionResult Content(int id, int ed, int ad, int ud)
         {
             CountriesUsers _counTries = (CountriesUsers)Session["CountriesUsers"];
@@ -141,64 +108,34 @@ namespace Web.Controllers.Production
                 Session.Abandon();
                 return RedirectToAction("Logout", "Login");
             }
+
+            int Country = id;
+            int Book = ed;
+            int EditionType = 1; //cambiar
+            int Edition = ad;
+            int Division = ud;
+
+            List<plm_spGetProductsToEditByDivisionMedinet3> LS = new List<plm_spGetProductsToEditByDivisionMedinet3>();
+            LS = db.Database.SqlQuery<plm_spGetProductsToEditByDivisionMedinet3>("plm_spGetProductsToEditByDivisionMedinet3 @divisionId=" + Division + ", @countryId= " + Country + ", @bookId= " + Book + ", @editionId= " + Edition + "").ToList();
+
             SessionCountryByDivision _SessionCountryByDivision = new SessionCountryByDivision(id, ed, ad, ud);
             Session["SessionCountryByDivision"] = _SessionCountryByDivision;
-            plm_vwProductsByEdition _plm_vwProductsByEdition = new plm_vwProductsByEdition();
-            List<plm_vwProductsByEdition> _lplm_vwProductsByEdition = new List<plm_vwProductsByEdition>();
-            var _getProductsByEdition = (from _p in db.plm_vwProductsByEdition
-                                         where _p.CountryId == id
-                                         && _p.BookId == ed
-                                         && _p.EditionId == ad
-                                         && _p.DivisionId == ud
-                                         select _p).ToList();
-            foreach (var _row in _getProductsByEdition)
-            {
-                _plm_vwProductsByEdition = new plm_vwProductsByEdition();
-                var _contentType = (from _pp in db.ParticipantProducts
-                                    join _ct in db.ContentTypes
-                                    on _pp.ContentTypeId equals _ct.ContentTypeId
-                                    where _pp.EditionId == _row.EditionId
-                                    && _pp.ProductId == _row.ProductId
-                                    && _pp.PharmaFormId == _row.PharmaFormId
-                                    && _pp.CategoryId == _row.CategoryId
-                                    && _pp.DivisionId == _row.DivisionId
-                                    select new { _ct.ContentType, _pp.HTMLContent }).ToList();
-                foreach (var _rowContent in _contentType)
-                {
-                    if (_rowContent.HTMLContent == null)
-                    {
-                        //_plm_vwProductsByEdition.WithoutContent = "Sin contenido";
-                    }
-                    //_plm_vwProductsByEdition.ContentType = _rowContent.ContentType;
-                }
-                var _productcategories = (from _pc in db.ProductCategories
-                                          where _pc.ProductId == _row.ProductId
-                                          && _pc.PharmaFormId == _row.PharmaFormId
-                                          && _pc.CategoryId == _row.CategoryId
-                                          && _pc.DivisionId == _row.DivisionId
-                                          select new { _pc.SanitaryRegister, _pc.SSFraction }).ToList();
-                foreach (var _rowcategories in _productcategories)
-                {
-                    //_plm_vwProductsByEdition.SanitaryRegister = _rowcategories.SanitaryRegister;
-                    //_plm_vwProductsByEdition.SSFraction = _rowcategories.SSFraction;
-                }
-                _plm_vwProductsByEdition.ProductId = _row.ProductId;
-                _plm_vwProductsByEdition.PharmaFormId = _row.PharmaFormId;
-                _plm_vwProductsByEdition.CategoryId = _row.CategoryId;
-                _plm_vwProductsByEdition.DivisionId = _row.DivisionId;
-                _plm_vwProductsByEdition.Brand = _row.Brand;
-                _plm_vwProductsByEdition.PharmaForm = _row.PharmaForm;
-                _plm_vwProductsByEdition.CategoryName = _row.CategoryName;
-                _plm_vwProductsByEdition.ProductDescription = _row.ProductDescription;
-                _plm_vwProductsByEdition.ProductType = _row.ProductType;
-                _lplm_vwProductsByEdition.Add(_plm_vwProductsByEdition);
-            }
+
+
             ViewData["CountryName"] = db.Countries.SingleOrDefault(model => model.CountryId == id).CountryName;
             ViewData["DivisionName"] = db.Divisions.FirstOrDefault(model => model.DivisionId == ud).Description;
             ViewData["BookName"] = db.Books.FirstOrDefault(model => model.BookId == ed).Description;
             ViewData["EditionNumber"] = db.Editions.FirstOrDefault(model => model.EditionId == ad).NumberEdition;
             ViewData["ShortName"] = db.Books.FirstOrDefault(model => model.BookId == ed).ShortName;
-            return View(_lplm_vwProductsByEdition);
+
+            ViewData["CountryId"] = Country;
+            ViewData["BookId"] = Book;
+            ViewData["EditionId"] = Edition;
+            ViewData["DivisionId"] = Division;
+
+            SessionM sessionSM = new SessionM(Country, Book, EditionType, Edition, Division);
+            Session["sessionSM"] = sessionSM;
+            return View(LS);
         }
         [HttpPost]
         public ActionResult SaveDivisionImage()
@@ -271,51 +208,14 @@ namespace Web.Controllers.Production
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult getParticipantProducts(int ProductId, int PharmaFormId, int Categoryid, int DivisionId)
+
+        public JsonResult saveSanitary(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string SanitaryRegister, int UserId, string HashKey)
         {
-            List<plm_spGetEditionsByProducts_Result> _getEditionsByproducts = db.Database.SqlQuery<plm_spGetEditionsByProducts_Result>
-                ("plm_spGetEditionsByProducts @ProductId=" + ProductId + ", @CategoryId=" + Categoryid + ", @PharmaFormId=" + PharmaFormId + ", @DivisionId=" + DivisionId + "").ToList();
-            plm_spGetEditionsByProducts_Result _plm_vwProductsByEdition = new plm_spGetEditionsByProducts_Result();
-            List<plm_spGetEditionsByProducts_Result> _lplm_vwProductsByEdition = new List<plm_spGetEditionsByProducts_Result>();
-            foreach (var _row in _getEditionsByproducts)
-            {
-                _plm_vwProductsByEdition = new plm_spGetEditionsByProducts_Result();
-                _plm_vwProductsByEdition.ShortName = _row.ShortName;
-                _plm_vwProductsByEdition.NumberEdition = _row.NumberEdition;
-                _plm_vwProductsByEdition.TypeName = _row.TypeName;
-                if (_row.ISBN == null)
-                {
-                    _plm_vwProductsByEdition.ISBN = "";
-                }
-                else
-                {
-                    _plm_vwProductsByEdition.ISBN = _row.ISBN;
-                }
-                if (_row.ParentId != null)
-                {
-                    var _parent = (from _e in db.Editions
-                                   join _b in db.Books
-                                       on _e.BookId equals _b.BookId
-                                   where _e.EditionId == _row.ParentId
-                                   select new { _e.NumberEdition, _b.ShortName }).ToList();
-                    foreach (var _rowParent in _parent)
-                    {
-                        _plm_vwProductsByEdition.ParentName = _rowParent.ShortName;
-                        _plm_vwProductsByEdition.NumberEditionParent = _rowParent.NumberEdition.ToString();
-                    }
-                }
-                else
-                {
-                    _plm_vwProductsByEdition.ParentName = "";
-                    _plm_vwProductsByEdition.NumberEditionParent = "";
-                }
-                _plm_vwProductsByEdition.LongCount = _getEditionsByproducts.LongCount();
-                _lplm_vwProductsByEdition.Add(_plm_vwProductsByEdition);
-            }
-            return Json(_lplm_vwProductsByEdition, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult saveSanitary(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string SanitaryRegister)
-        {
+            string primaryKeyAffected = "(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")"; ;
+            string FieldsAffected = "(SanitaryRegister," + SanitaryRegister.Trim() + ")";
+
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
             var _productCategories = (from _pc in db.ProductCategories
                                       where _pc.ProductId == ProductId
                                       && _pc.PharmaFormId == PharmaFormId
@@ -328,17 +228,23 @@ namespace Web.Controllers.Production
                 {
                     _row.SanitaryRegister = null;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
                 else
                 {
                     _row.SanitaryRegister = SanitaryRegister;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction)
+        public JsonResult saveFraction(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, string Fraction, int UserId, string HashKey)
         {
+            string FieldsAffected = "(SSFraction," + Fraction.Trim() + ")";
+            string primaryKeyAffected = "(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")"; ;
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
             var _productCategories = (from _pc in db.ProductCategories
                                       where _pc.ProductId == ProductId
                                       && _pc.PharmaFormId == PharmaFormId
@@ -351,49 +257,45 @@ namespace Web.Controllers.Production
                 {
                     _row.SSFraction = null;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
                 else
                 {
                     _row.SSFraction = Fraction;
                     db.SaveChanges();
+                    _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ProductCategories + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult itsNew(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId)
-        {
-            CRUDContentTypes CRUDContentTypes = new CRUDContentTypes();
-            CRUDContentTypes._updateNew(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult notNew(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId)
+
+
+        public ActionResult withChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, int UserId, string HashKey)
         {
             CRUDContentTypes _CRUDContentTypes = new CRUDContentTypes();
-            _CRUDContentTypes._deleteNew(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
+            int ContentTypeId = 2;
+            _CRUDContentTypes._updateChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId, ContentTypeId, UserId, HashKey);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult withChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId)
+        public ActionResult withoutChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, int UserId, string HashKey)
         {
             CRUDContentTypes _CRUDContentTypes = new CRUDContentTypes();
-            _CRUDContentTypes._updateChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
+            int ContentTypeId = 4;
+            _CRUDContentTypes._deleteChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId,  ContentTypeId,  UserId,  HashKey);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult withoutChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId)
+        public ActionResult withOrthographicChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, int UserId, string HashKey)
         {
             CRUDContentTypes _CRUDContentTypes = new CRUDContentTypes();
-            _CRUDContentTypes._deleteChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
+            int ContentTypeId = 3;
+            _CRUDContentTypes._updatewithOrthographicChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId, ContentTypeId, UserId, HashKey);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult withOrthographicChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId)
+        public ActionResult withoutOrthographicChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, int UserId, string HashKey)
         {
             CRUDContentTypes _CRUDContentTypes = new CRUDContentTypes();
-            _CRUDContentTypes._updatewithOrthographicChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult withoutOrthographicChanges(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId)
-        {
-            CRUDContentTypes _CRUDContentTypes = new CRUDContentTypes();
-            _CRUDContentTypes._deletewithOrthographicChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId);
+            int ContentTypeId = 4;
+            _CRUDContentTypes._deletewithOrthographicChanges(ProductId, PharmaFormId, CategoryId, DivisionId, EditionId, ContentTypeId, UserId, HashKey);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getItems(int EditionId, int ProductId, int PharmaFormId, int CategoryId, int DivisionId)
@@ -494,31 +396,64 @@ namespace Web.Controllers.Production
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
-        public ActionResult saveAttributeGroup(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int AttributeGroupId)
+        public ActionResult saveAttributeGroup(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int AttributeGroupId, int UserId, string HashKey)
         {
-            List<plm_spCRUDModifiedAttributeGroups> _plm_spCRUDModifiedAttributeGroups = db.Database.SqlQuery<plm_spCRUDModifiedAttributeGroups>
-                ("EXECUTE dbo.plm_spCRUDModifiedAttributeGroups"
-                + " @CRUDType=" + 0
-                + ",@attributeGroupId=" + AttributeGroupId
-                + ",@editionId=" + EditionId
-                + ",@productId=" + ProductId
-                + ",@divisionId=" + DivisionId
-                + ",@categoryId=" + CategoryId
-                + ",@pharmaFormId=" + PharmaFormId + "").ToList();
-            return Json(true, JsonRequestBehavior.AllowGet);
+            string primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ");(AttributeGroupId," + AttributeGroupId + ")";
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+            
+            try
+            {
+                List<plm_spCRUDModifiedAttributeGroups> _plm_spCRUDModifiedAttributeGroups = db.Database.SqlQuery<plm_spCRUDModifiedAttributeGroups>
+                  ("EXECUTE dbo.plm_spCRUDModifiedAttributeGroups"
+                  + " @CRUDType=" + 0
+                  + ",@attributeGroupId=" + AttributeGroupId
+                  + ",@editionId=" + EditionId
+                  + ",@productId=" + ProductId
+                  + ",@divisionId=" + DivisionId
+                  + ",@categoryId=" + CategoryId
+                  + ",@pharmaFormId=" + PharmaFormId + "").ToList();
+
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ModifiedAttributeGroups + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                string message = e.Message;
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            
         }
-        public ActionResult removeAttributeGroup(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int AttributeGroupId)
+        public ActionResult removeAttributeGroup(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId, int AttributeGroupId, int UserId, string HashKey)
         {
-            List<plm_spCRUDModifiedAttributeGroups> _plm_spCRUDModifiedAttributeGroups = db.Database.SqlQuery<plm_spCRUDModifiedAttributeGroups>
-                ("EXECUTE dbo.plm_spCRUDModifiedAttributeGroups"
-                + " @CRUDType=" + 3
-                + ",@attributeGroupId=" + AttributeGroupId
-                + ",@editionId=" + EditionId
-                + ",@productId=" + ProductId
-                + ",@divisionId=" + DivisionId
-                + ",@categoryId=" + CategoryId
-                + ",@pharmaFormId=" + PharmaFormId + "").ToList();
-            return Json(true, JsonRequestBehavior.AllowGet);
+           
+
+            string primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ");(AttributeGroupId," + AttributeGroupId + ")";
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
+            try
+            {
+                List<plm_spCRUDModifiedAttributeGroups> _plm_spCRUDModifiedAttributeGroups = db.Database.SqlQuery<plm_spCRUDModifiedAttributeGroups>
+               ("EXECUTE dbo.plm_spCRUDModifiedAttributeGroups"
+               + " @CRUDType=" + 3
+               + ",@attributeGroupId=" + AttributeGroupId
+               + ",@editionId=" + EditionId
+               + ",@productId=" + ProductId
+               + ",@divisionId=" + DivisionId
+               + ",@categoryId=" + CategoryId
+               + ",@pharmaFormId=" + PharmaFormId + "").ToList();
+
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ModifiedAttributeGroups + ",@operationId=" + Action.Eliminar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                string message = e.Message;
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
         }
         public JsonResult getPresentation(int EditionId, int DivisionId, int CategoryId, int PharmaFormId, int ProductId)
         {
