@@ -12,6 +12,17 @@
     <Property Name="Enunciative" Type="bit" Nullable="false" />
     <Property Name="JSONFormat" Type="varchar(max)" />
   </EntityType>
+  <EntityType Name="AdministrationRoutes">
+    <Key>
+      <PropertyRef Name="RouteId" />
+    </Key>
+    <Property Name="RouteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RouteName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ShortName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Synonym" Type="varchar" MaxLength="100" />
+  </EntityType>
   <EntityType Name="Alphabet">
     <Key>
       <PropertyRef Name="AlphabetId" />
@@ -500,6 +511,17 @@
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
     <Property Name="SubstanceInteractId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductPharmaFormRoutes">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="RouteId" />
+    </Key>
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PharmaFormId" Type="int" Nullable="false" />
+    <Property Name="RouteId" Type="int" Nullable="false" />
+    <Property Name="JSONFormat" Type="varchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductPharmaForms">
     <Key>
@@ -1226,6 +1248,32 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="R_233">
+    <End Role="AdministrationRoutes" Type="Self.AdministrationRoutes" Multiplicity="1" />
+    <End Role="ProductPharmaFormRoutes" Type="Self.ProductPharmaFormRoutes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdministrationRoutes">
+        <PropertyRef Name="RouteId" />
+      </Principal>
+      <Dependent Role="ProductPharmaFormRoutes">
+        <PropertyRef Name="RouteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_234">
+    <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="1" />
+    <End Role="ProductPharmaFormRoutes" Type="Self.ProductPharmaFormRoutes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaFormRoutes">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_25">
     <End Role="Products" Type="Self.Products" Multiplicity="1" />
     <End Role="ProductPharmaForms" Type="Self.ProductPharmaForms" Multiplicity="*" />
@@ -1638,6 +1686,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
   </Association>
   <EntityContainer Name="Model1StoreContainer">
     <EntitySet Name="ActiveSubstances" EntityType="Self.ActiveSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AdministrationRoutes" EntityType="Self.AdministrationRoutes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Alphabet" EntityType="Self.Alphabet" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ATCPharmacologicalGroups" EntityType="Self.ATCPharmacologicalGroups" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="BarCodes" EntityType="Self.BarCodes" Schema="dbo" store:Type="Tables" />
@@ -1682,6 +1731,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <EntitySet Name="ProductImageSizes" EntityType="Self.ProductImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductIndications" EntityType="Self.ProductIndications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductInteractions" EntityType="Self.ProductInteractions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductPharmaFormRoutes" EntityType="Self.ProductPharmaFormRoutes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductPharmaForms" EntityType="Self.ProductPharmaForms" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductPrices" EntityType="Self.ProductPrices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
@@ -1906,6 +1956,14 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <AssociationSet Name="R_192" Association="Self.R_192">
       <End Role="Presentations" EntitySet="Presentations" />
       <End Role="ProductImages" EntitySet="ProductImages" />
+    </AssociationSet>
+    <AssociationSet Name="R_233" Association="Self.R_233">
+      <End Role="AdministrationRoutes" EntitySet="AdministrationRoutes" />
+      <End Role="ProductPharmaFormRoutes" EntitySet="ProductPharmaFormRoutes" />
+    </AssociationSet>
+    <AssociationSet Name="R_234" Association="Self.R_234">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductPharmaFormRoutes" EntitySet="ProductPharmaFormRoutes" />
     </AssociationSet>
     <AssociationSet Name="R_25" Association="Self.R_25">
       <End Role="Products" EntitySet="Products" />

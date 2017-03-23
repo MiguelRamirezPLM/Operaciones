@@ -81,5 +81,7 @@ namespace Web.Models
         public virtual DbSet<OtherElements> OtherElements { get; set; }
         public virtual DbSet<IPPAProductContraindications> IPPAProductContraindications { get; set; }
         public virtual DbSet<ProductICDContraindications> ProductICDContraindications { get; set; }
+        public virtual DbSet<AdministrationRoutes> AdministrationRoutes { get; set; }
+        public virtual DbSet<ProductPharmaFormRoutes> ProductPharmaFormRoutes { get; set; }
     }
 }

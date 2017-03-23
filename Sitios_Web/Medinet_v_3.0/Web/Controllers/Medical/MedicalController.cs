@@ -425,8 +425,14 @@ namespace Web.Controllers.Medical
 
             var HTML = db.Database.SqlQuery<String>("plm_spGetHtmlContentContraindications @categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ", @pharmaFormId=" + PharmaFormId + ", @productId=" + ProductId + "").ToList();
 
-            GetContraindications.HTMLContraindications = HTML[0].Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace("normal", "Normal").Replace("NORMAL", "Normal").Replace("rubros-azules", "Rubros-azules");
-
+            if (!string.IsNullOrEmpty(HTML[0]))
+            {
+                GetContraindications.HTMLContraindications = HTML[0].Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace("normal", "Normal").Replace("NORMAL", "Normal").Replace("rubros-azules", "Rubros-azules");
+            }
+            else
+            {
+                GetContraindications.HTMLContraindications = "<p class=\"Normal\"><span class=\"Rubros-azules\">CONTRAINDICACIONES:</span> No Clasificado</p>";
+            }
             return View(GetContraindications);
         }
 
@@ -611,6 +617,9 @@ namespace Web.Controllers.Medical
             int CategoryId = int.Parse(Category);
             int DivisionId = int.Parse(Division);
             string ICDKey = string.Empty;
+            string SpanishDescription = string.Empty;
+            string ICDKeyParent = string.Empty;
+            bool FlagParent = false;
 
             dynamic item = JsonConvert.DeserializeObject(List);
 
@@ -626,6 +635,31 @@ namespace Web.Controllers.Medical
                 if (LICD.LongCount() > 0)
                 {
                     ICDKey = LICD[0].ICDKey;
+                }
+
+                List<ICD> LICDS = (from ic in db.ICD
+                                   join pic in db.ProductICDContraindications
+                                       on ic.ParentId equals pic.ICDId
+                                   where ic.ICDId == ICDId &&
+                                            pic.ProductId == ProductId &&
+                                            pic.PharmaFormId == PharmaFormId &&
+                                            pic.CategoryId == CategoryId &&
+                                            pic.DivisionId == DivisionId &&
+                                            pic.ActiveSubstanceId == ActiveSubstanceId
+                                   select ic).ToList();
+
+                if (LICDS.LongCount() > 0)
+                {
+                    int ParentId = Convert.ToInt32(LICDS[0].ParentId);
+
+                    List<ICD> LICDP = db.ICD.Where(x => x.ICDId == ParentId).ToList();
+
+                    SpanishDescription = LICDP[0].SpanishDescription;
+                    ICDKeyParent = LICDP[0].ICDKey;
+
+                    var _result = db.Database.ExecuteSqlCommand("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Delete + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ParentId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
+
+                    FlagParent = true;
                 }
 
                 Operations.CheckProductContraindication(DivisionId, CategoryId, PharmaFormId, ProductId, ActiveSubstanceId);
@@ -668,6 +702,12 @@ namespace Web.Controllers.Medical
                                 }
                             }
                         }
+                        if (FlagParent == true)
+                        {
+                            var res = new { Data = "ReplaceParentByNode", Parent = SpanishDescription, Node = LICDS[0].SpanishDescription, ICDKeyParent = ICDKeyParent, ICDKeyNode = LICDS[0].ICDKey };
+
+                            return Json(res, JsonRequestBehavior.AllowGet);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -695,6 +735,28 @@ namespace Web.Controllers.Medical
             int ICDId = int.Parse(ICD);
 
             var _result = db.Database.ExecuteSqlCommand("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Delete + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult NoContraindications(string Product, string Category, string Division, string PharmaForm)
+        {
+            int ProductId = int.Parse(Product);
+            int CategoryId = int.Parse(Category);
+            int DivisionId = int.Parse(Division);
+            int PharmaFormId = int.Parse(PharmaForm);
+            int StatusId = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["NotInteractions"]);
+            int DeleteCM = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["DeleteCM"]);
+
+            List<GetActiveSubstancesWithoutInteractions> LS = db.Database.SqlQuery<GetActiveSubstancesWithoutInteractions>("plm_spGetActiveSubstanceByProduct @productId=" + ProductId + "").ToList();
+
+            if (LS.LongCount() > 0)
+            {
+                foreach (GetActiveSubstancesWithoutInteractions item in LS)
+                {
+                    var res = db.Database.ExecuteSqlCommand("plm_spCRUDIppaProductContraindications @CRUDType=" + CRUD.Create + ", @categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ", @pharmaFormId=" + PharmaFormId + ", @productId=" + ProductId + ", @substanceId=" + item.ActiveSubstanceId + ", @statusCM=" + StatusId + ",@deleteCM =" + DeleteCM + "");
+                }
+            }
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -1506,6 +1568,111 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult PrintContraindications(int? ProductId, int? DivisionId, int? CategoryId, int? PharmaFormId, int? EditionId, int? CountryId)
+        {
+            var list = db.Database.SqlQuery<String>("plm_spGetHtmlContentContraindications @productid=" + ProductId + ",@divisionid=" + DivisionId + ",@categoryid=" + CategoryId + ",@pharmaformid=" + PharmaFormId + "").ToList();
+
+            LocalReport lr = new LocalReport();
+            string path = Path.Combine(Server.MapPath("~/GetReport"), "GetContraindicationsByKey.rdlc");
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+            else
+            {
+                return View("error");
+            }
+
+            List<GetReportInteractions> cm = new List<GetReportInteractions>();
+
+            GetReportInteractions cmd = new GetReportInteractions();
+
+            if (list.LongCount() > 0)
+            {
+                List<Categories> LC = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
+                List<PharmaceuticalForms> LPF = db.PharmaceuticalForms.Where(x => x.PharmaFormId == PharmaFormId).ToList();
+                List<Products> LP = db.Products.Where(x => x.ProductId == ProductId).ToList();
+                List<Divisions> LD = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+                List<Editions> LE = db.Editions.Where(x => x.EditionId == EditionId).ToList();
+                List<Countries> L = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                string Interaction = string.Empty;
+
+                if (!string.IsNullOrEmpty(list[0]))
+                {
+                    Interaction = GetContraindicationsText(list[0]);
+                }
+                else
+                {
+                    Interaction = "\n\n No Clasificado";
+                }
+
+                cmd.HTMLContent = Interaction;
+                cmd.CategoryName = LC[0].Description;
+                cmd.PharmaForm = LPF[0].Description;
+                cmd.Brand = LP[0].Brand;
+                cmd.DivisioName = LD[0].Description;
+                cmd.NumberEdition = LE[0].NumberEdition;
+                cmd.CountryName = L[0].CountryName;
+
+                cm.Add(cmd);
+            }
+
+            ReportDataSource rd = new ReportDataSource("GetInteractions", cm);
+            lr.DataSources.Add(rd);
+            string reportType = "PDF";
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+
+
+
+            string deviceInfo =
+
+            "<DeviceInfo>" +
+            "  <OutputFormat>PDF</OutputFormat>" +
+            "  <PageWidth>8.5in</PageWidth>" +
+            "  <PageHeight>11in</PageHeight>" +
+            "  <MarginTop>0.5in</MarginTop>" +
+            "  <MarginLeft>0.1in</MarginLeft>" +
+            "  <MarginRight>0.1in</MarginRight>" +
+            "  <MarginBottom>0.5in</MarginBottom>" +
+            "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+
+            renderedBytes = lr.Render(
+                reportType,
+                deviceInfo,
+                out mimeType,
+                out encoding,
+                out fileNameExtension,
+                out streams,
+                out warnings);
+
+
+            return File(renderedBytes, mimeType);
+        }
+
+        public static string GetContraindicationsText(String Contraindicacion)
+        {
+            getData getData = new Models.getData();
+
+            Contraindicacion = System.Text.RegularExpressions.Regex.Replace(Contraindicacion, "<.*?>", String.Empty).Replace("CONTRAINDICACIONES: ", "");
+
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            HtmlAgilityPack.HtmlNode textNode = doc.CreateElement("title");
+            textNode.InnerHtml = Contraindicacion;
+            Contraindicacion = textNode.InnerText;
+
+            Contraindicacion = getData.ReplaceHTMLCodes(Contraindicacion);
+
+            return Contraindicacion;
+        }
+
         #endregion
 
         #region CIE10
@@ -1979,7 +2146,7 @@ namespace Web.Controllers.Medical
             }
             else
             {
-                GetInteractions.HTMLContent = "";
+                GetInteractions.HTMLContent = "<p class=\"Normal\"><span class=\"Rubros-azules\">INTERACCIONES MEDICAMENTOSAS Y DE OTRO G&Eacute;NERO:</span> No Clasificado</p>";
             }
             return View(GetInteractions);
         }
@@ -2528,5 +2695,59 @@ namespace Web.Controllers.Medical
 
         #endregion
 
+        #region AdministrationRoutes
+
+        public ActionResult AdministrationRoutes(int? ProductId, int? PharmaFormId, int? CategoryId, int? EditionId)
+        {
+            if ((!Request.IsAuthenticated) || (ProductId == null) || (PharmaFormId == null) || (CategoryId == null))
+            {
+                return RedirectToAction("Logout", "Login");
+            }
+
+            SessionLI SessionLI = (SessionLI)Session["SessionLI"];
+
+            GetAdministrationRoutes GetAdministrationRoutes = new Models.Class.GetAdministrationRoutes();
+
+            GetAdministrationRoutes.GetAdministrationRoutesByProductPharmaForm = db.Database.SqlQuery<GetAdministrationRoutesByProductPharmaForm>("plm_spGetAdministrationRoutesByProduct @productId=" + ProductId + ", @pharmaFormId=" + PharmaFormId + "").ToList();
+            GetAdministrationRoutes.GetAdministrationRoutesClass = db.Database.SqlQuery<GetAdministrationRoutesClass>("plm_spGetAdministrationRoutes").ToList();
+
+
+            SessionLI.ProductId = ProductId;
+            SessionLI.PharmaFormId = PharmaFormId;
+            SessionLI.CategoryId = CategoryId;
+            SessionLI.EditionId = Convert.ToInt32(EditionId);
+
+            return View(GetAdministrationRoutes);
+        }
+
+        public JsonResult AddProductAdministrationRoutes(string Route, string Product, string PharmaForm)
+        {
+            int RouteId = int.Parse(Route);
+            int ProductId = int.Parse(Product);
+            int PharmaFormId = int.Parse(PharmaForm);
+
+            List<ProductPharmaFormRoutes> LS = db.ProductPharmaFormRoutes.Where(x => x.ProductId == ProductId && x.PharmaFormId == PharmaFormId && x.RouteId == RouteId).ToList();
+
+            if (LS.LongCount() == 0)
+            {
+                ProductPharmaFormRoutes ProductPharmaFormRoutes = new ProductPharmaFormRoutes();
+
+                ProductPharmaFormRoutes.PharmaFormId = PharmaFormId;
+                ProductPharmaFormRoutes.ProductId = ProductId;
+                ProductPharmaFormRoutes.RouteId = RouteId;
+                //ProductPharmaFormRoutes.JSONFormat = ("{"ProductId":11301,"Brand":"CRONAL","PharmaFormId":94,"PharmaForm":"Jarabe","RouteId":9,"RouteName":"Oral"}");
+
+                db.ProductPharmaFormRoutes.Add(ProductPharmaFormRoutes);
+                db.SaveChanges();
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
     }
 }

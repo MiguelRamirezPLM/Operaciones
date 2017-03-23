@@ -604,9 +604,7 @@ function AddCIE10Remove(item) {
             'PFId': PFId,
             'PId': PId
         });
-
         console.log(ListRemoveCIE);
-
     }
     else if ($(item).is(":not(:checked)")) {
 
@@ -2591,6 +2589,20 @@ function SaveCIE10Contraindications() {
                     $("#btnComments").trigger("click");
 
                 }
+                else if (data.Data == "ReplaceParentByNode") {
+                    $("#divbtnsModal").empty();
+                    var btn = "";
+
+                    btn += "<button class=\"btn btn-primary\" data-dismiss=\"modal\" onclick=\"setTimeout('document.location.reload()')\">";
+                    btn += "<span class=\"glyphicon glyphicon-ok\"></span>";
+                    btn += "<span>&nbsp; Aceptar</span>";
+                    btn += "</button>";
+
+                    $("#messageheaderComments").append("Aviso");
+                    $("#DivComments").append("<label>Fue agregado correctamente <span style=\"font-weight:bold\">" + data.ICDKeyNode + " - " + data.Node + " (Nodo hijo)</span> reemplazando a <span style=\"font-weight:bold\">" + data.ICDKeyParent + " - " + data.Parent + " (Nodo Padre)</span></label>");
+                    $("#divbtnsModal").append(btn);
+                    $("#btnComments").trigger("click");
+                }
             }
         })
     }
@@ -2602,6 +2614,43 @@ function SaveCIE10Contraindications() {
         $("#bloqueo").hide();
     }
 
+}
+
+function NoContraindications() {
+
+    $("#bloqueo").show();
+
+    var PId = $("#ProductId").val();
+    var CId = $("#CategoryId").val();
+    var DId = $("#DivisionId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    var d = "";
+    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+
+    d += "<label> Ser&aacute;n eliminados los registros asociados al producto.</label> <br/>"
+    d += "<br/>"
+    d += "<p style='text-align:center'> ¿Desea continuar con la operaci&oacute;n?</> <br/>"
+
+    apprise("" + d + "", { 'verify': true }, function (r) {
+        if (r) {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "../Medical/NoContraindications",
+                data: { Product: PId, Category: CId, Division: DId, PharmaForm: PFId },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout("document.location.reload()");
+                    } else {
+                        $("#bloqueo").hide();
+                    }
+                }
+            })
+        } else {
+            $("#bloqueo").hide();
+        }
+    })
 }
 
 

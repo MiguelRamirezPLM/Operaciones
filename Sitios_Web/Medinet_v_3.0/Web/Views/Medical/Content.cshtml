@@ -61,7 +61,7 @@
                                 List<Divisions> _getDivisions = db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + _Session.CountryId).ToList();
                                 foreach (var _row in _getDivisions)
                                 {
-                                    <li class="searchlab"><a class="zindex" href="@Url.Content("~/Medical/Content?CId=" + @_row.CountryId + "&DId=" + @_row.DivisionId)">@_row.Description</a></li>
+                                    <li class="searchlab"><a class="zindex" href="@Url.Content("~/Medical/Content?CId=" + @_row.CountryId + "&BId=" + @BookId + "&EId="+ EditionIdS + "&DId=" + @_row.DivisionId)">@_row.Description</a></li>
                                 }
                             }
                         </ul>

@@ -164,7 +164,7 @@
     <li class="active ldr"><a href="#" onclick="location.href='@Url.Action("Contraindications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Contraindicaciones</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("CIE", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">CIE-10</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("ATCOMS", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC OMS</a></li>
-    <li class="ldr"><a href="#">Vías de Administración</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("AdministrationRoutes", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Vías de Administración</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Interactions", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Interacciones Medicamentosas</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Indications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Indicaciones</a></li>
 </ul>
@@ -195,16 +195,16 @@
     </div>
     <div class="col-lg-7">
         <div id="divhtml" class="form-control scrollbar1" style="width:100%; height:250px; text-align:justify;"></div><br />
-        <button class="btn btn-danger btn-sm pull-right">
+        <button class="btn btn-danger btn-sm pull-right" onclick="NoContraindications()">
             <span class="glyphicon glyphicon-ban-circle"></span>
             <span>&nbsp; No reporta Contraindicaciones</span>
         </button>
     </div>
     <div class="col-lg-2" style="vertical-align:middle">
-        <button class="btn btn-primary btn-sm">
+        <a target="_blank" class="btn btn-primary btn-sm" href="@Url.Action("PrintContraindications", "Medical", new { ProductId = ProductId, DivisionId = DivisionId, CategoryId = CategoryId, PharmaFormId = PharmaFormId, EditionId = EditionIdS, CountryId = CountryId })">
             <span class="glyphicon glyphicon-print"></span>
             <span>&nbsp; Imprimir</span>
-        </button>
+        </a>
     </div>
 </div>
 <br />
@@ -1118,7 +1118,7 @@
             <div class="modal-body" id="contenteditions">
                 <div id="DivComments"></div>
             </div>
-            <div class="modal-footer text-center">
+            <div class="modal-footer text-center" id="divbtnsModal">
                 <button class="btn btn-primary" data-dismiss="modal" onclick="$('#bloqueo').hide();">
                     <span class="glyphicon glyphicon-ok"></span>
                     <span>&nbsp; Aceptar</span>

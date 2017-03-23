@@ -20,6 +20,7 @@ namespace Web.Models
             this.ProductTherapeutics = new HashSet<ProductTherapeutics>();
             this.ProductTherapeuticOMS = new HashSet<ProductTherapeuticOMS>();
             this.ProductICD = new HashSet<ProductICD>();
+            this.ProductPharmaFormRoutes = new HashSet<ProductPharmaFormRoutes>();
         }
     
         public int PharmaFormId { get; set; }
@@ -34,5 +35,6 @@ namespace Web.Models
         public virtual ICollection<ProductTherapeutics> ProductTherapeutics { get; set; }
         public virtual ICollection<ProductTherapeuticOMS> ProductTherapeuticOMS { get; set; }
         public virtual ICollection<ProductICD> ProductICD { get; set; }
+        public virtual ICollection<ProductPharmaFormRoutes> ProductPharmaFormRoutes { get; set; }
     }
 }

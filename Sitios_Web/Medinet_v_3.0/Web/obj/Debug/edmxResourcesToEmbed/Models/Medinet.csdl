@@ -356,6 +356,16 @@
       <End Role="IPPAProductContraindications" EntitySet="IPPAProductContraindications" />
       <End Role="ProductICDContraindications" EntitySet="ProductICDContraindications" />
     </AssociationSet>
+    <EntitySet Name="AdministrationRoutes" EntityType="Model1.AdministrationRoutes" />
+    <EntitySet Name="ProductPharmaFormRoutes" EntityType="Model1.ProductPharmaFormRoutes" />
+    <AssociationSet Name="R_233" Association="Model1.R_233">
+      <End Role="AdministrationRoutes" EntitySet="AdministrationRoutes" />
+      <End Role="ProductPharmaFormRoutes" EntitySet="ProductPharmaFormRoutes" />
+    </AssociationSet>
+    <AssociationSet Name="R_234" Association="Model1.R_234">
+      <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
+      <End Role="ProductPharmaFormRoutes" EntitySet="ProductPharmaFormRoutes" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -1117,6 +1127,7 @@
     <NavigationProperty Name="ProductTherapeutics" Relationship="Model1.ProductPharmaFormsProductTherapeutics" FromRole="ProductPharmaForms" ToRole="ProductTherapeutics" />
     <NavigationProperty Name="ProductTherapeuticOMS" Relationship="Model1.ProductPharmaFormsProductTherapeuticOMS" FromRole="ProductPharmaForms" ToRole="ProductTherapeuticOMS" />
     <NavigationProperty Name="ProductICD" Relationship="Model1.ProductPharmaFormsProductICD" FromRole="ProductPharmaForms" ToRole="ProductICD" />
+    <NavigationProperty Name="ProductPharmaFormRoutes" Relationship="Model1.R_234" FromRole="ProductPharmaForms" ToRole="ProductPharmaFormRoutes" />
   </EntityType>
   <Association Name="FKPHARMAFORM_PF">
     <End Type="Model1.PharmaceuticalForms" Role="PharmaceuticalForms" Multiplicity="1" />
@@ -2095,6 +2106,57 @@
         <PropertyRef Name="PharmaFormId" />
         <PropertyRef Name="ProductId" />
         <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="AdministrationRoutes">
+    <Key>
+      <PropertyRef Name="RouteId" />
+    </Key>
+    <Property Name="RouteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RouteName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ShortName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Synonym" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ProductPharmaFormRoutes" Relationship="Model1.R_233" FromRole="AdministrationRoutes" ToRole="ProductPharmaFormRoutes" />
+  </EntityType>
+  <EntityType Name="ProductPharmaFormRoutes">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="PharmaFormId" />
+      <PropertyRef Name="RouteId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="RouteId" Type="Int32" Nullable="false" />
+    <Property Name="JSONFormat" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AdministrationRoutes" Relationship="Model1.R_233" FromRole="ProductPharmaFormRoutes" ToRole="AdministrationRoutes" />
+    <NavigationProperty Name="ProductPharmaForms" Relationship="Model1.R_234" FromRole="ProductPharmaFormRoutes" ToRole="ProductPharmaForms" />
+  </EntityType>
+  <Association Name="R_233">
+    <End Type="Model1.AdministrationRoutes" Role="AdministrationRoutes" Multiplicity="1" />
+    <End Type="Model1.ProductPharmaFormRoutes" Role="ProductPharmaFormRoutes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdministrationRoutes">
+        <PropertyRef Name="RouteId" />
+      </Principal>
+      <Dependent Role="ProductPharmaFormRoutes">
+        <PropertyRef Name="RouteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_234">
+    <End Type="Model1.ProductPharmaForms" Role="ProductPharmaForms" Multiplicity="1" />
+    <End Type="Model1.ProductPharmaFormRoutes" Role="ProductPharmaFormRoutes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductPharmaForms">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductPharmaFormRoutes">
+        <PropertyRef Name="PharmaFormId" />
+        <PropertyRef Name="ProductId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

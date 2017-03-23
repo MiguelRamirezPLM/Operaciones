@@ -1,12 +1,17 @@
 ﻿@using Web.Models;
-
 @{
-    ViewBag.Title = "Clasification";
+    ViewBag.Title = "AdministrationRoutes";
     Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
+    Web.Models.Class.GetAdministrationRoutes Count = Model;
     Medinet db = new Medinet();
-    WebGrid _datagrid = new WebGrid(Model);
-    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS,BookId;
 
+    //List<Web.Models.Class.GetRowsPerPage> Rows = getData.GetRowsPerPageIndications(Model);
+
+    //    WebGrid _datagrid = new WebGrid(Count.GetAdministrationRoutesClass, rowsPerPage: Convert.ToInt32(Rows[0].Pager));
+
+    WebGrid _datagrid = new WebGrid(Count.GetAdministrationRoutesClass, rowsPerPage: 30);
+
+    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS, BookId;
     if (_Session != null)
     {
         CountryId = _Session.CountryId;
@@ -28,6 +33,10 @@
         BookId = 0;
     }
 }
+
+<h2>AdministrationRoutes</h2>
+
+
 <div class="row">
     <div class="headergroup">
         <div class="title">
@@ -52,7 +61,7 @@
                 </ul>
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
-                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sustancias Activas<span style="margin-left:5px;" class="glyphicon glyphicon-chevron-right"></span></a>
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contraindicaciones<span style="margin-left:5px;" class="glyphicon glyphicon-chevron-right"></span></a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -91,6 +100,7 @@
                                             var d = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Laboratorio: <span style="color: #de5145; ">@d[0].Description</span></span>
+                                        <input type="text" value="@d[0].DivisionId" id="DivisionId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -101,6 +111,7 @@
                                             var p = db.Products.Where(x => x.ProductId == ProductId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Producto: <span style="color: #de5145; ">@p[0].Brand</span></span>
+                                        <input type="text" class="form-control" value="@p[0].ProductId" id="ProductId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -111,6 +122,7 @@
                                             var pf = db.PharmaceuticalForms.Where(x => x.PharmaFormId == PharmaFormId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Forma Farmacéutica: <span style="color: #de5145; ">@pf[0].Description</span></span>
+                                        <input type="text" class="form-control" value="@pf[0].PharmaFormId" id="PharmaFormId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -121,6 +133,7 @@
                                             var ct = db.Categories.Where(x => x.CategoryId == CategoryId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Categoría: <span style="color: #de5145; ">@ct[0].Description</span></span>
+                                        <input type="text" value="@ct[0].CategoryId" id="CategoryId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -132,89 +145,120 @@
     </div>
 </div>
 <br />
-<br />
-
 <ul class="nav nav-tabs">
-    <li class="ldr active"><a href="#" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Sustancias Activas</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Sustancias Activas</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("ATCEphMRA", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC EphMRA</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Contraindications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Contraindicaciones</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("CIE", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">CIE-10</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("ATCOMS", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">ATC OMS</a></li>
-    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("AdministrationRoutes", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Vías de Administración</a></li>
+    <li class="ldr active"><a href="#" onclick="location.href='@Url.Action("AdministrationRoutes", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">Vías de Administración</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Interactions", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Interacciones Medicamentosas</a></li>
     <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Indications", "Medical", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS, DivisionId = DivisionId })';return false;">Indicaciones</a></li>
 </ul>
-@{
-
-    <div class="row">
-        <div class="col-lg-6">
-            <br />
-            <br />
-            <br />
-            <div class="table-responsive">
-
-                @{
-                    List<Web.Models.Class.ActiveSubstances> LS = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstancesWithoutProduct @productId=" + ProductId + "").ToList();
-
-                    WebGrid _datagridDT = new WebGrid(LS, rowsPerPage: 25);
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        <br />
+        <div class="row">
+            <div class="col-lg-3">
+                <select class="form-control" style="color:red" onchange="GetRowsPerPageIndications()" id="RowsPerPageIndications">
+                    <option value="0" id="IdInd_0">Seleccione...</option>
+                    <option value="10" id="IdInd_10">10</option>
+                    <option value="20" id="IdInd_20">20</option>
+                    <option value="50" id="IdInd_50">50</option>
+                    <option value="100" id="IdInd_100">100</option>
+                    <option value="1000" id="IdInd_1000">1000</option>
+                </select>
+            </div>
+            <div class="col-lg-9">
+                @using (Html.BeginForm())
+                {
+                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
                 }
-
-                @_datagridDT.GetHtml(
+            </div>
+        </div>
+        <br />
+        <div class="table-responsive">
+            @_datagrid.GetHtml(
                         headerStyle: "webgrid-header",
                         footerStyle: "webgrid-footer",
                         alternatingRowStyle: "webgrid-alternating-row",
                         selectedRowStyle: "webgrid-selected-row",
                         rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
+                        tableStyle: "webgrid-table1 table-hover",
                         mode: WebGridPagerModes.All,
+                                 htmlAttributes: new { id = "GridDiv" },
                         columns: new[] {
-                        _datagridDT.Column("", header: "Nombre de Sustancia", format: @<text>
+                        _datagrid.Column("", header: "Nombre de Indicación", format: @<text>
                                 @{
-                                    <span class="display-mode"> <label id="lblName">@item.Description</label> </span>
-                                    <input id="lblProductid" style="display:none;" value="@item.ActiveSubstanceId" />
+                                    <span>@item.RouteName</span>
                                 }
                         </text>),
-                    _datagridDT.Column("", header: "Agregar", format: @<text>
-                    @{
-                        <button class="btn btn-success btn-sm ldr" onclick="location.href='@Url.Action("AddProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    }
+                    _datagrid.Column("", header: "Agregar", format: @<text>
+                @{
+                    <button class="btn btn-success btn-sm" value="@item.RouteId" onclick="AddProductAdministrationRoutes($(this).val())">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                }
                     </text>, style:"column5 text-center")
                     })
-            </div>
         </div>
-        <div class="col-lg-6">
-            <br />
-            <br />
-            <br />
-            <div class="table-responsive">
-                @_datagrid.GetHtml(
-                        headerStyle: "webgrid-header",
-                        footerStyle: "webgrid-footer",
-                        alternatingRowStyle: "webgrid-alternating-row",
-                        selectedRowStyle: "webgrid-selected-row",
-                        rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
-                        mode: WebGridPagerModes.All,
-                        columns: new[] {
-                        _datagrid.Column("", header: "Nombre de Sustancia", format: @<text>
-                                @{
-                                    <span class="display-mode"> <label id="lblName">@item.Description</label> </span>
-                                    <input id="lblProductid" style="display:none;" value="@item.ActiveSubstanceId" />
-                                }
-                        </text>),
-                    _datagrid.Column("", header: "Borrar", format: @<text>
-                    @{
-                        <button class="btn btn-danger btn-sm ldr" onclick="location.href='@Url.Action("DeleteProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    }
-                    </text>, style:"column5 text-center")
-                    })
-            </div>
-        </div>
-
     </div>
-    <br />
-}
+    <div class="col-lg-6">
+        <br />
+        <br />
+        <br />
+        <br />
+        <table class="table-hover" style="width:100%">
+            <thead class="webgrid-header">
+                <tr>
+                    <th>Nombre de Indicación</th>
+                    <th class="column5">Quitar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (Web.Models.Class.GetAdministrationRoutesByProductPharmaForm item in Count.GetAdministrationRoutesByProductPharmaForm)
+                    {
+                        <tr>
+                            <td>
+                                <span>@item.RouteName</span>
+                            </td>
+                            <td class="text-center column5">
+                                <button class="btn btn-danger btn-sm" value="@item.RouteId" onclick="RemoveProductIndications($(this).val())">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+
+<script>
+    function AddProductAdministrationRoutes(RouteId) {
+
+        var PId = $("#ProductId").val();
+        var PFId = $("#PharmaFormId").val();
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/AddProductAdministrationRoutes",
+            data: { Route: RouteId, Product: PId, PharmaForm: PFId },
+            success: function (data) {
+                if (data == true) {
+                    setTimeout("document.location.reload()");
+                }
+                else if (data == false) {
+
+                }
+            }
+        })
+    }
+</script>
