@@ -161,17 +161,7 @@
     <div class="col-lg-6">
         <br />
         <div class="row">
-            <div class="col-lg-3">
-                <select class="form-control" style="color:red" onchange="GetRowsPerPageIndications()" id="RowsPerPageIndications">
-                    <option value="0" id="IdInd_0">Seleccione...</option>
-                    <option value="10" id="IdInd_10">10</option>
-                    <option value="20" id="IdInd_20">20</option>
-                    <option value="50" id="IdInd_50">50</option>
-                    <option value="100" id="IdInd_100">100</option>
-                    <option value="1000" id="IdInd_1000">1000</option>
-                </select>
-            </div>
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 @using (Html.BeginForm())
                 {
                     @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
@@ -179,7 +169,7 @@
             </div>
         </div>
         <br />
-        <div class="table-responsive">
+        <div class="table-responsive scrollbar1">
             @_datagrid.GetHtml(
                         headerStyle: "webgrid-header",
                         footerStyle: "webgrid-footer",
@@ -190,7 +180,7 @@
                         mode: WebGridPagerModes.All,
                                  htmlAttributes: new { id = "GridDiv" },
                         columns: new[] {
-                        _datagrid.Column("", header: "Nombre de Indicación", format: @<text>
+                        _datagrid.Column("", header: "Nombre del Elemento", format: @<text>
                                 @{
                                     <span>@item.RouteName</span>
                                 }
@@ -207,13 +197,19 @@
     </div>
     <div class="col-lg-6">
         <br />
-        <br />
-        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                @using (Html.BeginForm())
+                {
+                    @Html.TextBox("DescriptionAS", "", new { @class = "form-control pull-right", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                }
+            </div>
+        </div>
         <br />
         <table class="table-hover" style="width:100%">
             <thead class="webgrid-header">
                 <tr>
-                    <th>Nombre de Indicación</th>
+                    <th>Nombre del Elemento</th>
                     <th class="column5">Quitar</th>
                 </tr>
             </thead>
@@ -226,7 +222,7 @@
                                 <span>@item.RouteName</span>
                             </td>
                             <td class="text-center column5">
-                                <button class="btn btn-danger btn-sm" value="@item.RouteId" onclick="RemoveProductIndications($(this).val())">
+                                <button class="btn btn-danger btn-sm" value="@item.RouteId" onclick="RemoveProductAdministrationRoutes($(this).val())">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                             </td>
@@ -239,26 +235,3 @@
 </div>
 <br />
 <br />
-
-<script>
-    function AddProductAdministrationRoutes(RouteId) {
-
-        var PId = $("#ProductId").val();
-        var PFId = $("#PharmaFormId").val();
-
-        $.ajax({
-            Type: "POST",
-            dataType: "Json",
-            url: "../Medical/AddProductAdministrationRoutes",
-            data: { Route: RouteId, Product: PId, PharmaForm: PFId },
-            success: function (data) {
-                if (data == true) {
-                    setTimeout("document.location.reload()");
-                }
-                else if (data == false) {
-
-                }
-            }
-        })
-    }
-</script>

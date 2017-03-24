@@ -4122,3 +4122,57 @@ function DeleteCIE10Contraindications(item) {
         }
     })
 }
+
+
+/*          ROUTES OF ADMINISTRATION            */
+
+function AddProductAdministrationRoutes(RouteId) {
+
+    $("#bloqueo").show();
+
+    var PId = $("#ProductId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/AddProductAdministrationRoutes",
+        data: { Route: RouteId, Product: PId, PharmaForm: PFId, Operation: "Insert" },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else if (data == false) {
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
+                d += "<label> El registro, ya esta asociado al Producto / Forma Farmac&eacute;utica.</label> <br/>"
+                apprise("" + d + "", { 'animate': true });
+                
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+function RemoveProductAdministrationRoutes(RouteId) {
+
+    $("#bloqueo").show();
+
+    var PId = $("#ProductId").val();
+    var PFId = $("#PharmaFormId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/AddProductAdministrationRoutes",
+        data: { Route: RouteId, Product: PId, PharmaForm: PFId, Operation: "Delete" },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else if (data == false) {
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}

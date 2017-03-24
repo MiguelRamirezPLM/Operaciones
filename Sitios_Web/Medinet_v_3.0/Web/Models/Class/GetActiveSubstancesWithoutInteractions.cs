@@ -13,4 +13,10 @@ namespace Web.Models.Class
         public bool? Active { get; set; }
         public bool? Enunciative { get; set; }
     }
+
+    public class GetActiveSubstancesCls
+    {
+        public List<ActiveSubstances> GetActiveSubstancesWithoutInteractions { get; set; }
+        public List<ActiveSubstances> ActiveSubstances { get; set; }
+    }
 }

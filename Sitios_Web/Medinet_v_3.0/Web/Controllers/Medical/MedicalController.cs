@@ -80,7 +80,7 @@ namespace Web.Controllers.Medical
 
         #region Substances
 
-        public ActionResult Clasification(int? ProductId, int? PharmaFormId, int? CategoryId, int? EditionId)
+        public ActionResult Clasification(int? ProductId, int? PharmaFormId, int? CategoryId, int? EditionId, string DescriptionAs, string Description)
         {
             if ((!Request.IsAuthenticated) || (ProductId == null) || (PharmaFormId == null) || (CategoryId == null))
             {
@@ -88,14 +88,17 @@ namespace Web.Controllers.Medical
             }
             SessionLI SessionLI = (SessionLI)Session["SessionLI"];
 
-            List<Web.Models.Class.ActiveSubstances> LA = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstanceByProduct @productId = " + ProductId + "").ToList();
+            GetActiveSubstancesCls GetActiveSubstancesCls = new Models.Class.GetActiveSubstancesCls();
+
+            GetActiveSubstancesCls.ActiveSubstances = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstanceByProduct @productId = " + ProductId + ", @substance='" + DescriptionAs  + "'").ToList();
+            GetActiveSubstancesCls.GetActiveSubstancesWithoutInteractions = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstancesWithoutProduct @productId=" + ProductId + ", @substance='" + Description + "'").ToList();
 
             SessionLI.ProductId = ProductId;
             SessionLI.PharmaFormId = PharmaFormId;
             SessionLI.CategoryId = CategoryId;
             SessionLI.EditionId = Convert.ToInt32(EditionId);
 
-            return View(LA);
+            return View(GetActiveSubstancesCls);
         }
 
         public ActionResult AddProductSubstances(int? ProductId, int? ActiveSubstanceId, int? PharmaFormId, int? CategoryId)
@@ -357,7 +360,8 @@ namespace Web.Controllers.Medical
             string PharmaDescription,
             string GroupDescription,
             string HypersensibilityDescription,
-            string ActiveSubstanceDescription)
+            string ActiveSubstanceDescription,
+            string OtherElementsDescription)
         {
             SessionLI SessionLI = (SessionLI)Session["SessionLI"];
 
@@ -417,7 +421,7 @@ namespace Web.Controllers.Medical
 
             /*          OTHER ELEMENTS CONTRAINDICATIONS            */
             //Catálogo
-            GetContraindications.GetOtherElemensWithoutInteractions = db.Database.SqlQuery<GetOtherElemensWithoutInteractions>("plm_spGetOtherElemensWithoutInteractions @categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + "").ToList();
+            GetContraindications.GetOtherElemensWithoutInteractions = db.Database.SqlQuery<GetOtherElemensWithoutInteractions>("plm_spGetOtherElemensWithoutInteractions @categoryId=" + CategoryId + ",@divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @elementName='" + OtherElementsDescription + "'").ToList();
             GetContraindications.GetProductOtherInteractions = db.Database.SqlQuery<GetProductotherInteractions>("plm_spCRUDProductOtherContraindications @CRUDType=" + CRUD.Read + ", @categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ", @pharmaFormId=" + PharmaFormId + ", @productId=" + ProductId + "").ToList();
 
             /*          COMMENTS CONTRAINDICATIONS*/
@@ -2697,7 +2701,7 @@ namespace Web.Controllers.Medical
 
         #region AdministrationRoutes
 
-        public ActionResult AdministrationRoutes(int? ProductId, int? PharmaFormId, int? CategoryId, int? EditionId)
+        public ActionResult AdministrationRoutes(int? ProductId, int? PharmaFormId, int? CategoryId, int? EditionId, string Description, string DescriptionAS)
         {
             if ((!Request.IsAuthenticated) || (ProductId == null) || (PharmaFormId == null) || (CategoryId == null))
             {
@@ -2708,8 +2712,8 @@ namespace Web.Controllers.Medical
 
             GetAdministrationRoutes GetAdministrationRoutes = new Models.Class.GetAdministrationRoutes();
 
-            GetAdministrationRoutes.GetAdministrationRoutesByProductPharmaForm = db.Database.SqlQuery<GetAdministrationRoutesByProductPharmaForm>("plm_spGetAdministrationRoutesByProduct @productId=" + ProductId + ", @pharmaFormId=" + PharmaFormId + "").ToList();
-            GetAdministrationRoutes.GetAdministrationRoutesClass = db.Database.SqlQuery<GetAdministrationRoutesClass>("plm_spGetAdministrationRoutes").ToList();
+            GetAdministrationRoutes.GetAdministrationRoutesByProductPharmaForm = db.Database.SqlQuery<GetAdministrationRoutesByProductPharmaForm>("plm_spGetAdministrationRoutesByProduct @productId=" + ProductId + ", @pharmaFormId=" + PharmaFormId + ", @Description='" + DescriptionAS + "'").ToList();
+            GetAdministrationRoutes.GetAdministrationRoutesClass = db.Database.SqlQuery<GetAdministrationRoutesClass>("plm_spGetAdministrationRoutes @Description='" + Description + "'").ToList();
 
 
             SessionLI.ProductId = ProductId;
@@ -2720,32 +2724,56 @@ namespace Web.Controllers.Medical
             return View(GetAdministrationRoutes);
         }
 
-        public JsonResult AddProductAdministrationRoutes(string Route, string Product, string PharmaForm)
+        public JsonResult AddProductAdministrationRoutes(string Route, string Product, string PharmaForm, string Operation)
         {
             int RouteId = int.Parse(Route);
             int ProductId = int.Parse(Product);
             int PharmaFormId = int.Parse(PharmaForm);
 
-            List<ProductPharmaFormRoutes> LS = db.ProductPharmaFormRoutes.Where(x => x.ProductId == ProductId && x.PharmaFormId == PharmaFormId && x.RouteId == RouteId).ToList();
-
-            if (LS.LongCount() == 0)
+            if (Operation == "Insert")
             {
-                ProductPharmaFormRoutes ProductPharmaFormRoutes = new ProductPharmaFormRoutes();
+                List<ProductPharmaFormRoutes> LS = db.ProductPharmaFormRoutes.Where(x => x.ProductId == ProductId && x.PharmaFormId == PharmaFormId && x.RouteId == RouteId).ToList();
 
-                ProductPharmaFormRoutes.PharmaFormId = PharmaFormId;
-                ProductPharmaFormRoutes.ProductId = ProductId;
-                ProductPharmaFormRoutes.RouteId = RouteId;
-                //ProductPharmaFormRoutes.JSONFormat = ("{"ProductId":11301,"Brand":"CRONAL","PharmaFormId":94,"PharmaForm":"Jarabe","RouteId":9,"RouteName":"Oral"}");
+                if (LS.LongCount() == 0)
+                {
+                    List<Products> LP = db.Products.Where(x => x.ProductId == ProductId).ToList();
+                    string Brand = LP[0].Brand;
+                    List<PharmaceuticalForms> LPF = db.PharmaceuticalForms.Where(x => x.PharmaFormId == PharmaFormId).ToList();
+                    string PharmaFormName = LPF[0].Description;
+                    List<AdministrationRoutes> LA = db.AdministrationRoutes.Where(x => x.RouteId == RouteId).ToList();
+                    string RouteName = LA[0].RouteName;
 
-                db.ProductPharmaFormRoutes.Add(ProductPharmaFormRoutes);
-                db.SaveChanges();
+                    ProductPharmaFormRoutes ProductPharmaFormRoutes = new ProductPharmaFormRoutes();
 
-                return Json(true, JsonRequestBehavior.AllowGet);
+                    ProductPharmaFormRoutes.PharmaFormId = PharmaFormId;
+                    ProductPharmaFormRoutes.ProductId = ProductId;
+                    ProductPharmaFormRoutes.RouteId = RouteId;
+                    ProductPharmaFormRoutes.JSONFormat = "{\"ProductId\":" + ProductId + ",\"Brand\":\"" + Brand + "\",\"PharmaFormId\":" + PharmaFormId + ",\"PharmaForm\":\"" + PharmaFormName + "\",\"RouteId\":" + RouteId + ",\"RouteName\":\"" + RouteName + "\"}";
+
+                    db.ProductPharmaFormRoutes.Add(ProductPharmaFormRoutes);
+                    db.SaveChanges();
+
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                return Json(false, JsonRequestBehavior.AllowGet);
+                List<ProductPharmaFormRoutes> LS = db.ProductPharmaFormRoutes.Where(x => x.ProductId == ProductId && x.PharmaFormId == PharmaFormId && x.RouteId == RouteId).ToList();
+
+                if (LS.LongCount() > 0)
+                {
+                    var delete = db.ProductPharmaFormRoutes.SingleOrDefault(x => x.ProductId == ProductId && x.PharmaFormId == PharmaFormId && x.RouteId == RouteId);
+                    db.ProductPharmaFormRoutes.Remove(delete);
+                    db.SaveChanges();
+                }
+
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
+
         }
 
         #endregion

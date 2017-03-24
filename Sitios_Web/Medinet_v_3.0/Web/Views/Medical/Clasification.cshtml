@@ -3,8 +3,10 @@
 @{
     ViewBag.Title = "Clasification";
     Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
+    Web.Models.Class.GetActiveSubstancesCls Count = Model;
     Medinet db = new Medinet();
-    WebGrid _datagrid = new WebGrid(Model);
+    WebGrid _datagrid = new WebGrid(Count.ActiveSubstances);
+    WebGrid _datagridDT = new WebGrid(Count.GetActiveSubstancesWithoutInteractions, rowsPerPage: 25);
     int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS,BookId;
 
     if (_Session != null)
@@ -150,15 +152,17 @@
         <div class="col-lg-6">
             <br />
             <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                    }
+                </div>
+            </div>
+            <br />
             <br />
             <div class="table-responsive">
-
-                @{
-                    List<Web.Models.Class.ActiveSubstances> LS = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstancesWithoutProduct @productId=" + ProductId + "").ToList();
-
-                    WebGrid _datagridDT = new WebGrid(LS, rowsPerPage: 25);
-                }
-
                 @_datagridDT.GetHtml(
                         headerStyle: "webgrid-header",
                         footerStyle: "webgrid-footer",
@@ -186,6 +190,15 @@
         </div>
         <div class="col-lg-6">
             <br />
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.TextBox("DescriptionAs", "", new { @class = "form-control pull-right", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                    }
+                </div>
+            </div>
             <br />
             <br />
             <div class="table-responsive">
