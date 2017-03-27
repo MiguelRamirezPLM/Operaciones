@@ -738,6 +738,8 @@ function RemoveCIE10(item) {
 
 function GetContraindicationsFromIndications() {
 
+    $("#bloqueo").show();
+
     $("#messageheaderComments").empty();
     $("#DivComments").empty();
 
@@ -757,7 +759,7 @@ function GetContraindicationsFromIndications() {
 
             var content = "";
 
-            content += "<table class='table-hover'>";
+            content += "<table class='table-hover' border='1'>";
             content += "<thead class='webgrid-header'>";
             content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
             content += "</thead>";
@@ -776,6 +778,8 @@ function GetContraindicationsFromIndications() {
             $("#DivComments").append(content);
 
             $("#btnComments").trigger("click");
+
+            $("#bloqueo").hide();
         }
     })
 
@@ -4140,6 +4144,56 @@ function DeleteCIE10Contraindications(item) {
             }
         }
     })
+}
+
+
+function GetIndicationsByContraindications() {
+
+    $("#bloqueo").show();
+
+    $("#messageheaderComments").empty();
+    $("#DivComments").empty();
+
+    var PId = $("#ProductId").val();
+    var PFId = $("#PharmaFormId").val();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CategoryId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetIndicationsByContraindications",
+        data: { Product: PId, PharmaForm: PFId },
+        success: function (data) {
+
+            $("#messageheaderComments").append("Elementos asociados como Contraindicaciones");
+
+            var content = "";
+
+            content += "<table class='table-hover' border='1'>";
+            content += "<thead class='webgrid-header'>";
+            content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
+            content += "</thead>";
+            content += "<tbody>";
+
+            $.each(data, function (index, val) {
+                content += "<tr>";
+                content += "<td>" + val.ParentICDKey + "</td>";
+                content += "<td>" + val.ICDKey + "</td>";
+                content += "<td>" + val.SpanishDescription + "</td>";
+                content += "</tr>";
+            });
+            content += "</tbody>";
+            content += "</table>";
+
+            $("#DivComments").append(content);
+
+            $("#btnComments").trigger("click");
+
+            $("#bloqueo").hide();
+        }
+    })
+
 }
 
 

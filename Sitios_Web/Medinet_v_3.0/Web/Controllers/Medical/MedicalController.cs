@@ -1677,6 +1677,17 @@ namespace Web.Controllers.Medical
             return Contraindicacion;
         }
 
+        public JsonResult GetIndicationsByContraindications(string Product, string PharmaForm, string Edition)
+        {
+            int ProductId = int.Parse(Product);
+            int PharmaFormId = int.Parse(PharmaForm);
+            int EditionId = 1;
+
+            List<GetICDByProductPharmaform> LS = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spGetICDByProductPharmaform @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @EditionId=" + EditionId + "").OrderBy(x => x.ICDKey).ToList();
+
+            return Json(LS, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region CIE10
@@ -1892,7 +1903,7 @@ namespace Web.Controllers.Medical
             int DivisionId = int.Parse(Division);
             int CategoryId = int.Parse(Category);
 
-            List<GetICDByProductPharmaform> LS = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ", @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @divisionId=" + DivisionId + ", @categoryId=" + CategoryId + "").ToList();
+            List<GetICDByProductPharmaform> LS = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ", @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @divisionId=" + DivisionId + ", @categoryId=" + CategoryId + "").OrderBy(x => x.ICDKey).ToList();
 
             return Json(LS, JsonRequestBehavior.AllowGet);
         }
