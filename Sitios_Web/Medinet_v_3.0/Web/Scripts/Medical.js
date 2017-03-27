@@ -715,52 +715,71 @@ function SaveCIE10() {
     }
 }
 
-function RemoveCIE10() {
+function RemoveCIE10(item) {
 
-    var Size = $(ListRemoveCIE).size();
+    var ICDId = $(item).val();
+    var PFId = $("#PharmaFormId").val();
+    var PId = $("#ProductId").val();
 
-    if ((Size != 0) && (Size != "0")) {
-        $('#bloqueo').show();
+    $('#bloqueo').show();
 
-        var Json = JSON.stringify(ListRemoveCIE);
-
-        console.log(Json);
-
-        $.ajax({
-            Type: "POST",
-            dataType: "Json",
-            url: "../Medical/RemoveCIE10",
-            data: { List: Json, size: Size },
-            success: function (data) {
-                if (data == true) {
-                    setTimeout("document.location.reload()");
-                }
-                else {
-                    var d = "";
-                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
-                    d += "<br/>";
-                    d += "<ul style='list-style:none'>";
-                    $.each(data, function (index, val) {
-                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
-                    });
-                    d += "</ul>";
-
-                    apprise("" + d + "", { 'animate': true });
-                    $("#bloqueo").hide();
-                }
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/RemoveCIE10",
+        data: { Product: PId, PharmaForm: PFId, ICD: ICDId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
             }
-        })
-    }
-    else {
-        var d = "";
-        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
-        apprise("" + d + "", { 'animate': true });
-        $("#bloqueo").hide();
-    }
+        }
+    })
 }
 
+function GetContraindicationsFromIndications() {
+
+    $("#messageheaderComments").empty();
+    $("#DivComments").empty();
+
+    var PId = $("#ProductId").val();
+    var PFId = $("#PharmaFormId").val();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CategoryId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetContraindicationsFromIndications",
+        data: { Product: PId, PharmaForm: PFId, Division: DId, Category: CId },
+        success: function (data) {
+            
+            $("#messageheaderComments").append("Elementos asociados como Contraindicaciones");
+
+            var content = "";
+
+            content += "<table class='table-hover'>";
+            content += "<thead class='webgrid-header'>";
+            content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
+            content += "</thead>";
+            content += "<tbody>";
+            
+            $.each(data, function (index, val) {
+                content += "<tr>";
+                content += "<td>" + val.ParentICDKey + "</td>";
+                content += "<td>" + val.ICDKey + "</td>";
+                content += "<td>" + val.SpanishDescription + "</td>";
+                content += "</tr>";
+            });
+            content += "</tbody>";
+            content += "</table>";
+
+            $("#DivComments").append(content);
+
+            $("#btnComments").trigger("click");
+        }
+    })
+
+}
 
 
 /*              ATC OMS           */
@@ -4147,7 +4166,7 @@ function AddProductAdministrationRoutes(RouteId) {
                 d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
                 d += "<label> El registro, ya esta asociado al Producto / Forma Farmac&eacute;utica.</label> <br/>"
                 apprise("" + d + "", { 'animate': true });
-                
+
                 $("#bloqueo").hide();
             }
         }

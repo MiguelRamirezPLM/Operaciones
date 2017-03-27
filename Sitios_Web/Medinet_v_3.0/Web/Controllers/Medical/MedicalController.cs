@@ -90,7 +90,7 @@ namespace Web.Controllers.Medical
 
             GetActiveSubstancesCls GetActiveSubstancesCls = new Models.Class.GetActiveSubstancesCls();
 
-            GetActiveSubstancesCls.ActiveSubstances = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstanceByProduct @productId = " + ProductId + ", @substance='" + DescriptionAs  + "'").ToList();
+            GetActiveSubstancesCls.ActiveSubstances = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstanceByProduct @productId = " + ProductId + ", @substance='" + DescriptionAs + "'").ToList();
             GetActiveSubstancesCls.GetActiveSubstancesWithoutInteractions = db.Database.SqlQuery<Web.Models.Class.ActiveSubstances>("plm_spGetActiveSubstancesWithoutProduct @productId=" + ProductId + ", @substance='" + Description + "'").ToList();
 
             SessionLI.ProductId = ProductId;
@@ -1874,29 +1874,27 @@ namespace Web.Controllers.Medical
             }
         }
 
-        public JsonResult RemoveCIE10(String List, string size)
+        public JsonResult RemoveCIE10(string Product, string PharmaForm, string ICD)
         {
-            int SizeId = int.Parse(size);
+            int ICDId = int.Parse(ICD);
+            int ProductId = int.Parse(Product);
+            int PharmaFormId = int.Parse(PharmaForm);
 
-            dynamic item = JsonConvert.DeserializeObject(List);
-
-            List<String> LS = new List<String>();
-
-            for (var i = 0; i <= SizeId - 1; i++)
-            {
-                int ICDId = Convert.ToInt32(item[i]["TId"]);
-                int ProductId = Convert.ToInt32(item[i]["PId"]);
-                int PharmaFormId = Convert.ToInt32(item[i]["PFId"]);
-
-                String response = Operations.SaveAddCIE10(ICDId, ProductId, PharmaFormId, "Delete");
-
-                if (response != "Ok")
-                {
-                    LS.Add(response.ToUpper());
-                }
-            }
+            String response = Operations.SaveAddCIE10(ICDId, ProductId, PharmaFormId, "Delete");
 
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetContraindicationsFromIndications(string Product, string PharmaForm, string Division, string Category)
+        {
+            int ProductId = int.Parse(Product);
+            int PharmaFormId = int.Parse(PharmaForm);
+            int DivisionId = int.Parse(Division);
+            int CategoryId = int.Parse(Category);
+
+            List<GetICDByProductPharmaform> LS = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ", @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @divisionId=" + DivisionId + ", @categoryId=" + CategoryId + "").ToList();
+
+            return Json(LS, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
