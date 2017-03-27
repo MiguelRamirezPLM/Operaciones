@@ -924,7 +924,7 @@
                             + "<td style='vertical-align:middle' align='center'>" + item.QtyWeightUnit + "</td>"
                             + "<td style='vertical-align:middle' align='center'>" + item.WeightUnitName + "</td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                            //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
                             + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading'>"
                             + "<i class='glyphicon glyphicon-pencil'>"
@@ -1075,9 +1075,9 @@
 @*Evaluate the results when the user has added a new presentation, showing the errors that may have*@
 <script>
     function _vladdPresentation(item) {
-        var _getfile400 = document.getElementById("File400").files[0];
-        var _getfile384 = document.getElementById("File384").files[0];
-        var _getfile320 = document.getElementById("File320").files[0];
+        //var _getfile400 = document.getElementById("File400").files[0];
+        //var _getfile384 = document.getElementById("File384").files[0];
+        //var _getfile320 = document.getElementById("File320").files[0];
         var _vlxexternalPack = $("#_vlexternalPack").val();
         var _vlxinternalPack = $("#_vlinternalPack").val();
         var _vlxcontentUnits = $("#_vlcontentUnits").val();
@@ -1109,73 +1109,74 @@
         $("#_fgetWeightUnits").addClass("hide");
         $("#_fvlweightUnits").addClass("hide");
         $("#_tgetWeightUnits").addClass("hide");
-        if (_getfile400 != null && _getfile384 != null
-            && _vlxexternalPack.trim() == false
-            && _vlxinternalPack.trim() == false
-            && _vlxcontentUnits.trim() == false
-            && _vlxweightUnits.trim() == false
-            && _vlzexternalPackId == "0"
-            && _vlzinternalPackId == "0"
-            && _vlzcontentUnitsId == "0"
-            && _vlzweightUnitsId == "0") {
-            swal({ title: "¡Atención!", type: "error", text: "No puede cargar imagenes sin datos en la presentación" });
-        }
-        else if (_getfile400 != null && _getfile320 != null
-            && _vlxexternalPack.trim() == false
-            && _vlxinternalPack.trim() == false
-            && _vlxcontentUnits.trim() == false
-            && _vlxweightUnits.trim() == false
-            && _vlzexternalPackId == "0"
-            && _vlzinternalPackId == "0"
-            && _vlzcontentUnitsId == "0"
-            && _vlzweightUnitsId == "0") {
-            swal({ title: "¡Atención!", type: "error", text: "No puede cargar imagenes sin datos en la presentación" });
-        }
-        else if (_getfile400 != null && _getfile384 != null && _getfile320 != null
-            && _vlxexternalPack.trim() == false
-            && _vlxinternalPack.trim() == false
-            && _vlxcontentUnits.trim() == false
-            && _vlxweightUnits.trim() == false
-            && _vlzexternalPackId == "0"
-            && _vlzinternalPackId == "0"
-            && _vlzcontentUnitsId == "0"
-            && _vlzweightUnitsId == "0") {
-            swal({ title: "¡Atención!", type: "error", text: "No puede cargar imagenes sin datos en la presentación" });
-        }
-        if (_getfile400 != null
-            && _vlxexternalPack.trim() == false
-            && _vlxinternalPack.trim() == false
-            && _vlxcontentUnits.trim() == false
-            && _vlxweightUnits.trim() == false
-            && _vlzexternalPackId == "0"
-            && _vlzinternalPackId == "0"
-            && _vlzcontentUnitsId == "0"
-            && _vlzweightUnitsId == "0") {
-            swal({ title: "¡Atención!", type: "error", text: "No puede cargar una imagen sin datos en la presentación" });
-        }
-        else if (_getfile384 != null
-            && _vlxexternalPack.trim() == false
-            && _vlxinternalPack.trim() == false
-            && _vlxcontentUnits.trim() == false
-            && _vlxweightUnits.trim() == false
-            && _vlzexternalPackId == "0"
-            && _vlzinternalPackId == "0"
-            && _vlzcontentUnitsId == "0"
-            && _vlzweightUnitsId == "0") {
-            swal({ title: "¡Atención!", type: "error", text: "No puede cargar una imagen sin datos en la presentación" });
-        }
-        else if (_getfile320 != null
-            && _vlxexternalPack.trim() == false
-            && _vlxinternalPack.trim() == false
-            && _vlxcontentUnits.trim() == false
-            && _vlxweightUnits.trim() == false
-            && _vlzexternalPackId == "0"
-            && _vlzinternalPackId == "0"
-            && _vlzcontentUnitsId == "0"
-            && _vlzweightUnitsId == "0") {
-            swal({ title: "¡Atención!", type: "error", text: "No puede cargar una imagen sin datos en la presentación" });
-        }
-        else if (_vlxexternalPack.trim() == false
+        //if (_getfile400 != null && _getfile384 != null
+        //    && _vlxexternalPack.trim() == false
+        //    && _vlxinternalPack.trim() == false
+        //    && _vlxcontentUnits.trim() == false
+        //    && _vlxweightUnits.trim() == false
+        //    && _vlzexternalPackId == "0"
+        //    && _vlzinternalPackId == "0"
+        //    && _vlzcontentUnitsId == "0"
+        //    && _vlzweightUnitsId == "0") {
+        //    swal({ title: "¡Atención!", type: "error", text: "No puede cargar imagenes sin datos en la presentación" });
+        //}
+        //else if (_getfile400 != null && _getfile320 != null
+        //    && _vlxexternalPack.trim() == false
+        //    && _vlxinternalPack.trim() == false
+        //    && _vlxcontentUnits.trim() == false
+        //    && _vlxweightUnits.trim() == false
+        //    && _vlzexternalPackId == "0"
+        //    && _vlzinternalPackId == "0"
+        //    && _vlzcontentUnitsId == "0"
+        //    && _vlzweightUnitsId == "0") {
+        //    swal({ title: "¡Atención!", type: "error", text: "No puede cargar imagenes sin datos en la presentación" });
+        //}
+        //else if (_getfile400 != null && _getfile384 != null && _getfile320 != null
+        //    && _vlxexternalPack.trim() == false
+        //    && _vlxinternalPack.trim() == false
+        //    && _vlxcontentUnits.trim() == false
+        //    && _vlxweightUnits.trim() == false
+        //    && _vlzexternalPackId == "0"
+        //    && _vlzinternalPackId == "0"
+        //    && _vlzcontentUnitsId == "0"
+        //    && _vlzweightUnitsId == "0") {
+        //    swal({ title: "¡Atención!", type: "error", text: "No puede cargar imagenes sin datos en la presentación" });
+        //}
+        //if (_getfile400 != null
+        //    && _vlxexternalPack.trim() == false
+        //    && _vlxinternalPack.trim() == false
+        //    && _vlxcontentUnits.trim() == false
+        //    && _vlxweightUnits.trim() == false
+        //    && _vlzexternalPackId == "0"
+        //    && _vlzinternalPackId == "0"
+        //    && _vlzcontentUnitsId == "0"
+        //    && _vlzweightUnitsId == "0") {
+        //    swal({ title: "¡Atención!", type: "error", text: "No puede cargar una imagen sin datos en la presentación" });
+        //}
+        //else if (_getfile384 != null
+        //    && _vlxexternalPack.trim() == false
+        //    && _vlxinternalPack.trim() == false
+        //    && _vlxcontentUnits.trim() == false
+        //    && _vlxweightUnits.trim() == false
+        //    && _vlzexternalPackId == "0"
+        //    && _vlzinternalPackId == "0"
+        //    && _vlzcontentUnitsId == "0"
+        //    && _vlzweightUnitsId == "0") {
+        //    swal({ title: "¡Atención!", type: "error", text: "No puede cargar una imagen sin datos en la presentación" });
+        //}
+        //else if (_getfile320 != null
+        //    && _vlxexternalPack.trim() == false
+        //    && _vlxinternalPack.trim() == false
+        //    && _vlxcontentUnits.trim() == false
+        //    && _vlxweightUnits.trim() == false
+        //    && _vlzexternalPackId == "0"
+        //    && _vlzinternalPackId == "0"
+        //    && _vlzcontentUnitsId == "0"
+        //    && _vlzweightUnitsId == "0") {
+        //    swal({ title: "¡Atención!", type: "error", text: "No puede cargar una imagen sin datos en la presentación" });
+        //}
+        //else
+            if (_vlxexternalPack.trim() == false
             && _vlxinternalPack.trim() == false
             && _vlxcontentUnits.trim() == false
             && _vlxweightUnits.trim() == false
@@ -1311,9 +1312,9 @@
                 _vlxweightUnits = "0";
             }
             var dataform = new FormData();
-            dataform.append("File400", _getfile400);
-            dataform.append("File384", _getfile384);
-            dataform.append("File320", _getfile320);
+            //dataform.append("File400", _getfile400);
+            //dataform.append("File384", _getfile384);
+            //dataform.append("File320", _getfile320);
             dataform.append("EditionId", _vlxeditionId)
             dataform.append("DivisionId", _vlxdivisionId)
             dataform.append("ProductId", _vlxproductId)
@@ -1329,11 +1330,27 @@
             dataform.append("WeightUnitId", _vlzweightUnitsId)
             $.ajax({
                 type: "POST",
-                url: '@Url.Content("~/Production/AddPresentation")',
-                data: dataform,
                 dataType: 'json',
-                contentType: false,
-                processData: false,
+                url: "@Url.Content("~/Production/AddPresentation1")",
+                //data: dataform,
+                data: {
+                     EditionId:_vlxeditionId,
+                     DivisionId:_vlxdivisionId ,
+                     CategoryId:_vlxcategoryId,
+                     ProductId: _vlxproductId,
+                     PharmaFormId:_vlxpharmaFormId,
+                     QtyExternalPack:_vlxexternalPack ,
+                     ExternalPackId:_vlzexternalPackId,
+                     QtyInternalPack: _vlxinternalPack,
+                     InternalPackId:_vlzinternalPackId,
+                     QtyContentUnit:_vlxcontentUnits,
+                     ContentUnitId:_vlzcontentUnitsId,
+                     QtyWeightUnit:_vlxweightUnits,
+                     WeightUnitId: _vlzweightUnitsId
+                },
+                //dataType: 'json',
+                //contentType: false,
+                //processData: false,
                 success: function (response) {
                     $.each(response, function (index, item) {
                         if (item.QtyExternalPack == null) {
@@ -1379,7 +1396,7 @@
                             + "<td style='vertical-align:middle' align='center'>" + item.QtyWeightUnit + "</td>"
                             + "<td style='vertical-align:middle' align='center'>" + item.WeightUnitName + "</td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                            //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
                             + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading'>"
                             + "<i class='glyphicon glyphicon-pencil'>"
@@ -1423,9 +1440,9 @@
                     $("#File320").fileinput('clear')
                     swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
                 },
-                cache: false,
-                contentType: false,
-                processData: false
+                //cache: false,
+                //contentType: false,
+                //processData: false
             });
         }
     }
@@ -3111,7 +3128,7 @@
                                 <td style="vertical-align:middle" align="center" class="tdback">Cantidad de concentración de producto</td>
                                 <td style="vertical-align:middle" align="center" class="tdback">Concentración de producto</td>
                                 <td style="vertical-align:middle" align="center" class="tdback">Presentación</td>
-                                <td style="vertical-align:middle" align="center" class="tdback">Imagen</td>
+                                @*<td style="vertical-align:middle" align="center" class="tdback">Imagen</td>*@
                                 <td style="vertical-align:middle" align="center" class="tdback">Editar</td>
                                 <td style="vertical-align:middle" align="center" class="tdback">Eliminar</td>
                             </tr>
@@ -3211,7 +3228,7 @@
                     <span id="_fgetWeightUnits" style="padding-left:5px; color:#de5246" class="glyphicon glyphicon-remove hide"></span>
                 </div>
                 <hr />
-                <div align="center">
+                @*<div align="center">
                     <span style="font-size:17px;">Imagenes</span>
                 </div>
                 <hr />
@@ -3280,7 +3297,7 @@
                             </script>
                         </div>
                     </div>
-                </div>
+                </div>*@
             </div>
             <div class="modal-footer">
                 <div align="center">

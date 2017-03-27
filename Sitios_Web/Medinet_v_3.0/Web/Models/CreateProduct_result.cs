@@ -7,6 +7,6 @@ namespace Web.Models
 {
     public class CreateProduct_result
     {
-        public int[,] id { get; set; }
+        public int id { get; set; }
     }
 }

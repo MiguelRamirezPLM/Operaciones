@@ -569,6 +569,86 @@ namespace Web.Controllers.Production
             return Json(_l_WeightUnits, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public ActionResult AddPresentation1(
+                                            int EditionId,
+                                            int DivisionId,
+                                            int CategoryId,
+                                            int ProductId,
+                                            int PharmaFormId,
+                                            int? QtyExternalPack,
+                                            int? ExternalPackId,
+                                            int? QtyInternalPack,
+                                            int? InternalPackId,
+                                            string QtyContentUnit,
+                                            int? ContentUnitId,
+                                            string QtyWeightUnit,
+                                            int? WeightUnitId
+                                           )
+        {
+            int Active = 1;
+            int PresentationId;
+            List<CreateProduct_result> LI = new List<CreateProduct_result>();
+             int[,] IDD ;
+             
+             try
+             {
+                 LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProductByPresentationToEdition @presentationId = 0,@CRUDType="
+                                                              + CRUD.Create + ",@divisionId =" + DivisionId
+                                                              + ", @categoryId=" + CategoryId
+                                                              + ",@productId=" + ProductId
+                                                              + ",@pharmaFormId=" + PharmaFormId
+                                                              + ",@active=" + Active
+                                                              + ",@EditionId=" + EditionId
+                                                              + ",@qtyExternalPack =" + QtyExternalPack
+                                                              + ",@externalPackId =" + ExternalPackId
+                                                              + ",@qtyInternalPack=" + QtyInternalPack
+                                                              + ",@internalPackId=" + InternalPackId
+                                                              + ",@qtyContentUnit =" + QtyContentUnit
+                                                              + ",@contentUnitId=" + ContentUnitId
+                                                              + ",@qtyWeightUnit=" + QtyWeightUnit
+                                                              + ",@weightUnitId=" + WeightUnitId + "").ToList();
+
+                 PresentationId = Convert.ToInt32(LI[0].id);
+                 List<plm_spGetPresentationsByEditionByProduct> _getPresentations = db.Database.SqlQuery<plm_spGetPresentationsByEditionByProduct>
+                    ("EXECUTE dbo.plm_spGetPresentationsByEditionByProduct"
+                    + " @productId=" + ProductId
+                    + ",@categoryId=" + CategoryId
+                    + ",@pharmaFormId=" + PharmaFormId
+                    + ",@divisionId=" + DivisionId
+                    + ",@editionId=" + EditionId + "").ToList();
+                 var getResults = _getPresentations.Where(model => model.PresentationId == PresentationId).ToList();
+                 plm_spGetPresentationsByEditionByProduct _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+                 List<plm_spGetPresentationsByEditionByProduct> _l_plm_spGetPresentationsByEditionByProduct = new List<plm_spGetPresentationsByEditionByProduct>();
+                 foreach (var _row in getResults)
+                 {
+                     _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
+                     _plm_spGetPresentationsByEditionByProduct.PresentationId = _row.PresentationId;
+                     _plm_spGetPresentationsByEditionByProduct.QtyExternalPack = _row.QtyExternalPack;
+                     _plm_spGetPresentationsByEditionByProduct.ExternalPackId = _row.ExternalPackId;
+                     _plm_spGetPresentationsByEditionByProduct.ExternalPackName = _row.ExternalPackName;
+                     _plm_spGetPresentationsByEditionByProduct.QtyInternalPack = _row.QtyInternalPack;
+                     _plm_spGetPresentationsByEditionByProduct.InternalPackId = _row.InternalPackId;
+                     _plm_spGetPresentationsByEditionByProduct.InternalPackName = _row.InternalPackName;
+                     _plm_spGetPresentationsByEditionByProduct.ContentUnitId = _row.ContentUnitId;
+                     _plm_spGetPresentationsByEditionByProduct.QtyContentUnit = _row.QtyContentUnit;
+                     _plm_spGetPresentationsByEditionByProduct.ContentUnitName = _row.ContentUnitName;
+                     _plm_spGetPresentationsByEditionByProduct.QtyWeightUnit = _row.QtyWeightUnit;
+                     _plm_spGetPresentationsByEditionByProduct.WeightUnitId = _row.WeightUnitId;
+                     _plm_spGetPresentationsByEditionByProduct.WeightUnitName = _row.WeightUnitName;
+                     _plm_spGetPresentationsByEditionByProduct.Presentation = _row.Presentation;
+                     _plm_spGetPresentationsByEditionByProduct.LongCount = _getPresentations.LongCount();
+                     _l_plm_spGetPresentationsByEditionByProduct.Add(_plm_spGetPresentationsByEditionByProduct);
+                 }
+                 return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
+             }
+
+            catch (Exception e)
+            {
+                string message = e.Message;
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult AddPresentation()
         {
             string[] _editionId = Request.Form.GetValues("EditionId");

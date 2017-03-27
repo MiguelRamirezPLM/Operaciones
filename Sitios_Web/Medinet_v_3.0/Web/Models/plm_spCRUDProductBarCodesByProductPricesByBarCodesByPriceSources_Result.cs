@@ -14,7 +14,7 @@ namespace Web.Models
         public int PharmaFormId { get; set; }
         public string Brand { get; set; }
         public string Presentation { get; set; }
-        public int BarCodeId { get; set; }
+        public int? BarCodeId { get; set; }
         public decimal? AveragePrice { get; set; }
         public double? Price { get; set; }
         public string BarCode { get; set; }
