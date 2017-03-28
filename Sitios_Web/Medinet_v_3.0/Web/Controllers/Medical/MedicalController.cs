@@ -22,6 +22,7 @@ namespace Web.Controllers.Medical
         Web.Models.Class.Operations Operations = new Web.Models.Class.Operations();
         getData getData = new getData();
         PLMUsers dbusers = new PLMUsers();
+        ActivityLog ActivityLog = new ActivityLog();
 
         public ActionResult Index()
         {
@@ -49,6 +50,7 @@ namespace Web.Controllers.Medical
             return View(LS);
         }
 
+        //AL
         public JsonResult UpdateProductType(string Product, string ProductType)
         {
             int ProductId = int.Parse(Product);
@@ -63,6 +65,8 @@ namespace Web.Controllers.Medical
                     _p.ProductTypeId = ProductTypeId;
 
                     db.SaveChanges();
+
+                    ActivityLog.UpdateProductType(ProductId, ProductTypeId, 2);
                 }
             }
 
@@ -101,11 +105,14 @@ namespace Web.Controllers.Medical
             return View(GetActiveSubstancesCls);
         }
 
+        //AL
         public ActionResult AddProductSubstances(int? ProductId, int? ActiveSubstanceId, int? PharmaFormId, int? CategoryId)
         {
             try
             {
                 var response = db.Database.ExecuteSqlCommand("plm_spCRUDProductSubstance @CRUDType=" + CRUD.Create + ", @productId=" + ProductId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
+
+                ActivityLog.CRUDProductSubstances(Convert.ToInt32(ProductId), Convert.ToInt32(ActiveSubstanceId), 1);
             }
             catch (Exception e)
             {
@@ -115,11 +122,14 @@ namespace Web.Controllers.Medical
             return RedirectToAction("Clasification", new { ProductId = ProductId, PharmaFormId = PharmaFormId, CategoryId = CategoryId });
         }
 
+        //AL
         public ActionResult DeleteProductSubstances(int? ProductId, int? ActiveSubstanceId, int? PharmaFormId, int? CategoryId)
         {
             try
             {
                 var response = db.Database.ExecuteSqlCommand("plm_spCRUDProductSubstance @CRUDType=" + CRUD.Delete + ", @productId=" + ProductId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
+
+                ActivityLog.CRUDProductSubstances(Convert.ToInt32(ProductId), Convert.ToInt32(ActiveSubstanceId), 4);
             }
             catch (Exception e)
             {
@@ -170,15 +180,15 @@ namespace Web.Controllers.Medical
                 if (LS.LongCount() > 0)
                 {
                     _return = "<span class='glyphicon glyphicon-plus' id='Expand_" + item.TherapeuticId + "' onclick='getlevel3SM(" + item.TherapeuticId + ")' style='cursor:pointer'></span>" +
-                                    "<span class='glyphicon glyphicon-minus' style='display:none;cursor:pointer' id='Collapse_" + item.TherapeuticId + "' onclick='collapselevel3(" + item.TherapeuticId + ")'></span>" +
-                                    "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                    "<ul id='ListL3_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                                "<span class='glyphicon glyphicon-minus' style='display:none;cursor:pointer' id='Collapse_" + item.TherapeuticId + "' onclick='collapselevel3(" + item.TherapeuticId + ")'></span>" +
+                                "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                                "<ul id='ListL3_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
                 }
                 else
                 {
                     _return = "<input type='checkbox' value='" + item.TherapeuticId + "' onclick=\"AddATCEphMRA($(this)) \" />" +
-                                    "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                    "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                                "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                                "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
                 }
 
                 LT.Add(_return);
@@ -204,15 +214,15 @@ namespace Web.Controllers.Medical
                 if (LS.LongCount() > 0)
                 {
                     _return = "<span class='glyphicon glyphicon-plus' id='Expand_" + item.TherapeuticId + "' onclick='getlevel4SM(" + item.TherapeuticId + ")' style='cursor:pointer'></span>" +
-                                    "<span class='glyphicon glyphicon-minus' style='display:none;cursor:pointer' id='Collapse_" + item.TherapeuticId + "' onclick='collapselevel4(" + item.TherapeuticId + ")'></span>" +
-                                    "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                    "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                                "<span class='glyphicon glyphicon-minus' style='display:none;cursor:pointer' id='Collapse_" + item.TherapeuticId + "' onclick='collapselevel4(" + item.TherapeuticId + ")'></span>" +
+                                "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                                "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
                 }
                 else
                 {
                     _return = "<input type='checkbox' value='" + item.TherapeuticId + "' onclick=\"AddATCEphMRA($(this)) \" />" +
-                                    "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                    "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                                "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                                "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
                 }
 
                 LT.Add(_return);
@@ -238,15 +248,15 @@ namespace Web.Controllers.Medical
                 if (LS.LongCount() > 0)
                 {
                     _return = "<span class='glyphicon glyphicon-plus' id='Expand_" + item.TherapeuticId + "' onclick='getlevel5SM(" + item.TherapeuticId + ")' style='cursor:pointer'></span>" +
-                                    "<span class='glyphicon glyphicon-minus' style='display:none;cursor:pointer' id='Collapse_" + item.TherapeuticId + "' onclick='collapselevel5(" + item.TherapeuticId + ")'></span>" +
-                                    "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                    "<ul id='ListL5_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                                "<span class='glyphicon glyphicon-minus' style='display:none;cursor:pointer' id='Collapse_" + item.TherapeuticId + "' onclick='collapselevel5(" + item.TherapeuticId + ")'></span>" +
+                                "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                                "<ul id='ListL5_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
                 }
                 else
                 {
                     _return = "<input type='checkbox' value='" + item.TherapeuticId + "'  onclick=\"AddATCEphMRA($(this)) \"/>" +
-                                    "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                    "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                                "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                                "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
                 }
 
                 LT.Add(_return);
@@ -263,15 +273,13 @@ namespace Web.Controllers.Medical
 
             var LS1 = db.Therapeutics.Where(x => x.ParentId == TherapeuticId && x.Active == true && x.Level == 5).OrderBy(x => x.TherapeuticKey).ToList();
 
-
-
             foreach (Therapeutics item in LS1)
             {
                 String _return = String.Empty;
 
                 _return = "<input type='checkbox' value='" + item.TherapeuticId + "'  onclick=\"AddATCEphMRA($(this)) \"/>" +
-                                                 "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
-                                                 "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
+                            "&nbsp;&nbsp;<label style='font-weight:bold;color:#065977; margin-bottom: 5px'><b>" + item.TherapeuticKey + "</b></label> - <span style='font-weight:100'>" + item.SpanishDescription.ToUpper() + "</span>" +
+                            "<ul id='ListL4_" + item.TherapeuticId + "' style='list-style: none;margin-left:30px'></ul>";
 
                 LS.Add(_return);
             }
@@ -279,6 +287,7 @@ namespace Web.Controllers.Medical
             return Json(LS, JsonRequestBehavior.AllowGet);
         }
 
+        //AL
         public JsonResult SaveAddATCEphMRA(String List, string size)
         {
             int SizeId = int.Parse(size);
@@ -313,6 +322,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult RemoveATCEphMRA(String List, string size)
         {
             int SizeId = int.Parse(size);
@@ -439,6 +449,8 @@ namespace Web.Controllers.Medical
             }
             return View(GetContraindications);
         }
+
+        #region Medicas
 
         public JsonResult GetLevelTwoCICD(string ICD)
         {
@@ -615,6 +627,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult SaveCIE10Contraindications(String List, string size, string Division, string Category)
         {
             int SizeId = int.Parse(size);
@@ -663,6 +676,8 @@ namespace Web.Controllers.Medical
 
                     var _result = db.Database.ExecuteSqlCommand("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Delete + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ParentId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
 
+                    ActivityLog.CRUDProductContraindicationsByICD(ProductId, PharmaFormId, DivisionId, CategoryId, ParentId, ActiveSubstanceId, 4);
+
                     FlagParent = true;
                 }
 
@@ -702,7 +717,7 @@ namespace Web.Controllers.Medical
 
                                 if (_result[0] == 1)
                                 {
-
+                                    ActivityLog.CRUDProductContraindicationsByICD(ProductId, PharmaFormId, DivisionId, CategoryId, ICDId, ActiveSubstanceId, 1);
                                 }
                             }
                         }
@@ -729,6 +744,7 @@ namespace Web.Controllers.Medical
             return Json(rets, JsonRequestBehavior.AllowGet);
         }
 
+        //AL
         public JsonResult DeleteICDContraindications(string Product, string Category, string Division, string PharmaForm, string ActiveSubstance, string ICD)
         {
             int ProductId = int.Parse(Product);
@@ -740,9 +756,12 @@ namespace Web.Controllers.Medical
 
             var _result = db.Database.ExecuteSqlCommand("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Delete + ",@categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ",@pharmaFormId=" + PharmaFormId + ",@productId=" + ProductId + ", @medicalICDContraindicationId=" + ICDId + ", @activeSubstanceId=" + ActiveSubstanceId + "");
 
+            ActivityLog.CRUDProductContraindicationsByICD(ProductId, PharmaFormId, DivisionId, CategoryId, ICDId, ActiveSubstanceId, 4);
+
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        //AL
         public JsonResult NoContraindications(string Product, string Category, string Division, string PharmaForm)
         {
             int ProductId = int.Parse(Product);
@@ -758,14 +777,37 @@ namespace Web.Controllers.Medical
             {
                 foreach (GetActiveSubstancesWithoutInteractions item in LS)
                 {
-                    var res = db.Database.ExecuteSqlCommand("plm_spCRUDIppaProductContraindications @CRUDType=" + CRUD.Create + ", @categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ", @pharmaFormId=" + PharmaFormId + ", @productId=" + ProductId + ", @substanceId=" + item.ActiveSubstanceId + ", @statusCM=" + StatusId + ",@deleteCM =" + DeleteCM + "");
+                    var res = db.Database.SqlQuery<int>("plm_spCRUDIppaProductContraindications @CRUDType=" + CRUD.Create + ", @categoryId=" + CategoryId + ", @divisionId=" + DivisionId + ", @pharmaFormId=" + PharmaFormId + ", @productId=" + ProductId + ", @substanceId=" + item.ActiveSubstanceId + ", @statusCM=" + StatusId + ",@deleteCM =" + DeleteCM + "").ToList();
+
+                    ActivityLog.CRUDProductSubstanceContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductICDContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductPharmaGroupContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductPhysiologicalContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductPharmacologicalContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductHypersensibilityContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductOtherContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), 4);
+                    ActivityLog.CRUDProductCommentContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, Convert.ToInt32(item.ActiveSubstanceId), "", 4);
+
+                    if (res[0] == 1)
+                    {
+                        ActivityLog.CRUDIPPAProductContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, StatusId, Convert.ToInt32(item.ActiveSubstanceId), 1);
+                    }
+
+                    if (res[0] == 2)
+                    {
+                        ActivityLog.CRUDIPPAProductContraindications(ProductId, PharmaFormId, DivisionId, CategoryId, StatusId, Convert.ToInt32(item.ActiveSubstanceId), 2);
+                    }
+
+
                 }
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        /*          FISIOLOGICAS            */
+        #endregion
+
+        #region Fisiologicas
 
         public JsonResult CheckPhysiologicalContraindications(string Product, string Category, string Division, string PharmaForm, string PharmacologicalGroup)
         {
@@ -827,6 +869,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult SavePhysiologicalContraindications(String List, string size)
         {
             int SizeId = int.Parse(size);
@@ -868,6 +911,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult DeletePhysiologicalContraindications(string Product, string Category, string Division, string PharmaForm, string ActiveSubstance, string PhysContraindication)
         {
             int ProductId = int.Parse(Product);
@@ -882,8 +926,9 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
-        /*          FARMACOLOGICAS            */
+        #region Farmacologicas
 
         public JsonResult CheckPharmacologicalContraindications(string Product, string Category, string Division, string PharmaForm, string Pharmacological)
         {
@@ -944,6 +989,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult SavePharmacologicalContraindications(String List, string size)
         {
             int SizeId = int.Parse(size);
@@ -985,6 +1031,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult DeletePharmacologicalContraindications(string Product, string Category, string Division, string PharmaForm, string ActiveSubstance, string PhysContraindication)
         {
             int ProductId = int.Parse(Product);
@@ -999,8 +1046,9 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
-        /*          HIPERSENSIBILIDAD            */
+        #region Hipersensibilidad
 
         public JsonResult CheckHyperContraindications(string Product, string Category, string Division, string PharmaForm, string Pharmacological)
         {
@@ -1116,9 +1164,9 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
-
-        /*          GRUPOS FARMACOLOGICOS            */
+        #region Grupos Farmacologicos
 
         public JsonResult CheckPharmacologicalGroupsContraindications(string Product, string Category, string Division, string PharmaForm, string Pharmacological)
         {
@@ -1241,8 +1289,9 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
-        /*          SUSTANCIAS ACTIVAS          */
+        #region Sustancias Activas
 
         public JsonResult CheckActiveSubstancesContraindications(string Product, string Category, string Division, string PharmaForm, string Pharmacological)
         {
@@ -1365,8 +1414,9 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
-        /*          OTROS ELEMENTOS         */
+        #region Otros Elementos
 
         public JsonResult CheckOtherElementsContraindications(string Product, string Category, string Division, string PharmaForm, string Element)
         {
@@ -1489,9 +1539,9 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
-
-        /*          COMMENTS            */
+        #region Comentarios
 
         public JsonResult CheckCommentsContraindications(string Product)
         {
@@ -1513,6 +1563,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult SaveCommentsContraindications(String List, string Size)
         {
             List<ReturnAddedInteractions> LR = new List<ReturnAddedInteractions>();
@@ -1546,6 +1597,7 @@ namespace Web.Controllers.Medical
             }
         }
 
+        //AL
         public JsonResult DeleteCommentsContraindications(string ActiveSubstance, string ProductComment, string Product, string Category, string Division, string PharmaForm)
         {
             int ActiveSubstanceId = int.Parse(ActiveSubstance);
@@ -1555,11 +1607,12 @@ namespace Web.Controllers.Medical
             int DivisionId = int.Parse(Division);
             int PharmaFormId = int.Parse(PharmaForm);
 
-            Operations.DeleteProductCommentContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, ProductCommentId, ActiveSubstanceId, CRUD.Delete);
+            Operations.SaveProductCommentContraindications(DivisionId, CategoryId, PharmaFormId, ProductId, ProductComment, ActiveSubstanceId, CRUD.Create);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        //AL
         public JsonResult DeleteAllCommentsContraindications(string Product, string Category, string Division, string PharmaForm)
         {
             int ProductId = int.Parse(Product);
@@ -1572,6 +1625,7 @@ namespace Web.Controllers.Medical
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
 
         public ActionResult PrintContraindications(int? ProductId, int? DivisionId, int? CategoryId, int? PharmaFormId, int? EditionId, int? CountryId)
         {
@@ -1903,7 +1957,9 @@ namespace Web.Controllers.Medical
             int DivisionId = int.Parse(Division);
             int CategoryId = int.Parse(Category);
 
-            List<GetICDByProductPharmaform> LS = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ", @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @divisionId=" + DivisionId + ", @categoryId=" + CategoryId + "").OrderBy(x => x.ICDKey).ToList();
+            var LS = db.Database.SqlQuery<GetICDByProductPharmaform>("plm_spCRUDProductContraindicationsByICD @CRUDType=" + CRUD.Read + ", @ProductId = " + ProductId + ", @PharmaFormId = " + PharmaFormId + ", @divisionId=" + DivisionId + ", @categoryId=" + CategoryId + "")
+                                                .OrderBy(x => x.ICDKey)
+                                                .Select(x => new { x.ICDId, x.ICDKey, x.ParentICDKey, x.SpanishDescription }).Distinct().ToList();
 
             return Json(LS, JsonRequestBehavior.AllowGet);
         }
@@ -2040,8 +2096,6 @@ namespace Web.Controllers.Medical
             List<String> LS = new List<String>();
 
             var LS1 = db.TherapeuticOMS.Where(x => x.ParentId == TherapeuticId && x.Active == true && x.Level == 5).OrderBy(x => x.TherapeuticKey).ToList();
-
-
 
             foreach (TherapeuticOMS item in LS1)
             {
@@ -2243,7 +2297,6 @@ namespace Web.Controllers.Medical
 
         public JsonResult DeleteProductSubstanceInteractions(string ActiveSubstance, string SubstanceInteraction, string Product, string Category, string Division, string PharmaForm)
         {
-
             int ActiveSubstanceId = int.Parse(ActiveSubstance);
             int SubstanceInteractionId = int.Parse(SubstanceInteraction);
             int ProductId = int.Parse(Product);
@@ -2652,17 +2705,11 @@ namespace Web.Controllers.Medical
 
             List<ProductIndications> LS = db.Database.SqlQuery<ProductIndications>("plm_spCRUDProductIndications @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ", @indicationId=" + IndicationId + "").ToList();
 
-            try
+            if (LS.LongCount() == 0)
             {
-                if (LS.LongCount() == 0)
-                {
-                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductIndications @CRUDType=" + CRUD.Create + ", @productId=" + ProductId + ", @indicationId=" + IndicationId + "");
-                }
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductIndications @CRUDType=" + CRUD.Create + ", @productId=" + ProductId + ", @indicationId=" + IndicationId + "");
 
-            }
-            catch (Exception e)
-            {
-
+                ActivityLog.CRUDProductIndications(ProductId, IndicationId, 1);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -2675,17 +2722,11 @@ namespace Web.Controllers.Medical
 
             List<ProductIndications> LS = db.Database.SqlQuery<ProductIndications>("plm_spCRUDProductIndications @CRUDType=" + CRUD.Read + ", @productId=" + ProductId + ", @indicationId=" + IndicationId + "").ToList();
 
-            try
+            if (LS.LongCount() > 0)
             {
-                if (LS.LongCount() > 0)
-                {
-                    var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductIndications @CRUDType=" + CRUD.Delete + ", @productId=" + ProductId + ", @indicationId=" + IndicationId + "");
-                }
+                var result = db.Database.ExecuteSqlCommand("plm_spCRUDProductIndications @CRUDType=" + CRUD.Delete + ", @productId=" + ProductId + ", @indicationId=" + IndicationId + "");
 
-            }
-            catch (Exception e)
-            {
-
+                ActivityLog.CRUDProductIndications(ProductId, IndicationId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -2721,8 +2762,8 @@ namespace Web.Controllers.Medical
 
             GetAdministrationRoutes GetAdministrationRoutes = new Models.Class.GetAdministrationRoutes();
 
-            GetAdministrationRoutes.GetAdministrationRoutesByProductPharmaForm = db.Database.SqlQuery<GetAdministrationRoutesByProductPharmaForm>("plm_spGetAdministrationRoutesByProduct @productId=" + ProductId + ", @pharmaFormId=" + PharmaFormId + ", @Description='" + DescriptionAS + "'").ToList();
-            GetAdministrationRoutes.GetAdministrationRoutesClass = db.Database.SqlQuery<GetAdministrationRoutesClass>("plm_spGetAdministrationRoutes @Description='" + Description + "'").ToList();
+            GetAdministrationRoutes.GetAdministrationRoutesByProductPharmaForm = db.Database.SqlQuery<GetAdministrationRoutesByProductPharmaForm>("plm_spGetAdministrationRoutesByProduct @productId=" + ProductId + ", @pharmaFormId=" + PharmaFormId + ", @Description='" + DescriptionAS + "'").OrderBy(x => x.RouteName).ToList();
+            GetAdministrationRoutes.GetAdministrationRoutesClass = db.Database.SqlQuery<GetAdministrationRoutesClass>("plm_spGetAdministrationRoutes @Description='" + Description + "'").OrderBy(x => x.RouteName).ToList();
 
 
             SessionLI.ProductId = ProductId;
@@ -2762,6 +2803,8 @@ namespace Web.Controllers.Medical
                     db.ProductPharmaFormRoutes.Add(ProductPharmaFormRoutes);
                     db.SaveChanges();
 
+                    ActivityLog.CRUDProductPharmaFormRoutes(ProductId, PharmaFormId, RouteId, ProductPharmaFormRoutes.JSONFormat, 1);
+
                     return Json(true, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -2778,6 +2821,8 @@ namespace Web.Controllers.Medical
                     var delete = db.ProductPharmaFormRoutes.SingleOrDefault(x => x.ProductId == ProductId && x.PharmaFormId == PharmaFormId && x.RouteId == RouteId);
                     db.ProductPharmaFormRoutes.Remove(delete);
                     db.SaveChanges();
+
+                    ActivityLog.CRUDProductPharmaFormRoutes(ProductId, PharmaFormId, RouteId, LS[0].JSONFormat, 4);
                 }
 
                 return Json(true, JsonRequestBehavior.AllowGet);

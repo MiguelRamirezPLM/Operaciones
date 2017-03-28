@@ -754,26 +754,35 @@ function GetContraindicationsFromIndications() {
         url: "../Medical/GetContraindicationsFromIndications",
         data: { Product: PId, PharmaForm: PFId, Division: DId, Category: CId },
         success: function (data) {
-            
+
+            var Size = $(data).size();
+
             $("#messageheaderComments").append("Elementos asociados como Contraindicaciones");
 
             var content = "";
 
-            content += "<table class='table-hover' border='1'>";
-            content += "<thead class='webgrid-header'>";
-            content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
-            content += "</thead>";
-            content += "<tbody>";
-            
-            $.each(data, function (index, val) {
-                content += "<tr>";
-                content += "<td>" + val.ParentICDKey + "</td>";
-                content += "<td>" + val.ICDKey + "</td>";
-                content += "<td>" + val.SpanishDescription + "</td>";
-                content += "</tr>";
-            });
-            content += "</tbody>";
-            content += "</table>";
+            if (Size > 0) {
+
+                content += "<table class='table-hover' border='1'>";
+                content += "<thead class='webgrid-header'>";
+                content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
+                content += "</thead>";
+                content += "<tbody>";
+
+                $.each(data, function (index, val) {
+                    content += "<tr>";
+                    content += "<td>" + val.ParentICDKey + "</td>";
+                    content += "<td>" + val.ICDKey + "</td>";
+                    content += "<td>" + val.SpanishDescription + "</td>";
+                    content += "</tr>";
+                });
+                content += "</tbody>";
+                content += "</table>";
+
+            }
+            else {
+                content += "No hay elementos asociados como Contraindicaciones";
+            }
 
             $("#DivComments").append(content);
 
@@ -4166,25 +4175,34 @@ function GetIndicationsByContraindications() {
         data: { Product: PId, PharmaForm: PFId },
         success: function (data) {
 
-            $("#messageheaderComments").append("Elementos asociados como Contraindicaciones");
+            var Size = $(data).size();
+
+            $("#messageheaderComments").append("Elementos asociados como Índice CIE-10");
 
             var content = "";
 
-            content += "<table class='table-hover' border='1'>";
-            content += "<thead class='webgrid-header'>";
-            content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
-            content += "</thead>";
-            content += "<tbody>";
+            if (Size > 0) {
 
-            $.each(data, function (index, val) {
-                content += "<tr>";
-                content += "<td>" + val.ParentICDKey + "</td>";
-                content += "<td>" + val.ICDKey + "</td>";
-                content += "<td>" + val.SpanishDescription + "</td>";
-                content += "</tr>";
-            });
-            content += "</tbody>";
-            content += "</table>";
+                content += "<table class='table-hover' border='1'>";
+                content += "<thead class='webgrid-header'>";
+                content += "<tr><th style='width:20%'>Referencia</th><th style='width:20%'>Clave</th><th style='width:60%'>Descripción</th></tr>";
+                content += "</thead>";
+                content += "<tbody>";
+
+                $.each(data, function (index, val) {
+                    content += "<tr>";
+                    content += "<td>" + val.ParentICDKey + "</td>";
+                    content += "<td>" + val.ICDKey + "</td>";
+                    content += "<td>" + val.SpanishDescription + "</td>";
+                    content += "</tr>";
+                });
+                content += "</tbody>";
+                content += "</table>";
+
+            }
+            else {
+                content += "No hay elementos asociados como índice CIE-10";
+            }
 
             $("#DivComments").append(content);
 
