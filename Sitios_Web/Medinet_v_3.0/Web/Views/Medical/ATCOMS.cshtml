@@ -4,7 +4,7 @@
     ViewBag.Title = "ATCOMS";
     Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
     Medinet db = new Medinet();
-    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS,BookId;
+    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS, BookId;
 
     if (_Session != null)
     {
@@ -43,9 +43,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
-                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
-                        Productos
-                        <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
+                        <a class="ldr" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                            Productos
+                            <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
                             </span>
                         </a>
                     </li>
@@ -179,15 +179,11 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="text-center">
-            <button class="btn btn-danger" onclick="RemoveATCOMS()">
-                <span class="glyphicon glyphicon-arrow-left"></span>
-                <span>&nbsp; Quitar</span>
-            </button>
-        </div>
         <br />
         <br />
-        <table style="width:100%" class="table-hover">
+        <br />
+        <br />
+        <table style="width:100%" class="table-hover webgrid-table1">
             <thead class="webgrid-header">
                 <tr>
                     <th class="column7">Clave</th>
@@ -196,19 +192,21 @@
                 </tr>
             </thead>
             <tbody>
-                    @{
-                        foreach (Web.Models.Class.GetTherapeuticOMSByProduct item in Model)
-                        {
-                            <tr>
-                                <td>@item.TherapeuticKey</td>
-                                <td>@item.SpanishDescription</td>
-                                <td class="text-center">
-                                    <input type="checkbox" value="@item.TherapeuticOMSId" onclick="AddATCOMSRemove($(this))" />
-                                </td>
-                            </tr>
-                        }
+                @{
+                    foreach (Web.Models.Class.GetTherapeuticOMSByProduct item in Model)
+                    {
+                        <tr>
+                            <td>@item.TherapeuticKey</td>
+                            <td>@item.SpanishDescription</td>
+                            <td class="text-center">
+                                <button value="@item.TherapeuticOMSId" onclick="RemoveATCOMS($(this))" class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
                     }
-                </tbody>
+                }
+            </tbody>
         </table>
     </div>
 </div>

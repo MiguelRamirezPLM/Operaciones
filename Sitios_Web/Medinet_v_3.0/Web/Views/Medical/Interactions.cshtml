@@ -65,7 +65,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
-                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                        <a class="ldr" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
                             Productos
                             <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
                             </span>
@@ -236,7 +236,14 @@
                             <div class="col-lg-9">
                                 @using (Html.BeginForm())
                                 {
-                                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                    <div class="input-group stylish-input-group">
+                                        @Html.TextBox("Description", "", new { @class = "form-control", style = "color:red", Placeholder = "Texto a buscar..." })
+                                        <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
+                                            <button type="submit">
+                                                <span class="glyphicon glyphicon-search" style="color:black"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -248,7 +255,7 @@
                         alternatingRowStyle: "webgrid-alternating-row",
                         selectedRowStyle: "webgrid-selected-row",
                         rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
+                        tableStyle: "webgrid-table1 table-hover",
                         mode: WebGridPagerModes.All,
                                  htmlAttributes: new { id = "GridDiv" },
                         columns: new[] {
@@ -286,28 +293,28 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                    int cnt = Convert.ToInt32(Count.ProductSubstanceInteractions.LongCount());
-                                    if (cnt > 0)
-                                    {
-                                        foreach (Web.Models.Class.GetProductSubstanceInteractions AS in Count.ProductSubstanceInteractions)
+                                        int cnt = Convert.ToInt32(Count.ProductSubstanceInteractions.LongCount());
+                                        if (cnt > 0)
                                         {
-                                            <tr>
-                                                <td>
-                                                    @AS.ActiveSubstance
-                                                    <input id="lblActiveSubstanceIdAsoc" style="display:none;" value="@AS.ActiveSubstanceId" />
-                                                </td>
-                                                <td>
-                                                    @AS.SubstanceInteraction
-                                                    <input id="lblSubstanceInteractionIdAsoc" style="display:none;" value="@AS.SubstanceInteractId" />
-                                                </td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-danger btn-sm" onclick="DeleteSubstanceInteracions($(this))">
-                                                        <span class="glyphicon glyphicon-remove"></span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            foreach (Web.Models.Class.GetProductSubstanceInteractions AS in Count.ProductSubstanceInteractions)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @AS.ActiveSubstance
+                                                        <input id="lblActiveSubstanceIdAsoc" style="display:none;" value="@AS.ActiveSubstanceId" />
+                                                    </td>
+                                                    <td>
+                                                        @AS.SubstanceInteraction
+                                                        <input id="lblSubstanceInteractionIdAsoc" style="display:none;" value="@AS.SubstanceInteractId" />
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-danger btn-sm" onclick="DeleteSubstanceInteracions($(this))">
+                                                            <span class="glyphicon glyphicon-remove"></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
                                     }
                                 </tbody>
                             </table>
@@ -344,7 +351,14 @@
                             <div class="col-lg-9">
                                 @using (Html.BeginForm())
                                 {
-                                    @Html.TextBox("GroupName", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                    <div class="input-group stylish-input-group">
+                                        @Html.TextBox("GroupName", "", new { @class = "form-control", style = "color:red", Placeholder = "Texto a buscar..." })
+                                        <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
+                                            <button type="submit">
+                                                <span class="glyphicon glyphicon-search" style="color:black"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -356,7 +370,7 @@
                         alternatingRowStyle: "webgrid-alternating-row",
                         selectedRowStyle: "webgrid-selected-row",
                         rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
+                        tableStyle: "webgrid-table1 table-hover",
                         mode: WebGridPagerModes.All,
                         columns: new[] {
                         _datagridPG.Column("", header: "Nombre del Grupo Farmacológico", format: @<text>
@@ -447,7 +461,14 @@
                             <div class="col-lg-9">
                                 @using (Html.BeginForm())
                                 {
-                                    @Html.TextBox("ElementName", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                                    <div class="input-group stylish-input-group">
+                                        @Html.TextBox("ElementName", "", new { @class = "form-control", style = "color:red", Placeholder = "Texto a buscar..." })
+                                        <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
+                                            <button type="submit">
+                                                <span class="glyphicon glyphicon-search" style="color:black"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -459,7 +480,7 @@
                         alternatingRowStyle: "webgrid-alternating-row",
                         selectedRowStyle: "webgrid-selected-row",
                         rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
+                        tableStyle: "webgrid-table1 table-hover",
                         mode: WebGridPagerModes.All,
                         columns: new[] {
                         _datagridOE.Column("", header: "Nombre del Elemento", format: @<text>
@@ -474,7 +495,7 @@
                                         <span class="glyphicon glyphicon-plus"></span>
                                     </button>
                                 }
-                    </text>, style:"column5 text-center")
+                        </text>, style:"column5 text-center")
                     })
                         </div>
                     </div>

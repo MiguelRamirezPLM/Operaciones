@@ -1,5 +1,4 @@
-﻿@model IEnumerable<plm_spGetProductsbyDivisionbyCountry_Result>
-@using Web.Models;
+﻿@using Web.Models;
 @{
     ViewBag.Title = "Content";
     Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
@@ -203,13 +202,14 @@
                     <th class="tdback"><label style="font-size:12px; font-weight:100">ATC OMS</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Vías de Administración</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Interacciones</label></th>
+                    <th class="tdback"><label style="font-size:12px; font-weight:100">Indicaciones</label></th>
 
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Clasificar</label></th>
                 </tr>
             </thead>
             <tbody>
                 @{
-                    foreach (plm_spGetProductsbyDivisionbyCountry_Result item in Model)
+                    foreach (Web.Models.Class.plm_spGetProductsbyDivisionbyCountry item in Model)
                     {
                         <tr>
                             <td>
@@ -247,25 +247,88 @@
                                 <input type="text" value="@ProductTypeId" id="ProductTypeId" style="display:none" />
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" checked="@true" disabled="disabled" />
+                                @{
+                                    if (item.ActiveSubstances > 0)
+                                    {
+                                        <input type="checkbox" checked="@true" disabled="disabled" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+                                }
+                                
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    if(item.TherapeuticUses >0)
+                                    {
+                                        <input type="checkbox" checked="@true" disabled="disabled" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+                                }
+                                
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    if(item.ProductICD >0)
+                                    {
+                                        <input type="checkbox" checked="@true" disabled="disabled" />        
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+                                }
+                                
                             </td>
                             <td class="text-center">
                                 <input type="checkbox" checked="@false" disabled="disabled" />
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" checked="@true" disabled="disabled" />
+                                @{
+                                    if(item.ProductTherapeuticOMS > 0)
+                                    {
+                                        <input type="checkbox" checked="@true" disabled="disabled" />        
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+                                }
+                                
+                            </td>
+                            <td class="text-center">
+                                @{
+                                    if(item.ProductPharmaFormRoutes >0)
+                                    {
+                                        <input type="checkbox" checked="@true" disabled="disabled" />  
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+                                }
+                                
                             </td>
                             <td class="text-center">
                                 <input type="checkbox" checked="@false" disabled="disabled" />
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" checked="@true" disabled="disabled" />
-                            </td>
-                            <td class="text-center">
-                                <input type="checkbox" checked="@false" disabled="disabled" />
-                            </td>
-                            <td class="text-center">
-                                <input type="checkbox" checked="@true" disabled="disabled" />
+                                @{
+                                    if(item.ProductIndications > 0)
+                                    {
+                                        <input type="checkbox" checked="@true" disabled="disabled" />        
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled="disabled" />
+                                    }
+                                }
+                                
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-primary ldr" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, EditionId = EditionIdS })';return false;">

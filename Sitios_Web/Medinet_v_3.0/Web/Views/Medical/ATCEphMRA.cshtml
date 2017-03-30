@@ -4,8 +4,8 @@
     ViewBag.Title = "ATCEphMRA";
     Web.Models.Sessions.SessionLI _Session = (Web.Models.Sessions.SessionLI)Session["SessionLI"];
     Medinet db = new Medinet();
-    WebGrid _datagrid = new WebGrid(Model, rowsPerPage:25);
-    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS,BookId;
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 25);
+    int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS, BookId;
 
     if (_Session != null)
     {
@@ -44,7 +44,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
-                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                        <a class="ldr" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
                             Productos
                             <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
                             </span>
@@ -102,7 +102,7 @@
                                             var p = db.Products.Where(x => x.ProductId == ProductId).ToList();
                                         }
                                         <span class="qa-message-when-data" style="font-size: 18px; text-transform: none; font-weight: normal;">Producto: <span style="color: #de5145; ">@p[0].Brand</span></span>
-                                        <input type="text" class="form-control" value="@p[0].ProductId" id="ProductId" style="display:none"/>
+                                        <input type="text" class="form-control" value="@p[0].ProductId" id="ProductId" style="display:none" />
                                     </p>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
 <br />
 <br />
 @{
-    
+
     <div class="row">
         <div class="col-lg-3">
             <div class="text-right">
@@ -162,14 +162,6 @@
             </div>
         </div>
         <div class="col-lg-6" style="vertical-align:bottom">
-        </div>
-        <div class="col-lg-3">
-            <div class="text-left">
-                <button class="btn btn-danger" onclick="RemoveATCEphMRA()">
-                    <span class="glyphicon glyphicon-arrow-left"></span>
-                    <span>&nbsp; Quitar.</span>
-                </button>
-            </div>
         </div>
     </div>
     <br />
@@ -216,19 +208,19 @@
                                 @{
                                     <label id="lblTherapeuticKey">@item.TherapeuticKey.ToUpper()</label>
                                 }
-                        </text>, style:"column5"),
+                            </text>, style:"column5"),
                         _datagrid.Column("", header: "Nombre del Uso Terapéutico", format: @<text>
-                                @{
-                                    <label id="lblDescription">@item.SpanishDescription.ToUpper()</label>
-                                    <input id="lblProductid" style="display:none;" value="@item.TherapeuticId" />
-                                }
+                    @{
+                        <label id="lblDescription">@item.SpanishDescription.ToUpper()</label>
+                        <input id="lblProductid" style="display:none;" value="@item.TherapeuticId" />
+                    }
                         </text>),
                     _datagrid.Column("", header: "Quitar", format: @<text>
                     @{
-                        @*<button class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("DeleteProductSubstances", "Medical", new { ProductId = ProductId, TherapeuticId = item.TherapeuticId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+                        <button class="btn btn-danger btn-sm" onclick="RemoveATCEphMRA($(this))" value="@item.TherapeuticId">
                             <span class="glyphicon glyphicon-remove"></span>
-                        </button>*@
-                        <input type="checkbox" onclick="AddATCEphMRARemove($(this))" value="@item.TherapeuticId" />
+                        </button>
+                        @*<input type="checkbox" onclick="AddATCEphMRARemove($(this))" value="@item.TherapeuticId" />*@
                     }
                     </text>, style:"column5 text-center")
                     })
@@ -247,11 +239,11 @@
             </div>
             <div class="modal-body" id="contenteditions">
                 <div class="progress">
-                        <div class="progress-bar progress-bar-striped active" role="progressbar" id="divprogressbar"
-                             aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width:100%">
-                            <span id="label"></span>
-                        </div>
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" id="divprogressbar"
+                         aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width:100%">
+                        <span id="label"></span>
                     </div>
+                </div>
             </div>
             <div class="modal-footer text-center" id="divbtncloseerror">
                 <button class="btn btn-primary" data-dismiss="modal">

@@ -259,34 +259,23 @@ function AddATCEphMRA(item) {
     }
 }
 
-function AddATCEphMRARemove(item) {
+function RemoveATCEphMRA(item) {
+
+    $("#bloqueo").show();
 
     var TId = $(item).val();
     var PFId = $("#PharmaFormId").val();
     var PId = $("#ProductId").val();
 
-    if ($(item).is(":checked")) {
-
-        ListRemoveATCEphMRA.push({
-            'TId': TId,
-            'PFId': PFId,
-            'PId': PId
-        });
-
-        console.log(ListRemoveATCEphMRA);
-
-    }
-    else if ($(item).is(":not(:checked)")) {
-
-        var index = functiontofindIndexByKeyValue(ListRemoveATCEphMRA, "TId", "PId", "PFId", TId, PId, PFId);
-
-        if (index == null) {
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/RemoveATCEphMRA",
+        data: { Product: PId, PharmaForm: PFId, Therapeutic: TId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
         }
-        else if (index >= 0) {
-            ListRemoveATCEphMRA.splice(index, 1);
-            console.log(ListRemoveATCEphMRA);
-        }
-    }
+    })
 }
 
 function functiontofindIndexByKeyValue(arraytosearch, TId, PId, PFId, valuetTId, valuePId, valuePFId) {
@@ -380,56 +369,6 @@ function SaveAddATCEphMRA() {
         apprise("" + d + "", { 'animate': true });
         $("#bloqueo").hide();
     }
-}
-
-function RemoveATCEphMRA() {
-
-    $("#myBar").css("background-color", "#f7726e");
-
-    var Size = $(ListRemoveATCEphMRA).size();
-
-    if ((Size != 0) && (Size != "0")) {
-        $('#bloqueo').show();
-
-        var Json = JSON.stringify(ListRemoveATCEphMRA);
-
-        console.log(Json);
-
-        $.ajax({
-            Type: "POST",
-            dataType: "Json",
-            url: "../Medical/RemoveATCEphMRA",
-            data: { List: Json, size: Size },
-            success: function (data) {
-                if (data == true) {
-                    setTimeout("document.location.reload()");
-                }
-                else {
-                    var d = "";
-                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
-                    d += "<br/>";
-                    d += "<ul style='list-style:none'>";
-                    $.each(data, function (index, val) {
-                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
-                    });
-                    d += "</ul>";
-
-                    apprise("" + d + "", { 'animate': true });
-                    $("#bloqueo").hide();
-                }
-            }
-        })
-    }
-    else {
-        var d = "";
-        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
-        apprise("" + d + "", { 'animate': true });
-        $("#bloqueo").hide();
-    }
-
-
 }
 
 
@@ -1003,35 +942,24 @@ function AddATCOMS(item) {
     }
 }
 
-function AddATCOMSRemove(item) {
+function RemoveATCOMS(item) {
+
+    $("#bloqueo").show();
 
     var TId = $(item).val();
     var PFId = $("#PharmaFormId").val();
     var PId = $("#ProductId").val();
 
-    if ($(item).is(":checked")) {
-
-        ListRemoveATCOMS.push({
-            'TId': TId,
-            'PFId': PFId,
-            'PId': PId
-        });
-
-        console.log(ListRemoveATCOMS);
-
-    }
-    else if ($(item).is(":not(:checked)")) {
-
-        var index = functiontofindIndexByKeyValue(ListRemoveATCOMS, "TId", "PId", "PFId", TId, PId, PFId);
-
-        if (index == null) {
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/RemoveATCOMS",
+        data: { Product: PId, PharmaForm: PFId, Therapeutic: TId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
         }
-        else if (index >= 0) {
-            ListRemoveATCOMS.splice(index, 1);
+    })
 
-            console.log(ListRemoveATCOMS);
-        }
-    }
 }
 
 function SaveAddATCOMS() {
@@ -1110,51 +1038,6 @@ function SaveAddATCOMS() {
     }
 }
 
-function RemoveATCOMS() {
-
-    var Size = $(ListRemoveATCOMS).size();
-
-    if ((Size != 0) && (Size != "0")) {
-        $('#bloqueo').show();
-
-        var Json = JSON.stringify(ListRemoveATCOMS);
-
-        console.log(Json);
-
-        $.ajax({
-            Type: "POST",
-            dataType: "Json",
-            url: "../Medical/RemoveATCOMS",
-            data: { List: Json, size: Size },
-            success: function (data) {
-                if (data == true) {
-                    setTimeout("document.location.reload()");
-                }
-                else {
-                    var d = "";
-                    d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-                    d += "<label> Los siguientes usos, ya estan asociados al Producto / Forma Farmac&eacute;utica</label> <br/>"
-                    d += "<br/>";
-                    d += "<ul style='list-style:none'>";
-                    $.each(data, function (index, val) {
-                        d += "<li><span>&bull;&nbsp;<b>" + val + "</b></span></li>";
-                    });
-                    d += "</ul>";
-
-                    apprise("" + d + "", { 'animate': true });
-                    $("#bloqueo").hide();
-                }
-            }
-        })
-    }
-    else {
-        var d = "";
-        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> AVISO</h1></div> <br>";
-        d += "<label> No se ha seleccionado ningun registro para quitar.</label> <br/>"
-        apprise("" + d + "", { 'animate': true });
-        $("#bloqueo").hide();
-    }
-}
 
 
 
@@ -1365,6 +1248,9 @@ function CheckActiveSubstancesByProduct(item) {
             else if (data.Data == false) {
                 AddProductSubstanceInteractions(value, null);
             }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
+            }
         }
     })
 }
@@ -1556,6 +1442,9 @@ function ChecktPharmacologicalGroupsByProduct(item) {
             }
             else if (data.Data == false) {
                 AddProductPharmacologicalGroupsInteractions(value, null);
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -1843,6 +1732,9 @@ function CheckOtherElementsByProduct(item) {
             }
             else if (data.Data == false) {
                 AddProductOtherElementInteractions(value, null);
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -2441,7 +2333,19 @@ function CheckCIE10Contraindications(item) {
                     $("#bloqueo").hide();
                 }
                 else if (data.Data == false) {
-                    //AddProductOtherElementInteractions(value, null);
+                    $(item).prop("checked", false);
+
+                    $("#messageheaderCIECNT").text("Error al asociar");
+
+                    var Content = "";
+                    Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                    $("#DivCIECNT").append(Content);
+                    $("#divfooterCIECNT").empty();
+                    $("#divfooterCIECNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+                    $("#btnCIECNT").trigger("click");
+
+                    $("#bloqueo").hide();
                 }
                 else if (data.Data == "Empty") {
 
@@ -2732,7 +2636,22 @@ function CheckPhysiologicalContraindications(item) {
                 $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                setTimeout("document.location.reload()");
+                $(item).prop("checked", false);
+
+                $("#messageheaderPCCNT").text("Error al asociar");
+
+                var Content = "";
+                Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                $("#DivPCCNT").append(Content);
+
+                $("#divfooterPCCNT").empty();
+                $("#divfooterPCCNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                $("#btnPCCNT").trigger("click");
+
+                $("#bloqueo").hide();
+
             }
             else if (data.Data == "_notdata") {
                 var d = "";
@@ -2741,6 +2660,9 @@ function CheckPhysiologicalContraindications(item) {
 
                 apprise("" + d + "", { 'animate': true });
                 $("#bloqueo").hide();
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -2937,7 +2859,22 @@ function CheckPharmacologicalContraindications(item) {
                 $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                setTimeout("document.location.reload()");
+                $(item).prop("checked", false);
+
+                $("#messageheaderPharCCNT").text("Error al asociar");
+
+                var Content = "";
+                Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                $("#DivPharCCNT").append(Content);
+
+                $("#divfooterPharCCNT").empty();
+                $("#divfooterPharCCNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                $("#btnPharCCNT").trigger("click");
+
+                $("#bloqueo").hide();
+
             }
             else if (data.Data == "_notdata") {
                 var d = "";
@@ -2946,6 +2883,9 @@ function CheckPharmacologicalContraindications(item) {
 
                 apprise("" + d + "", { 'animate': true });
                 $("#bloqueo").hide();
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -3144,7 +3084,22 @@ function CheckHyperContraindications(item) {
                 $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                setTimeout("document.location.reload()");
+                $(item).prop("checked", false);
+
+                $("#messageheaderHyperCNT").text("Error al asociar");
+
+                var Content = "";
+                Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                $("#DivHyperCNT").append(Content);
+
+                $("#divfooterHyperCNT").empty();
+                $("#divfooterHyperCNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                $("#btnHyperCNT").trigger("click");
+
+                $("#bloqueo").hide();
+
             }
             else if (data.Data == "_notdata") {
                 var d = "";
@@ -3153,6 +3108,9 @@ function CheckHyperContraindications(item) {
 
                 apprise("" + d + "", { 'animate': true });
                 $("#bloqueo").hide();
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -3426,7 +3384,22 @@ function CheckPharmacologicalGroupsContraindications(item) {
                 $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                setTimeout("document.location.reload()");
+                $(item).prop("checked", false);
+
+                $("#messageheaderPGINT").text("Error al asociar");
+
+                var Content = "";
+                Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                $("#DivPGINT").append(Content);
+
+                $("#divfooterPGINT").empty();
+                $("#divfooterPGINT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                $("#btnPGINT").trigger("click");
+
+                $("#bloqueo").hide();
+
             }
             else if (data.Data == "_notdata") {
                 var d = "";
@@ -3435,6 +3408,9 @@ function CheckPharmacologicalGroupsContraindications(item) {
 
                 apprise("" + d + "", { 'animate': true });
                 $("#bloqueo").hide();
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -3487,7 +3463,22 @@ function CheckActiveSubstancesContraindications(item) {
                 $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                setTimeout("document.location.reload()");
+                $(item).prop("checked", false);
+
+                $("#messageheaderASCNT").text("Error al asociar");
+
+                var Content = "";
+                Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                $("#DivASCNT").append(Content);
+
+                $("#divfooterASCNT").empty();
+                $("#divfooterASCNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                $("#btnASCNT").trigger("click");
+
+                $("#bloqueo").hide();
+
             }
             else if (data.Data == "_notdata") {
                 var d = "";
@@ -3496,6 +3487,9 @@ function CheckActiveSubstancesContraindications(item) {
 
                 apprise("" + d + "", { 'animate': true });
                 $("#bloqueo").hide();
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -3688,7 +3682,22 @@ function CheckOtherElementsContraindications(item) {
                 $("#bloqueo").hide();
             }
             else if (data.Data == false) {
-                setTimeout("document.location.reload()");
+                $(item).prop("checked", false);
+
+                $("#messageheaderOECNT").text("Error al asociar");
+
+                var Content = "";
+                Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                $("#DivOECNT").append(Content);
+
+                $("#divfooterOECNT").empty();
+                $("#divfooterOECNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                $("#btnOECNT").trigger("click");
+
+                $("#bloqueo").hide();
+
             }
             else if (data.Data == "_notdata") {
                 var d = "";
@@ -3697,6 +3706,9 @@ function CheckOtherElementsContraindications(item) {
 
                 apprise("" + d + "", { 'animate': true });
                 $("#bloqueo").hide();
+            }
+            else if (data.Data == "Ok") {
+                setTimeout("document.location.reload()");
             }
         }
     })
@@ -3929,7 +3941,21 @@ function CheckCommentsContraindications() {
                     $("#bloqueo").hide();
                 }
                 else if (data.Data == false) {
-                    setTimeout("document.location.reload()");
+
+                    $("#messageheaderCMTCNT").text("Error al asociar");
+
+                    var Content = "";
+                    Content += "<span> No hay ninguna Sustancia asociada al producto. <span style='font-style:italic;cursor:pointer;color:#2e6da4' onclick=\"$('#ActiveSubstances').trigger('click');\">Ver Índice <span style='font-style:italic;font-weight:bold'>Sustancias Activas</span></span></span>";
+
+                    $("#DivCMTCNT").append(Content);
+
+                    $("#divfooterCMTCNT").empty();
+                    $("#divfooterCMTCNT").append("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span><span>&nbsp; Aceptar</span></button>");
+
+                    $("#btnCMTCNT").trigger("click");
+
+                    $("#bloqueo").hide();
+
                 }
                 else if (data.Data == "_notdata") {
                     var d = "";

@@ -45,7 +45,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
-                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                        <a class="ldr" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
                             Productos
                             <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
                             </span>
@@ -176,7 +176,7 @@
                         alternatingRowStyle: "webgrid-alternating-row",
                         selectedRowStyle: "webgrid-selected-row",
                         rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
+                        tableStyle: "webgrid-table1 table-hover",
                         mode: WebGridPagerModes.All,
                         columns: new[] {
                         _datagridDT.Column("", header: "Nombre de Sustancia", format: @<text>
@@ -187,8 +187,8 @@
                         </text>),
                     _datagridDT.Column("", header: "Agregar", format: @<text>
                     @{
-                        <button class="btn btn-success btn-sm ldr" onclick="location.href='@Url.Action("AddProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button class="btn btn-success btn-sm ldr" onclick="location.href='@Url.Action("AddProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">
+                        <span class="glyphicon glyphicon-plus"></span>
                         </button>
                     }
                     </text>, style:"column5 text-center")
@@ -222,7 +222,7 @@
                         alternatingRowStyle: "webgrid-alternating-row",
                         selectedRowStyle: "webgrid-selected-row",
                         rowStyle: "webgrid-row-style",
-                        tableStyle: "webgrid-table1",
+                        tableStyle: "webgrid-table1 table-hover",
                         mode: WebGridPagerModes.All,
                         columns: new[] {
                         _datagrid.Column("", header: "Nombre de Sustancia", format: @<text>
@@ -233,7 +233,7 @@
                         </text>),
                     _datagrid.Column("", header: "Borrar", format: @<text>
                     @{
-                        <button class="btn btn-danger btn-sm ldr" onclick="location.href='@Url.Action("DeleteProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId })';return false;">
+                        <button class="btn btn-danger btn-sm ldr" onclick="location.href='@Url.Action("DeleteProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     }

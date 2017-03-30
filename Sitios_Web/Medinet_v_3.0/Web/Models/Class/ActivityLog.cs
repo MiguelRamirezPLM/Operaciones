@@ -13,6 +13,8 @@ namespace Web.Models.Class
         PLMUsers dbusers = new PLMUsers();
         CountriesUsers c = (CountriesUsers)System.Web.HttpContext.Current.Session["CountriesUsers"];
 
+        #region Products
+
         public void UpdateProductType(int ProductId, byte ProductTypeId, int OperationId)
         {
             string Table = "Products";
@@ -37,6 +39,10 @@ namespace Web.Models.Class
             }
         }
 
+        #endregion
+
+        #region Substances
+
         public void CRUDProductSubstances(int ProductId, int ActiveSubstanceId, int OperationId)
         {
             string Table = "ProductSubstances";
@@ -59,6 +65,10 @@ namespace Web.Models.Class
                 dbusers.SaveChanges();
             }
         }
+
+        #endregion
+
+        #region ATCEphMRA
 
         public void CRUDProductTherapeutics(int ProductId, int PharmaFormId, int TherapeuticId, int OperationId)
         {
@@ -83,9 +93,13 @@ namespace Web.Models.Class
             }
         }
 
+        #endregion
+
+        #region CIE-10
+
         public void CRUDProductContraindicationsByICD(int ProductId, int PharmaFormId, int DivisionId, int CategoryId, int ICDId, int ActiveSubstanceId, int OperationId)
         {
-            string Table = "ProductTherapeutic";
+            string Table = "ProductICDContraindications";
 
             List<Tables> LT = dbusers.Tables.Where(x => x.ApplicationId == c.ApplicationId && x.Description == Table).ToList();
 
@@ -106,28 +120,7 @@ namespace Web.Models.Class
             }
         }
 
-        public void CRUDIPPAProductContraindications(int ProductId, int PharmaFormId, int DivisionId, int CategoryId, int StatusId, int ActiveSubstanceId, int OperationId)
-        {
-            string Table = "IPPAProductContraindications";
-
-            List<Tables> LT = dbusers.Tables.Where(x => x.ApplicationId == c.ApplicationId && x.Description == Table).ToList();
-
-            if (LT.LongCount() > 0)
-            {
-                int TableId = LT[0].TableId;
-
-                ActivityLogs = new Models.ActivityLogs();
-
-                ActivityLogs.UserId = c.userId;
-                ActivityLogs.TableId = TableId;
-                ActivityLogs.OperationId = OperationId;
-                ActivityLogs.Date = DateTime.Now;
-                ActivityLogs.PrimaryKeyAffected = ("(DivisionId," + DivisionId + "),(CategoryId," + CategoryId + "),(PharmaFormId," + PharmaFormId + "),(ProductId," + ProductId + "),(ActiveSubstanceId," + ActiveSubstanceId + "),(StatusId," + StatusId + ")");
-
-                dbusers.ActivityLogs.Add(ActivityLogs);
-                dbusers.SaveChanges();
-            }
-        }
+        #endregion
 
         #region Contraindications
 
@@ -316,9 +309,9 @@ namespace Web.Models.Class
             }
         }
 
-        public void CRUDIPPAProductInteractions(int ProductId, int PharmaFormId, int DivisionId, int CategoryId, int StatusId, int ActiveSubstanceId, int OperationId)
+        public void CRUDIPPAProductContraindications(int ProductId, int PharmaFormId, int DivisionId, int CategoryId, int StatusId, int ActiveSubstanceId, int OperationId)
         {
-            string Table = "IPPAProductInteractions";
+            string Table = "IPPAProductContraindications";
 
             List<Tables> LT = dbusers.Tables.Where(x => x.ApplicationId == c.ApplicationId && x.Description == Table).ToList();
 
@@ -345,7 +338,7 @@ namespace Web.Models.Class
 
         public void CRUDProductICD(int ProductId, int PharmaFormId, int ICDId, int OperationId)
         {
-            string Table = "IPPAProductInteractions";
+            string Table = "ProductICD";
 
             List<Tables> LT = dbusers.Tables.Where(x => x.ApplicationId == c.ApplicationId && x.Description == Table).ToList();
 
@@ -365,6 +358,10 @@ namespace Web.Models.Class
                 dbusers.SaveChanges();
             }
         }
+
+        #endregion
+
+        #region ATCOMS
 
         public void CRUDProductTherapeuticOMS(int ProductId, int PharmaFormId, int TherapeuticOMSId, int OperationId)
         {
@@ -485,6 +482,33 @@ namespace Web.Models.Class
             }
         }
 
+        public void CRUDIPPAProductInteractions(int ProductId, int PharmaFormId, int DivisionId, int CategoryId, int StatusId, int ActiveSubstanceId, int OperationId)
+        {
+            string Table = "IPPAProductInteractions";
+
+            List<Tables> LT = dbusers.Tables.Where(x => x.ApplicationId == c.ApplicationId && x.Description == Table).ToList();
+
+            if (LT.LongCount() > 0)
+            {
+                int TableId = LT[0].TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = OperationId;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(DivisionId," + DivisionId + "),(CategoryId," + CategoryId + "),(PharmaFormId," + PharmaFormId + "),(ProductId," + ProductId + "),(ActiveSubstanceId," + ActiveSubstanceId + "),(StatusId," + StatusId + ")");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region Routes
+
         public void CRUDProductPharmaFormRoutes(int ProductId, int PharmaFormId, int RouteId, string JSONFormat, int OperationId)
         {
             string Table = "ProductPharmaFormRoutes";
@@ -510,6 +534,5 @@ namespace Web.Models.Class
         }
 
         #endregion
-
     }
 }

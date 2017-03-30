@@ -11,7 +11,7 @@
     List<Web.Models.Class.GetRowsPerPage> Rows = getData.GetRowsPerPageIndications(Model);
 
     WebGrid _datagrid = new WebGrid(Count.GetIndicationssWithoutProduct, rowsPerPage: Convert.ToInt32(Rows[0].Pager));
-    
+
     int CountryId, DivisionId, ProductId, PharmaFormId, CategoryId, EditionIdS, BookId;
     if (_Session != null)
     {
@@ -51,7 +51,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav hov">
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
-                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
+                        <a class="ldr" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="location.href='@Url.Action("Content", "Medical", new { CId = CountryId , BId = BookId , EId = EditionIdS , DId = DivisionId })';return false;">
                             Productos
                             <span style=" margin-left:5px;" class="glyphicon glyphicon-chevron-right">
                             </span>
@@ -173,7 +173,14 @@
             <div class="col-lg-9">
                 @using (Html.BeginForm())
                 {
-                    @Html.TextBox("Description", "", new { @class = "form-control", style = "width:70%;color:red", Placeholder = "Texto a buscar..." })
+                    <div class="input-group stylish-input-group">
+                        @Html.TextBox("Description", "", new { @class = "form-control", style = "color:red", Placeholder = "Texto a buscar..." })
+                        <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
+                            <button type="submit">
+                                <span class="glyphicon glyphicon-search" style="color:black"></span>
+                            </button>
+                        </span>
+                    </div>
                 }
             </div>
         </div>
@@ -197,8 +204,8 @@
                     _datagrid.Column("", header: "Agregar", format: @<text>
                 @{
                     <button class="btn btn-success btn-sm" value="@item.IndicationId" onclick="AddProductIndications($(this).val())">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
                 }
                     </text>, style:"column5 text-center")
                     })
@@ -209,7 +216,7 @@
         <br />
         <br />
         <br />
-        <table class="table-hover" style="width:100%">
+        <table class="table-hover webgrid-table1" style="width:100%">
             <thead class="webgrid-header">
                 <tr>
                     <th>Nombre de Indicación</th>
