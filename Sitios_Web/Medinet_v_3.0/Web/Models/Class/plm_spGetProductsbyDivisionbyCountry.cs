@@ -24,5 +24,11 @@ namespace Web.Models.Class
         public int? ProductTherapeuticOMS { get; set; }
         public int? ProductPharmaFormRoutes { get; set; }
         public int? ProductIndications { get; set; }
+
+        public int? StatusIdI { get; set; }
+        public string Interactions { get; set; }
+
+        public int? StatusIdC { get; set; }
+        public string Contraindications { get; set; }
     }
 }

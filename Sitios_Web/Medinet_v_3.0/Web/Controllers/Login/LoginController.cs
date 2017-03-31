@@ -18,15 +18,18 @@ namespace Web.Controllers
         public Users _roWusers = new Users();
         public PLMCryptographyComponent.CryptographyComponent cryptography = new PLMCryptographyComponent.CryptographyComponent();
         Functions Functions = new Functions();
+
         public ActionResult Index()
         {
             return View();
         }
+        
         [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
+        
         [HttpPost]
         public ActionResult Login(Models.Users _user)
         {
@@ -113,12 +116,14 @@ namespace Web.Controllers
             }
             return View(_user);
         }
+        
         public ActionResult Logout()
         {
             Session.Abandon();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Login");
         }
+        
         public void UserCont(Models.Users user, Models.ApplicationUsers ApplicationUsers)
         {
             Functions _functions = new Functions();
@@ -142,6 +147,7 @@ namespace Web.Controllers
                 Session["CountriesUsers"] = c;
             }
         }
+        
         public ActionResult RedirectToAction()
         {
             return View();

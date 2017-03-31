@@ -60,7 +60,7 @@
                                 List<Divisions> _getDivisions = db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + _Session.CountryId).ToList();
                                 foreach (var _row in _getDivisions)
                                 {
-                                    <li class="searchlab"><a class="zindex" href="@Url.Content("~/Medical/Content?CId=" + @_row.CountryId + "&BId=" + @BookId + "&EId="+ EditionIdS + "&DId=" + @_row.DivisionId)">@_row.Description</a></li>
+                            <li class="searchlab"><a class="zindex" href="@Url.Content("~/Medical/Content?CId=" + @_row.CountryId + "&BId=" + @BookId + "&EId="+ EditionIdS + "&DId=" + @_row.DivisionId)">@_row.Description</a></li>
                                 }
                             }
                         </ul>
@@ -148,7 +148,7 @@
         <div class="title-word_new">
             <div class="well well-white mini-profile-widget">
                 <div class="image-container" align="center">
-                    <img src="@Url.Content("~/Images/no.png")" class="img-responsive" alt="avatar">
+                    <img src="@Url.Content("~/Images/sinLogo.gif")" class="img-responsive" alt="avatar">
                 </div>
             </div>
         </div>
@@ -187,14 +187,10 @@
         <table border="1" class="table table-hover table-responsive" id="TableClasificationProducts">
             <thead>
                 <tr>
-                    <th class="tdback">
-                        <label style="font-size:12px; font-weight:100">Producto</label>
-                    </th>
+                    <th class="tdback"><label style="font-size:12px; font-weight:100">Producto</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Forma Farmacéutica</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Categoría</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Tipo de Producto</label></th>
-
-
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Sustancias</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">ATC EphMRA</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">CIE-10</label></th>
@@ -203,7 +199,6 @@
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Vías de Administración</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Interacciones</label></th>
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Indicaciones</label></th>
-
                     <th class="tdback"><label style="font-size:12px; font-weight:100">Clasificar</label></th>
                 </tr>
             </thead>
@@ -225,23 +220,23 @@
                             <td>
                                 <select class="form-control labelcnttbl" style="color:red" id="ProductTypes" onchange="ChangeProductType($(this))">
                                     @{
-                        byte ProductTypeId = 0;
+                                        byte ProductTypeId = 0;
 
-                        List<ProductTypes> LPT = db.ProductTypes.Where(x => x.Active == true).OrderBy(x => x.ProductTypeId).ToList();
+                                        List<ProductTypes> LPT = db.ProductTypes.Where(x => x.Active == true).OrderBy(x => x.ProductTypeId).ToList();
 
-                        foreach (ProductTypes _pt in LPT)
-                        {
-                            if (_pt.TypeName.ToUpper().Trim() == item.ProductType.ToUpper().Trim())
-                            {
-                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId" selected="selected">@_pt.TypeName</option>
+                                        foreach (ProductTypes _pt in LPT)
+                                        {
+                                            if (_pt.TypeName.ToUpper().Trim() == item.ProductType.ToUpper().Trim())
+                                            {
+                                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId" selected="selected">@_pt.TypeName</option>
 
-                                ProductTypeId = _pt.ProductTypeId;
-                            }
-                            else
-                            {
-                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId">@_pt.TypeName</option>
-                            }
-                        }
+                                                ProductTypeId = _pt.ProductTypeId;
+                                            }
+                                            else
+                                            {
+                                                <option value="@_pt.ProductTypeId" id="O_@_pt.ProductTypeId">@_pt.TypeName</option>
+                                            }
+                                        }
                                     }
                                 </select>
                                 <input type="text" value="@ProductTypeId" id="ProductTypeId" style="display:none" />
@@ -257,11 +252,10 @@
                                         <input type="checkbox" disabled="disabled" />
                                     }
                                 }
-                                
                             </td>
                             <td class="text-center">
                                 @{
-                                    if(item.TherapeuticUses >0)
+                                    if (item.TherapeuticUses > 0)
                                     {
                                         <input type="checkbox" checked="@true" disabled="disabled" />
                                     }
@@ -270,65 +264,61 @@
                                         <input type="checkbox" disabled="disabled" />
                                     }
                                 }
-                                
                             </td>
                             <td class="text-center">
                                 @{
-                                    if(item.ProductICD >0)
+                                    if (item.ProductICD > 0)
                                     {
-                                        <input type="checkbox" checked="@true" disabled="disabled" />        
+                                        <input type="checkbox" checked="@true" disabled="disabled" />
                                     }
                                     else
                                     {
                                         <input type="checkbox" disabled="disabled" />
                                     }
                                 }
-                                
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" checked="@false" disabled="disabled" />
+                                <span>@item.Contraindications</span>
                             </td>
                             <td class="text-center">
                                 @{
-                                    if(item.ProductTherapeuticOMS > 0)
+                                    if (item.ProductTherapeuticOMS > 0)
                                     {
-                                        <input type="checkbox" checked="@true" disabled="disabled" />        
+                                        <input type="checkbox" checked="@true" disabled="disabled" />
                                     }
                                     else
                                     {
                                         <input type="checkbox" disabled="disabled" />
                                     }
                                 }
-                                
                             </td>
                             <td class="text-center">
                                 @{
-                                    if(item.ProductPharmaFormRoutes >0)
+                                    if (item.ProductPharmaFormRoutes > 0)
                                     {
-                                        <input type="checkbox" checked="@true" disabled="disabled" />  
+                                        <input type="checkbox" checked="@true" disabled="disabled" />
                                     }
                                     else
                                     {
                                         <input type="checkbox" disabled="disabled" />
                                     }
                                 }
-                                
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" checked="@false" disabled="disabled" />
+                                <span>@item.Interactions</span>
                             </td>
                             <td class="text-center">
                                 @{
-                                    if(item.ProductIndications > 0)
+                                    if (item.ProductIndications > 0)
                                     {
-                                        <input type="checkbox" checked="@true" disabled="disabled" />        
+                                        <input type="checkbox" checked="@true" disabled="disabled" />
                                     }
                                     else
                                     {
                                         <input type="checkbox" disabled="disabled" />
                                     }
                                 }
-                                
+
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-primary ldr" onclick="location.href='@Url.Action("Clasification", "Medical", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, EditionId = EditionIdS })';return false;">

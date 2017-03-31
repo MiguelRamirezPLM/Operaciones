@@ -43,7 +43,6 @@ namespace Web.Controllers.Medical
 
             List<plm_spGetProductsbyDivisionbyCountry> LS = db.Database.SqlQuery<plm_spGetProductsbyDivisionbyCountry>("plm_spGetProductsbyDivisionbyCountry @CountryId=" + CId + ", @DivisionId=" + DId + "").Take(50).ToList();
 
-
             SessionLI SessionLI = new SessionLI(Convert.ToInt32(CId), Convert.ToInt32(BId), 1, Convert.ToInt32(EId), Convert.ToInt32(DId), null, null, null);
             Session["SessionLI"] = SessionLI;
 
