@@ -582,33 +582,61 @@ namespace Web.Controllers.Production
                                             string QtyContentUnit,
                                             int? ContentUnitId,
                                             string QtyWeightUnit,
-                                            int? WeightUnitId
+                                            int? WeightUnitId,
+                                            int UserId,
+                                            string HashKey
                                            )
         {
             int Active = 1;
             int PresentationId;
+            string Contenido = "";
+            string primaryKeyAffected;
+            string FieldsAffected = "(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(ProductId," + ProductId + ")";
             List<CreateProduct_result> LI = new List<CreateProduct_result>();
-             int[,] IDD ;
-             
-             try
-             {
-                 LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProductByPresentationToEdition @presentationId = 0,@CRUDType="
-                                                              + CRUD.Create + ",@divisionId =" + DivisionId
-                                                              + ", @categoryId=" + CategoryId
-                                                              + ",@productId=" + ProductId
-                                                              + ",@pharmaFormId=" + PharmaFormId
-                                                              + ",@active=" + Active
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
+            if (QtyExternalPack != 0 && ExternalPackId !=0)
+            {
+                Contenido = Contenido + ",@QtyExternalPack=" + QtyExternalPack + ",@ExternalPackId=" + ExternalPackId;
+                FieldsAffected = FieldsAffected + ";(ExternalPackId," + ExternalPackId + ");(QtyExternalPack," + QtyExternalPack + ")";
+
+            }
+            if (QtyInternalPack != 0 && InternalPackId !=0)
+            {
+                Contenido = Contenido + ",@QtyInternalPack=" + QtyInternalPack + ",@InternalPackId=" + InternalPackId;
+                FieldsAffected = FieldsAffected + ";(InternalPackId," + InternalPackId + ");(QtyInternalPack," + QtyInternalPack + ")";
+            }
+
+            if (QtyContentUnit != "0" && ContentUnitId!=0)
+            {
+                Contenido = Contenido + ",@QtyContentUnit=" + QtyContentUnit + ",@ContentUnitId=" + ContentUnitId;
+                FieldsAffected = FieldsAffected + ";(ContentUnitId," + ContentUnitId + ");(QtyContentUnit," + QtyContentUnit + ")";
+            }
+
+            if (QtyWeightUnit != "0" && WeightUnitId != 0)
+            {
+                Contenido = Contenido + ",@QtyWeightUnit=" + QtyWeightUnit + ",@WeightUnitId=" + WeightUnitId;
+                FieldsAffected = FieldsAffected + ";(WeightUnitId," + WeightUnitId + ");(QtyWeightUnit," + QtyWeightUnit + ")";
+            }
+            try
+            {
+                 LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProductByPresentationToEdition @presentationId = 0,@CRUDType=" + CRUD.Create 
+                                                              + ",@DivisionId =" + DivisionId
+                                                              + ",@CategoryId=" + CategoryId
+                                                              + ",@ProductId=" + ProductId
+                                                              + ",@PharmaFormId=" + PharmaFormId
+                                                              + ",@Active=" + Active
                                                               + ",@EditionId=" + EditionId
-                                                              + ",@qtyExternalPack =" + QtyExternalPack
-                                                              + ",@externalPackId =" + ExternalPackId
-                                                              + ",@qtyInternalPack=" + QtyInternalPack
-                                                              + ",@internalPackId=" + InternalPackId
-                                                              + ",@qtyContentUnit =" + QtyContentUnit
-                                                              + ",@contentUnitId=" + ContentUnitId
-                                                              + ",@qtyWeightUnit=" + QtyWeightUnit
-                                                              + ",@weightUnitId=" + WeightUnitId + "").ToList();
+                                                              + Contenido + "").ToList();
 
                  PresentationId = Convert.ToInt32(LI[0].id);
+
+                 primaryKeyAffected = "(PresentationId," + PresentationId + ")";
+                 _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.Presentations + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
+
+                 primaryKeyAffected = "(EditionId," + EditionId + ");(PresentationId," + PresentationId + ")";
+                 _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.EditionPresentations + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected +"'" + "").ToList();
+
                  List<plm_spGetPresentationsByEditionByProduct> _getPresentations = db.Database.SqlQuery<plm_spGetPresentationsByEditionByProduct>
                     ("EXECUTE dbo.plm_spGetPresentationsByEditionByProduct"
                     + " @productId=" + ProductId
@@ -619,6 +647,9 @@ namespace Web.Controllers.Production
                  var getResults = _getPresentations.Where(model => model.PresentationId == PresentationId).ToList();
                  plm_spGetPresentationsByEditionByProduct _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
                  List<plm_spGetPresentationsByEditionByProduct> _l_plm_spGetPresentationsByEditionByProduct = new List<plm_spGetPresentationsByEditionByProduct>();
+
+           
+
                  foreach (var _row in getResults)
                  {
                      _plm_spGetPresentationsByEditionByProduct = new plm_spGetPresentationsByEditionByProduct();
@@ -640,7 +671,7 @@ namespace Web.Controllers.Production
                      _l_plm_spGetPresentationsByEditionByProduct.Add(_plm_spGetPresentationsByEditionByProduct);
                  }
                  return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
-             }
+            }
 
             catch (Exception e)
             {
@@ -648,6 +679,87 @@ namespace Web.Controllers.Production
 
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
+        }
+        public JsonResult deletePresentation1(
+                                           int PresentationId,
+                                           int EditionId,
+                                           int DivisionId,
+                                           int CategoryId,
+                                           int ProductId,
+                                           int PharmaFormId,
+                                           int? QtyExternalPack,
+                                           int? ExternalPackId,
+                                           int? QtyInternalPack,
+                                           int? InternalPackId,
+                                           string QtyContentUnit,
+                                           int? ContentUnitId,
+                                           string QtyWeightUnit,
+                                           int? WeightUnitId,
+                                           int UserId,
+                                           string HashKey
+                                          )
+        {
+            int Active = 1;
+            string Contenido = "";
+            string primaryKeyAffected = "(PresentationId," + PresentationId + ")";
+            string FieldsAffected = "(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(ProductId," + ProductId + ")";
+
+            List<CreateProduct_result> LI = new List<CreateProduct_result>();
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+
+            if (QtyExternalPack != 0 && ExternalPackId != 0)
+            {
+                Contenido = Contenido + ",@QtyExternalPack=" + QtyExternalPack + ",@ExternalPackId=" + ExternalPackId;
+                FieldsAffected = FieldsAffected + ";(ExternalPackId," + ExternalPackId + ");(QtyExternalPack," + QtyExternalPack + ")";
+
+            }
+            if (QtyInternalPack != 0 && InternalPackId != 0)
+            {
+                Contenido = Contenido + ",@QtyInternalPack=" + QtyInternalPack + ",@InternalPackId=" + InternalPackId;
+                FieldsAffected = FieldsAffected + ";(InternalPackId," + InternalPackId + ");(QtyInternalPack," + QtyInternalPack + ")";
+            }
+
+            if (QtyContentUnit != "0" && ContentUnitId != 0)
+            {
+                Contenido = Contenido + ",@QtyContentUnit=" + QtyContentUnit + ",@ContentUnitId=" + ContentUnitId;
+                FieldsAffected = FieldsAffected + ";(ContentUnitId," + ContentUnitId + ");(QtyContentUnit," + QtyContentUnit + ")";
+            }
+
+            if (QtyWeightUnit != "0" && WeightUnitId != 0)
+            {
+                Contenido = Contenido + ",@QtyWeightUnit=" + QtyWeightUnit + ",@WeightUnitId=" + WeightUnitId;
+                FieldsAffected = FieldsAffected + ";(WeightUnitId," + WeightUnitId + ");(QtyWeightUnit," + QtyWeightUnit + ")";
+            }
+            try
+            {
+                LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProductByPresentationToEdition @CRUDType=" + CRUD.Delete
+                                                             + ",@presentationId =," + PresentationId
+                                                             + ",@DivisionId =" + DivisionId
+                                                             + ",@CategoryId=" + CategoryId
+                                                             + ",@ProductId=" + ProductId
+                                                             + ",@PharmaFormId=" + PharmaFormId
+                                                             + ",@Active=" + Active
+                                                             + ",@EditionId=" + EditionId
+                                                             + Contenido + "").ToList();
+
+                PresentationId = Convert.ToInt32(LI[0].id);
+
+                primaryKeyAffected = "(PresentationId," + PresentationId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.Presentations + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
+
+                
+                
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            catch (Exception e)
+            {
+                string message = e.Message;
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+           
         }
         public ActionResult AddPresentation()
         {

@@ -13,6 +13,8 @@ using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml;
+using ClosedXML;
 
 namespace Web.Controllers.Sales
 {
@@ -1457,6 +1459,41 @@ namespace Web.Controllers.Sales
             
             FileInfo newFile = new FileInfo(Request.MapPath("~/ReportesXLS/ReporteExcel.xlsx"));
             ExcelPackage pkg = new ExcelPackage(newFile);
+
+
+            //################################################################################################################
+            /////// Prueba Para otra APlicación
+            ClosedXML.Excel.XLWorkbook workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet1 = workbook.Worksheets.Add("Sheet 1");
+            FileInfo newFile2 = new FileInfo(Request.MapPath("~/ReportesXLS/ReporteExcelPrueba.xlsx"));
+            worksheet1.Cell("A1").Value = "Id";
+            worksheet1.Cell("B1").Value = "Name";
+            worksheet1.Cell("C1").Value = "Age";
+            worksheet1.Cell("A2").Value = new[]
+          {
+          new { Id=1, Name="John", Age = 42},
+          new { Id=2, Name="Peter", Age = 23},
+          new { Id=3, Name="Mary", Age = 32},
+          new { Id=4, Name="John", Age = 45},
+           };
+
+            worksheet1.Cell("A8").InsertTable(table, "Reporte Excel", true);
+            workbook.Worksheets.Add(table, "Reporte Excel");
+
+
+            worksheet1.Range("A8:K8").Style
+            .Font.SetFontSize(13)
+            .Font.SetBold(true);
+
+            worksheet1.RangeUsed().Range("A8:H" + table.ToString().Length).SetAutoFilter();
+
+            worksheet1.Cell("k8").InsertTable(table, "Reporte Excel1", true);
+            worksheet1.RangeUsed().Range("K8:Q" + table.ToString().Length).SetAutoFilter();
+
+            workbook.SaveAs(newFile2.ToString());
+            var filepath2 = System.IO.Path.Combine(Server.MapPath("~/ReportesXLS/ReporteExcelPrueba.xlsx"));
+            //################################################################################################################
+
             if (newFile.Exists)
             {
                 System.IO.File.Delete(Server.MapPath("~/ReportesXLS/ReporteExcel.xlsx"));
@@ -1470,7 +1507,7 @@ namespace Web.Controllers.Sales
                     range.Style.Font.Size = 14;
                     range.Style.Font.Name = "Arial Narrow";
                 }
-
+                
                 worksheet.Cells["A8"].LoadFromDataTable(table, true);
                 using (ExcelRange range = worksheet.Cells["A8:K8"])
                 {
@@ -1484,6 +1521,7 @@ namespace Web.Controllers.Sales
                     range.Style.Font.Name = "Arial Narrow";
                 }
                 worksheet.Cells.Style.Font.Name = "Arial Narrow";
+                
             }
             else
             {
@@ -1508,7 +1546,9 @@ namespace Web.Controllers.Sales
                     range.Style.Font.Name = "Arial Narrow";
                 }
                 worksheet.Cells.Style.Font.Name = "Arial Narrow";
+
             }
+
             pkg.SaveAs(newFile);
             var filepath = System.IO.Path.Combine(Server.MapPath("~/ReportesXLS/ReporteExcel.xlsx"));
             return File(filepath, "application/vnd.ms-excel", "ReporteExcel.xlsx");

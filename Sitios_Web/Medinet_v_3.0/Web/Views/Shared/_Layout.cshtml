@@ -51,11 +51,11 @@
                 <div align="center" class="IconUser notify"></div>
                 @{
                     CountriesUsers x = (CountriesUsers)Session["CountriesUsers"];
-                    if(x != null)
+                    if (x != null)
                     {
-                      var _NickName = plm.Users.SingleOrDefault(model => model.UserId == x.userId);
-                        <span style="padding-left:10px;" class="text">Bienvenido @_NickName.Name</span>  
-                    } 
+                        var _NickName = plm.Users.SingleOrDefault(model => model.UserId == x.userId);
+                        <span style="padding-left:10px;" class="text">Bienvenido @_NickName.Name</span>
+                    }
                 }
             </a>
         </header>
@@ -66,17 +66,17 @@
                         El panel debe funcionar dinamicamente para cada módulo.
                         Nota: Si desea agregar mas iconos vaya a la hoja de estilos Layout.css y agrege el nuevo ícono bajo el código que encontrará en la página http://fontawesome.io/icons/
                     *@
-                    
+
                     @{
                         var _trueI = ViewData["Inicio"];
                         if (_trueI != null)
                         {
                             <li>
-                        <a href="@Url.Content("~/Login/RedirectToAction")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
-                            <div align="center" class="IconHome notify"></div>
-                            <span style="padding-left:10px;" class="text">Inicio</span>
-                        </a>
-                    </li>
+                                <a href="@Url.Content("~/Login/RedirectToAction")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
+                                    <div align="center" class="IconHome notify"></div>
+                                    <span style="padding-left:10px;" class="text">Inicio</span>
+                                </a>
+                            </li>
                         }
 
                     }
@@ -99,26 +99,26 @@
                         {
                             <li>
                                 <a href="@Url.Content("~/Production/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
-                                <div align="center" class="IconProduction notify"></div>
-                                <span style="padding-left:10px;" class="text">Producción</span>
-                                 </a>
+                                    <div align="center" class="IconProduction notify"></div>
+                                    <span style="padding-left:10px;" class="text">Producción</span>
+                                </a>
                             </li>
                         }
 
                     }
-                     @{
-                         var _trueM = ViewData["Medicos"];
-                         if (_trueM != null)
-                         {
-                             <li>
-                                 <a href="@Url.Content("~/Medical/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
-                                     <div align="center" class="IconMedical notify"></div>
-                                     <span style="padding-left:10px;" class="text">Médicos</span>
-                                 </a>
-                             </li>
-                         }
-                         
-                     }
+                    @{
+                        var _trueM = ViewData["Medicos"];
+                        if (_trueM != null)
+                        {
+                            <li>
+                                <a href="@Url.Content("~/Medical/Index")" style="text-decoration:none; padding-left:20px;" class="smoothScroll zindex">
+                                    <div align="center" class="IconMedical notify"></div>
+                                    <span style="padding-left:10px;" class="text">Médicos</span>
+                                </a>
+                            </li>
+                        }
+
+                    }
                     @{
                         var _true = ViewData["Pagination"];
                         if (_true != null)
@@ -184,7 +184,8 @@
             <br />
             <br />
             @RenderBody()
-            <div class="row col-md-12"> @*id="dynamic_footer"*@
+            <div class="row col-md-12">
+                @*id="dynamic_footer"*@
                 <div class="title_new">
                     <div class="title-word_new" style="font-weight:normal;"><p><span style="color:#003870; font-size: 20px;">PLM</span><span style="font-size: 20px;"> - @DateTime.Now.Year </span></p></div>
                 </div>
