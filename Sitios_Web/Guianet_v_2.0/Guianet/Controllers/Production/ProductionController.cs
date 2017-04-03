@@ -2691,8 +2691,6 @@ namespace Guianet.Controllers.Production
 
             }
 
-
-
             if (System.IO.File.Exists(path))
             {
                 FileInfo FI = new FileInfo(path);
@@ -2703,8 +2701,6 @@ namespace Guianet.Controllers.Production
 
                 filename = filename.Replace(".html", "");
                 filename = filename.Replace(".htm", "");
-
-
 
                 String _return = SegmentContent.getxml(concatfiledir, filename, desc, pname, prop, attribute, labname);
 
@@ -2732,8 +2728,6 @@ namespace Guianet.Controllers.Production
                     return Json("Error_File", JsonRequestBehavior.AllowGet);
 
                 }
-
-
 
                 String check = checkXML(desc, filename);
                 if (check == "_error")
