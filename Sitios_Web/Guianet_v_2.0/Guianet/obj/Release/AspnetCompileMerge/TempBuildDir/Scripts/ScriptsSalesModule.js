@@ -1305,41 +1305,77 @@ function SaveChangedAddress(item) {
         apprise("" + d + "", { 'animate': true });
     }
     else {
-        $.ajax({
-            Type: "POST",
-            dataType: "Json",
-            url: "../SalesModule/SaveChangedAddress",
-            data: {
-                AddressIdd: AddrId,
-                Address: Addr,
-                Suburb: Sub,
-                City: Cty,
-                State: ST,
-                ZipCode: CP,
-                Mail: ml,
-                Web: WB,
-                Location: lc,
-                StateI: StId
-            },
-            success: function (data) {
-                if (data == true) {
-                    //tr.find("#lblAddress").text(Addr);
-                    //tr.find("#lblSuburb").text(Sub);
-                    //tr.find("#lblCity").text(Cty);
-                    //tr.find("#lblState").text(ST);
-                    //tr.find("#lblZipCode").text(CP);
-                    //tr.find("#lblEmail").text(ml);
-                    //tr.find("#lblWeb").text(WB);
-                    //tr.find("#lblLocation").text(lc);
-                    //tr.find("#lblState").text(StId);
+        var lgZC = CP.length;
 
-                    //tr.find(".edit-modeA").hide();
-                    //tr.find(".display-modeA").show();
+        if (lgZC == 4) {
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Aviso!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; El campo C&oacute;digo Postal, tiene 4 digitos, ser&aacute; agregado un Cero al principio para completar el dato </p>"
+            apprise("" + d + "", { 'verify': true }, function (r) {
+                if (r) {
+                    CP = "0" + CP;
+                    tr.find("#txtZipCode").val(CP);
 
-                    setTimeout("document.location.reload()");
+                    $.ajax({
+                        Type: "POST",
+                        dataType: "Json",
+                        url: "../SalesModule/SaveChangedAddress",
+                        data: {
+                            AddressIdd: AddrId,
+                            Address: Addr,
+                            Suburb: Sub,
+                            City: Cty,
+                            State: ST,
+                            ZipCode: CP,
+                            Mail: ml,
+                            Web: WB,
+                            Location: lc,
+                            StateI: StId
+                        },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout("document.location.reload()");
+                            }
+                        }
+                    })
                 }
-            }
-        })
+                else {
+
+                }
+            });
+
+            
+        }
+        else if (lgZC < 4) {
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; C&oacute;digo Postal incorrecto, sobrepasa el n&uacute;mero m&iacute;nimo de caracteres.</p>"
+            apprise("" + d + "", { 'animate': true });
+        }
+        else {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "../SalesModule/SaveChangedAddress",
+                data: {
+                    AddressIdd: AddrId,
+                    Address: Addr,
+                    Suburb: Sub,
+                    City: Cty,
+                    State: ST,
+                    ZipCode: CP,
+                    Mail: ml,
+                    Web: WB,
+                    Location: lc,
+                    StateI: StId
+                },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout("document.location.reload()");
+                    }
+                }
+            })
+        }
     }
 }
 
@@ -1613,6 +1649,9 @@ function SaveChangesEditPhone(item) {
     var CLId = $("#ClientId").val();
     var BId = $("#BranchId").val();
 
+    lda = lda.replace("(", "");
+    lda = lda.replace(")", "");
+
     var d = "";
     d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
 
@@ -1637,6 +1676,7 @@ function SaveChangesEditPhone(item) {
                         tr.find(".edit-modeCP").hide();
 
                         tr.find("#lblLada").text(lda);
+                        tr.find("#txtLada").val(lda);
                         tr.find("#lblNumber").text(nmbr);
 
                     }
@@ -1655,6 +1695,7 @@ function SaveChangesEditPhone(item) {
                         tr.find(".edit-modeCP").hide();
 
                         tr.find("#lblLada").text(lda);
+                        tr.find("#txtLada").val(lda);
                         tr.find("#lblNumber").text(nmbr);
 
                     }
@@ -1672,6 +1713,9 @@ function AddPhones() {
 
     var CLId = $("#ClientId").val();
     var BId = $("#BranchId").val();
+
+    lda = lda.replace("(", "");
+    lda = lda.replace(")", "");
 
     if ((pt != 0) && (!nmbr.trim() == false)) {
         if ((BId != '') && (BId != 0) && (BId != null) && (BId != undefined)) {
@@ -2796,41 +2840,75 @@ function SaveChangedAddressProd(item) {
         apprise("" + d + "", { 'animate': true });
     }
     else {
-        $.ajax({
-            Type: "POST",
-            dataType: "Json",
-            url: "../Production/SaveChangedAddress",
-            data: {
-                AddressIdd: AddrId,
-                Address: Addr,
-                Suburb: Sub,
-                City: Cty,
-                State: "",
-                ZipCode: CP,
-                Mail: ml,
-                Web: WB,
-                Location: lc,
-                StateI: StId
-            },
-            success: function (data) {
-                if (data == true) {
-                    //tr.find("#lblAddress").text(Addr);
-                    //tr.find("#lblSuburb").text(Sub);
-                    //tr.find("#lblCity").text(Cty);
-                    //tr.find("#lblState").text(ST);
-                    //tr.find("#lblZipCode").text(CP);
-                    //tr.find("#lblEmail").text(ml);
-                    //tr.find("#lblWeb").text(WB);
-                    //tr.find("#lblLocation").text(lc);
-                    //tr.find("#lblState").text(StId);
+        var lgZC = CP.length;
 
-                    //tr.find(".edit-modeA").hide();
-                    //tr.find(".display-modeA").show();
+        if (lgZC == 4) {
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Aviso!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; El campo C&oacute;digo Postal, tiene 4 digitos, ser&aacute; agregado un Cero al principio para completar el dato </p>"
+            apprise("" + d + "", { 'verify': true }, function (r) {
+                if (r) {
+                    CP = "0" + CP;
+                    tr.find("#txtZipCodeProd").val(CP);
 
-                    setTimeout("document.location.reload()");
+                    $.ajax({
+                        Type: "POST",
+                        dataType: "Json",
+                        url: "../Production/SaveChangedAddress",
+                        data: {
+                            AddressIdd: AddrId,
+                            Address: Addr,
+                            Suburb: Sub,
+                            City: Cty,
+                            State: "",
+                            ZipCode: CP,
+                            Mail: ml,
+                            Web: WB,
+                            Location: lc,
+                            StateI: StId
+                        },
+                        success: function (data) {
+                            if (data == true) {
+                                setTimeout("document.location.reload()");
+                            }
+                        }
+                    })
                 }
-            }
-        })
+                else {
+
+                }
+            });
+        }
+        else if (lgZC < 4) {
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; C&oacute;digo Postal incorrecto, sobrepasa el n&uacute;mero m&iacute;nimo de caracteres.</p>"
+            apprise("" + d + "", { 'animate': true });
+        }
+        else {
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "../Production/SaveChangedAddress",
+                data: {
+                    AddressIdd: AddrId,
+                    Address: Addr,
+                    Suburb: Sub,
+                    City: Cty,
+                    State: "",
+                    ZipCode: CP,
+                    Mail: ml,
+                    Web: WB,
+                    Location: lc,
+                    StateI: StId
+                },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout("document.location.reload()");
+                    }
+                }
+            })
+        }
     }
 }
 
@@ -3025,6 +3103,9 @@ function SaveChangesEditPhoneProd(item) {
     var CLId = $("#ClientId").val();
     var BId = $("#BranchId").val();
 
+    lda = lda.replace("(", "");
+    lda = lda.replace(")", "");
+
     var d = "";
     d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
 
@@ -3050,6 +3131,7 @@ function SaveChangesEditPhoneProd(item) {
                         tr.find(".edit-modeCPProd").hide();
 
                         tr.find("#lblLadaProd").text(lda);
+                        tr.find("#txtLadaProd").val(lda);
                         tr.find("#lblNumberProd").text(nmbr);
                     }
                 }
@@ -3067,6 +3149,7 @@ function SaveChangesEditPhoneProd(item) {
                         tr.find(".edit-modeCPProd").hide();
 
                         tr.find("#lblLadaProd").text(lda);
+                        tr.find("#txtLadaProd").val(lda);
                         tr.find("#lblNumberProd").text(nmbr);
 
                     }
@@ -3086,6 +3169,9 @@ function AddPhonesProd() {
 
     var CLId = $("#ClientId").val();
     var BId = $("#BranchId").val();
+
+    lda = lda.replace("(", "");
+    lda = lda.replace(")", "");
 
     if ((pt != 0) && (!nmbr.trim() == false)) {
         if ((BId != '') && (BId != 0) && (BId != null) && (BId != undefined)) {

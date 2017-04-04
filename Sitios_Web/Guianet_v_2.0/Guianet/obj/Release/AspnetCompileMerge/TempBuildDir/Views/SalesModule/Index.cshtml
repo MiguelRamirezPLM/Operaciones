@@ -32,44 +32,44 @@
     <div class="col-lg-6" style="border: none">
         @using (Html.BeginForm())
         {
-            <div style="text-align:right;display:none">
-                <p>
-                    @{
+        <div style="text-align:right;display:none">
+            <p>
+                @{
             if (indexsalesmodule != null)
             {
-                <label>country</label><input id="CountryId" name="CountryId" type="text" value="@indexsalesmodule.CId">
-                        <label>book</label><input id="BookId" name="BookId" type="text" value="@indexsalesmodule.BId">
-                        <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@indexsalesmodule.EId">
-                        <label>client</label><input id="ClientId" name="ClientId" type="text" value="@indexsalesmodule.ClId">
-                        <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+                    <label>country</label><input id="CountryId" name="CountryId" type="text" value="@indexsalesmodule.CId">
+                    <label>book</label><input id="BookId" name="BookId" type="text" value="@indexsalesmodule.BId">
+                    <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@indexsalesmodule.EId">
+                    <label>client</label><input id="ClientId" name="ClientId" type="text" value="@indexsalesmodule.ClId">
+                    <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
             }
             else
             {
-                <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
-                        <label>book</label><input id="BookId" name="BookId" type="text" value="">
-                        <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
-                        <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
-                        <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                    <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                    <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                    <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                    <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                    <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
             }
-                    }
-                </p>
-            </div>
+                }
+            </p>
+        </div>
         }
         @{
             if (indexsalesmodule == null)
             {
-                <div style="width: 100%; float: left">
-                    <table style="width:100%" border="0">
-                        <tr>
-                            <td width="100px" style="line-height: 30px;">
-                                <label class="labelsform">País:</label><label style="color:red;float:right;font-size:20px">*</label>
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <div style="text-align:left;">
-                                    <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
-                                        <option class="null">Seleccione...</option>
-                                        @{
+        <div style="width: 100%; float: left">
+            <table style="width:100%" border="0">
+                <tr>
+                    <td width="100px" style="line-height: 30px;">
+                        <label class="labelsform">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <div style="text-align:left;">
+                            <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                <option class="null">Seleccione...</option>
+                                @{
                 CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
                 if (Session["CountriesUsers"] == null)
                 {
@@ -88,60 +88,60 @@
                         foreach (Countries w in countries)
                         {
                             int CountryId = w.CountryId;
-                            <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
                         }
                     }
                 }
-                                        }
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="line-height: 30px;">
-                                <label for="bookname" id="lblbook" style="display:normal" class="labelsform">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="bookname" id="lblbook" style="display:normal" class="labelsform">Obra:</label><label style="color:red;float:right;font-size:20px" id="lblbook1">*</label>
 
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="line-height: 30px;">
-                                <label for="Edition" id="lblEdition" style="display: normal" class="labelsform">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="line-height: 30px;">
-                                <label for="DivisionName" id="lblclient" style="display: normal" class="labelsform">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="Edition" id="lblEdition" style="display: normal" class="labelsform">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="DivisionName" id="lblclient" style="display: normal" class="labelsform">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px"></select>
+                    </td>
+                </tr>
+            </table>
+        </div>
             }
             else
             {
-                <div style="width: 100%;">
-                    <table style="width:100%" border="0">
-                        <tr>
-                            <td width="100px" style="line-height: 30px;">
-                                <label class="labelsform">País:</label><label style="color:red;float:right;font-size:20px">*</label>
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <div style="text-align:left;">
-                                    <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
-                                        <option class="null">Seleccione...</option>
-                                        @{
+        <div style="width: 100%;">
+            <table style="width:100%" border="0">
+                <tr>
+                    <td width="100px" style="line-height: 30px;">
+                        <label class="labelsform">País:</label><label style="color:red;float:right;font-size:20px">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <div style="text-align:left;">
+                            <select name="pais" id="pais" onchange="getbook($(this).val());" class="country form-control" style="text-align: left; width: 100%; font-size: 12px; height: 30px;">
+                                <option class="null">Seleccione...</option>
+                                @{
                 CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
                 if (Session["CountriesUsers"] == null)
                 {
@@ -162,30 +162,30 @@
                             int CountryId = indexsalesmodule.CId;
                             if (w.CountryId == CountryId)
                             {
-                                <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                        <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
                             }
                             else
                             {
-                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
                             }
 
                         }
                     }
                 }
-                                        }
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="line-height: 30px;">
-                                <label for="bookname" id="lblbook" style="display:normal" class="labelsform">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
-                            </td>
-                            <td style="width:15px"></td>
-                            <td style="line-height: 30px; height: 30px">
-                                <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
-                                    <option>Seleccione...</option>
-                                    @{
+                                }
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="bookname" id="lblbook" style="display:normal" class="labelsform">Obra:</label><label style="color:red;float:right;font-size:20px;" id="lblbook1">*</label>
+                    </td>
+                    <td style="width:15px"></td>
+                    <td style="line-height: 30px; height: 30px">
+                        <select name="book" id="bookn" class="insert form-control" onchange="geteditions($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                            <option>Seleccione...</option>
+                            @{
                 int BookId = indexsalesmodule.BId;
 
                 var bk = (from book in db.Books
@@ -195,26 +195,26 @@
                 {
                     if (_book.BookId == BookId)
                     {
-                        <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
                     }
                     else
                     {
-                        <option value="@_book.BookId">@_book.BookName</option>
+                                    <option value="@_book.BookId">@_book.BookName</option>
                     }
                 }
-                                    }
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="line-height: 30px;">
-                                <label for="Edition" id="lblEdition" style="display: normal" class="labelsform">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
-                                    <option>Seleccione...</option>
-                                    @{
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="Edition" id="lblEdition" style="display: normal" class="labelsform">Edición:</label><label style="color:red;float:right;font-size:20px" id="lblEdition1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="Edition" id="Edition" class="insert form-control" onchange="getclients($(this).val());" style="text-align: left; display: normal; width: 100%; font-size: 12px; height: 30px">
+                            <option>Seleccione...</option>
+                            @{
                 int EditionId = indexsalesmodule.EId;
                 int CountryIds = indexsalesmodule.CId;
                 var ed = (from _ed in db.Editions
@@ -225,26 +225,26 @@
                 {
                     if (_ed.EditionId == EditionId)
                     {
-                        <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
                     }
                     else
                     {
-                        <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
                     }
                 }
-                                    }
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="line-height: 30px;">
-                                <label for="DivisionName" id="lblclient" style="display: normal" class="labelsform">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
-                            </td>
-                            <td style="line-height: 30px;width:15px"></td>
-                            <td style="line-height: 30px;">
-                                <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
-                                    <option>Seleccione...</option>
-                                    @{
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 30px;">
+                        <label for="DivisionName" id="lblclient" style="display: normal" class="labelsform">Cliente:</label><label style="color:red;float:right;font-size:20px" id="lblclient1">*</label>
+                    </td>
+                    <td style="line-height: 30px;width:15px"></td>
+                    <td style="line-height: 30px;">
+                        <select name="clients" id="clients" class="insert form-control" onchange="getresults($(this).val());" style="text-align: left; display: normal; width:100%; font-size: 12px; height: 30px">
+                            <option>Seleccione...</option>
+                            @{
                 byte clienttypeid = 0;
                 var ct = (from clientt in db.ClientTypes
                           where clientt.TypeName == "ANUNCIANTE"
@@ -263,14 +263,14 @@
                                 select c).Distinct().OrderBy(x => x.CompanyName).ToList();
                 foreach (Clients c in _clients)
                 {
-                    <option value="@c.ClientId">@c.CompanyName</option>
+                                    <option value="@c.ClientId">@c.CompanyName</option>
                 }
-                                    }
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
             }
         }
     </div>
@@ -280,32 +280,42 @@
             <div class="col-lg-6">
                 <table border="0" class="widthtable">
                     <tr>
-                        <td rowspan="4" style="text-align:center">
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetDescribedProductsByClient", "GetReports", new { id = "PDF", ClientId = ClientIdss, EditionId = EditionIds })"><img src="@Url.Content("~/Images/DescribedProductsByClient.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetGlobarReportWorks", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/Categories.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetAddedWorksByClientId", "GetReports", new { id = "PDF", ClientId = ClientIdss })"><img src="@Url.Content("~/Images/CatsByClient.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetAddedWorksByEditionId", "GetReports", new { id = "PDF", ClientId = ClientIdss, EditionId = EditionIds })"><img src="@Url.Content("~/Images/CatsByEdition.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetProductsByClientSM", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfproductsbyclient.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetReportProductsByEdition", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfproductsbyedition.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetProductsByClientWithCategoriesSM", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/ProductCategoriesByClient.png")" style="height:75px;width:60px"></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a target="_blank" href="@Url.Action("GetReportProductsByEditionWithCategories", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/ProductCategoriesByEdition.png")" style="height:75px;width:60px"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" class="text-center">
                             <button class="btn btn-primary" onclick="openformaddproduct()">
                                 <span class="fa fa-upload"></span>
                                 <span>&nbsp;Agregar Producto</span>
                             </button>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetGlobarReportWorks", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/Categories.png")" style="height:75px;width:60px"></a>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetAddedWorksByClientId", "GetReports", new { id = "PDF", ClientId = ClientIdss })"><img src="@Url.Content("~/Images/CatsByClient.png")" style="height:75px;width:60px"></a>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetAddedWorksByEditionId", "GetReports", new { id = "PDF", ClientId = ClientIdss, EditionId = EditionIds })"><img src="@Url.Content("~/Images/CatsByEdition.png")" style="height:75px;width:60px"></a>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetProductsByClientSM", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfproductsbyclient.png")" style="height:75px;width:60px"></a>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetReportProductsByEdition", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfproductsbyedition.png")" style="height:75px;width:60px"></a>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetProductsByClientWithCategoriesSM", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/ProductCategoriesByClient.png")" style="height:75px;width:60px"></a>
-                        </td>
-                        <td rowspan="4" style="text-align:center">
-                            <a target="_blank" href="@Url.Action("GetReportProductsByEditionWithCategories", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/ProductCategoriesByEdition.png")" style="height:75px;width:60px"></a>
                         </td>
                     </tr>
                 </table>
@@ -333,29 +343,6 @@
             <span class="spans">@_ct.CountryName</span>
         }
                     }
-                </td>
-                <td rowspan="4" style="width:25%">
-
-                    <div class="input-group stylish-input-group" style="float:right">
-                        @{
-        Guianet.Models.Sessions.SearchProductNameSM SearchProductNameSM = (Guianet.Models.Sessions.SearchProductNameSM)Session["SearchProductNameSM"];
-        if (SearchProductNameSM != null)
-        {
-            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchProduct" value="@SearchProductNameSM.ProductName" />
-        }
-        else
-        {
-            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchProduct" />
-        }
-                        }
-
-                        @*@Html.TextBox("ProductName", "", new { @class = "form-control", style = "width:70%" })*@
-                        <span class="input-group-addon ldr" style="width:0" onclick="searchproduct()" id="btnSearchProducts">
-                            <button type="submit">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
                 </td>
             </tr>
             <tr>
@@ -385,6 +372,28 @@
         }
                     }
                 </td>
+                <td rowspan="2" style="width:25%">
+
+                    <div class="input-group stylish-input-group" style="float:right">
+                        @{
+        Guianet.Models.Sessions.SearchProductNameSM SearchProductNameSM = (Guianet.Models.Sessions.SearchProductNameSM)Session["SearchProductNameSM"];
+        if (SearchProductNameSM != null)
+        {
+            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchProduct" value="@SearchProductNameSM.ProductName" />
+        }
+        else
+        {
+            <input type="text" class="form-control" placeholder="Texto a Buscar..." id="SearchProduct" />
+        }
+                        }
+                        <span class="input-group-addon ldr" style="width:0" onclick="searchproduct()" id="btnSearchProducts">
+                            <button type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </td>
+
             </tr>
             <tr>
                 <td style="width:6%"><label class="labelsform">Cliente:</label></td>
@@ -399,6 +408,7 @@
         }
                     }
                 </td>
+
             </tr>
         </table>
     }
