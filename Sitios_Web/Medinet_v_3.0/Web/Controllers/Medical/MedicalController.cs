@@ -34,6 +34,13 @@ namespace Web.Controllers.Medical
             return View();
         }
 
+        public ActionResult ChoseType()
+        {
+            return View();
+        }
+
+        #region Products
+
         public ActionResult Content(int? CId, int? BId, int? EId, int? DId)
         {
             if (!Request.IsAuthenticated)
@@ -2825,6 +2832,14 @@ namespace Web.Controllers.Medical
             }
 
         }
+
+        #endregion
+
+        #endregion
+
+        #region Substances
+
+
 
         #endregion
     }
