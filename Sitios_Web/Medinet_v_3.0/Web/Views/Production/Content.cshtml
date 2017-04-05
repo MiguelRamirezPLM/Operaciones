@@ -913,16 +913,16 @@
                         else {
                             $("#_dvPresentations").removeClass("heightdiv");
                         }
-                        $("#_elementPresentation tbody").append(
+                        $("#_elementPresentation tbody").append(         
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyExternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ExternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyInternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.InternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyContentUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ContentUnitName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyWeightUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.WeightUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyExternalPackP'>" + item.QtyExternalPack + "</span><input type='hidden' id='ExternalPackId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='ExternalPackNameP'>" + item.ExternalPackName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyInternalPackP'>" + item.QtyInternalPack + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='InternalPackNameP'>" + item.InternalPackName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyContentUnitP'>" + item.QtyContentUnit + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='ContentUnitNameP'>" + item.ContentUnitName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='WeightUnitNameP'>" + item.WeightUnitName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
                             //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
@@ -1487,6 +1487,8 @@
         var _vldpharmaFormId = _vlpositionp.find("#_pharmaFormId").val();
         var _vldpresentationId = tr.find("#_vlpresentationId").val();
         var _getPresentation = tr.find("#_vlxpresentation").text();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
         swal({
             title: '¿Desea eliminar la presentación ' + '"' + _getPresentation + '"' + '?',
             text: "Esto implica que todo lo relacionado a ella se eliminará",

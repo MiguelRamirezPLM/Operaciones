@@ -745,9 +745,11 @@ namespace Web.Controllers.Production
                 PresentationId = Convert.ToInt32(LI[0].id);
 
                 primaryKeyAffected = "(PresentationId," + PresentationId + ")";
-                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.Presentations + ",@operationId=" + Action.Agregar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.Presentations + ",@operationId=" + Action.Eliminar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
 
-                
+                primaryKeyAffected = "(EditionId," + EditionId + ");(PresentationId," + PresentationId + ")";
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.EditionPresentations + ",@operationId=" + Action.Eliminar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + "").ToList();
+
                 
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
