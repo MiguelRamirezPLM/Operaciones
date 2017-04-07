@@ -90,6 +90,27 @@
     <Property Name="UnitName" Type="varchar" MaxLength="100" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="ContraindicationClinicalActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="ActiveSubstanceContraindicationId" />
+      <PropertyRef Name="ContraindicationSeverityId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="ActiveSubstanceContraindicationId" Type="int" Nullable="false" />
+    <Property Name="ContraindicationSeverityId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContraindicationSeverities">
+    <Key>
+      <PropertyRef Name="ContraindicationSeverityId" />
+    </Key>
+    <Property Name="ContraindicationSeverityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ColorSemaphore" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="EnglishColorSemaphore" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DescriptionSemaphore" Type="varchar(max)" Nullable="false" />
+    <Property Name="EnglishDescriptionSemaphore" Type="varchar(max)" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="Countries">
     <Key>
       <PropertyRef Name="CountryId" />
@@ -1660,6 +1681,42 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="R_707">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="ContraindicationClinicalActiveSubstances" Type="Self.ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ContraindicationClinicalActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceContraindicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_708">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="ContraindicationClinicalActiveSubstances" Type="Self.ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ContraindicationClinicalActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_713">
+    <End Role="ContraindicationSeverities" Type="Self.ContraindicationSeverities" Multiplicity="1" />
+    <End Role="ContraindicationClinicalActiveSubstances" Type="Self.ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContraindicationSeverities">
+        <PropertyRef Name="ContraindicationSeverityId" />
+      </Principal>
+      <Dependent Role="ContraindicationClinicalActiveSubstances">
+        <PropertyRef Name="ContraindicationSeverityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_9">
     <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
     <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -1695,6 +1752,8 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <EntitySet Name="ClinicalReferences" EntityType="Self.ClinicalReferences" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ContentUnits" EntityType="Self.ContentUnits" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ContraindicationClinicalActiveSubstances" EntityType="Self.ContraindicationClinicalActiveSubstances" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ContraindicationSeverities" EntityType="Self.ContraindicationSeverities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DivisionCategories" EntityType="Self.DivisionCategories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" Schema="dbo" store:Type="Tables" />
@@ -2080,6 +2139,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <AssociationSet Name="R_701" Association="Self.R_701">
       <End Role="ProductCategories" EntitySet="ProductCategories" />
       <End Role="OffMarkets" EntitySet="OffMarkets" />
+    </AssociationSet>
+    <AssociationSet Name="R_707" Association="Self.R_707">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_708" Association="Self.R_708">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_713" Association="Self.R_713">
+      <End Role="ContraindicationSeverities" EntitySet="ContraindicationSeverities" />
+      <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
     </AssociationSet>
     <AssociationSet Name="R_9" Association="Self.R_9">
       <End Role="Countries" EntitySet="Countries" />

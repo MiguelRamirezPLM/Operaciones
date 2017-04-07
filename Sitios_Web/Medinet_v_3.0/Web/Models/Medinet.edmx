@@ -95,6 +95,27 @@
           <Property Name="UnitName" Type="varchar" MaxLength="100" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ContraindicationClinicalActiveSubstances">
+          <Key>
+            <PropertyRef Name="ActiveSubstanceId" />
+            <PropertyRef Name="ActiveSubstanceContraindicationId" />
+            <PropertyRef Name="ContraindicationSeverityId" />
+          </Key>
+          <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+          <Property Name="ActiveSubstanceContraindicationId" Type="int" Nullable="false" />
+          <Property Name="ContraindicationSeverityId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContraindicationSeverities">
+          <Key>
+            <PropertyRef Name="ContraindicationSeverityId" />
+          </Key>
+          <Property Name="ContraindicationSeverityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColorSemaphore" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EnglishColorSemaphore" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DescriptionSemaphore" Type="varchar(max)" Nullable="false" />
+          <Property Name="EnglishDescriptionSemaphore" Type="varchar(max)" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Countries">
           <Key>
             <PropertyRef Name="CountryId" />
@@ -1665,6 +1686,42 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_707">
+          <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+          <End Role="ContraindicationClinicalActiveSubstances" Type="Self.ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ContraindicationClinicalActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceContraindicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_708">
+          <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+          <End Role="ContraindicationClinicalActiveSubstances" Type="Self.ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ContraindicationClinicalActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_713">
+          <End Role="ContraindicationSeverities" Type="Self.ContraindicationSeverities" Multiplicity="1" />
+          <End Role="ContraindicationClinicalActiveSubstances" Type="Self.ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContraindicationSeverities">
+              <PropertyRef Name="ContraindicationSeverityId" />
+            </Principal>
+            <Dependent Role="ContraindicationClinicalActiveSubstances">
+              <PropertyRef Name="ContraindicationSeverityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_9">
           <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
           <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -1700,6 +1757,8 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <EntitySet Name="ClinicalReferences" EntityType="Self.ClinicalReferences" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentTypes" EntityType="Self.ContentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentUnits" EntityType="Self.ContentUnits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContraindicationClinicalActiveSubstances" EntityType="Self.ContraindicationClinicalActiveSubstances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContraindicationSeverities" EntityType="Self.ContraindicationSeverities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DivisionCategories" EntityType="Self.DivisionCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" Schema="dbo" store:Type="Tables" />
@@ -2086,6 +2145,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="ProductCategories" EntitySet="ProductCategories" />
             <End Role="OffMarkets" EntitySet="OffMarkets" />
           </AssociationSet>
+          <AssociationSet Name="R_707" Association="Self.R_707">
+            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+            <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+          </AssociationSet>
+          <AssociationSet Name="R_708" Association="Self.R_708">
+            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+            <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+          </AssociationSet>
+          <AssociationSet Name="R_713" Association="Self.R_713">
+            <End Role="ContraindicationSeverities" EntitySet="ContraindicationSeverities" />
+            <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+          </AssociationSet>
           <AssociationSet Name="R_9" Association="Self.R_9">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Products" EntitySet="Products" />
@@ -2464,6 +2535,20 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <AssociationSet Name="R_234" Association="Model1.R_234">
             <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
             <End Role="ProductPharmaFormRoutes" EntitySet="ProductPharmaFormRoutes" />
+          </AssociationSet>
+          <EntitySet Name="ContraindicationClinicalActiveSubstances" EntityType="Model1.ContraindicationClinicalActiveSubstances" />
+          <AssociationSet Name="R_707" Association="Model1.R_707">
+            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+            <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+          </AssociationSet>
+          <AssociationSet Name="R_708" Association="Model1.R_708">
+            <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+            <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+          </AssociationSet>
+          <EntitySet Name="ContraindicationSeverities" EntityType="Model1.ContraindicationSeverities" />
+          <AssociationSet Name="R_713" Association="Model1.R_713">
+            <End Role="ContraindicationSeverities" EntitySet="ContraindicationSeverities" />
+            <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Countries">
@@ -3876,6 +3961,8 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.R_403" FromRole="ActiveSubstances" ToRole="IPPAProductInteractions" />
           <NavigationProperty Name="ProductInteractions1" Relationship="Model1.SubstanceInteraction_FK" FromRole="ActiveSubstances" ToRole="ProductInteractions" />
           <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.R_481" FromRole="ActiveSubstances" ToRole="IPPAProductContraindications" />
+          <NavigationProperty Name="ContraindicationClinicalActiveSubstances" Relationship="Model1.R_707" FromRole="ActiveSubstances" ToRole="ContraindicationClinicalActiveSubstances" />
+          <NavigationProperty Name="ContraindicationClinicalActiveSubstances1" Relationship="Model1.R_708" FromRole="ActiveSubstances" ToRole="ContraindicationClinicalActiveSubstances" />
         </EntityType>
         <Association Name="R_274">
           <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -4256,6 +4343,67 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <Dependent Role="ProductPharmaFormRoutes">
               <PropertyRef Name="PharmaFormId" />
               <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContraindicationClinicalActiveSubstances">
+          <Key>
+            <PropertyRef Name="ActiveSubstanceId" />
+            <PropertyRef Name="ActiveSubstanceContraindicationId" />
+            <PropertyRef Name="ContraindicationSeverityId" />
+          </Key>
+          <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+          <Property Name="ActiveSubstanceContraindicationId" Type="Int32" Nullable="false" />
+          <Property Name="ContraindicationSeverityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_707" FromRole="ContraindicationClinicalActiveSubstances" ToRole="ActiveSubstances" />
+          <NavigationProperty Name="ActiveSubstances1" Relationship="Model1.R_708" FromRole="ContraindicationClinicalActiveSubstances" ToRole="ActiveSubstances" />
+          <NavigationProperty Name="ContraindicationSeverities" Relationship="Model1.R_713" FromRole="ContraindicationClinicalActiveSubstances" ToRole="ContraindicationSeverities" />
+        </EntityType>
+        <Association Name="R_707">
+          <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+          <End Type="Model1.ContraindicationClinicalActiveSubstances" Role="ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ContraindicationClinicalActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceContraindicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_708">
+          <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+          <End Type="Model1.ContraindicationClinicalActiveSubstances" Role="ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Principal>
+            <Dependent Role="ContraindicationClinicalActiveSubstances">
+              <PropertyRef Name="ActiveSubstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContraindicationSeverities">
+          <Key>
+            <PropertyRef Name="ContraindicationSeverityId" />
+          </Key>
+          <Property Name="ContraindicationSeverityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColorSemaphore" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EnglishColorSemaphore" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DescriptionSemaphore" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EnglishDescriptionSemaphore" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ContraindicationClinicalActiveSubstances" Relationship="Model1.R_713" FromRole="ContraindicationSeverities" ToRole="ContraindicationClinicalActiveSubstances" />
+        </EntityType>
+        <Association Name="R_713">
+          <End Type="Model1.ContraindicationSeverities" Role="ContraindicationSeverities" Multiplicity="1" />
+          <End Type="Model1.ContraindicationClinicalActiveSubstances" Role="ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContraindicationSeverities">
+              <PropertyRef Name="ContraindicationSeverityId" />
+            </Principal>
+            <Dependent Role="ContraindicationClinicalActiveSubstances">
+              <PropertyRef Name="ContraindicationSeverityId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4966,6 +5114,27 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
                 <ScalarProperty Name="RouteId" ColumnName="RouteId" />
                 <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContraindicationClinicalActiveSubstances">
+            <EntityTypeMapping TypeName="Model1.ContraindicationClinicalActiveSubstances">
+              <MappingFragment StoreEntitySet="ContraindicationClinicalActiveSubstances">
+                <ScalarProperty Name="ContraindicationSeverityId" ColumnName="ContraindicationSeverityId" />
+                <ScalarProperty Name="ActiveSubstanceContraindicationId" ColumnName="ActiveSubstanceContraindicationId" />
+                <ScalarProperty Name="ActiveSubstanceId" ColumnName="ActiveSubstanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContraindicationSeverities">
+            <EntityTypeMapping TypeName="Model1.ContraindicationSeverities">
+              <MappingFragment StoreEntitySet="ContraindicationSeverities">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="EnglishDescriptionSemaphore" ColumnName="EnglishDescriptionSemaphore" />
+                <ScalarProperty Name="DescriptionSemaphore" ColumnName="DescriptionSemaphore" />
+                <ScalarProperty Name="EnglishColorSemaphore" ColumnName="EnglishColorSemaphore" />
+                <ScalarProperty Name="ColorSemaphore" ColumnName="ColorSemaphore" />
+                <ScalarProperty Name="ContraindicationSeverityId" ColumnName="ContraindicationSeverityId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

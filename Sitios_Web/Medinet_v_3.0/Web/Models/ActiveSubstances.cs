@@ -21,6 +21,8 @@ namespace Web.Models
             this.IPPAProductInteractions = new HashSet<IPPAProductInteractions>();
             this.ProductInteractions1 = new HashSet<ProductInteractions>();
             this.IPPAProductContraindications = new HashSet<IPPAProductContraindications>();
+            this.ContraindicationClinicalActiveSubstances = new HashSet<ContraindicationClinicalActiveSubstances>();
+            this.ContraindicationClinicalActiveSubstances1 = new HashSet<ContraindicationClinicalActiveSubstances>();
         }
     
         public int ActiveSubstanceId { get; set; }
@@ -36,5 +38,7 @@ namespace Web.Models
         public virtual ICollection<IPPAProductInteractions> IPPAProductInteractions { get; set; }
         public virtual ICollection<ProductInteractions> ProductInteractions1 { get; set; }
         public virtual ICollection<IPPAProductContraindications> IPPAProductContraindications { get; set; }
+        public virtual ICollection<ContraindicationClinicalActiveSubstances> ContraindicationClinicalActiveSubstances { get; set; }
+        public virtual ICollection<ContraindicationClinicalActiveSubstances> ContraindicationClinicalActiveSubstances1 { get; set; }
     }
 }

@@ -2839,7 +2839,17 @@ namespace Web.Controllers.Medical
 
         #region Substances
 
+        public ActionResult SubstancesIndex()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                return RedirectToAction("Logout", "Login");
+            }
 
+            List<Web.Models.ActiveSubstances> LS = db.ActiveSubstances.Where(x => x.Active == true).OrderBy(x => x.Description).ToList();
+
+            return View(LS);
+        }
 
         #endregion
     }

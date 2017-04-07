@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Web.Models.ActiveSubstances>
+@using Web.Models;
+@{
+    ViewBag.Title = "SubstancesIndex";
+    Medinet db = new Medinet();
+    WebGrid _datagridDT = new WebGrid(Model, rowsPerPage: 25);
+}
+
+<div class="row">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Médicos | </strong>Clasificación de Sustancias</div>
+        </div>
+    </div>
+</div>
+<br />
+<nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default center col-lg-12">
+    <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="btn navbar-brand ldr" title="Anterior" onclick="location.href='@Url.Action("ChoseType", "Medical")';return false;">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span>&nbsp; Regresar</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br />
+<div class="table-responsive">
+    @_datagridDT.GetHtml(
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        tableStyle: "webgrid-table1 table-hover",
+                        mode: WebGridPagerModes.All,
+                        columns: new[] {
+                        _datagridDT.Column("", header: "Nombre de Sustancia", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblName">@item.Description</label> </span>
+                                    <input id="lblProductid" style="display:none;" value="@item.ActiveSubstanceId" />
+                                }
+                        </text>),
+                    _datagridDT.Column("", header: "Clasificar", format: @<text>
+        @{
+            <button class="btn btn-primary btn-sm ldr" @*onclick="location.href='@Url.Action("AddProductSubstances", "Medical", new { ProductId = ProductId, ActiveSubstanceId = item.ActiveSubstanceId, PharmaFormId = PharmaFormId, CategoryId = CategoryId, EditionId = EditionIdS })';return false;"*@>
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+        }
+                    </text>, style:"column5 text-center")
+                    })
+</div>

@@ -366,6 +366,20 @@
       <End Role="ProductPharmaForms" EntitySet="ProductPharmaForms" />
       <End Role="ProductPharmaFormRoutes" EntitySet="ProductPharmaFormRoutes" />
     </AssociationSet>
+    <EntitySet Name="ContraindicationClinicalActiveSubstances" EntityType="Model1.ContraindicationClinicalActiveSubstances" />
+    <AssociationSet Name="R_707" Association="Model1.R_707">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+    </AssociationSet>
+    <AssociationSet Name="R_708" Association="Model1.R_708">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+    </AssociationSet>
+    <EntitySet Name="ContraindicationSeverities" EntityType="Model1.ContraindicationSeverities" />
+    <AssociationSet Name="R_713" Association="Model1.R_713">
+      <End Role="ContraindicationSeverities" EntitySet="ContraindicationSeverities" />
+      <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -1777,6 +1791,8 @@
     <NavigationProperty Name="IPPAProductInteractions" Relationship="Model1.R_403" FromRole="ActiveSubstances" ToRole="IPPAProductInteractions" />
     <NavigationProperty Name="ProductInteractions1" Relationship="Model1.SubstanceInteraction_FK" FromRole="ActiveSubstances" ToRole="ProductInteractions" />
     <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.R_481" FromRole="ActiveSubstances" ToRole="IPPAProductContraindications" />
+    <NavigationProperty Name="ContraindicationClinicalActiveSubstances" Relationship="Model1.R_707" FromRole="ActiveSubstances" ToRole="ContraindicationClinicalActiveSubstances" />
+    <NavigationProperty Name="ContraindicationClinicalActiveSubstances1" Relationship="Model1.R_708" FromRole="ActiveSubstances" ToRole="ContraindicationClinicalActiveSubstances" />
   </EntityType>
   <Association Name="R_274">
     <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -2157,6 +2173,67 @@
       <Dependent Role="ProductPharmaFormRoutes">
         <PropertyRef Name="PharmaFormId" />
         <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ContraindicationClinicalActiveSubstances">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="ActiveSubstanceContraindicationId" />
+      <PropertyRef Name="ContraindicationSeverityId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="ActiveSubstanceContraindicationId" Type="Int32" Nullable="false" />
+    <Property Name="ContraindicationSeverityId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_707" FromRole="ContraindicationClinicalActiveSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="ActiveSubstances1" Relationship="Model1.R_708" FromRole="ContraindicationClinicalActiveSubstances" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="ContraindicationSeverities" Relationship="Model1.R_713" FromRole="ContraindicationClinicalActiveSubstances" ToRole="ContraindicationSeverities" />
+  </EntityType>
+  <Association Name="R_707">
+    <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="Model1.ContraindicationClinicalActiveSubstances" Role="ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ContraindicationClinicalActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceContraindicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_708">
+    <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="Model1.ContraindicationClinicalActiveSubstances" Role="ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="ContraindicationClinicalActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ContraindicationSeverities">
+    <Key>
+      <PropertyRef Name="ContraindicationSeverityId" />
+    </Key>
+    <Property Name="ContraindicationSeverityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ColorSemaphore" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishColorSemaphore" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DescriptionSemaphore" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="EnglishDescriptionSemaphore" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ContraindicationClinicalActiveSubstances" Relationship="Model1.R_713" FromRole="ContraindicationSeverities" ToRole="ContraindicationClinicalActiveSubstances" />
+  </EntityType>
+  <Association Name="R_713">
+    <End Type="Model1.ContraindicationSeverities" Role="ContraindicationSeverities" Multiplicity="1" />
+    <End Type="Model1.ContraindicationClinicalActiveSubstances" Role="ContraindicationClinicalActiveSubstances" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContraindicationSeverities">
+        <PropertyRef Name="ContraindicationSeverityId" />
+      </Principal>
+      <Dependent Role="ContraindicationClinicalActiveSubstances">
+        <PropertyRef Name="ContraindicationSeverityId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
