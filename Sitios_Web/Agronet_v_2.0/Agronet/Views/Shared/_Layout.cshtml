@@ -1,14 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Agronet</title>
     @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+        @Scripts.Render("~/bundles/modernizr")*@
 
-    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"/>
+
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet" />
     <script src="@Url.Content("~/Scripts/jQuery-2.1.4.min.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui.min.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
@@ -62,29 +63,29 @@
                                     <li class="user-header">
                                         <img src="@Url.Content("~/Images/user.png")" class="img-circle" alt="User Image">
                                         <p>
-                                            @User.Identity.Name.ToUpper()
-                                            <small>@DateTime.Now.Date.Day/@DateTime.Now.Date.Month/@DateTime.Now.Date.Year</small>
+                                            @*@User.Identity.Name.ToUpper()*@
+                                            @{
+                                                Agronet.Models.CountriesUsers p = (Agronet.Models.CountriesUsers)Session["CountriesUsers"];
+
+                                                string UserName = "";
+
+                                                if (p != null)
+                                                {
+                                                    Agronet.Models.PLMUsers db = new Agronet.Models.PLMUsers();
+                                                    List<Agronet.Models.Users> LU = db.Users.Where(x => x.UserId == p.userId).ToList();
+
+                                                    UserName = LU[0].Name + " " + LU[0].LastName + " " + LU[0].SecondLastName;
+                                                }
+                                            }
+                                            Bienvenido: <br />
+                                            @UserName
+                                            @*<span>@DateTime.Now.Date.Day/@DateTime.Now.Date.Month/@DateTime.Now.Date.Year</span>*@
                                         </p>
-                                    </li>
-                                    <!-- Menu Body -->
-                                    <li class="user-body">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                        </div>
                                         <div class="pull-right">
-                                            <a href="@Url.Content("~/Login/Logout")" class="btn btn-default btn-flat">Sign out</a>
+                                            <a href="@Url.Content("~/Login/Logout")" class="btn btn-default btn-flat ldr">Log out</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -126,11 +127,11 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
-                                    @*<li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-    <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
-    <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
-    <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
-    <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>*@
+                                @*<li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
+                                    <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
+                                    <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
+                                    <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
+                                    <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>*@
                             </ul>
                         </li>
                         <li class="treeview">
@@ -209,3 +210,4 @@
     </script>
 </body>
 </html>
+

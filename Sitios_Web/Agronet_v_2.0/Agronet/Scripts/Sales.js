@@ -45,6 +45,8 @@ function OpenFormAddProduct() {
 
 function SaveProduct() {
 
+    $("#bloqueo").show();
+
     var pn = $("#txtProductName").val();
     var pf = $("#PharmaForms").val();
     var ct = $("#Categories").val();
@@ -103,16 +105,19 @@ function SaveProduct() {
         if (!pn.trim() == true) {
             $('#divProductName').addClass('has-error');
             $('.errorP').show();
+            $("#bloqueo").hide();
         }
 
         if ((pf == 0) || (pf == null) || (pf == "0") || (pf == undefined)) {
             $('#divPharmaForm').addClass('has-error');
             $('.errorPF').show();
+            $("#bloqueo").hide();
         }
 
         if ((ct == 0) || (ct == null) || (ct == "0") || (ct == undefined)) {
             $('#divCategories').addClass('has-error');
             $('.errorC').show();
+            $("#bloqueo").hide();
         }
     }
 }
