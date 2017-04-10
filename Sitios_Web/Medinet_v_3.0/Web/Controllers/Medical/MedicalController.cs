@@ -2851,14 +2851,16 @@ namespace Web.Controllers.Medical
             return View(LS);
         }
 
-        public ActionResult IMAS()
+        public ActionResult IMAS(int? ActiveSubstanceId, string FoodName)
         {
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Logout", "Login");
             }
 
-            return View();
+            List<Foods> LF = db.Database.SqlQuery<Foods>("plm_spGetFoodsByActiveSubstance @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodName='" + FoodName + "'").ToList();
+
+            return View(LF);
         }
 
         #endregion

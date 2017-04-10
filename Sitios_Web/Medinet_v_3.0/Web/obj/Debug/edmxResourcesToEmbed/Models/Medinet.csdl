@@ -380,6 +380,7 @@
       <End Role="ContraindicationSeverities" EntitySet="ContraindicationSeverities" />
       <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
     </AssociationSet>
+    <EntitySet Name="Foods" EntityType="Model1.Foods" />
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -2237,4 +2238,12 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Foods">
+    <Key>
+      <PropertyRef Name="FoodId" />
+    </Key>
+    <Property Name="FoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+  </EntityType>
 </Schema>
