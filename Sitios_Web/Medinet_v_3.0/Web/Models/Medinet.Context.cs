@@ -85,5 +85,6 @@ namespace Web.Models
         public virtual DbSet<ProductPharmaFormRoutes> ProductPharmaFormRoutes { get; set; }
         public virtual DbSet<ContraindicationClinicalActiveSubstances> ContraindicationClinicalActiveSubstances { get; set; }
         public virtual DbSet<ContraindicationSeverities> ContraindicationSeverities { get; set; }
+        public virtual DbSet<Foods> Foods { get; set; }
     }
 }

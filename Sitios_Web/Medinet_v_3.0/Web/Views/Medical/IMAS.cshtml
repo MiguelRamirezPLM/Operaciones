@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "IMAS";
+    WebGrid _datagridDT = new WebGrid(Model, rowsPerPage:20);
+}
+
+<div class="row">
+    <div class="headergroup">
+        <div class="title">
+            <div class="title-word" style="font-weight:normal; text-transform:none">Medinet <span style="color:#de5347">v3.0</span></div>
+            <div class="title-word" style="font-weight:normal; text-transform:none;"><strong style="color:#000000;">Médicos | </strong>Clasificación de Sustancias por IMA</div>
+        </div>
+    </div>
+</div>
+<br />
+<nav style="background: rgba(233, 233, 233, 0.11); border-radius: 10px;" class="navbar navbar-default center col-lg-12">
+    <input type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="btn navbar-brand ldr" title="Anterior" onclick="location.href='@Url.Action("SubstancesIndex", "Medical")';return false;">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span>&nbsp; Regresar</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br />
+<br />
+<ul class="nav nav-tabs">
+    <li class="ldr active"><a href="#" onclick="location.href='@Url.Action("IMAS", "Medical")';return false;" class="text-center">Interacciones <br />Medicamento - Alimento.</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("DDD", "Medical")';return false;" class="text-center">Dosis Diaria Definida.</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("IFQ", "Medical")';return false;" class="text-center">Incompatibilidades <br />  Físico Químicas.</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("RE", "Medical")';return false;" class="text-center">Riesgo en el Embarazo.</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("DT", "Medical")';return false;" class="text-center">Duplicidad Terapéutica.</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Contraindications", "Medical")';return false;" class="text-center">Contraindicaciones.</a></li>
+    <li class="ldr"><a href="#" onclick="location.href='@Url.Action("Interactions", "Medical")';return false;" class="text-center">Interacciones <br />Medicamentosas.</a></li>
+</ul>
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-6" style="border:groove">
+                <br />
+                <br />
+                <div class="table-responsive scrollbar1">
+                    @_datagridDT.GetHtml(
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        tableStyle: "webgrid-table1 table-hover",
+                        mode: WebGridPagerModes.All,
+                        columns: new[] {
+                        _datagridDT.Column("", header: "Nombre de Elemento", format: @<text>
+                                @{
+                                    <span class="display-mode"> <label id="lblFoodName">@item.Description</label> </span>
+                                    <input id="lblFoodId" style="display:none;" value="@item.FoodId" />
+                                }
+                        </text>),
+                    _datagridDT.Column("", header: "Agregar", format: @<text>
+                        @{
+                            <button class="btn btn-success btn-sm ldr">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        }
+                    </text>, style:"column5 text-center")
+                    })
+                </div>
+            </div>
+            <div class="col-lg-6" style="border:groove">
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

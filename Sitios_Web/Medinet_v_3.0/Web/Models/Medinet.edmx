@@ -251,6 +251,14 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="PrefixTypeId" Type="tinyint" />
         </EntityType>
+        <EntityType Name="Foods">
+          <Key>
+            <PropertyRef Name="FoodId" />
+          </Key>
+          <Property Name="FoodId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ICD">
           <Key>
             <PropertyRef Name="ICDId" />
@@ -1771,6 +1779,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
           <EntitySet Name="ExternalPacks" EntityType="Self.ExternalPacks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilyPrefixes" EntityType="Self.FamilyPrefixes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Foods" EntityType="Self.Foods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ICD" EntityType="Self.ICD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indications" EntityType="Self.Indications" Schema="dbo" store:Type="Tables" />
@@ -2550,6 +2559,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             <End Role="ContraindicationSeverities" EntitySet="ContraindicationSeverities" />
             <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
           </AssociationSet>
+          <EntitySet Name="Foods" EntityType="Model1.Foods" />
           </EntityContainer>
         <EntityType Name="Countries">
           <Key>
@@ -4407,6 +4417,14 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Foods">
+          <Key>
+            <PropertyRef Name="FoodId" />
+          </Key>
+          <Property Name="FoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5135,6 +5153,15 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
                 <ScalarProperty Name="EnglishColorSemaphore" ColumnName="EnglishColorSemaphore" />
                 <ScalarProperty Name="ColorSemaphore" ColumnName="ColorSemaphore" />
                 <ScalarProperty Name="ContraindicationSeverityId" ColumnName="ContraindicationSeverityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Foods">
+            <EntityTypeMapping TypeName="Model1.Foods">
+              <MappingFragment StoreEntitySet="Foods">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FoodId" ColumnName="FoodId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

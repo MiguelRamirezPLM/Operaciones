@@ -2851,6 +2851,16 @@ namespace Web.Controllers.Medical
             return View(LS);
         }
 
+        public ActionResult IMAS()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                return RedirectToAction("Logout", "Login");
+            }
+
+            return View();
+        }
+
         #endregion
     }
 }
