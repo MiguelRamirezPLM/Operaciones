@@ -3,6 +3,7 @@
     ViewBag.Title = "Producción";
     PLMUsers plm = new PLMUsers();
     Medinet db = new Medinet();
+    SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
     ViewData["Pagination"] = "True";
 }
 @*Buscadores...*@
@@ -53,7 +54,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "@Url.Content("~/Production/getBooks")",
+                url: "@Url.Content("~/Sales/getBooks")",
                 traditional: true,
                 data: { CountryId: _vlCountryId },
                 success: function (data) {
@@ -120,7 +121,7 @@
                     $.each(data, function (index, val) {
                         $("#_elementEdition")
                         .append($("<li>"
-                            + "<a onclick='_zindex()' href='" + baseSiteURL + "Production/Pagination/" + val.CountryId + "/" + val.BookId + "/" + val.EditionId + "'>" + val.NumberEdition + "</a>"
+                            + "<a onclick='_zindex()' href='" + baseSiteURL + "Production/Pagination/" + val.CountryId + "/" + val.BookId + "/" + val.EditionId  + "/" + @_Session.ud + "'>" + val.NumberEdition + "</a>"
                             + "</li>"));
                     });
                 }

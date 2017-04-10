@@ -569,20 +569,20 @@ namespace Web.Controllers.Production
             return Json(_l_WeightUnits, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult AddPresentation1(
+        public ActionResult AddPresentation(
                                             int EditionId,
                                             int DivisionId,
                                             int CategoryId,
                                             int ProductId,
                                             int PharmaFormId,
-                                            int? QtyExternalPack,
-                                            int? ExternalPackId,
-                                            int? QtyInternalPack,
-                                            int? InternalPackId,
-                                            string QtyContentUnit,
-                                            int? ContentUnitId,
-                                            string QtyWeightUnit,
-                                            int? WeightUnitId,
+                                            int? QtyExternalPack, 
+                                            int? ExternalPackId,  
+                                            int? QtyInternalPack, 
+                                            int? InternalPackId, 
+                                            string QtyContentUnit, 
+                                            int? ContentUnitId, 
+                                            string QtyWeightUnit, 
+                                            int? WeightUnitId, 
                                             int UserId,
                                             string HashKey
                                            )
@@ -680,7 +680,7 @@ namespace Web.Controllers.Production
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
-        public JsonResult deletePresentation1(
+        public JsonResult deletePresentation(
                                            int PresentationId,
                                            int EditionId,
                                            int DivisionId,
@@ -733,7 +733,7 @@ namespace Web.Controllers.Production
             try
             {
                 LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProductByPresentationToEdition @CRUDType=" + CRUD.Delete
-                                                             + ",@presentationId =," + PresentationId
+                                                             + ",@presentationId =" + PresentationId
                                                              + ",@DivisionId =" + DivisionId
                                                              + ",@CategoryId=" + CategoryId
                                                              + ",@ProductId=" + ProductId
@@ -742,9 +742,6 @@ namespace Web.Controllers.Production
                                                              + ",@EditionId=" + EditionId
                                                              + Contenido + "").ToList();
 
-                PresentationId = Convert.ToInt32(LI[0].id);
-
-                primaryKeyAffected = "(PresentationId," + PresentationId + ")";
                 _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.Presentations + ",@operationId=" + Action.Eliminar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
 
                 primaryKeyAffected = "(EditionId," + EditionId + ");(PresentationId," + PresentationId + ")";
@@ -763,7 +760,7 @@ namespace Web.Controllers.Production
 
            
         }
-        public ActionResult AddPresentation()
+        public ActionResult AddPresentation1()
         {
             string[] _editionId = Request.Form.GetValues("EditionId");
             string[] _divisionId = Request.Form.GetValues("DivisionId");
@@ -1062,6 +1059,70 @@ namespace Web.Controllers.Production
                 _l_plm_spGetPresentationsByEditionByProduct.Add(_plm_spGetPresentationsByEditionByProduct);
             }
             return Json(_l_plm_spGetPresentationsByEditionByProduct, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deletePresentation1(int EditionId, int DivisionId, int ProductId, int CategoryId, int PharmaFormId, int PresentationId)
+        {
+            var _editionPresentations = db.EditionPresentations.Where(model => model.EditionId == EditionId && model.PresentationId == PresentationId).ToList();
+            foreach (var _remove in _editionPresentations)
+            {
+                db.EditionPresentations.Remove(_remove);
+                db.SaveChanges();
+            }
+            var _contentProductImageSizes = (from _p in db.Presentations
+                                             join _pi in db.ProductImages
+                                             on _p.PresentationId equals _pi.PresentationId
+                                             join _pz in db.ProductImageSizes
+                                             on _pi.ProductImageId equals _pz.ProductImageId
+                                             where _p.PresentationId == PresentationId
+                                             select new { _pz, _pi }).ToList();
+            foreach (var _row in _contentProductImageSizes)
+            {
+                var imageName = "";
+                imageName = _row._pi.ProductShot;
+                if (_row._pz.ImageSizes.Size == "400 x 400")
+                {
+                    var _path400px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/400x400"), imageName);
+                    if (System.IO.File.Exists(_path400px))
+                    {
+                        System.IO.File.Delete(_path400px);
+                    }
+                }
+                if (_row._pz.ImageSizes.Size == "384 x 512")
+                {
+                    var _path384px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/384x512"), imageName);
+                    if (System.IO.File.Exists(_path384px))
+                    {
+                        System.IO.File.Delete(_path384px);
+                    }
+                }
+                if (_row._pz.ImageSizes.Size == "320 x 480")
+                {
+                    var _path320px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/320x480"), imageName);
+                    if (System.IO.File.Exists(_path320px))
+                    {
+                        System.IO.File.Delete(_path320px);
+                    }
+                }
+                var _productImagesSizes = db.ProductImageSizes.Where(model => model.ProductImageId == _row._pz.ProductImageId && model.ImageSizeId == _row._pz.ImageSizeId).ToList();
+                foreach (var _remove in _productImagesSizes)
+                {
+                    db.ProductImageSizes.Remove(_remove);
+                    db.SaveChanges();
+                }
+            }
+            var _productImages = db.ProductImages.Where(model => model.PresentationId == PresentationId).ToList();
+            foreach (var _remove in _productImages)
+            {
+                db.ProductImages.Remove(_remove);
+                db.SaveChanges();
+            }
+            var _presentation = db.Presentations.Where(model => model.PresentationId == PresentationId).ToList();
+            foreach (var _remove in _presentation)
+            {
+                db.Presentations.Remove(_remove);
+                db.SaveChanges();
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
         public JsonResult oneProductImages(int ProductImageId)
         {
@@ -1570,70 +1631,7 @@ namespace Web.Controllers.Production
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult deletePresentation(int EditionId, int DivisionId, int ProductId, int CategoryId, int PharmaFormId, int PresentationId)
-        {
-            var _editionPresentations = db.EditionPresentations.Where(model => model.EditionId == EditionId && model.PresentationId == PresentationId).ToList();
-            foreach (var _remove in _editionPresentations)
-            {
-                db.EditionPresentations.Remove(_remove);
-                db.SaveChanges();
-            }
-            var _contentProductImageSizes = (from _p in db.Presentations
-                                             join _pi in db.ProductImages
-                                             on _p.PresentationId equals _pi.PresentationId
-                                             join _pz in db.ProductImageSizes
-                                             on _pi.ProductImageId equals _pz.ProductImageId
-                                             where _p.PresentationId == PresentationId
-                                             select new { _pz, _pi }).ToList();
-            foreach (var _row in _contentProductImageSizes)
-            {
-                var imageName = "";
-                imageName = _row._pi.ProductShot;
-                if (_row._pz.ImageSizes.Size == "400 x 400")
-                {
-                    var _path400px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/400x400"), imageName);
-                    if (System.IO.File.Exists(_path400px))
-                    {
-                        System.IO.File.Delete(_path400px);
-                    }
-                }
-                if (_row._pz.ImageSizes.Size == "384 x 512")
-                {
-                    var _path384px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/384x512"), imageName);
-                    if (System.IO.File.Exists(_path384px))
-                    {
-                        System.IO.File.Delete(_path384px);
-                    }
-                }
-                if (_row._pz.ImageSizes.Size == "320 x 480")
-                {
-                    var _path320px = System.IO.Path.Combine(Server.MapPath("~/ProductImages/320x480"), imageName);
-                    if (System.IO.File.Exists(_path320px))
-                    {
-                        System.IO.File.Delete(_path320px);
-                    }
-                }
-                var _productImagesSizes = db.ProductImageSizes.Where(model => model.ProductImageId == _row._pz.ProductImageId && model.ImageSizeId == _row._pz.ImageSizeId).ToList();
-                foreach (var _remove in _productImagesSizes)
-                {
-                    db.ProductImageSizes.Remove(_remove);
-                    db.SaveChanges();
-                }
-            }
-            var _productImages = db.ProductImages.Where(model => model.PresentationId == PresentationId).ToList();
-            foreach (var _remove in _productImages)
-            {
-                db.ProductImages.Remove(_remove);
-                db.SaveChanges();
-            }
-            var _presentation = db.Presentations.Where(model => model.PresentationId == PresentationId).ToList();
-            foreach (var _remove in _presentation)
-            {
-                db.Presentations.Remove(_remove);
-                db.SaveChanges();
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
+        
         public ActionResult IndexPage()
         {
             CountriesUsers _counTries = (CountriesUsers)Session["CountriesUsers"];
@@ -1675,7 +1673,7 @@ namespace Web.Controllers.Production
             ViewData["CountryName"] = db.Countries.SingleOrDefault(model => model.CountryId == id).CountryName;
             return View(_l_plm_vwProductsByEdition);
         }
-        public ActionResult Pagination(int id, int ed, int ad)
+        public ActionResult Pagination(int id, int ed, int ad, int ud)
         {
             CountriesUsers _counTries = (CountriesUsers)Session["CountriesUsers"];
             if (Session["CountriesUsers"] == null)
@@ -1683,43 +1681,69 @@ namespace Web.Controllers.Production
                 Session.Abandon();
                 return RedirectToAction("Logout", "Login");
             }
-            int ud = 0;
+            
             SessionCountryByDivision _SessionCountryByDivision = new SessionCountryByDivision(id, ed, ad, ud);
             Session["SessionCountryByDivision"] = _SessionCountryByDivision;
-            var _getProductsByEdition = (from _p in db.plm_vwProductsByEdition
-                                         where _p.CountryId == id
-                                         && _p.BookId == ed
-                                         && _p.EditionId == ad
-                                         select _p).ToList();
+            ud = 0;
+          
+            List<plm_spGetParticipantProductsByEditiontoPagination> PPE = new List<plm_spGetParticipantProductsByEditiontoPagination>();
+            PPE = db.Database.SqlQuery<plm_spGetParticipantProductsByEditiontoPagination>("plm_spGetParticipantProductsByEditiontoPagination @editionId = " + ad + ",@countryId=" + id + ",@bookId=" + ed + "").ToList();
+
             ViewData["CountryName"] = db.Countries.SingleOrDefault(model => model.CountryId == id).CountryName;
             ViewData["BookName"] = db.Books.FirstOrDefault(model => model.BookId == ed).Description;
             ViewData["EditionNumber"] = db.Editions.FirstOrDefault(model => model.EditionId == ad).NumberEdition;
             ViewData["ShortName"] = db.Books.FirstOrDefault(model => model.BookId == ed).ShortName;
-            ViewData["AllProducts"] = _getProductsByEdition.LongCount();
-            return View(_getProductsByEdition);
+            ViewData["AllProducts"] = PPE.LongCount();
+           
+            return View(PPE);
         }
-        public ActionResult savePage(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, string page)
+        public ActionResult savePage(int ProductId, int PharmaFormId, int CategoryId, int DivisionId, int EditionId, string page, int UserId, string HashKey)
         {
-            var _page = (from _pp in db.ParticipantProducts
-                         where _pp.EditionId == EditionId
-                         && _pp.ProductId == ProductId
-                         && _pp.PharmaFormId == PharmaFormId
-                         && _pp.CategoryId == CategoryId
-                         && _pp.DivisionId == DivisionId
-                         select _pp).ToList();
-            foreach (var _row in _page)
+            string primaryKeyAffected = "(EditionId," + EditionId + ");(DivisionId," + DivisionId + ");(CategoryId," + CategoryId + ");(PharmaFormId," + PharmaFormId + ");(ProductId," + ProductId + ")" + ")";
+            string FieldsAffected = "(Page," + page + ")";
+            byte? ContentType; 
+
+            List<SP_ParticipantProducts> PP = new List<SP_ParticipantProducts>();
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+           
+            PP  = db.Database.SqlQuery<SP_ParticipantProducts>("plm_spCRUDParticipantProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Read + "").ToList();
+            ContentType = PP[0].ContentTypeId;
+            
+
+            if (page == "")
             {
-                if (page == "")
-                {
-                    _row.Page = null;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    _row.Page = page;
-                    db.SaveChanges();
-                }
+                page = null;
+                FieldsAffected = "(Page, Null)";
+                PP = db.Database.SqlQuery<SP_ParticipantProducts>("plm_spCRUDParticipantProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Update + ",@modifiedContent= " + ContentType + "").ToList();
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ParticipantProducts + ",@operationId=" + Action.Actualizar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + ",@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
             }
+
+            else
+            {
+                PP = db.Database.SqlQuery<SP_ParticipantProducts>("plm_spCRUDParticipantProducts @editionId = " + EditionId + ", @divisionId = " + DivisionId + ", @categoryId= " + CategoryId + ", @pharmaFormId= " + PharmaFormId + ",@productId=" + ProductId + ", @CRUDType=" + CRUD.Update + ",@page=" + page + ",@modifiedContent= " + ContentType + "").ToList();
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.ParticipantProducts + ",@operationId=" + Action.Actualizar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "'" + ",@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
+            }
+
+            //var _page = (from _pp in db.ParticipantProducts
+            //             where _pp.EditionId == EditionId
+            //             && _pp.ProductId == ProductId
+            //             && _pp.PharmaFormId == PharmaFormId
+            //             && _pp.CategoryId == CategoryId
+            //             && _pp.DivisionId == DivisionId
+            //             select _pp).ToList();
+            //foreach (var _row in _page)
+            //{
+            //    if (page == "")
+            //    {
+            //        _row.Page = null;
+            //        db.SaveChanges();
+            //    }
+            //    else
+            //    {
+            //        _row.Page = page;
+            //        db.SaveChanges();
+            //    }
+            //}
             return Json(true, JsonRequestBehavior.AllowGet);
         }
     }

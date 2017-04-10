@@ -6,13 +6,13 @@
     Medinet db = new Medinet();
     PLMUsers plm = new PLMUsers();
 
-    CountriesUsers _CountriesUsersSales = (CountriesUsers)Session["CountriesUsers"];
-    int iduser = _CountriesUsersSales.userId;
-    int AppId = _CountriesUsersSales.ApplicationId;
+    CountriesUsers _CountriesUsersProduction = (CountriesUsers)Session["CountriesUsers"];
+    int iduser = _CountriesUsersProduction.userId;
+    int AppId = _CountriesUsersProduction.ApplicationId;
     string HasKey = null;
 
     var Hkey = (from _A in plm.Applications
-                where _A.ApplicationId == _CountriesUsersSales.ApplicationId
+                where _A.ApplicationId == _CountriesUsersProduction.ApplicationId
                 select _A).ToList();
 
     foreach (var _item in Hkey)
@@ -21,8 +21,8 @@
     }
 
     var RoleIdU = (from _R in plm.ApplicationUsers
-                   where _R.ApplicationId == _CountriesUsersSales.ApplicationId
-                          && _R.UserId == _CountriesUsersSales.userId
+                   where _R.ApplicationId == _CountriesUsersProduction.ApplicationId
+                          && _R.UserId == _CountriesUsersProduction.userId
                    select _R).ToList();
     //foreach (var _row in RoleIdU)
     //{
@@ -915,14 +915,14 @@
                         }
                         $("#_elementPresentation tbody").append(         
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyExternalPackP'>" + item.QtyExternalPack + "</span><input type='hidden' id='ExternalPackId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='ExternalPackNameP'>" + item.ExternalPackName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyInternalPackP'>" + item.QtyInternalPack + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='InternalPackNameP'>" + item.InternalPackName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyContentUnitP'>" + item.QtyContentUnit + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='ContentUnitNameP'>" + item.ContentUnitName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='WeightUnitNameP'>" + item.WeightUnitName + "</span><input type='hidden' id='_PresentationId' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyExternalPackP'>" + item.QtyExternalPack + "</span><input type='hidden' id='ExternalPackIdP' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='ExternalPackNameP'>" + item.ExternalPackName + "</span></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyInternalPackP'>" + item.QtyInternalPack + "</span><input type='hidden' id='InternalPackIdP' value='" + item.InternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='InternalPackNameP'>" + item.InternalPackName + "</span></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyContentUnitP'>" + item.QtyContentUnit + "</span><input type='hidden' id='ContentUnitIdP' value='" + item.ContentUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='ContentUnitNameP'>" + item.ContentUnitName + "</span></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span><input type='hidden' id='WeightUnitIdP' value='" + item.WeightUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='WeightUnitNameP'>" + item.WeightUnitName + "</span></td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
                             //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
@@ -1331,7 +1331,7 @@
             $.ajax({
                 type: "POST",
                 dataType: 'json',
-                url: "@Url.Content("~/Production/AddPresentation1")",
+                url: "@Url.Content("~/Production/AddPresentation")",
                 //data: dataform,
                 data: {
                      EditionId:_vlxeditionId,
@@ -1389,14 +1389,14 @@
                         }
                         $("#_elementPresentation tbody").append(
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyExternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ExternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyInternalPack + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.InternalPackName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyContentUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.ContentUnitName + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.QtyWeightUnit + "</td>"
-                            + "<td style='vertical-align:middle' align='center'>" + item.WeightUnitName + "</td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyExternalPackP'>" + item.QtyExternalPack + "</span><input type='hidden' id='ExternalPackIdP' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='ExternalPackNameP'>" + item.ExternalPackName + "</span></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyInternalPackP'>" + item.QtyInternalPack + "</span><input type='hidden' id='InternalPackIdP' value='" + item.InternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='InternalPackNameP'>" + item.InternalPackName + "</span></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyContentUnitP'>" + item.QtyContentUnit + "</span><input type='hidden' id='ContentUnitIdP' value='" + item.ContentUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='ContentUnitNameP'>" + item.ContentUnitName + "</span></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span><input type='hidden' id='WeightUnitIdP' value='" + item.WeightUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span id='WeightUnitNameP'>" + item.WeightUnitName + "</span></td>"
                             + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
                             //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
@@ -1487,8 +1487,19 @@
         var _vldpharmaFormId = _vlpositionp.find("#_pharmaFormId").val();
         var _vldpresentationId = tr.find("#_vlpresentationId").val();
         var _getPresentation = tr.find("#_vlxpresentation").text();
+
+        var _QtyExternalPackP = tr.find("#QtyExternalPackP").text();
+        var _ExternalPackIdP = tr.find("#ExternalPackIdP").val();
+        var _QtyInternalPackP = tr.find("#QtyInternalPackP").text();
+        var _InternalPackIdP = tr.find("#InternalPackIdP").val();
+        var _QtyContentUnitP = tr.find("#QtyContentUnitP").text();
+        var _ContentUnitIdP = tr.find("#ContentUnitIdP").val();
+        var _QtyWeightUnitP = tr.find("#QtyWeightUnitP").text();
+        var _WeightUnitIdP = tr.find("#WeightUnitIdP").val();
+
         var _UserID = $("#_iduser").val();
         var _HasKey = $("#_haskey").val();
+
         swal({
             title: '¿Desea eliminar la presentación ' + '"' + _getPresentation + '"' + '?',
             text: "Esto implica que todo lo relacionado a ella se eliminará",
@@ -1511,7 +1522,17 @@
                     Categoryid: _vldcategoryId,
                     DivisionId: _vlddivisionId,
                     EditionId: _vldeditionId,
-                    PresentationId: _vldpresentationId
+                    PresentationId: _vldpresentationId,
+                    QtyExternalPack: _QtyExternalPackP,
+                    ExternalPackId: _ExternalPackIdP,
+                    QtyInternalPack: _QtyInternalPackP,
+                    InternalPackId: _InternalPackIdP,
+                    QtyContentUnit: _QtyContentUnitP,
+                    ContentUnitId: _ContentUnitIdP,
+                    QtyWeightUnit: _QtyWeightUnitP,
+                    WeightUnitId: _WeightUnitIdP,
+                    UserId: _UserID,
+                    HashKey: _HasKey
                 },
                 success: function (data) {
                     tr.remove();
@@ -2379,7 +2400,7 @@
                     <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exportar productos<span style="margin-left: 5px; color: black" class="caret"></span></a>
                         <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
-                            <li><a href="@Url.Content("~/Sales/ExcelProductsByEdition/" + @_Session.id + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_Session.ud + "/" + @_CountriesUsersSales.userId)" class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
+                            <li><a href="@Url.Content("~/Sales/ExcelProductsByEdition/" + @_Session.id + "/" + @_Session.ed + "/" + @_Session.ad + "/" + @_Session.ud + "/" + @_CountriesUsersProduction.userId)" class="report"><span class="glyphicon glyphiconr glyphicon glyphicon-export text-success"></span>Exportar a Excel</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -2396,7 +2417,7 @@
                             <li style="background: rgba(233, 233, 233, 0.01);" class="dropdown navbar-default hov">
                                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paginación<span style="margin-left: 5px; color: black" class="caret"></span></a>
                                 <ul style="border-radius:10px;" class="dropdown-menu" role="menu">
-                                    <li><a href="@Url.Content("~/Production/Pagination/" + _Session.id + "/" + _Session.ed + "/" + _Session.ad)" class="zindex"><span class="glyphiconr glyphicon glyphicon-sort-by-order-alt" style="color: #de5145;"></span>Paginar @ViewData["ShortName"] @ViewData["EditionNumber"]</a></li>
+                                    <li><a href="@Url.Content("~/Production/Pagination/" + _Session.id + "/" + _Session.ed + "/" + _Session.ad + "/" + _Session.ud)" class="zindex"><span class="glyphiconr glyphicon glyphicon-sort-by-order-alt" style="color: #de5145;"></span>Paginar @ViewData["ShortName"] @ViewData["EditionNumber"]</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -2550,7 +2571,7 @@
 <input type="hidden" id="_bookId" value="@_Session.ed" />
 <input type="hidden" id="_editionId" value="@_Session.ad" />
 <input type="hidden" id="_divisionId" value="@_Session.ud" />
-<input type="hidden" id="_iduser" value="@_CountriesUsersSales.userId" />
+<input type="hidden" id="_iduser" value="@_CountriesUsersProduction.userId" />
 <input type="hidden" id="_appId" value="@AppId" />
 <input type="hidden" id="_haskey" value="@HasKey" />
 

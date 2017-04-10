@@ -1,10 +1,52 @@
-﻿@model IEnumerable<Web.Models.plm_vwProductsByEdition>
+﻿@model IEnumerable<Web.Models.plm_spGetParticipantProductsByEditiontoPagination>
 @using Web.Models;
 @{
     ViewBag.Title = "Producción";
     SessionCountryByDivision _Session = (SessionCountryByDivision)Session["SessionCountryByDivision"];
     Medinet db = new Medinet();
+    PLMUsers plm = new PLMUsers();
+    
+
+    CountriesUsers _CountriesUsersProduction = (CountriesUsers)Session["CountriesUsers"];
+    int iduser = _CountriesUsersProduction.userId;
+    int AppId = _CountriesUsersProduction.ApplicationId;
+    string HasKey = null;
+
+    var Hkey = (from _A in plm.Applications
+                where _A.ApplicationId == _CountriesUsersProduction.ApplicationId
+                select _A).ToList();
+
+    foreach (var _item in Hkey)
+    {
+        HasKey = _item.HashKey;
+    }
+
+    var RoleIdU = (from _R in plm.ApplicationUsers
+                   where _R.ApplicationId == _CountriesUsersProduction.ApplicationId
+                          && _R.UserId == _CountriesUsersProduction.userId
+                   select _R).ToList();
+    //foreach (var _row in RoleIdU)
+    //{
+    //    if (_row.RoleId == 5)
+    //    {
+    //        ViewData["Pagination"] = null;
+    //        ViewData["Medicos"] = null;
+    //        ViewData["Producción"] = null;
+    //        ViewData["Inicio"] = null;
+    //    }
+    //    else
+    //    {
+    //        ViewData["Pagination"] = "True";
+    //        ViewData["Medicos"] = "True";
+    //        ViewData["Producción"] = "True";
+    //        ViewData["Inicio"] = "True";
+    //    }
+    //}
+    ViewData["Ventas"] = "True";
     ViewData["Pagination"] = "True";
+    ViewData["Medicos"] = "True";
+    ViewData["Producción"] = "True";
+    ViewData["Inicio"] = "True";
 }
 <script>
     function _submit(item) {
@@ -15,6 +57,8 @@
         var _divisionId = tr.find("#_divisionId").val();
         var _editionId = $("#_editionId").val();
         var _page = tr.find("#_page").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -26,7 +70,9 @@
             DivisionId: _divisionId,
             EditionId: _editionId,
             Page: _page,
-            PharmaFormId: _pharmaFormId
+            PharmaFormId: _pharmaFormId,
+            UserId: _UserID,
+            HashKey: _HasKey
         },
         success: function (data) {
             swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 700, });
@@ -90,7 +136,7 @@
                                 ViewData["TypeName"] = _getEditions.FirstOrDefault()._et.TypeName;
                                 foreach (var _row in _getEditions)
                                 {
-                                    <li class="searchlab"><a class="zindex" href="@Url.Content("~/Production/Pagination/" + @_row._e.CountryId + "/" + @_Session.ed + "/" + _row._e.EditionId)">@_row._e.NumberEdition</a></li>
+                                    <li class="searchlab"><a class="zindex" href="@Url.Content("~/Production/Pagination/" + @_row._e.CountryId + "/" + @_Session.ed + "/" + _row._e.EditionId + "/" + @_Session.ud)">@_row._e.NumberEdition</a></li>
                                 }
                             }
                         </ul>
@@ -196,6 +242,12 @@
         });
     });
 </script>
+
+<input type="hidden" id="_iduser" value="@_CountriesUsersProduction.userId" />
+<input type="hidden" id="_appId" value="@AppId" />
+<input type="hidden" id="_haskey" value="@HasKey" />
+
+
 <div class="row col-md-12 table-responsive">
     <input type="hidden" id="_editionId" value="@_Session.ad"/>
     <table style="font-size:13px;" id="example" class="display table table-bordered table-hover" cellspacing="0">
