@@ -22,4 +22,12 @@ namespace Web.Models.Class
         public bool Active { get; set; }
         public string JSONFormat { get; set; }
     }
+
+    public class GetActiveSubstanceToClasif
+    {
+        public int? ActiveSubstanceId { get; set; }
+        public string Description { get; set; }
+        public string EnglishDescription { get; set; }
+        public bool Active { get; set; }
+    }
 }

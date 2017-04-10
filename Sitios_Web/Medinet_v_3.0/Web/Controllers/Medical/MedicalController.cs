@@ -2839,14 +2839,14 @@ namespace Web.Controllers.Medical
 
         #region Substances
 
-        public ActionResult SubstancesIndex()
+        public ActionResult SubstancesIndex(string Description)
         {
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Logout", "Login");
             }
 
-            List<Web.Models.ActiveSubstances> LS = db.ActiveSubstances.Where(x => x.Active == true).OrderBy(x => x.Description).ToList();
+            List<GetActiveSubstanceToClasif> LS = db.Database.SqlQuery<GetActiveSubstanceToClasif>("plm_spGetActiveSubstances @description='" + Description + "'").ToList();
 
             return View(LS);
         }
