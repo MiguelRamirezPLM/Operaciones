@@ -275,6 +275,26 @@
     <Property Name="Size" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="IMASeverities">
+    <Key>
+      <PropertyRef Name="IMASeverityId" />
+    </Key>
+    <Property Name="IMASeverityId" Type="tinyint" Nullable="false" />
+    <Property Name="IMASeverity" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="IMSubstanceFoods">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FoodId" />
+      <PropertyRef Name="IMASeverityId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="FoodId" Type="int" Nullable="false" />
+    <Property Name="IMASeverityId" Type="tinyint" Nullable="false" />
+    <Property Name="ClinicalSummary" Type="varchar(max)" Nullable="false" />
+  </EntityType>
   <EntityType Name="Indications">
     <Key>
       <PropertyRef Name="IndicationId" />
@@ -1647,6 +1667,42 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="R_662">
+    <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
+    <End Role="IMSubstanceFoods" Type="Self.IMSubstanceFoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoods">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_663">
+    <End Role="Foods" Type="Self.Foods" Multiplicity="1" />
+    <End Role="IMSubstanceFoods" Type="Self.IMSubstanceFoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Foods">
+        <PropertyRef Name="FoodId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoods">
+        <PropertyRef Name="FoodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_664">
+    <End Role="IMASeverities" Type="Self.IMASeverities" Multiplicity="1" />
+    <End Role="IMSubstanceFoods" Type="Self.IMSubstanceFoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IMASeverities">
+        <PropertyRef Name="IMASeverityId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoods">
+        <PropertyRef Name="IMASeverityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_691">
     <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
     <End Role="ProductImageSizes" Type="Self.ProductImageSizes" Multiplicity="*" />
@@ -1777,6 +1833,8 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <EntitySet Name="Foods" EntityType="Self.Foods" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ICD" EntityType="Self.ICD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IMASeverities" EntityType="Self.IMASeverities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IMSubstanceFoods" EntityType="Self.IMSubstanceFoods" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Indications" EntityType="Self.Indications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IPPAProductContraindications" EntityType="Self.IPPAProductContraindications" Schema="dbo" store:Type="Tables" />
@@ -2136,6 +2194,18 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <AssociationSet Name="R_6" Association="Self.R_6">
       <End Role="Books" EntitySet="Books" />
       <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_662" Association="Self.R_662">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+    </AssociationSet>
+    <AssociationSet Name="R_663" Association="Self.R_663">
+      <End Role="Foods" EntitySet="Foods" />
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+    </AssociationSet>
+    <AssociationSet Name="R_664" Association="Self.R_664">
+      <End Role="IMASeverities" EntitySet="IMASeverities" />
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
     </AssociationSet>
     <AssociationSet Name="R_691" Association="Self.R_691">
       <End Role="ImageSizes" EntitySet="ImageSizes" />

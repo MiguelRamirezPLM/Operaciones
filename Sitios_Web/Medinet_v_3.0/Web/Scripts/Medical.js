@@ -4293,3 +4293,105 @@ function RemoveProductAdministrationRoutes(RouteId) {
         }
     })
 }
+
+
+function GetIMCatalogsByActiveSubstance(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var ASId = $("#ActiveSubstanceId").val();
+    var FId = $(item).val();
+    var EN = tr.find("#lblFoodName").text();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetSeverities",
+        data: { ActiveSubstance: ASId, Food: FId },
+        success: function (data) {
+
+            $("#TableCatalogSeverities").empty();
+
+            $.each(data, function (index, val) {
+                $("#TableCatalogSeverities").append("<tr>" +
+                                                    "<td>" +
+                                                    "<span id='spntblIMASeverity' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
+                                                    "</td>" +
+                                                    "<td style='text-align:justify'>" + val.Description + "</td>" +
+                                                    "<td class='text-center'>" +
+                                                    "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='AddIMSubstanceFoods($(this))'>" +
+                                                    "<span class='glyphicon glyphicon-plus'></span></button></td>" +
+                                                    "</tr>");
+            });
+
+        }
+    })
+
+    $("#ElementNameSPN").text(EN);
+    $("#FoodIdtxt").val(FId);
+
+
+    $("#btnCatalogsIM").trigger("click");
+
+    $("#bloqueo").hide();
+}
+
+function AddIMSubstanceFoods(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var Id = $(item).val();
+    var FId = $("#FoodIdtxt").val();
+    var ASId = $("#ActiveSubstanceId").val();
+    var IM = tr.find("#spntblIMASeverity").text();
+
+    IM = IM + ".";
+
+    $("#SeverityIdtxt").val(Id);
+    $("#IMASeveritytxt").text(IM);
+    $("#btnAddClinicalSumary").trigger("click");
+
+}
+
+function SaveClinicalSumary() {
+
+    var Value = $("#ClinicalSumary").val();
+
+    var SId = $("#SeverityIdtxt").val();
+    var FId = $("#FoodIdtxt").val();
+    var ASId = $("#ActiveSubstanceId").val();
+
+    if (!Value.trim() == true) {
+
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> ERROR</h1></div> <br>";
+        d += "<label> El Campo NO puede quedar vacío</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else {
+
+        console.log(SId);
+        console.log(FId);
+        console.log(ASId);
+
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/SaveClinicalSumary",
+            data: { Severity: SId, Food: FId, ActiveSubstance: ASId, ClinicalSumary: Value },
+            success: function (data) {
+                setTimeout("document.location.reload()");
+            }
+        })
+    }
+}
+
+
+function CancelClinicalSumary() {
+
+    $("#ClinicalSumary").val('');
+}

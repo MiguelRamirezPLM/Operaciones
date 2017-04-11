@@ -381,6 +381,20 @@
       <End Role="ContraindicationClinicalActiveSubstances" EntitySet="ContraindicationClinicalActiveSubstances" />
     </AssociationSet>
     <EntitySet Name="Foods" EntityType="Model1.Foods" />
+    <EntitySet Name="IMASeverities" EntityType="Model1.IMASeverities" />
+    <EntitySet Name="IMSubstanceFoods" EntityType="Model1.IMSubstanceFoods" />
+    <AssociationSet Name="R_662" Association="Model1.R_662">
+      <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+    </AssociationSet>
+    <AssociationSet Name="R_663" Association="Model1.R_663">
+      <End Role="Foods" EntitySet="Foods" />
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+    </AssociationSet>
+    <AssociationSet Name="R_664" Association="Model1.R_664">
+      <End Role="IMASeverities" EntitySet="IMASeverities" />
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -1794,6 +1808,7 @@
     <NavigationProperty Name="IPPAProductContraindications" Relationship="Model1.R_481" FromRole="ActiveSubstances" ToRole="IPPAProductContraindications" />
     <NavigationProperty Name="ContraindicationClinicalActiveSubstances" Relationship="Model1.R_707" FromRole="ActiveSubstances" ToRole="ContraindicationClinicalActiveSubstances" />
     <NavigationProperty Name="ContraindicationClinicalActiveSubstances1" Relationship="Model1.R_708" FromRole="ActiveSubstances" ToRole="ContraindicationClinicalActiveSubstances" />
+    <NavigationProperty Name="IMSubstanceFoods" Relationship="Model1.R_662" FromRole="ActiveSubstances" ToRole="IMSubstanceFoods" />
   </EntityType>
   <Association Name="R_274">
     <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -2245,5 +2260,66 @@
     <Property Name="FoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="IMSubstanceFoods" Relationship="Model1.R_663" FromRole="Foods" ToRole="IMSubstanceFoods" />
   </EntityType>
+  <EntityType Name="IMASeverities">
+    <Key>
+      <PropertyRef Name="IMASeverityId" />
+    </Key>
+    <Property Name="IMASeverityId" Type="Byte" Nullable="false" />
+    <Property Name="IMASeverity" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="IMSubstanceFoods" Relationship="Model1.R_664" FromRole="IMASeverities" ToRole="IMSubstanceFoods" />
+  </EntityType>
+  <EntityType Name="IMSubstanceFoods">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FoodId" />
+      <PropertyRef Name="IMASeverityId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" />
+    <Property Name="FoodId" Type="Int32" Nullable="false" />
+    <Property Name="IMASeverityId" Type="Byte" Nullable="false" />
+    <Property Name="ClinicalSummary" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_662" FromRole="IMSubstanceFoods" ToRole="ActiveSubstances" />
+    <NavigationProperty Name="Foods" Relationship="Model1.R_663" FromRole="IMSubstanceFoods" ToRole="Foods" />
+    <NavigationProperty Name="IMASeverities" Relationship="Model1.R_664" FromRole="IMSubstanceFoods" ToRole="IMASeverities" />
+  </EntityType>
+  <Association Name="R_662">
+    <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
+    <End Type="Model1.IMSubstanceFoods" Role="IMSubstanceFoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActiveSubstances">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoods">
+        <PropertyRef Name="ActiveSubstanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_663">
+    <End Type="Model1.Foods" Role="Foods" Multiplicity="1" />
+    <End Type="Model1.IMSubstanceFoods" Role="IMSubstanceFoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Foods">
+        <PropertyRef Name="FoodId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoods">
+        <PropertyRef Name="FoodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_664">
+    <End Type="Model1.IMASeverities" Role="IMASeverities" Multiplicity="1" />
+    <End Type="Model1.IMSubstanceFoods" Role="IMSubstanceFoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IMASeverities">
+        <PropertyRef Name="IMASeverityId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoods">
+        <PropertyRef Name="IMASeverityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -23,6 +23,7 @@ namespace Web.Models
             this.IPPAProductContraindications = new HashSet<IPPAProductContraindications>();
             this.ContraindicationClinicalActiveSubstances = new HashSet<ContraindicationClinicalActiveSubstances>();
             this.ContraindicationClinicalActiveSubstances1 = new HashSet<ContraindicationClinicalActiveSubstances>();
+            this.IMSubstanceFoods = new HashSet<IMSubstanceFoods>();
         }
     
         public int ActiveSubstanceId { get; set; }
@@ -40,5 +41,6 @@ namespace Web.Models
         public virtual ICollection<IPPAProductContraindications> IPPAProductContraindications { get; set; }
         public virtual ICollection<ContraindicationClinicalActiveSubstances> ContraindicationClinicalActiveSubstances { get; set; }
         public virtual ICollection<ContraindicationClinicalActiveSubstances> ContraindicationClinicalActiveSubstances1 { get; set; }
+        public virtual ICollection<IMSubstanceFoods> IMSubstanceFoods { get; set; }
     }
 }

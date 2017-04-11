@@ -2851,16 +2851,56 @@ namespace Web.Controllers.Medical
             return View(LS);
         }
 
-        public ActionResult IMAS(int? ActiveSubstanceId, string FoodName)
+        public ActionResult IMAS(int? ActiveSubstanceId, string FoodName, string FoodNameAS)
         {
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Logout", "Login");
             }
 
-            List<Foods> LF = db.Database.SqlQuery<Foods>("plm_spGetFoodsByActiveSubstance @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodName='" + FoodName + "'").ToList();
+            SessionActiveSubstances SessionActiveSubstances = new Models.Sessions.SessionActiveSubstances(Convert.ToInt32(ActiveSubstanceId));
+            Session["SessionActiveSubstances"] = SessionActiveSubstances;
 
-            return View(LF);
+            ClasificationSubstances ClasificationSubstances = new Models.Class.ClasificationSubstances();
+
+            ClasificationSubstances.Foods = db.Database.SqlQuery<Foods>("plm_spGetFoodsByActiveSubstance @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodName='" + FoodName + "'").ToList();
+            ClasificationSubstances.FoodsAsoc = db.Database.SqlQuery<Foods>("plm_spGetFoodsByActiveSubstance @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodName='" + FoodNameAS + "', @Type=A").ToList();
+
+            return View(ClasificationSubstances);
+        }
+
+        public JsonResult GetSeverities(string ActiveSubstance, string Food)
+        {
+            int ActiveSubstanceId = int.Parse(ActiveSubstance);
+            int FoodId = int.Parse(Food);
+
+            List<IMASeverities> LS = db.Database.SqlQuery<IMASeverities>("plm_spGetIMACatalogsBySubstanceByFood @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @Catalog = IMASeverities").ToList();
+
+            return Json(LS, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SaveClinicalSumary(string Severity, string Food, string ActiveSubstance, string ClinicalSumary)
+        {
+            byte SeverityId = Convert.ToByte(Severity);
+            int FoodId = int.Parse(Food);
+            int ActiveSubstanceId = int.Parse(ActiveSubstance);
+
+            List<IMSubstanceFoods> LS = db.IMSubstanceFoods.Where(x => x.ActiveSubstanceId == ActiveSubstanceId && x.FoodId == FoodId && x.IMASeverityId == SeverityId).ToList();
+
+            if (LS.LongCount() == 0)
+            {
+                IMSubstanceFoods IMSubstanceFoods = new IMSubstanceFoods();
+
+                IMSubstanceFoods.ActiveSubstanceId = ActiveSubstanceId;
+                IMSubstanceFoods.FoodId = FoodId;
+                IMSubstanceFoods.IMASeverityId = SeverityId;
+                IMSubstanceFoods.ClinicalSummary = ClinicalSumary;
+
+                db.IMSubstanceFoods.Add(IMSubstanceFoods);
+                db.SaveChanges();
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

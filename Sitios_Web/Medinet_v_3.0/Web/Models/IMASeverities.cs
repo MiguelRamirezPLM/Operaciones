@@ -12,14 +12,15 @@ namespace Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Foods
+    public partial class IMASeverities
     {
-        public Foods()
+        public IMASeverities()
         {
             this.IMSubstanceFoods = new HashSet<IMSubstanceFoods>();
         }
     
-        public int FoodId { get; set; }
+        public byte IMASeverityId { get; set; }
+        public string IMASeverity { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
     
