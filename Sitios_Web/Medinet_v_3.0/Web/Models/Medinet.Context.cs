@@ -88,5 +88,6 @@ namespace Web.Models
         public virtual DbSet<Foods> Foods { get; set; }
         public virtual DbSet<IMASeverities> IMASeverities { get; set; }
         public virtual DbSet<IMSubstanceFoods> IMSubstanceFoods { get; set; }
+        public virtual DbSet<IMSubstanceFoodReferences> IMSubstanceFoodReferences { get; set; }
     }
 }

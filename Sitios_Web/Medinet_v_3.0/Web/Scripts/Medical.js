@@ -4313,18 +4313,35 @@ function GetIMCatalogsByActiveSubstance(item) {
         success: function (data) {
 
             $("#TableCatalogSeverities").empty();
+            $("#TableSeveritiesAsoc").empty();
 
-            $.each(data, function (index, val) {
+            $.each(data.IMASeverities, function (index, val) {
                 $("#TableCatalogSeverities").append("<tr>" +
-                                                    "<td>" +
+                                                    "<td style='border-bottom:solid 1px #cecece'>" +
                                                     "<span id='spntblIMASeverity' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
                                                     "</td>" +
-                                                    "<td style='text-align:justify'>" + val.Description + "</td>" +
-                                                    "<td class='text-center'>" +
+                                                    "<td style='text-align:justify;border-bottom:solid 1px #cecece'>" + val.Description + "</td>" +
+                                                    "<td class='text-center'  style='border-bottom:solid 1px #cecece'>" +
                                                     "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='AddIMSubstanceFoods($(this))'>" +
                                                     "<span class='glyphicon glyphicon-plus'></span></button></td>" +
                                                     "</tr>");
             });
+
+            $.each(data.IMASeveritiesAsoc, function (index, val) {
+                $("#TableSeveritiesAsoc").append("<tr>" +
+                                                    "<td style='border-bottom:solid 1px #cecece'>" +
+                                                    "<span id='spntblIMASeverityAsoc' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
+                                                    "</td>" +
+                                                    "<td style='text-align:justify;border-bottom:solid 1px #cecece'>" + val.Description + "</td>" +
+                                                    "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                    "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='ShowDetailsOfSeverity($(this))'>" +
+                                                    "<span class='glyphicon glyphicon-plus'></span></button></td>" +
+                                                    "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                    "<button class=\"btn btn-sm btn-danger\" value=" + val.IMASeverityId + " onclick='RemoveIMCatalogsByActiveSubstance($(this))'>" +
+                                                    "<span class='glyphicon glyphicon-remove'></span></button></td>" +
+                                                    "</tr>");
+            });
+
 
         }
     })
@@ -4357,6 +4374,8 @@ function AddIMSubstanceFoods(item) {
 
 function SaveClinicalSumary() {
 
+    $("#bloqueo").show();
+
     var Value = $("#ClinicalSumary").val();
 
     var SId = $("#SeverityIdtxt").val();
@@ -4374,17 +4393,57 @@ function SaveClinicalSumary() {
     }
     else {
 
-        console.log(SId);
-        console.log(FId);
-        console.log(ASId);
-
         $.ajax({
             Type: "POST",
             dataType: "Json",
             url: "../Medical/SaveClinicalSumary",
             data: { Severity: SId, Food: FId, ActiveSubstance: ASId, ClinicalSumary: Value },
             success: function (data) {
-                setTimeout("document.location.reload()");
+                if (data == true) {
+                    $.ajax({
+                        Type: "POST",
+                        dataType: "Json",
+                        url: "../Medical/GetSeverities",
+                        data: { ActiveSubstance: ASId, Food: FId },
+                        success: function (data) {
+
+                            $("#TableCatalogSeverities").empty();
+                            $("#TableSeveritiesAsoc").empty();
+
+                            $.each(data.IMASeverities, function (index, val) {
+                                $("#TableCatalogSeverities").append("<tr>" +
+                                                                    "<td style='border-bottom:solid 1px #cecece'>" +
+                                                                    "<span id='spntblIMASeverity' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
+                                                                    "</td>" +
+                                                                    "<td style='text-align:justify;border-bottom:solid 1px #cecece'>" + val.Description + "</td>" +
+                                                                    "<td class='text-center'  style='border-bottom:solid 1px #cecece'>" +
+                                                                    "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='AddIMSubstanceFoods($(this))'>" +
+                                                                    "<span class='glyphicon glyphicon-plus'></span></button></td>" +
+                                                                    "</tr>");
+                            });
+
+                            $.each(data.IMASeveritiesAsoc, function (index, val) {
+                                $("#TableSeveritiesAsoc").append("<tr>" +
+                                                                    "<td style='border-bottom:solid 1px #cecece'>" +
+                                                                    "<span id='spntblIMASeverityAsoc' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
+                                                                    "</td>" +
+                                                                    "<td style='text-align:justify;border-bottom:solid 1px #cecece'>" + val.Description + "</td>" +
+                                                                    "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                                    "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='ShowDetailsOfSeverity($(this))'>" +
+                                                                    "<span class='glyphicon glyphicon-plus'></span></button></td>" +
+                                                                    "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                                    "<button class=\"btn btn-sm btn-danger\" value=" + val.IMASeverityId + " onclick='RemoveIMCatalogsByActiveSubstance($(this))'>" +
+                                                                    "<span class='glyphicon glyphicon-remove'></span></button></td>" +
+                                                                    "</tr>");
+                            });
+
+
+                        }
+                    })
+                    $("#bloqueo").hide();
+                    $('#AddClinicalSumary').modal('toggle');
+                    $("#ClinicalSumary").val('');
+                }
             }
         })
     }
@@ -4394,4 +4453,167 @@ function SaveClinicalSumary() {
 function CancelClinicalSumary() {
 
     $("#ClinicalSumary").val('');
+}
+
+function ShowDivSeveritiesAsoc() {
+
+    $("#CatSev").hide();
+    $("#SevAsoc").show();
+    $("#OptionCatSev").removeClass("active");
+    $("#OptionSevAsoc").addClass("active");
+
+}
+
+function ShowDivCatalogAsoc() {
+
+    $("#SevAsoc").hide();
+    $("#CatSev").show();
+    $("#OptionSevAsoc").removeClass("active");
+    $("#OptionCatSev").addClass("active");
+
+}
+
+function RemoveIMCatalogsByActiveSubstance(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var SId = $(item).val();
+    var FId = $("#FoodIdtxt").val();
+    var ASId = $("#ActiveSubstanceId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/DeleteClinicalSumary",
+        data: { ActiveSubstance: ASId, Food: FId, Severity: SId },
+        success: function (data) {
+            if (data != false) {
+
+                $("#TableCatalogSeverities").empty();
+                $("#TableSeveritiesAsoc").empty();
+
+                $.each(data.IMASeverities, function (index, val) {
+                    $("#TableCatalogSeverities").append("<tr>" +
+                                                        "<td style='border-bottom:solid 1px #cecece'>" +
+                                                        "<span id='spntblIMASeverity' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
+                                                        "</td>" +
+                                                        "<td style='text-align:justify;border-bottom:solid 1px #cecece'>" + val.Description + "</td>" +
+                                                        "<td class='text-center'  style='border-bottom:solid 1px #cecece'>" +
+                                                        "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='AddIMSubstanceFoods($(this))'>" +
+                                                        "<span class='glyphicon glyphicon-plus'></span></button></td>" +
+                                                        "</tr>");
+                });
+
+                $.each(data.IMASeveritiesAsoc, function (index, val) {
+                    $("#TableSeveritiesAsoc").append("<tr>" +
+                                                        "<td style='border-bottom:solid 1px #cecece'>" +
+                                                        "<span id='spntblIMASeverityAsoc' style='display:none'>" + val.IMASeverity + " </span>" + val.IMASeverity +
+                                                        "</td>" +
+                                                        "<td style='text-align:justify;border-bottom:solid 1px #cecece'>" + val.Description + "</td>" +
+                                                        "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                        "<button class=\"btn btn-sm btn-success\" value=" + val.IMASeverityId + " onclick='ShowDetailsOfSeverity($(this))'>" +
+                                                        "<span class='glyphicon glyphicon-plus'></span></button></td>" +
+                                                        "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                        "<button class=\"btn btn-sm btn-danger\" value=" + val.IMASeverityId + " onclick='RemoveIMCatalogsByActiveSubstance($(this))'>" +
+                                                        "<span class='glyphicon glyphicon-remove'></span></button></td>" +
+                                                        "</tr>");
+                });
+
+            }
+            else if (data == false) {
+                var d = "";
+                d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> ERROR</h1></div> <br>";
+                d += "<label> El Campo NO puede quedar vacío</label> <br/>"
+                apprise("" + d + "", { 'animate': true });
+
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+function ShowDetailsOfSeverity(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var SId = $(item).val();
+    var FId = $("#FoodIdtxt").val();
+    var ASId = $("#ActiveSubstanceId").val();
+    var ElmName = $("#ElementNameSPN").text();
+    var SevName = tr.find("#spntblIMASeverityAsoc").text();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/GetDetailsOfSeverity",
+        data: { ActiveSubstance: ASId, Food: FId, Severity: SId },
+        success: function (data) {
+
+            $("#ClinicalSumarytxt").val(data.ClinicalReference);
+
+            $("#TableClinicalSumary").empty();
+
+            $.each(data.LSClinicalReferences, function (index, val) {
+                $("#TableClinicalSumary").append("<tr>" +
+                                                    "<td style='border-bottom:solid 1px #cecece;width:45%'>" +
+                                                    "<span id='spntblIMASeverityAsoc' style='display:none'>" + val.ClinicalReference + " </span>" + val.ClinicalReference +
+                                                    "</td>" +
+                                                    "<td style='text-align:justify;border-bottom:solid 1px #cecece;width:45%;vertical-align:top'><textarea disabled class='form-control' style='height:100%'>" + val.ReferenceSource + "</textarea></td>" +
+                                                    "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                    "<button class=\"btn btn-sm btn-danger\" value=" + val.ClinicalReferenceId + " onclick='ShowDetailsOfSeverity($(this))'>" +
+                                                    "<span class='glyphicon glyphicon-remove'></span></button></td>" +
+                                                    "</tr>");
+            });
+        }
+    })
+
+
+
+    $("#SeverityIdtxtEdit").val(SId);
+    $("#FoodIdtxtEdit").val(FId);
+    $("#ElementNameSPNEdit").text(ElmName);
+    $("#SeverityNameEdit").text(SevName);
+
+
+
+
+    $("#btnDetailsOfSeverity").trigger("click");
+
+}
+
+function AutocompleteAddReferences(items) {
+
+    var ASId = $("#ActiveSubstanceId").val();
+    var FId = $("#FoodIdtxtEdit").val();
+    var SId = $("#SeverityIdtxtEdit").val();
+
+    $(items).autocomplete({
+        appendTo: $(items).parent(),
+        source: function (request, response) {
+            $.ajax({
+                url: "../Medical/AutocompleteAddReferences",
+                type: "POST",
+                dataType: "Json",
+                data: { term: request.term, ActiveSubstance: ASId, Food: FId, Severity: SId },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        console.log(item);
+                        return { label: item, value: item };
+
+                    }))
+                }
+            })
+        },
+
+        //select: function (event, ui) {
+
+        //    $("#txtProductIdAC").val(ui.item.id);
+
+        //},
+        minLength: 3
+    });
+
+
 }

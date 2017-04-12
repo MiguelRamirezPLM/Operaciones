@@ -395,6 +395,15 @@
       <End Role="IMASeverities" EntitySet="IMASeverities" />
       <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
     </AssociationSet>
+    <EntitySet Name="IMSubstanceFoodReferences" EntityType="Model1.IMSubstanceFoodReferences" />
+    <AssociationSet Name="IMSubstanceFoodsIMSubstanceFoodReferences" Association="Model1.IMSubstanceFoodsIMSubstanceFoodReferences">
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+      <End Role="IMSubstanceFoodReferences" EntitySet="IMSubstanceFoodReferences" />
+    </AssociationSet>
+    <AssociationSet Name="ClinicalReferencesIMSubstanceFoodReferences" Association="Model1.ClinicalReferencesIMSubstanceFoodReferences">
+      <End Role="ClinicalReferences" EntitySet="ClinicalReferences" />
+      <End Role="IMSubstanceFoodReferences" EntitySet="IMSubstanceFoodReferences" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Countries">
     <Key>
@@ -1687,6 +1696,7 @@
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <Property Name="ReferenceSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="PMID" Type="Int32" />
+    <NavigationProperty Name="IMSubstanceFoodReferences" Relationship="Model1.ClinicalReferencesIMSubstanceFoodReferences" FromRole="ClinicalReferences" ToRole="IMSubstanceFoodReferences" />
   </EntityType>
   <EntityType Name="ATCPharmacologicalGroups">
     <Key>
@@ -2285,6 +2295,7 @@
     <NavigationProperty Name="ActiveSubstances" Relationship="Model1.R_662" FromRole="IMSubstanceFoods" ToRole="ActiveSubstances" />
     <NavigationProperty Name="Foods" Relationship="Model1.R_663" FromRole="IMSubstanceFoods" ToRole="Foods" />
     <NavigationProperty Name="IMASeverities" Relationship="Model1.R_664" FromRole="IMSubstanceFoods" ToRole="IMASeverities" />
+    <NavigationProperty Name="IMSubstanceFoodReferences" Relationship="Model1.IMSubstanceFoodsIMSubstanceFoodReferences" FromRole="IMSubstanceFoods" ToRole="IMSubstanceFoodReferences" />
   </EntityType>
   <Association Name="R_662">
     <End Type="Model1.ActiveSubstances" Role="ActiveSubstances" Multiplicity="1" />
@@ -2319,6 +2330,48 @@
       </Principal>
       <Dependent Role="IMSubstanceFoods">
         <PropertyRef Name="IMASeverityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="IMSubstanceFoodReferences">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FoodId" />
+      <PropertyRef Name="IMASeverityId" />
+      <PropertyRef Name="ClinicalReferenceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FoodId" Type="Int32" Nullable="false" />
+    <Property Name="IMASeverityId" Type="Byte" Nullable="false" />
+    <Property Name="ClinicalReferenceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="IMSubstanceFoods" Relationship="Model1.IMSubstanceFoodsIMSubstanceFoodReferences" FromRole="IMSubstanceFoodReferences" ToRole="IMSubstanceFoods" />
+    <NavigationProperty Name="ClinicalReferences" Relationship="Model1.ClinicalReferencesIMSubstanceFoodReferences" FromRole="IMSubstanceFoodReferences" ToRole="ClinicalReferences" />
+  </EntityType>
+  <Association Name="IMSubstanceFoodsIMSubstanceFoodReferences">
+    <End Type="Model1.IMSubstanceFoods" Role="IMSubstanceFoods" Multiplicity="1" />
+    <End Type="Model1.IMSubstanceFoodReferences" Role="IMSubstanceFoodReferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IMSubstanceFoods">
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="FoodId" />
+        <PropertyRef Name="IMASeverityId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoodReferences">
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="FoodId" />
+        <PropertyRef Name="IMASeverityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClinicalReferencesIMSubstanceFoodReferences">
+    <End Type="Model1.ClinicalReferences" Role="ClinicalReferences" Multiplicity="1" />
+    <End Type="Model1.IMSubstanceFoodReferences" Role="IMSubstanceFoodReferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClinicalReferences">
+        <PropertyRef Name="ClinicalReferenceId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoodReferences">
+        <PropertyRef Name="ClinicalReferenceId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

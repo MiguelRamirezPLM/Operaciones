@@ -12,21 +12,14 @@ namespace Web.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IMSubstanceFoods
+    public partial class IMSubstanceFoodReferences
     {
-        public IMSubstanceFoods()
-        {
-            this.IMSubstanceFoodReferences = new HashSet<IMSubstanceFoodReferences>();
-        }
-    
         public int ActiveSubstanceId { get; set; }
         public int FoodId { get; set; }
         public byte IMASeverityId { get; set; }
-        public string ClinicalSummary { get; set; }
+        public int ClinicalReferenceId { get; set; }
     
-        public virtual ActiveSubstances ActiveSubstances { get; set; }
-        public virtual Foods Foods { get; set; }
-        public virtual IMASeverities IMASeverities { get; set; }
-        public virtual ICollection<IMSubstanceFoodReferences> IMSubstanceFoodReferences { get; set; }
+        public virtual IMSubstanceFoods IMSubstanceFoods { get; set; }
+        public virtual ClinicalReferences ClinicalReferences { get; set; }
     }
 }

@@ -14,10 +14,17 @@ namespace Web.Models
     
     public partial class ClinicalReferences
     {
+        public ClinicalReferences()
+        {
+            this.IMSubstanceFoodReferences = new HashSet<IMSubstanceFoodReferences>();
+        }
+    
         public int ClinicalReferenceId { get; set; }
         public string ClinicalReference { get; set; }
         public bool Active { get; set; }
         public string ReferenceSource { get; set; }
         public Nullable<int> PMID { get; set; }
+    
+        public virtual ICollection<IMSubstanceFoodReferences> IMSubstanceFoodReferences { get; set; }
     }
 }

@@ -284,6 +284,18 @@
     <Property Name="Description" Type="varchar(max)" />
     <Property Name="Active" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="IMSubstanceFoodReferences">
+    <Key>
+      <PropertyRef Name="ActiveSubstanceId" />
+      <PropertyRef Name="FoodId" />
+      <PropertyRef Name="IMASeverityId" />
+      <PropertyRef Name="ClinicalReferenceId" />
+    </Key>
+    <Property Name="ActiveSubstanceId" Type="int" Nullable="false" />
+    <Property Name="FoodId" Type="int" Nullable="false" />
+    <Property Name="IMASeverityId" Type="tinyint" Nullable="false" />
+    <Property Name="ClinicalReferenceId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="IMSubstanceFoods">
     <Key>
       <PropertyRef Name="ActiveSubstanceId" />
@@ -1667,6 +1679,34 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="R_614">
+    <End Role="IMSubstanceFoods" Type="Self.IMSubstanceFoods" Multiplicity="1" />
+    <End Role="IMSubstanceFoodReferences" Type="Self.IMSubstanceFoodReferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IMSubstanceFoods">
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="FoodId" />
+        <PropertyRef Name="IMASeverityId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoodReferences">
+        <PropertyRef Name="ActiveSubstanceId" />
+        <PropertyRef Name="FoodId" />
+        <PropertyRef Name="IMASeverityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_615">
+    <End Role="ClinicalReferences" Type="Self.ClinicalReferences" Multiplicity="1" />
+    <End Role="IMSubstanceFoodReferences" Type="Self.IMSubstanceFoodReferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClinicalReferences">
+        <PropertyRef Name="ClinicalReferenceId" />
+      </Principal>
+      <Dependent Role="IMSubstanceFoodReferences">
+        <PropertyRef Name="ClinicalReferenceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_662">
     <End Role="ActiveSubstances" Type="Self.ActiveSubstances" Multiplicity="1" />
     <End Role="IMSubstanceFoods" Type="Self.IMSubstanceFoods" Multiplicity="*" />
@@ -1834,6 +1874,7 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <EntitySet Name="ICD" EntityType="Self.ICD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IMASeverities" EntityType="Self.IMASeverities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IMSubstanceFoodReferences" EntityType="Self.IMSubstanceFoodReferences" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="IMSubstanceFoods" EntityType="Self.IMSubstanceFoods" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Indications" EntityType="Self.Indications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InternalPacks" EntityType="Self.InternalPacks" Schema="dbo" store:Type="Tables" />
@@ -2194,6 +2235,14 @@ advertencia 6002: La tabla o vista 'Medinet 20161213.dbo.plm_vwProductsByEdition
     <AssociationSet Name="R_6" Association="Self.R_6">
       <End Role="Books" EntitySet="Books" />
       <End Role="Editions" EntitySet="Editions" />
+    </AssociationSet>
+    <AssociationSet Name="R_614" Association="Self.R_614">
+      <End Role="IMSubstanceFoods" EntitySet="IMSubstanceFoods" />
+      <End Role="IMSubstanceFoodReferences" EntitySet="IMSubstanceFoodReferences" />
+    </AssociationSet>
+    <AssociationSet Name="R_615" Association="Self.R_615">
+      <End Role="ClinicalReferences" EntitySet="ClinicalReferences" />
+      <End Role="IMSubstanceFoodReferences" EntitySet="IMSubstanceFoodReferences" />
     </AssociationSet>
     <AssociationSet Name="R_662" Association="Self.R_662">
       <End Role="ActiveSubstances" EntitySet="ActiveSubstances" />

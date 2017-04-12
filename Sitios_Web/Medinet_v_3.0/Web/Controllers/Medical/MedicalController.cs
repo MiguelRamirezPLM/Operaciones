@@ -2869,14 +2869,27 @@ namespace Web.Controllers.Medical
             return View(ClasificationSubstances);
         }
 
+        public ClasificationSeverities GetIMASeverities(int? ActiveSubstanceId, int? FoodId)
+        {
+            ClasificationSeverities ClasificationSeverities = new Models.Class.ClasificationSeverities();
+
+            ClasificationSeverities.IMASeverities = db.Database.SqlQuery<IMASeverities>("plm_spGetIMACatalogsBySubstanceByFood @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @Catalog = IMASeverities").ToList();
+            ClasificationSeverities.IMASeveritiesAsoc = db.Database.SqlQuery<IMASeverities>("plm_spGetIMACatalogsBySubstanceByFood @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @Catalog = IMASeverities, @Type=A").ToList();
+
+            return ClasificationSeverities;
+        }
+
         public JsonResult GetSeverities(string ActiveSubstance, string Food)
         {
             int ActiveSubstanceId = int.Parse(ActiveSubstance);
             int FoodId = int.Parse(Food);
 
-            List<IMASeverities> LS = db.Database.SqlQuery<IMASeverities>("plm_spGetIMACatalogsBySubstanceByFood @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @Catalog = IMASeverities").ToList();
+            ClasificationSeverities ClasificationSeverities = new Models.Class.ClasificationSeverities();
 
-            return Json(LS, JsonRequestBehavior.AllowGet);
+            ClasificationSeverities.IMASeverities = db.Database.SqlQuery<IMASeverities>("plm_spGetIMACatalogsBySubstanceByFood @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @Catalog = IMASeverities").ToList();
+            ClasificationSeverities.IMASeveritiesAsoc = db.Database.SqlQuery<IMASeverities>("plm_spGetIMACatalogsBySubstanceByFood @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @Catalog = IMASeverities, @Type=A").ToList();
+
+            return Json(ClasificationSeverities, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SaveClinicalSumary(string Severity, string Food, string ActiveSubstance, string ClinicalSumary)
@@ -2901,6 +2914,107 @@ namespace Web.Controllers.Medical
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteClinicalSumary(string ActiveSubstance, string Food, string Severity)
+        {
+            int ActiveSubstanceId = int.Parse(ActiveSubstance);
+            int FoodId = int.Parse(Food);
+            int SeverityId = int.Parse(Severity);
+
+            List<IMSubstanceFoodReferences> LS = db.IMSubstanceFoodReferences.Where(x => x.ActiveSubstanceId == ActiveSubstanceId && x.FoodId == FoodId && x.IMASeverityId == SeverityId).ToList();
+
+            if (LS.LongCount() == 0)
+            {
+                List<IMSubstanceFoods> LSF = db.IMSubstanceFoods.Where(x => x.ActiveSubstanceId == ActiveSubstanceId && x.FoodId == FoodId && x.IMASeverityId == SeverityId).ToList();
+
+                if (LSF.LongCount() > 0)
+                {
+                    var delete = db.IMSubstanceFoods.SingleOrDefault(x => x.ActiveSubstanceId == ActiveSubstanceId && x.FoodId == FoodId && x.IMASeverityId == SeverityId);
+                    db.IMSubstanceFoods.Remove(delete);
+                    db.SaveChanges();
+                }
+
+                ClasificationSeverities ClasificationSeverities = GetIMASeverities(ActiveSubstanceId, FoodId);
+
+                return Json(ClasificationSeverities, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetDetailsOfSeverity(string ActiveSubstance, string Food, string Severity)
+        {
+            int ActiveSubstanceId = int.Parse(ActiveSubstance);
+            int FoodId = int.Parse(Food);
+            int SeverityId = int.Parse(Severity);
+
+            ClinicalReferences ClinicalReferences = new Models.ClinicalReferences();
+            List<ClinicalReferences> LSCR = new List<Models.ClinicalReferences>();
+            DetailsOfSeverity DetailsOfSeverity = new Models.Class.DetailsOfSeverity();
+
+            List<IMSubstanceFoodReferences> LS = db.IMSubstanceFoodReferences.Where(x => x.ActiveSubstanceId == ActiveSubstanceId && x.FoodId == FoodId && x.IMASeverityId == SeverityId).ToList();
+
+            if (LS.LongCount() > 0)
+            {
+                foreach (IMSubstanceFoodReferences item in LS)
+                {
+                    int ClinicalReferenceId = item.ClinicalReferenceId;
+
+                    List<ClinicalReferences> LCR = db.ClinicalReferences.Where(x => x.ClinicalReferenceId == ClinicalReferenceId && x.Active == true).Distinct().ToList();
+
+                    if (LCR.LongCount() > 0)
+                    {
+                        foreach (ClinicalReferences itemCR in LCR)
+                        {
+                            ClinicalReferences = new ClinicalReferences();
+
+                            ClinicalReferences.Active = itemCR.Active;
+                            ClinicalReferences.ClinicalReference = itemCR.ClinicalReference;
+                            ClinicalReferences.ClinicalReferenceId = itemCR.ClinicalReferenceId;
+                            ClinicalReferences.PMID = itemCR.PMID;
+                            ClinicalReferences.ReferenceSource = itemCR.ReferenceSource;
+
+                            LSCR.Add(ClinicalReferences);
+
+                        }
+                    }
+                }
+
+                DetailsOfSeverity.LSClinicalReferences = LSCR;
+            }
+
+            List<IMSubstanceFoods> LIF = db.IMSubstanceFoods.Where(x => x.IMASeverityId == SeverityId && x.ActiveSubstanceId == ActiveSubstanceId && x.FoodId == FoodId).ToList();
+
+            if (LIF.LongCount() > 0)
+            {
+                DetailsOfSeverity.ClinicalReference = LIF[0].ClinicalSummary;
+            }
+
+            return Json(DetailsOfSeverity, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AutocompleteAddReferences(string term, string ActiveSubstance, string Food, string Severity)
+        {
+            int ActiveSubstanceId = int.Parse(ActiveSubstance);
+            int FoodId = int.Parse(Food);
+            int SeverityId = int.Parse(Severity);
+
+            List<ClinicalReferences> LS = db.Database.SqlQuery<ClinicalReferences>("plm_spGetClinicalReferenceCatalogByKey @ActiveSubstanceId=" + ActiveSubstanceId + ", @FoodId=" + FoodId + ", @IMASeverityId=" + SeverityId + ", @ClinicalReference=" + term + "").ToList();
+            List<String> LSS = new List<string>();
+            if (LS.LongCount() > 0)
+            {
+                foreach (ClinicalReferences item in LS)
+                {
+                    string JsonString = item.ClinicalReference + " " + item.ReferenceSource;
+
+                    LSS.Add(JsonString);
+                }
+            }
+
+            return Json(LSS, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

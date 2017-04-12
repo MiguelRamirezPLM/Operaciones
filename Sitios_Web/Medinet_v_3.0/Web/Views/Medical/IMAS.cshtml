@@ -19,6 +19,8 @@
     }
 }
 
+<script src="@Url.Content("~/Scripts/jquery-ui.min.js")"></script>
+
 <div class="row">
     <div class="headergroup">
         <div class="title">
@@ -167,13 +169,13 @@
                                     <input id="lblFoodId" style="display:none;" value="@item.FoodId" />
                                 }
                         </text>),
-                    _datagridAS.Column("", header: "Agregar", format: @<text>
+                    _datagridAS.Column("", header: "Ver / Editar", format: @<text>
                         @{
-                            <button class="btn btn-success btn-sm" value="@item.FoodId" onclick="GetIMCatalogsByActiveSubstance($(this))">
-                                <span class="glyphicon glyphicon-plus"></span>
+                            <button class="btn btn-primary btn-sm" value="@item.FoodId" onclick="GetIMCatalogsByActiveSubstance($(this))">
+                                <span class="glyphicon glyphicon-search"></span>
                             </button>
                         }
-                    </text>, style:"column5 text-center")
+                    </text>, style:"column20 text-center")
                     })
                 </div>
             </div>
@@ -186,7 +188,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h3 class="modal-title" style="color: #337ab7;" id="messageheader"><i></i></h3>
+                <h1 class="modal-title" style="color: #337ab7;" id="messageheader">
+                    <i>Agregar Severidad / Referencias Clinicas</i>
+                </h1>
             </div>
             <div class="modal-body" id="contenteditions">
                 <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
@@ -221,13 +225,13 @@
                     <div class="col-lg-12">
                         <br />
                         <ul class="nav nav-tabs">
-                            <li class="ldr active"><a href="#" onclick="location.href='@Url.Action("IMAS", "Medical")';return false;" class="text-center">Severidad</a></li>
-                            <li class="ldr"><a href="#" onclick="location.href='@Url.Action("DDD", "Medical")';return false;" class="text-center">Referencias Clinicas</a></li>
+                            <li class="active" id="OptionCatSev"><a href="#" onclick="ShowDivCatalogAsoc()" class="text-center">Severidad</a></li>
+                            <li id="OptionSevAsoc"><a href="#" onclick="ShowDivSeveritiesAsoc()" class="text-center">Severidades asociadas</a></li>
                         </ul>
                     </div>
                 </div>
                 <br />
-                <div class="row">
+                <div class="row" id="CatSev">
                     <div class="col-lg-12">
                         <span style="color: #de5145; font-size: 16px; text-transform: none; font-weight: normal;">Catalogo de Severidades</span>
                         <br />
@@ -246,9 +250,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" id="SevAsoc" style="display:none">
+                    <div class="col-lg-12">
+                        <span style="color: #de5145; font-size: 16px; text-transform: none; font-weight: normal;">Severidades Asociadas</span>
+                        <br />
+                        <br />
+                        <div>
+                            <table class="table-hover table-responsive">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th style="width:15%; font-size:14px">Severidad</th>
+                                        <th style="font-size: 14px">Descripción</th>
+                                        <th style="width: 15%; font-size: 14px">Ver / Editar Detalles</th>
+                                        <th style="font-size:14px">Quitar Severidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TableSeveritiesAsoc"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer text-center" id="divbtncloseerror">
-                <button class="btn btn-primary" data-dismiss="modal">
+                <button class="btn btn-primary" data-dismiss="modal" onclick="setTimeout('document.location.reload()')">
                     <span class="glyphicon glyphicon-ok"></span>
                     <span>&nbsp; Aceptar</span>
                 </button>
@@ -271,6 +295,112 @@
                 <br />
                 <br />
                 <textarea class="form-control" id="ClinicalSumary"></textarea>
+            </div>
+            <div class="modal-footer text-center" id="divfooterHyperCNT">
+                <button class="btn btn-primary" onclick="SaveClinicalSumary()">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>&nbsp; Aceptar</span>
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelClinicalSumary()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span>&nbsp; Cancelar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnDetailsOfSeverity" data-toggle="modal" data-target="#DetailsOfSeverity" style="display:none" class="btn btn-danger btn-sm">Hipersensibility</button>
+<div class="modal fade" data-backdrop="false" id="DetailsOfSeverity" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h3 class="modal-title" style="color: #337ab7;" id="messageheaderHyperCNT"><i>Agregar Resumen Clinico</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <div class="modal-body" id="contenteditions">
+                    <div class="qa-message-list col-md-12 col-xs-12" id="wallmessages">
+                        <div class="message-item" id="m16">
+                            <div class="message-inner">
+                                <div class="avatar pull-left"></div>
+                                <div class="user-detail">
+                                    <div class="post-meta">
+                                        <div class="asker-meta">
+                                            <div class="title_new" align="left">
+                                                <div class="title-word_new">
+                                                    <p>
+                                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Sustancia Activa: <span style="color: #de5145">@c[0].Description</span> </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="title_new" align="left">
+                                                <div class="title-word_new">
+                                                    <p>
+                                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Elemento: <span style="color: #de5145" id="ElementNameSPNEdit"></span> </span>
+                                                        <input type="text" id="FoodIdtxtEdit" style="display:none" />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="title_new" align="left">
+                                                <div class="title-word_new">
+                                                    <p>
+                                                        <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;">Severidad: <span style="color: #de5145" id="SeverityNameEdit"></span> </span>
+                                                        <input type="text" id="SeverityIdtxtEdit" style="display:none" />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <br />
+                            <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;"><span style="color: #de5145">Resumen Clinico: </span> </span>
+                        </div>
+                        <div class="col-lg-7">
+                            <br />
+                            <input type="text" class="form-control" id="ClinicalSumarytxt" style="color:red"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <span>&nbsp; Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <br />
+                            <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;"><span style="color: #de5145">Referencias asociadas: </span> </span>
+                        </div>
+                        <div class="col-lg-9">
+                            <br />
+                            <table class="table-hover">
+                                <thead class="webgrid-header">
+                                    <tr>
+                                        <th>Referencia Clinica.</th>
+                                        <th style="width:200px">Fuente de Referencia</th>
+                                        <th>Quitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TableClinicalSumary"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <br />
+                            <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;"><span style="color: #de5145">Agregar Referencias: </span> </span>
+                        </div>
+                        <div class="col-lg-9">
+                            <br />
+                            <input type="text" class="form-control" onkeyup="AutocompleteAddReferences($(this))" />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer text-center" id="divfooterHyperCNT">
                 <button class="btn btn-primary" onclick="SaveClinicalSumary()">
