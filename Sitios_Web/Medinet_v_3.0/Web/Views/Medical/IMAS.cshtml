@@ -365,7 +365,7 @@
                             <input type="text" class="form-control" id="ClinicalSumarytxt" style="color:red"/>
                         </div>
                         <div class="col-lg-2">
-                            <button class="btn btn-primary btn-sm">
+                            <button class="btn btn-primary btn-sm" onclick="UpdateClinicalSumary()">
                                 <span class="glyphicon glyphicon-ok"></span>
                                 <span>&nbsp; Guardar</span>
                             </button>
@@ -395,21 +395,30 @@
                             <br />
                             <span class="qa-message-when-data" style="font-size:18px; text-transform:none; font-weight:normal;"><span style="color: #de5145">Agregar Referencias: </span> </span>
                         </div>
-                        <div class="col-lg-9">
+                        <div class="col-lg-7">
                             <br />
-                            <input type="text" class="form-control" onkeyup="AutocompleteAddReferences($(this))" />
+                            <textarea  class="form-control" id="txtClinicalReferenceAdd" onkeyup="AutocompleteAddReferences($(this))" ></textarea>
+                            <input type="text" id="txtClinicalReferenceIdAC" style="display:none"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary btn-sm" onclick="AddClinicalReference()">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <span>&nbsp; Guardar</span>
+                            </button>
+                            <br />
+                            <br />
+                            <button class="btn btn-danger btn-sm" onclick="$('#txtClinicalReferenceAdd').val(''), $('#txtClinicalReferenceIdAC').val()">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span>&nbsp; Cancel</span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer text-center" id="divfooterHyperCNT">
-                <button class="btn btn-primary" onclick="SaveClinicalSumary()">
-                    <span class="glyphicon glyphicon-ok"></span>
-                    <span>&nbsp; Aceptar</span>
-                </button>
-                <button class="btn btn-danger" data-dismiss="modal" onclick="CancelClinicalSumary()">
+                <button class="btn btn-danger" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
-                    <span>&nbsp; Cancelar</span>
+                    <span>&nbsp; Cerrar</span>
                 </button>
             </div>
         </div>

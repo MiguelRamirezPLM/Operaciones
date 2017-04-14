@@ -4525,7 +4525,7 @@ function RemoveIMCatalogsByActiveSubstance(item) {
             else if (data == false) {
                 var d = "";
                 d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> ERROR</h1></div> <br>";
-                d += "<label> El Campo NO puede quedar vacío</label> <br/>"
+                d += "<label> El registro NO puede ser eliminado, tiene Referencias Clinicas asociadas.</label> <br/>"
                 apprise("" + d + "", { 'animate': true });
 
                 $("#bloqueo").hide();
@@ -4562,7 +4562,7 @@ function ShowDetailsOfSeverity(item) {
                                                     "</td>" +
                                                     "<td style='text-align:justify;border-bottom:solid 1px #cecece;width:45%;vertical-align:top'><textarea disabled class='form-control' style='height:100%'>" + val.ReferenceSource + "</textarea></td>" +
                                                     "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
-                                                    "<button class=\"btn btn-sm btn-danger\" value=" + val.ClinicalReferenceId + " onclick='ShowDetailsOfSeverity($(this))'>" +
+                                                    "<button class=\"btn btn-sm btn-danger\" value=" + val.ClinicalReferenceId + " onclick='RemoveClinicalReferences($(this))'>" +
                                                     "<span class='glyphicon glyphicon-remove'></span></button></td>" +
                                                     "</tr>");
             });
@@ -4599,21 +4599,132 @@ function AutocompleteAddReferences(items) {
                 data: { term: request.term, ActiveSubstance: ASId, Food: FId, Severity: SId },
                 success: function (data) {
                     response($.map(data, function (item) {
-                        console.log(item);
-                        return { label: item, value: item };
+
+                        return { label: item.ClinicalReference, value: item.ClinicalReference, id: item.ClinicalReferenceId };
 
                     }))
                 }
             })
         },
 
-        //select: function (event, ui) {
+        select: function (event, ui) {
 
-        //    $("#txtProductIdAC").val(ui.item.id);
+            $("#txtClinicalReferenceIdAC").val(ui.item.id);
 
-        //},
+        },
         minLength: 3
     });
 
 
+}
+
+function RemoveClinicalReferences(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var CRId = $(item).val();
+    var ASId = $("#ActiveSubstanceId").val();
+    var FId = $("#FoodIdtxtEdit").val();
+    var SId = $("#SeverityIdtxtEdit").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Medical/RemoveClinicalReferences",
+        data: { ClinicalReference: CRId, ActiveSubstance: ASId, Food: FId, Severity: SId },
+        success: function (data) {
+            $("#ClinicalSumarytxt").val(data.ClinicalReference);
+
+            $("#TableClinicalSumary").empty();
+
+            $.each(data.LSClinicalReferences, function (index, val) {
+                $("#TableClinicalSumary").append("<tr>" +
+                                                    "<td style='border-bottom:solid 1px #cecece;width:45%'>" +
+                                                    "<span id='spntblIMASeverityAsoc' style='display:none'>" + val.ClinicalReference + " </span>" + val.ClinicalReference +
+                                                    "</td>" +
+                                                    "<td style='text-align:justify;border-bottom:solid 1px #cecece;width:45%;vertical-align:top'><textarea disabled class='form-control' style='height:100%'>" + val.ReferenceSource + "</textarea></td>" +
+                                                    "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                    "<button class=\"btn btn-sm btn-danger\" value=" + val.ClinicalReferenceId + " onclick='RemoveClinicalReferences($(this))'>" +
+                                                    "<span class='glyphicon glyphicon-remove'></span></button></td>" +
+                                                    "</tr>");
+            });
+        }
+    })
+}
+
+function AddClinicalReference() {
+
+    var CRId = $("#txtClinicalReferenceIdAC").val();
+    var ASId = $("#ActiveSubstanceId").val();
+    var FId = $("#FoodIdtxtEdit").val();
+    var SId = $("#SeverityIdtxtEdit").val();
+    var CR = $("#txtClinicalReferenceAdd").val();
+
+    if(!CR.trim() == true)
+    {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> ERROR</h1></div> <br>";
+        d += "<label> El Campo NO puede quedar vacío</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else
+    {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/AddClinicalReference",
+            data: { ClinicalReference: CRId, ActiveSubstance: ASId, Food: FId, Severity: SId },
+            success: function (data) {
+                $("#ClinicalSumarytxt").val(data.ClinicalReference);
+
+                $("#TableClinicalSumary").empty();
+
+                $.each(data.LSClinicalReferences, function (index, val) {
+                    $("#TableClinicalSumary").append("<tr>" +
+                                                        "<td style='border-bottom:solid 1px #cecece;width:45%'>" +
+                                                        "<span id='spntblIMASeverityAsoc' style='display:none'>" + val.ClinicalReference + " </span>" + val.ClinicalReference +
+                                                        "</td>" +
+                                                        "<td style='text-align:justify;border-bottom:solid 1px #cecece;width:45%;vertical-align:top'><textarea disabled class='form-control' style='height:100%'>" + val.ReferenceSource + "</textarea></td>" +
+                                                        "<td class='text-center' style='border-bottom:solid 1px #cecece'>" +
+                                                        "<button class=\"btn btn-sm btn-danger\" value=" + val.ClinicalReferenceId + " onclick='RemoveClinicalReferences($(this))'>" +
+                                                        "<span class='glyphicon glyphicon-remove'></span></button></td>" +
+                                                        "</tr>");
+                });
+
+                $("#txtClinicalReferenceAdd").val('');
+            }
+        })
+    }
+}
+
+function UpdateClinicalSumary() {
+
+    var ASId = $("#ActiveSubstanceId").val();
+    var FId = $("#FoodIdtxtEdit").val();
+    var SId = $("#SeverityIdtxtEdit").val();
+    var CS = $("#ClinicalSumarytxt").val();
+
+    if(!CS.trim() == true)
+    {
+        var d = "";
+        d += "<div class='text-center'><h1 style='color: #337ab7;'><span class='glyphicon glyphicon-warning-sign'></span> ERROR</h1></div> <br>";
+        d += "<label> El Campo NO puede quedar vacío</label> <br/>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else
+    {
+        $.ajax({
+            Type: "POST",
+            dataType: "Json",
+            url: "../Medical/UpdateClinicalSumary",
+            data: { ActiveSubstance: ASId, Food: FId, Severity: SId, ClinicalSumary: CS },
+            success: function (data) {
+
+            }
+        })
+    }
 }
