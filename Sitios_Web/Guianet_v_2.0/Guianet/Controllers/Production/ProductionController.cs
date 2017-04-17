@@ -4494,5 +4494,51 @@ namespace Guianet.Controllers.Production
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+
+        /*********************/
+
+        public ActionResult AddClientImage(HttpPostedFileBase file, string Country, string Client)
+        {
+            //String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
+
+            int CountryId = int.Parse(Country);
+            int ClientId = int.Parse(Client);
+
+            string FileName = file.FileName;
+            string Extention = Path.GetExtension(file.FileName);
+
+            FileName = FileName.Replace(Extention, "");
+
+            FileName = ClassReplace.replacepdffilename(FileName);
+
+            FileName = FileName + Extention;
+
+            
+
+            //List<Countries> LCC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+            //String CountryName = ReplaceCountryName(LCC[0].CountryName);
+
+            //List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
+
+            //  var root = Path.Combine(PathP, CountryName, "productshots", ims[0].ImageSize);
+
+            string root = Server.MapPath("~/App_Data/DivisionImages");
+
+            List<Clients> LC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+
+            if (LC.LongCount() > 0)
+            {
+                foreach (Clients item in LC)
+                {
+                    item.Image = FileName;
+
+                    db.SaveChanges();
+                }
+            }
+
+            return View();
+        }
+
     }
 }

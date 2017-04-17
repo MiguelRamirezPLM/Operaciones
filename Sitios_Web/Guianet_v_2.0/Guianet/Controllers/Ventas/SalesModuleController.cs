@@ -2952,5 +2952,57 @@ namespace Guianet.Controllers.Ventas
 
             return CountryName;
         }
+
+        public ActionResult GetClientImages(int? ClientId, int? CountryId)
+        {
+            //String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
+            //String PathE = System.Configuration.ConfigurationManager.AppSettings["Path"].ToString();
+
+            List<Clients> LCC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+
+            if (LCC.LongCount() > 0)
+            {
+                List<Countries> LC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                String CountryName = ReplaceCountryName(LC[0].CountryName);
+
+                List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
+
+                string root = Server.MapPath("~/App_Data/DivisionImages");
+
+              //  var root = Path.Combine(PathP, CountryName, "productshots", ims[0].ImageSize);
+
+                string FileName = LCC[0].Image;
+
+                root = Path.Combine(root, FileName);
+
+                if(System.IO.File.Exists(root))
+                {
+                    return File(root, "image/png");
+                }
+                else
+                {
+                    root = Server.MapPath("~/App_Data/Uploads");
+
+                    FileName = "not_available.png";
+
+                    root = Path.Combine(root, FileName);
+
+                    return File(root, "image/png");
+                }
+
+                
+            }
+            else
+            {
+                string root = Server.MapPath("~/App_Data/Uploads");
+
+                string FileName = "not_available.png";
+
+                root = Path.Combine(root, FileName);
+
+                return File(root, "image/png");
+            }
+        }
     }
 }

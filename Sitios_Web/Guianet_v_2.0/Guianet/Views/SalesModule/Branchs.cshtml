@@ -37,20 +37,20 @@
                     if (ind != null)
                     {
 
-                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CId">
-                            <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BId">
-                            <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EId">
-                            <label>client</label><input id="ClientId" name="ClientId" type="text" value="@ind.ClId">
-                            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
+                <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CId">
+                <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BId">
+                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EId">
+                <label>client</label><input id="ClientId" name="ClientId" type="text" value="@ind.ClId">
+                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"></button>
 
                     }
                     else
                     {
-                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
-                            <label>book</label><input id="BookId" name="BookId" type="text" value="">
-                            <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
-                            <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
-                            <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
+                <label>country</label><input id="CountryId" name="CountryId" type="text" value="">
+                <label>book</label><input id="BookId" name="BookId" type="text" value="">
+                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="">
+                <label>client</label><input id="ClientId" name="ClientId" type="text" value="">
+                <button type="submit" id="InsertParam" value="GridView" class="btn btn-primary" style="color: #333; width: 50px; font-size: 18px"><img src="@Url.Content("~/Images/buscar.png")" style=" height:30px;width:30px;"></button>
                     }
                 }
             </p>
@@ -89,7 +89,7 @@
                                                     foreach (Countries w in countries)
                                                     {
                                                         int CountryId = w.CountryId;
-                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
                                                     }
                                                 }
                                             }
@@ -163,11 +163,11 @@
                                                         int CountryId = ind.CId;
                                                         if (w.CountryId == CountryId)
                                                         {
-                                        <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
+                                <option class="search" id="Country" selected="selected" value="@w.CountryId">@w.CountryName </option>
                                                         }
                                                         else
                                                         {
-                                        <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
+                                <option class="search" id="Country" value="@w.CountryId">@w.CountryName </option>
                                                         }
 
                                                     }
@@ -195,11 +195,11 @@
                                         {
                                             if (_book.BookId == BookId)
                                             {
-                                    <option value="@_book.BookId" selected="selected">@_book.BookName</option>
+                            <option value="@_book.BookId" selected="selected">@_book.BookName</option>
                                             }
                                             else
                                             {
-                                    <option value="@_book.BookId">@_book.BookName</option>
+                            <option value="@_book.BookId">@_book.BookName</option>
                                             }
                                         }
                             }
@@ -225,11 +225,11 @@
                                         {
                                             if (_ed.EditionId == EditionId)
                                             {
-                                    <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
+                            <option value="@_ed.EditionId" selected="selected">@_ed.NumberEdition</option>
                                             }
                                             else
                                             {
-                                    <option value="@_ed.EditionId">@_ed.NumberEdition</option>
+                            <option value="@_ed.EditionId">@_ed.NumberEdition</option>
                                             }
                                         }
                             }
@@ -263,7 +263,7 @@
                                                         select c).Distinct().OrderBy(x => x.CompanyName).ToList();
                                         foreach (Clients c in _clients)
                                         {
-                                    <option value="@c.ClientId">@c.CompanyName</option>
+                            <option value="@c.ClientId">@c.CompanyName</option>
                                         }
                             }
                         </select>
@@ -277,9 +277,18 @@
     @{
         if (ind != null)
         {
-            <div class="col-lg-6" style="text-align:center">
+    <div class="col-lg-6" style="text-align:center">
+        <div class="row">
+            <div class="col-lg-6" style="vertical-align:bottom">
                 <a target="_blank" href="@Url.Action("GetBranchsByClientSM", "GetReports", new { id = "PDF" })"><img src="@Url.Content("~/Images/pdfbranchs.png")" style="height:75px;width:60px"></a>
-            </div>       
+            </div>
+            <div class="col-lg-6">
+                @{
+                    <img src="@Url.Action("GetClientImages", "SalesModule", new { ClientId = ClientIdss, CountryId = CountryIdss })" title="Imagen de Cliente" style="width: 100px; cursor:pointer;border:dotted" />
+                }
+            </div>
+        </div>
+    </div>
         }
     }
 </div>
@@ -289,7 +298,7 @@
     {
         <div class="row">
 
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <table class="widthtable table-hover" border="0">
                     <tr>
                         <td style="width: 15%;"><label class="labelsform">País:</label></td>
@@ -342,10 +351,10 @@
                                           select _cl).ToList();
                                 foreach (Clients _cl in cl)
                                 {
-                                    <span class="spans edtdc" id="SPRSClient">@_cl.CompanyName</span>
-    <input type="text" value="@_cl.CompanyName" class="form-control shdc" style="color:red; display:none" id="RSClient" />
+                            <span class="spans edtdc" id="SPRSClient">@_cl.CompanyName</span>
+                            <input type="text" value="@_cl.CompanyName" class="form-control shdc" style="color:red; display:none" id="RSClient" />
                                 }
-}
+                            }
                         </td>
                     </tr>
                     <tr>
@@ -354,15 +363,15 @@
                             @{
                                 foreach (Clients _cl in cl)
                                 {
-                                    <span class="spans edtdc" id="SPSNClient">@_cl.ShortName</span>
-                                    <input type="text" value="@_cl.ShortName" class="form-control shdc" style="color:red;display:none" id="SNClient"/>
+                            <span class="spans edtdc" id="SPSNClient">@_cl.ShortName</span>
+                            <input type="text" value="@_cl.ShortName" class="form-control shdc" style="color:red;display:none" id="SNClient" />
                                 }
                             }
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <table class="widthtable" border="0">
                     <tr>
                         <td style="width:25%">
@@ -375,7 +384,6 @@
                             <button class="btn btn-danger btn-sm shdc" onclick="CancelClientData()" style="display:none">
                                 Cancelar
                             </button>
-                            
                         </td>
                         <td style="width:25%">
                             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#AddBranch">
@@ -389,9 +397,9 @@
                         </td>
                         <td style="width:25%;text-align:right">
                             @{
-                                var ca = db.ClientAddresses.Where(x => x.ClientId == ClientIdss).ToList();
-                                
-                            <label class="labelsforms">Cantidad de direcciones <br /> Matríz: <span> @ca.LongCount() </span></label>
+        var ca = db.ClientAddresses.Where(x => x.ClientId == ClientIdss).ToList();
+
+        <label class="labelsforms">Cantidad de direcciones <br /> Matríz: <span> @ca.LongCount() </span></label>
                             }
                         </td>
                     </tr>
@@ -404,73 +412,73 @@
 @{
     if (ind != null)
     {
-<div style="width:100%" class="table-responsive">
-    <table class="widthtable">
-        <thead class="webgrid-header">
-            <tr>
-                <th class="column37">Nombre Sucursal</th>
-                <th class="column37">Nombre Corto</th>
-                <th class="column5">Participante</th>
-                <th class="column5">Editar</th>
-                <th class="column10">Cantidad de direcciones</th>
-                <th class="column7">Ver / Editar direcciones</th>
-            </tr>
-        </thead>
-        <tbody style="font-size: 12px; ">
-            @{
-                foreach (BranchsByClients item in Model)
-                {
+        <div style="width:100%" class="table-responsive">
+            <table class="widthtable">
+                <thead class="webgrid-header">
                     <tr>
-                        <td class="column37">
-                            <span class="display-modeB"> <label id="lblCompanyNameB">@item.CompanyName</label> </span>
-                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="CompanyNameB" class="edit-modeB edprod form-control" onkeypress="removerequieredfieldSM($(this))">@item.CompanyName</textarea>
-                            <input id="lblClientIdB" style="display:none;" value="@item.ClientId" />
-                        </td>
-                        <td class="column37">
-                            <span class="display-modeB"> <label id="lblShortNameB">@item.ShortName</label> </span>
-                            <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="ShortNameB" class="edit-modeB edprod form-control">@item.ShortName</textarea>
-                        </td>
-                        <td class="column5 text-center">
-                            @{
-                                bool Participant = false;
-                                int? PP = item.PP;
-
-                                if (PP == 1)
-                                {
-                                    Participant = true;
-                                }
-                                <input type="checkbox" onclick="InsertParticipantClient($(this))" checked="@Participant" />
-                            }
-                        </td>
-                        <td class="column7 text-center">
-                            <button class="btn btn-warning btn-sm display-modeB" onclick="ActivefieldstoEditBranch($(this))">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </button>
-                            <button class="btn btn-primary btn-sm edit-modeB" style="display:none" onclick="SaveChangesBranch($(this))">
-                                <span class="glyphicon glyphicon-ok"></span>
-                            </button>
-                            <button class="btn btn-danger btn-sm edit-modeB" style="display:none" onclick="CancelEditBranch($(this))">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </td>
-                        <td class="column10 text-center">
-                            @{
-                                int? QttyAddress = item.QttyAddress;
-                                <span class="display-mode"> <label id="lblName">@QttyAddress</label> </span>
-                            }
-                        </td>
-                        <td class="column7 text-center">
-                            <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("ClientAddresses", "SalesModule", new { ClientId = item.ClientId })';return false;">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </td>
+                        <th class="column37">Nombre Sucursal</th>
+                        <th class="column37">Nombre Corto</th>
+                        <th class="column5">Participante</th>
+                        <th class="column5">Editar</th>
+                        <th class="column10">Cantidad de direcciones</th>
+                        <th class="column7">Ver / Editar direcciones</th>
                     </tr>
-                }
+                </thead>
+                <tbody style="font-size: 12px; ">
+                    @{
+        foreach (BranchsByClients item in Model)
+        {
+            <tr>
+                <td class="column37">
+                    <span class="display-modeB"> <label id="lblCompanyNameB">@item.CompanyName</label> </span>
+                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="CompanyNameB" class="edit-modeB edprod form-control" onkeypress="removerequieredfieldSM($(this))">@item.CompanyName</textarea>
+                    <input id="lblClientIdB" style="display:none;" value="@item.ClientId" />
+                </td>
+                <td class="column37">
+                    <span class="display-modeB"> <label id="lblShortNameB">@item.ShortName</label> </span>
+                    <textarea style="display:none; color:red; font-size: 12px;" maxlength="200" id="ShortNameB" class="edit-modeB edprod form-control">@item.ShortName</textarea>
+                </td>
+                <td class="column5 text-center">
+                    @{
+            bool Participant = false;
+            int? PP = item.PP;
+
+            if (PP == 1)
+            {
+                Participant = true;
             }
-        </tbody>
-    </table>
-</div>
+            <input type="checkbox" onclick="InsertParticipantClient($(this))" checked="@Participant" />
+                    }
+                </td>
+                <td class="column7 text-center">
+                    <button class="btn btn-warning btn-sm display-modeB" onclick="ActivefieldstoEditBranch($(this))">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    <button class="btn btn-primary btn-sm edit-modeB" style="display:none" onclick="SaveChangesBranch($(this))">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button class="btn btn-danger btn-sm edit-modeB" style="display:none" onclick="CancelEditBranch($(this))">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+                <td class="column10 text-center">
+                    @{
+            int? QttyAddress = item.QttyAddress;
+            <span class="display-mode"> <label id="lblName">@QttyAddress</label> </span>
+                    }
+                </td>
+                <td class="column7 text-center">
+                    <button class="btn btn-primary btn-sm ldr" onclick="location.href='@Url.Action("ClientAddresses", "SalesModule", new { ClientId = item.ClientId })';return false;">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </td>
+            </tr>
         }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 }
 <div class="modal fade" id="AddBranch" role="dialog">
     <div class="modal-dialog">

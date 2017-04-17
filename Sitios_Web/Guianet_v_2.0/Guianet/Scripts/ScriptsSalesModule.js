@@ -1344,7 +1344,7 @@ function SaveChangedAddress(item) {
                 }
             });
 
-            
+
         }
         else if (lgZC < 4) {
             d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
@@ -6701,4 +6701,21 @@ function EditLeafCategoriesLI() {
             }
         })
     }
+}
+
+function AddClientImage() {
+
+    var CLId = $("#ClientId").val();
+    var CId = $("#CountryId").val();
+
+    $("#AddClientImageForm").ajaxSubmit({
+        type: "POST",
+        url: "../Production/AddClientImage",
+        data: { Country: CId,Client: CLId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout('document.location.reload()');
+            }
+        }
+    })
 }
