@@ -329,5 +329,22 @@ namespace Agronet.Controllers.Laboratories
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult DeleteAddresses(string Address, string Division)
+        {
+            int AddressId = int.Parse(Address);
+            int DivisionId = int.Parse(Division);
+
+            List<DivisionInformation> LS = db.DivisionInformation.Where(x => x.DivisionInformationId == AddressId && x.DivisionId == DivisionId).ToList();
+
+            if (LS.LongCount() > 0)
+            {
+                var Delete = db.DivisionInformation.SingleOrDefault(x => x.DivisionInformationId == AddressId && x.DivisionId == DivisionId);
+                db.DivisionInformation.Remove(Delete);
+                db.SaveChanges();
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }

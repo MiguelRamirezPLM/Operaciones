@@ -2,13 +2,18 @@
 @using Agronet.Models;
 @{
     ViewBag.Title = "Index";
-
+    Agronet.Models.Sessions.sessionRPP sessionRPP = (Agronet.Models.Sessions.sessionRPP)Session["sessionRPP"];
     Agronet.Models.Sessions.sessionVM ind = (Agronet.Models.Sessions.sessionVM)Session["sessionVM"];
-    WebGrid _datagrid = new WebGrid(Model, rowsPerPage:25);
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage: 25);
 
     DEAQ db = new DEAQ();
-    
+
     int DivisionId, EditionId, BookId, CountryId;
+    bool s0 = false;
+    bool s10 = false;
+    bool s50 = false;
+    bool s100 = false;
+    bool s1 = false;
 
     if (ind != null)
     {
@@ -23,6 +28,26 @@
         EditionId = 0;
         BookId = 0;
         CountryId = 0;
+    }
+
+    if (sessionRPP != null)
+    {
+        if (sessionRPP.Quantity == 0)
+        {
+            _datagrid = new WebGrid(Model, rowsPerPage: 25);
+        }
+        else if (sessionRPP.Quantity == 1)
+        {
+            _datagrid = new WebGrid(Model, rowsPerPage: Convert.ToInt32(Model.LongCount()));
+        }
+        else
+        {
+            _datagrid = new WebGrid(Model, rowsPerPage: sessionRPP.Quantity);
+        }
+    }
+    else
+    {
+        _datagrid = new WebGrid(Model, rowsPerPage: 25);
     }
 }
 
@@ -40,28 +65,28 @@
                 <td colspan="3">
                     @using (Html.BeginForm())
                     {
-                        <div style="text-align:right;display:none">
-                            <p>
-                                @{
+                    <div style="text-align:right;display:none">
+                        <p>
+                            @{
                         if (ind != null)
                         {
-                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CountryId" style="width:30px">
-                                    <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BookId" style="width:30px">
-                                    <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EditionId" style="width:30px">
-                                    <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="@ind.DivisionId" style="width:30px">
-                                    <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                                <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CountryId" style="width:30px">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="@ind.BookId" style="width:30px">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="@ind.EditionId" style="width:30px">
+                                <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="@ind.DivisionId" style="width:30px">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
                         }
                         else
                         {
-                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="" style="width:30px">
-                                    <label>book</label><input id="BookId" name="BookId" type="text" value="" style="width:30px">
-                                    <label>edition</label><input id="EditionId" name="EditionId" type="text" value="" style="width:30px">
-                                    <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="" style="width:30px">
-                                    <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                                <label>country</label><input id="CountryId" name="CountryId" type="text" value="" style="width:30px">
+                                <label>book</label><input id="BookId" name="BookId" type="text" value="" style="width:30px">
+                                <label>edition</label><input id="EditionId" name="EditionId" type="text" value="" style="width:30px">
+                                <label>client</label><input id="DivisionId" name="DivisionId" type="text" value="" style="width:30px">
+                                <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
                         }
-                                }
-                            </p>
-                        </div>
+                            }
+                        </p>
+                    </div>
                     }
                 </td>
             </tr>
@@ -76,9 +101,9 @@
                     @{
                         if (ind != null)
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getBooks($(this).val())" id="Countries">
-                                <option>Seleccione...</option>
-                                @{
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getBooks($(this).val())" id="Countries">
+                        <option>Seleccione...</option>
+                        @{
                             CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
                             if (Session["CountriesUsers"] == null)
                             {
@@ -98,23 +123,23 @@
                                     {
                                         if (w.CountryId == CountryId)
                                         {
-                                            <option id="Country" value="@w.CountryId" selected="selected">@w.CountryName </option>
+                                <option id="Country" value="@w.CountryId" selected="selected">@w.CountryName </option>
                                         }
                                         else
                                         {
-                                            <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                <option id="Country" value="@w.CountryId">@w.CountryName </option>
                                         }
                                     }
                                 }
                             }
-                                }
-                            </select>
+                        }
+                    </select>
                         }
                         else
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getBooks($(this).val())" id="Countries">
-                                <option>Seleccione...</option>
-                                @{
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getBooks($(this).val())" id="Countries">
+                        <option>Seleccione...</option>
+                        @{
                             CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
                             if (Session["CountriesUsers"] == null)
                             {
@@ -132,12 +157,12 @@
                                                      select country);
                                     foreach (Countries w in countries)
                                     {
-                                        <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                <option id="Country" value="@w.CountryId">@w.CountryName </option>
                                     }
                                 }
                             }
-                                }
-                            </select>
+                        }
+                    </select>
                         }
                     }
 
@@ -155,27 +180,27 @@
                     @{
                         if (ind != null)
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())">
-                                @{
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())">
+                        @{
                             var bk = db.Books.Where(x => x.Active == true).OrderBy(x => x.BookName);
                             foreach (Books _bk in bk)
                             {
                                 if (_bk.BookId == BookId)
                                 {
-                                    <option value="@_bk.BookId" selected="selected">@_bk.BookName</option>
+                                <option value="@_bk.BookId" selected="selected">@_bk.BookName</option>
                                 }
                                 else
                                 {
-                                    <option value="@_bk.BookId">@_bk.BookName</option>
+                                <option value="@_bk.BookId">@_bk.BookName</option>
                                 }
                             }
-                                }
-                            </select>
+                        }
+                    </select>
 
                         }
                         else
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())"></select>
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())"></select>
                         }
                     }
 
@@ -192,27 +217,27 @@
                     @{
                         if (ind != null)
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Editions" onchange="getDivisions($(this).val())">
-                                <option>Seleccione...</option>
-                                @{
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Editions" onchange="getDivisions($(this).val())">
+                        <option>Seleccione...</option>
+                        @{
                                     var e = db.Editions.Where(x => x.BookId == BookId && x.CountryId == CountryId).OrderBy(x => x.NumberEdition).ToList();
                                     foreach (Editions _e in e)
                                     {
                                         if (_e.EditionId == EditionId)
                                         {
-                                            <option value="@_e.EditionId" selected="selected">@_e.NumberEdition</option>
+                                <option value="@_e.EditionId" selected="selected">@_e.NumberEdition</option>
                                         }
                                         else
                                         {
-                                            <option value="@_e.EditionId">@_e.NumberEdition</option>
+                                <option value="@_e.EditionId">@_e.NumberEdition</option>
                                         }
                                     }
-                                }
-                            </select>
+                        }
+                    </select>
                         }
                         else
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Editions" onchange="getDivisions($(this).val())"></select>
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Editions" onchange="getDivisions($(this).val())"></select>
                         }
                     }
                 </td>
@@ -228,20 +253,20 @@
                     @{
                         if (ind != null)
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="getresults($(this).val())">
-                                <option>Seleccione...</option>
-                                @{
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="getresults($(this).val())">
+                        <option>Seleccione...</option>
+                        @{
                                     List<Divisions> LD = db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
                                     foreach (Divisions _d in LD)
                                     {
-                                        <option value="@_d.DivisionId">@_d.DivisionName</option>
+                                <option value="@_d.DivisionId">@_d.DivisionName</option>
                                     }
-                                }
-                            </select>
+                        }
+                    </select>
                         }
                         else
                         {
-                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="getresults($(this).val())"></select>
+                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="getresults($(this).val())"></select>
                         }
                     }
 
@@ -262,11 +287,11 @@
                         <td><label class="title-filter">País:</label></td>
                         <td>
                             @{
-                                var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+        var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
 
                                 if (c.LongCount() > 0)
                                 {
-                                    <span style="font-style: oblique; font-weight: bold">@c[0].CountryName</span>
+                            <span style="font-style: oblique; font-weight: bold">@c[0].CountryName</span>
                                 }
                             }
                         </td>
@@ -279,7 +304,7 @@
 
                                 if (b.LongCount() > 0)
                                 {
-                                    <span style="font-style: oblique; font-weight: bold">@b[0].BookName</span>
+                            <span style="font-style: oblique; font-weight: bold">@b[0].BookName</span>
                                 }
                             }
                         </td>
@@ -292,7 +317,7 @@
 
                                 if (ed.LongCount() > 0)
                                 {
-                                    <span style="font-style: oblique; font-weight: bold">@ed[0].NumberEdition</span>
+                            <span style="font-style: oblique; font-weight: bold">@ed[0].NumberEdition</span>
                                 }
                             }
                         </td>
@@ -305,13 +330,91 @@
 
                                 if (dv.LongCount() > 0)
                                 {
-                                    <span style="font-style:oblique; font-weight:bold">@dv[0].DivisionName</span>
+                            <span style="font-style:oblique; font-weight:bold">@dv[0].DivisionName</span>
                                 }
                             }
                         </td>
                     </tr>
                 </table>
             </div>
+            <div class="col-lg-3">
+                <table class="widthtable" border="0">
+                    <tr>
+                        <td>
+                            <label class="title-filter">Registros por Página:</label>
+                        </td>
+                        <td>
+                            <select class="form-control" onchange="rowsperpage($(this))" style="font-style:normal;color:red">
+                                @{
+                                    if (sessionRPP != null)
+                                    {
+                                        if (sessionRPP.Quantity == 0)
+                                        {
+                                            s0 = true;
+                                        }
+                                        if (sessionRPP.Quantity == 10)
+                                        {
+                                            s10 = true;
+                                        }
+                                        if (sessionRPP.Quantity == 50)
+                                        {
+                                            s50 = true;
+
+                                        }
+                                        if (sessionRPP.Quantity == 100)
+                                        {
+                                            s100 = true;
+                                        }
+                                        if (sessionRPP.Quantity == 1)
+                                        {
+                                            s1 = true;
+                                        }
+
+                                            <option value="0" id="S0" selected="@s0">Seleccione...</option>
+                                            <option value="10" id="S10" selected="@s10">10</option>
+                                            <option value="50" id="S50" selected="@s50">50</option>
+                                            <option value="100" id="S100" selected="@s100">100</option>
+                                            <option value="1" selected="@s1">Ilimitado</option>
+                                    }
+                                    else
+                                    {
+                                            <option value="0" id="S0">Seleccione...</option>
+                                            <option value="10" id="S10">10</option>
+                                            <option value="50" id="S50">50</option>
+                                            <option value="100" id="S100">100</option>
+                                            <option value="1">Ilimitado</option>
+                                    }
+                                }
+
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-3" style="text-align: center; border: none">
+                @using (Html.BeginForm("Index", "Clasification"))
+                {
+                    <div class="input-group stylish-input-group" style="text-align: center; border: none;float:right; font-style:normal">
+                        @{
+                    Agronet.Models.Sessions.SearchProductNameSM SearchProductNameSM = (Agronet.Models.Sessions.SearchProductNameSM)Session["SearchProductNameSM"];
+                    if (SearchProductNameSM != null)
+                    {
+                        @Html.TextBox("ProductName", SearchProductNameSM.ProductName, new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
+                    }
+                    else
+                    {
+                        @Html.TextBox("ProductName", "", new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
+                    }
+                        }
+                        <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
+                            <button type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                }
+            </div>
+
         </div>
     }
 }
@@ -358,52 +461,52 @@
                 @{
                     if (item.NumberOfActiveSubstances != 0)
                     {
-                        <input type="checkbox" checked="checked" onclick="SIDEF($(this))" id="SIDEF" disabled="disabled"/>
+                        <input type="checkbox" checked="checked" onclick="SIDEF($(this))" id="SIDEF" disabled="disabled" />
                     }
                     else
                     {
                         <input type="checkbox" onclick="SIDEF($(this))" id="SIDEF" disabled="disabled" />
                     }
-}
+                }
                                 </text>, style:"text-center column7"),
 
                                     _datagrid.Column("", header: "Cultivos", format: @<text>
                 @{
-    if (item.NumberOfCrops != 0)
-    {
-        <input type="checkbox" checked="checked" onclick="Participant($(this))" id="Participant" disabled="disabled" />
-    }
-    else
-    {
-        <input type="checkbox" onclick="Participant($(this))" id="Participant" disabled="disabled" />
-    }
-}
+                    if (item.NumberOfCrops != 0)
+                    {
+                        <input type="checkbox" checked="checked" onclick="Participant($(this))" id="Participant" disabled="disabled" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" onclick="Participant($(this))" id="Participant" disabled="disabled" />
+                    }
+                }
                                     </text>, style:"text-center column7"),
                                     _datagrid.Column("", header: "Usos Agroquímicos", format: @<text>
                 @{
-    if (item.NumberOfAgrochemicalUses != 0)
-    {
-        <input type="checkbox" checked="checked" id="Mentionated" onclick="Mentionated($(this))" disabled="disabled" />
-    }
-    else
-    {
-        <input type="checkbox" id="Mentionated" onclick="Mentionated($(this))" disabled="disabled" />
-    }
-}
+                    if (item.NumberOfAgrochemicalUses != 0)
+                    {
+                        <input type="checkbox" checked="checked" id="Mentionated" onclick="Mentionated($(this))" disabled="disabled" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="Mentionated" onclick="Mentionated($(this))" disabled="disabled" />
+                    }
+                }
                                     </text>, style:"text-center column7"),
                                     _datagrid.Column("", header: "Semillas", format: @<text>
                 @{
-    if (item.NumberOfSeeds != 0)
-    {
-        <input type="checkbox" checked="checked" onclick="ProductChanges($(this))" id="ProductChanges" disabled="disabled" />
-    }
-    else
-    {
-        <input type="checkbox" onclick="ProductChanges($(this))" id="ProductChanges" disabled="disabled" />
-    }
-}
+                    if (item.NumberOfSeeds != 0)
+                    {
+                        <input type="checkbox" checked="checked" onclick="ProductChanges($(this))" id="ProductChanges" disabled="disabled" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" onclick="ProductChanges($(this))" id="ProductChanges" disabled="disabled" />
+                    }
+                }
                                     </text>, style:"text-center column7"),
-                                    _datagrid.Column("", header: "Editar índices", format: @<text>
+                                    _datagrid.Column("", header: "Clasificar", format: @<text>
                 @{
                     <button class="btn btn-danger btn-sm ldr" id="clasifbtn" style="display:normal" onclick="location.href='@Url.Action("ActiveSubstances", "Clasification", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId })';return false;">
                         <span class="glyphicon glyphicon-cog"></span>
@@ -412,7 +515,7 @@
                                     </text>, style:"text-center column7"),
 
                                 }
-                                                                                                                                                                                                                                                          )
+                                                                                                                                                                                                                                                           )
         </div>
     }
 }

@@ -213,7 +213,7 @@
             </div>
             <div class="col-lg-7">
                 <div class="col-lg-4" style="text-align: center; border: none">
-                    <img src="@Url.Content("~/Images/user.png")" style="width:80px; cursor:pointer" title="Agregar Imagen"/>
+                    <img src="@Url.Content("~/Images/user.png")" style="width:80px; cursor:pointer" title="Imagen de Cliente"/>
                 </div>
                 <div class="col-lg-4" style="text-align: center; border: none; ">
                     <button class="btn btn-warning show-dataD" onclick="ShowEditDivs()">
@@ -342,6 +342,13 @@
         <span class="glyphicon glyphicon-ok"></span>
     </button>
     <button class="btn btn-danger btn-sm edit-dataA" style="display:none" onclick="CancelEditAddress($(this))">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+}
+            </text>, style:"text-center column7"),
+                        _datagrid.Column("", header: "Eliminar", format: @<text>
+                @{
+    <button class="btn btn-danger btn-sm" value="@item.DivisionInformationId" onclick="DeleteAddresses($(this))">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
 }

@@ -297,8 +297,6 @@ namespace Agronet.Controllers.Products
                 db.SaveChanges();
             }
 
-
-
             List<ParticipantProducts> LPP = db.ParticipantProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
 
             if (LPP.LongCount() == 0)
@@ -356,6 +354,15 @@ namespace Agronet.Controllers.Products
                 var delete = db.ParticipantProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                 db.ParticipantProducts.Remove(delete);
                 db.SaveChanges();
+
+                List<NewProducts> LNP = db.NewProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
+
+                if (LNP.LongCount() > 0)
+                {
+                    var Delete = db.NewProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
+                    db.NewProducts.Remove(Delete);
+                    db.SaveChanges();
+                }
 
                 return Json(true, JsonRequestBehavior.AllowGet);
             }

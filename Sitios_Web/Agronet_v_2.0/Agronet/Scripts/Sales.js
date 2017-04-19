@@ -348,6 +348,7 @@ function Participant(item) {
                     tr.find("#Mentionated").prop("checked", false);
                     tr.find("#SIDEF").prop("checked", false);
                     tr.find("#ProductChanges").prop("checked", false);
+                    tr.find("#NewProducts").prop("checked", false);
                 }
             }
         })
@@ -1004,6 +1005,30 @@ function DeleteProductSeeds(item) {
         dataType: "Json",
         url: "../Clasification/DeleteProductSeeds",
         data: { Product: PId, Seed: SId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else {
+                $("#bloqueo").hide();
+            }
+        }
+    })
+
+}
+
+function DeleteAddresses(item) {
+
+    $("#bloqueo").show();
+
+    var Id = $(item).val();
+    var DId = $("#DivisionId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Laboratories/DeleteAddresses",
+        data: { Address: Id, Division: DId },
         success: function (data) {
             if (data == true) {
                 setTimeout("document.location.reload()");
