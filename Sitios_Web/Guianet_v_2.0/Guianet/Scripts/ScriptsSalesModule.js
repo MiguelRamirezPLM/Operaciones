@@ -6711,11 +6711,31 @@ function AddClientImage() {
     $("#AddClientImageForm").ajaxSubmit({
         type: "POST",
         url: "../Production/AddClientImage",
-        data: { Country: CId,Client: CLId },
+        data: { Country: CId, Client: CLId },
         success: function (data) {
             if (data == true) {
                 setTimeout('document.location.reload()');
             }
+        }
+    })
+}
+
+
+function DeleteProductAdverts(item) {
+
+    $("#bloqueo").show();
+
+    var Id = $(item).val();
+    var CId = $("#ClientId").val();
+    var EId = $("#EditionId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../SalesModule/DeleteProductAdverts",
+        data: { ProductAdvert: Id, Client: CId, Edition: EId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
         }
     })
 }

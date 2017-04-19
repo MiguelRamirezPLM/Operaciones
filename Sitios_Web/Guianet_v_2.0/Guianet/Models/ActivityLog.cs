@@ -597,6 +597,32 @@ namespace Guianet.Models
             }
         }
 
+        public void AddClientImage(int ClientId, string FileName, int OperationId)
+        {
+            var table = from Tables1 in dbusers.Tables
+                        where Tables1.Description == "Clients"
+                        && Tables1.ApplicationId == c.ApplicationId
+                        select Tables1;
+            foreach (Tables tbl in table)
+            {
+                if (tbl.Description.Equals("Clients"))
+                {
+                    int TableId = tbl.TableId;
+
+                    ActivityLogs = new Models.ActivityLogs();
+
+                    ActivityLogs.UserId = c.userId;
+                    ActivityLogs.TableId = TableId;
+                    ActivityLogs.OperationId = OperationId;
+                    ActivityLogs.Date = DateTime.Now;
+                    ActivityLogs.PrimaryKeyAffected = ("(ClientId," + ClientId + ")");
+                    ActivityLogs.FieldsAffected = ("(Image," + FileName + ")");
+
+                    dbusers.ActivityLogs.Add(ActivityLogs);
+                    dbusers.SaveChanges();
+                }
+            }
+        }
 
         /************************* ************************ ************************ ************************ ************************ */
         /************************               ADVERTS          ************************ */

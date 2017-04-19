@@ -4513,7 +4513,7 @@ namespace Guianet.Controllers.Production
 
             FileName = FileName + Extention;
 
-            
+
 
             //List<Countries> LCC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
 
@@ -4532,6 +4532,8 @@ namespace Guianet.Controllers.Production
                 foreach (Clients item in LC)
                 {
                     item.Image = FileName;
+
+                    ActivityLog.AddClientImage(ClientId, FileName, 2);
 
                     db.SaveChanges();
                 }
