@@ -376,7 +376,7 @@
         var theEvent = evt || window.event;
         var key = theEvent.keyCode || theEvent.which;
         key = String.fromCharCode(key);
-        var regex = /[0-9]|\./;
+        var regex = /[0-9]|\./; 
         if (!regex.test(key)) {
             theEvent.returnValue = false;
             if (theEvent.preventDefault) theEvent.preventDefault();
@@ -864,6 +864,7 @@
                 DivisionId: _vdivisionId
             },
             success: function (data) {
+                var QtyExternalPackEdit = "Seleccione...";
                 if (data == false) {
                     $("#_elementPresentation tbody").append(
                         "<tr>"
@@ -913,37 +914,432 @@
                         else {
                             $("#_dvPresentations").removeClass("heightdiv");
                         }
-                        $("#_elementPresentation tbody").append(         
+                        $("#_elementPresentation tbody").append(
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyExternalPackP'>" + item.QtyExternalPack + "</span><input type='hidden' id='ExternalPackIdP' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='ExternalPackNameP'>" + item.ExternalPackName + "</span></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyInternalPackP'>" + item.QtyInternalPack + "</span><input type='hidden' id='InternalPackIdP' value='" + item.InternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='InternalPackNameP'>" + item.InternalPackName + "</span></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyContentUnitP'>" + item.QtyContentUnit + "</span><input type='hidden' id='ContentUnitIdP' value='" + item.ContentUnitId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='ContentUnitNameP'>" + item.ContentUnitName + "</span></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span><input type='hidden' id='WeightUnitIdP' value='" + item.WeightUnitId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='WeightUnitNameP'>" + item.WeightUnitName + "</span></td>"
-                            + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
-                            //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyExternalPackP'>" + item.QtyExternalPack + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtQtyExternalPack' onkeypress='validate(event)'>" + item.QtyExternalPack + "</textarea> <input type='hidden' id='ExternalPackIdP' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='ExternalPackNameP'>" + item.ExternalPackName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectQtyExternalPackID' >   <option value='" + item.ExternalPackId + "' id='ExternalPackNameP' >" + item.ExternalPackName + "</option> </select>    </td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyInternalPackP'>" + item.QtyInternalPack + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtInternalPack' onkeypress='validate(event)'>" + item.QtyInternalPack + "</textarea><input type='hidden' id='InternalPackIdP' value='" + item.InternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='InternalPackNameP'>" + item.InternalPackName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectInternalPackID' >   <option value='" + item.InternalPackId + "' id='InternalPackNameP' >" + item.InternalPackName + "</option> </select>    </td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyContentUnitP'>" + item.QtyContentUnit + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtQtyContentUnit' onkeypress='validate(event)'>" + item.QtyContentUnit + "</textarea><input type='hidden' id='ContentUnitIdP' value='" + item.ContentUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='ContentUnitNameP'>" + item.ContentUnitName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectContentUnitIdID' >   <option value='" + item.ContentUnitId + "' id='ContentUnitNameP' >" + item.ContentUnitName + "</option> </select>    </td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtQtyWeightUnit' onkeypress='validate(event)'>" + item.QtyWeightUnit + "</textarea><input type='hidden' id='WeightUnitIdP' value='" + item.WeightUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='WeightUnitNameP'>" + item.WeightUnitName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectWeightUnitIdID' >   <option value='" + item.WeightUnitId + "' id='WeightUnitNameP' >" + item.WeightUnitName + "</option> </select>    </td>"
+                            + "<td id='_vlxpresentation' style='vertical-align:middle' class='labelsgnr' align='center'>" + item.Presentation + "</td>"
+                        //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
-                            + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading'>"
+                            + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading show-Presentation'>"
                             + "<i class='glyphicon glyphicon-pencil'>"
                             + "</i>"
-                            + "</button>"
+                            + "</button><button class='btn btn-primary btn-sm edit-Presentation' onclick='savechangesPresentation($(this))' style='display:none'><span class='glyphicon glyphicon-ok'></span></button><button class='btn btn-danger btn-sm edit-Presentation' onclick='disablefields($(this))' style='display:none'><span class='glyphicon glyphicon-remove'></span></button>"
                             + "</td>"
                             + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlpresentationId' type='hidden' value='" + item.PresentationId + "'>"
+
+                         
+
                             + "<button onclick='_vldpresentation($(this))' class='btn btn-danger btn-sm loading'>"
                             + "<i class='glyphicon glyphicon-remove'>"
                             + "</i>"
                             + "</td>"
                             + "</tr>"
                             );
+
                     });
                 }
             }
         });
+
+        
+
     }
 </script>
+<script>
+    function disablefields(item) {
+        var tr = $(item).parents("tr:first");
+
+        tr.find('.show-Presentation').show();
+        tr.find('.edit-Presentation').hide();
+
+        tr.find("#QtyExternalPackP").val(sessionStorage.txtQtyExternalPack);
+        tr.find("#txtInternalPack").val(sessionStorage.txtInternalPack);
+        tr.find("#txtQtyContentUnit").val(sessionStorage.txtContentUnit);
+      
+    }
+</script>
+
+<script>
+    function savechangesPresentation(item)
+    {
+        var tr = $(item).parents("tr:first");
+        var _QtyExternalPack = tr.find("#txtQtyExternalPack").val();
+        var _ORExternalPackID = tr.find("#ExternalPackIdP").val();
+        var _ExternalPackID = tr.find("#selectQtyExternalPackID").val();
+        var _QtyInternalPack = tr.find("#txtInternalPack").val();
+        var _InternalPackID = tr.find("#selectInternalPackID").val();
+        var _ORInternalPackID = tr.find("#InternalPackIdP").val();
+        var _QtyContentUnit = tr.find("#txtQtyContentUnit").val();
+        var _ContentUnitIdID = tr.find("#selectContentUnitIdID").val();
+        var _ORContentUnitIdID = tr.find("#ContentUnitIdP").val();
+        var _QtyWeightUnit = tr.find("#txtQtyWeightUnit").val();
+        var _WeightUnitIdID = tr.find("#selectWeightUnitIdID").val();
+        var _ORWeightUnitIdID = tr.find("#WeightUnitIdP").val();
+        var _UserID = $("#_iduser").val();
+        var _HasKey = $("#_haskey").val();
+        var add = true;
+        var error = "";
+       
+        /////////////////// Paquete externo
+        alert("Id original EP : " + _ORExternalPackID + "\n ID seleccionado EP: " + _ExternalPackID);
+
+        if (!tr.find("#txtQtyExternalPack").val().match(/^(|([0-9]{1,50}(\.([0-9]{1,50})?)?))$/))
+        {
+            error = error + "Ingrese una cantidad correcta \n";
+            add = false
+        }
+        else
+        {
+            
+            if (_ORExternalPackID == null || _ORExternalPackID == "null" )  //Cuando no exista un paquete externo
+            {
+                if (_QtyExternalPack > 0 && _ExternalPackID != 0 )
+                {
+                    alert("EP Con Valores: " + _QtyExternalPack + "\n El ID es : " + _ExternalPackID);
+                }
+                else if (_QtyExternalPack == "" && _ExternalPackID == 0 )
+                {
+                    _QtyExternalPack = 0;
+                    _ExternalPackID = 0;
+                    alert("Paquete Externo:\n  No se guarda. Cantidad: " + _QtyExternalPack + "\n ID: " + _ExternalPackID);
+                }
+                else
+                {
+                    error = error + "Paquete Externo:\n La cantidad del paquete externo esta vacia o no ha seleccionado el tipo de paquete exteno \n";
+                    addd = false;
+                }
+                
+            }
+            else
+            {
+                if (_QtyExternalPack > 0)
+                {
+                    if (_ExternalPackID == 0)
+                    {
+
+                        _ExternalPackID = _ORExternalPackID;
+                        alert("ID original: " + _ExternalPackID);
+                    }
+                    else
+                    {
+                        alert("ID Seleccionado: " + _ExternalPackID);
+                    }
+                }
+                else 
+                {
+                    error = error + "Paquete Externo:\n La cantidad del paquete externo esta vacia o no ha seleccionado el tipo de paquete exteno \n";
+                    add = false;
+                }
+                
+            }
+            
+        }
+
+       
+        alert("Cantidad ExternalPack: " + _QtyExternalPack + "\n ExternalPackID: " + _ExternalPackID);
+
+        /////////////////////////////////////////////////////////////////////////// Paquete Interno
+        alert("IP Id original: " + _ORInternalPackID + "\n ID seleccionado: " + _InternalPackID);
+
+        if (!tr.find("#txtInternalPack").val().match(/^(|([0-9]{1,50}(\.([0-9]{1,50})?)?))$/))
+        {
+            error = error + "Ingrese una cantidad correcta \n";
+            add = false; 
+        }
+        else
+        {
+
+            if (_ORInternalPackID == null || _ORInternalPackID == "null")  //Cuando no exista un paquete interno
+            {
+                if (_QtyInternalPack > 0 && _InternalPackID != 0) {
+                    alert("Con Valores: " + _QtyInternalPack + "\n El ID es : " + _InternalPackID);
+                }
+                else if (_QtyInternalPack == "" && _InternalPackID == 0) {
+                    _QtyInternalPack = 0;
+                    _InternalPackID = 0;
+                    alert("No se guarda. Cantidad: " + _QtyInternalPack + "\n ID: " + _InternalPackID);
+                }
+                else {
+                    error = error + "Paquete Interno :\n La cantidad del paquete interno esta vacia o no ha seleccionado el tipo de paquete interno \n";
+                    add = false;
+                }
+
+            }
+            else {
+                if (_QtyInternalPack > 0) {
+                    if (_InternalPackID == 0) {
+
+                        _InternalPackID = _ORInternalPackID;
+                        alert("IP ID original: " + _InternalPackID);
+                    }
+                    else {
+                        alert("IP ID Seleccionado: " + _InternalPackID);
+                    }
+                }
+                else {
+                    error = error + "Paquete Interno:\n La cantidad del paquete interno esta vacia o no ha seleccionado el tipo de paquete interno \n";
+                    add = false;
+                }
+
+            }
+
+        }
+
+
+        alert("Cantidad InternalPack: " + _QtyInternalPack + "\n InternalPackID: " + _InternalPackID);
+        
+        /////////////////////////////////////////////////////////////////////////// Cantidad de producto terminar
+        alert("CP Id original: " + _ORContentUnitIdID + "\n ID seleccionado: " + _ContentUnitIdID);
+
+        if (!tr.find("#txtQtyContentUnit").val().match(/^(|([0-9]{1,50}(\.([0-9]{1,50})?)?))$/)) {
+            error = error + "Ingrese una cantidad correcta \n";
+            add = false;
+        }
+        else {
+
+            if (_ORContentUnitIdID == null || _ORContentUnitIdID == "null")  //Cuando no exista cantidad de producto 
+            {
+                if (_QtyContentUnit > 0 && _ContentUnitIdID != 0) {
+                    alert("Con Valores: " + _QtyContentUnit + "\n El ID es : " + _ContentUnitIdID);
+                }
+                else if (_QtyContentUnit == "" && _ContentUnitIdID == 0) {
+                    _QtyContentUnit = 0;
+                    _ContentUnitIdID = 0;
+                    alert("No se guarda. Cantidad: " + _QtyContentUnit + "\n ID: " + _ContentUnitIdID);
+                }
+                else {
+                    error = error + "Contenido de Producto :\n La cantidad de producto esta vacia o no ha seleccionado el tipo de cantidad de producto \n";
+                    add = false;
+                }
+
+            }
+            else {
+                if (_QtyContentUnit > 0) {
+                    if (_ContentUnitIdID == 0) {
+
+                        _ContentUnitIdID = _ORContentUnitIdID;
+                        alert("CP ID original: " + _ContentUnitIdID);
+                    }
+                    else {
+                        alert("CP ID Seleccionado: " + _ContentUnitIdID);
+                    }
+                }
+                else {
+                    error = error + "Contenido de Producto :\n La cantidad de producto esta vacia o no ha seleccionado el tipo de cantidad de producto  \n";
+                    add = false;
+                }
+
+            }
+
+        }
+
+
+        alert("Cantidad de Producto: " + _QtyContentUnit + "\n ContentUnitId: " + _ContentUnitIdID);
+
+
+        /////////////////////////////////////////////////////////////////////////// Cantidad de concentración de producto
+        alert("WP Id original: " + _ORWeightUnitIdID + "\n ID seleccionado: " + _WeightUnitIdID);
+
+        if (!tr.find("#txtQtyWeightUnit").val().match(/^(|([0-9]{1,50}(\.([0-9]{1,50})?)?))$/)) {
+            error = error + "Ingrese una cantidad correcta \n";
+            add = false;
+        }
+        else {
+
+            if (_ORWeightUnitIdID == null || _ORWeightUnitIdID == "null")  //Cuando no exista Cantidad de concentración de producto
+            {
+                if (_QtyWeightUnit > 0 && _WeightUnitIdID != 0) {
+                    alert("Con Valores: " + _QtyWeightUnit + "\n El ID es : " + _WeightUnitIdID);
+                }
+                else if (_QtyWeightUnit == "" && _WeightUnitIdID == 0) {
+                    _QtyWeightUnit = 0;
+                    _WeightUnitIdID = 0;
+                    alert("No se guarda. Cantidad: " + _QtyWeightUnit + "\n ID: " + _WeightUnitIdID);
+                }
+                else {
+                    error = error + "Contenido de producto :\n Cantidad de concentración de productoesta vacia o no ha seleccionado el tipo de Concentración de producto \n";
+                    add = false;
+                }
+
+            }
+            else {
+                if (_QtyWeightUnit > 0) {
+                    if (_WeightUnitIdID == 0) {
+
+                        _WeightUnitIdID = _ORWeightUnitIdID;
+                        alert("WP ID original: " + _WeightUnitIdID);
+                    }
+                    else {
+                        alert("WP ID Seleccionado: " + _WeightUnitIdID);
+                    }
+                }
+                else {
+                    error = error + "Cantidad de concentración de producto:\n La  cantidad de concentración de productoesta vacia o no ha seleccionado el tipo de Concentración de producto \n";
+                    add = false;
+                }
+
+            }
+
+        }
+        alert("Cantidad de concentración de producto: " + _QtyWeightUnit + "\n Concentración de producto: " + _WeightUnitIdID);
+
+        if (add == true)
+        {
+            alert("Cambios guardados correctamente");
+
+            @*$.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "@Url.Content("~/Production/AddPresentation")",
+                data: {
+                EditionId:_vlxeditionId,
+                DivisionId:_vlxdivisionId ,
+                CategoryId:_vlxcategoryId,
+                ProductId: _vlxproductId,
+                PharmaFormId:_vlxpharmaFormId,
+                QtyExternalPack:_vlxexternalPack ,
+                ExternalPackId:_vlzexternalPackId,
+                QtyInternalPack: _vlxinternalPack,
+                InternalPackId:_vlzinternalPackId,
+                QtyContentUnit:_vlxcontentUnits,
+                ContentUnitId:_vlzcontentUnitsId,
+                QtyWeightUnit:_vlxweightUnits,
+                WeightUnitId: _vlzweightUnitsId,
+                UserId: _UserID,
+                HashKey: _HasKey
+            },
+            success: function (data) {
+
+                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+            },
+            });*@
+
+
+        }
+        else
+        {
+            alert(error);
+        }
+        
+
+    }
+</script>
+@**@
+
+<script>
+    function _vlepresentation(item) {
+        var tr = $(item).parents("tr:first");
+        var valor = tr.find("#selectQtyExternalPackID").val();
+        var texto = tr.find("#selectQtyExternalPackID").text();
+        
+        tr.find("#selectQtyExternalPackID").empty();
+        tr.find("#selectInternalPackID").empty();
+        tr.find("#selectContentUnitIdID").empty();
+        tr.find("#selectWeightUnitIdID").empty();
+
+        tr.find('.show-Presentation').hide();
+        tr.find('.edit-Presentation').show();
+        
+        $("#txtQtyExternalPack").empty();
+        $("#txtInternalPack").empty();
+        $("#txtQtyContentUnit").empty();
+        
+
+        var QExternalPack = tr.find("#QtyExternalPackP").text();
+        var QInternalPack = tr.find("#QtyInternalPackP").text(); 
+        var QContentUnit = tr.find("#QtyContentUnitP").text();
+        
+
+        $("#txtQtyExternalPack").val(QExternalPack);
+        $("#txtInternalPack").val(QInternalPack);
+        $("#txtQtyContentUnit").val(QContentUnit);
+
+        sessionStorage.txtQtyExternalPack = QExternalPack;
+        sessionStorage.txtInternalPack = QInternalPack;
+        sessionStorage.txtContentUnit = QContentUnit;
+
+            $.ajax({
+                Type: "POST",
+                dataType: "Json",
+                url: "@Url.Content("~/Production/getExternalPack")",
+                data: {},
+                success: function (data) {
+                    tr.find("#selectQtyExternalPackID").append("<option value='0'>Seleccione</option>");
+
+                    $.each(data, function (index, val) {
+                        tr.find("#selectQtyExternalPackID")
+                        .append($("<option></option>")
+                        .attr("value", val.ExternalPackId)
+                        .text(val.ExternalPackName));
+                    });
+                }
+            })
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getInternalPack")",
+            traditional: true,
+        data: {},
+        success: function (data) {
+           
+            tr.find("#selectInternalPackID").append("<option value='0'>Seleccione</option>");
+
+            $.each(data, function (index, val) {
+                tr.find("#selectInternalPackID")
+                        .append($("<option></option>")
+                        .attr("value", val.InternalPackId)
+                        .text(val.InternalPackName));
+            });
+        }
+        });
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getContentUnits")",
+            traditional: true,
+        data: {},
+        success: function (data) {
+           
+            tr.find("#selectContentUnitIdID").append("<option value='0'>Seleccione</option>");
+
+            $.each(data, function (index, val) {
+                tr.find("#selectContentUnitIdID")
+                        .append($("<option></option>")
+                        .attr("value", val.ContentUnitId)
+                        .text(val.UnitName));
+            });
+        }
+        });
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "@Url.Content("~/Production/getWeightUnits")",
+            traditional: true,
+        data: {},
+        success: function (data) {
+           
+            tr.find("#selectWeightUnitIdID").append("<option value='0'>Seleccione</option>");
+
+            $.each(data, function (index, val) {
+                tr.find("#selectWeightUnitIdID")
+                        .append($("<option></option>")
+                        .attr("value", val.ContentUnitId)
+                        .text(val.UnitName));
+            });
+        }
+    });
+        
+    }
+</script>
+
 @*Close the modal window of the presentations the selected product*@
 <script>
     function _closePresentation(item) {
@@ -1193,14 +1589,14 @@
             $("#_fgetWeightUnits").removeClass("hide");
             $("#_fvlweightUnits").removeClass("hide");
             swal({ title: "¡Atención!", type: "error", text: "La presentación no tiene valores" });
-        }
+        }       
         else if (_vlzexternalPackId == "0" && _vlxexternalPack.trim() != false) {
             $("#_tvlexternalPack").removeClass("hide");
             $("#_fgetExternalPack").removeClass("hide");
             $("#_fvlexternalPack").addClass("hide");
             $("#_tgetExternalPack").addClass("hide");
             swal({ title: "¡Atención!", type: "error", text: "El empaque externo no puede quedar vacio" });
-        }
+        }       
         else if (_vlzexternalPackId != "0" && _vlxexternalPack.trim() == false) {
             $("#_tvlexternalPack").addClass("hide");
             $("#_fgetExternalPack").addClass("hide");
@@ -1389,23 +1785,26 @@
                         }
                         $("#_elementPresentation tbody").append(
                             "<tr>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyExternalPackP'>" + item.QtyExternalPack + "</span><input type='hidden' id='ExternalPackIdP' value='" + item.ExternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='ExternalPackNameP'>" + item.ExternalPackName + "</span></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyInternalPackP'>" + item.QtyInternalPack + "</span><input type='hidden' id='InternalPackIdP' value='" + item.InternalPackId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='InternalPackNameP'>" + item.InternalPackName + "</span></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyContentUnitP'>" + item.QtyContentUnit + "</span><input type='hidden' id='ContentUnitIdP' value='" + item.ContentUnitId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='ContentUnitNameP'>" + item.ContentUnitName + "</span></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span><input type='hidden' id='WeightUnitIdP' value='" + item.WeightUnitId + "' /></td>"
-                            + "<td style='vertical-align:middle' align='center'><span id='WeightUnitNameP'>" + item.WeightUnitName + "</span></td>"
-                            + "<td id='_vlxpresentation' style='vertical-align:middle' align='center'>" + item.Presentation + "</td>"
-                            //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyExternalPackP'>" + item.QtyExternalPack + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtQtyExternalPack' onkeypress='validate(event)'>" + item.QtyExternalPack + "</textarea> <input type='hidden' id='ExternalPackIdP' value='" + item.ExternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='ExternalPackNameP'>" + item.ExternalPackName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectQtyExternalPackID' >   <option value='" + item.ExternalPackId + "' id='ExternalPackNameP' >" + item.ExternalPackName + "</option> </select>    </td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyInternalPackP'>" + item.QtyInternalPack + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtInternalPack' onkeypress='validate(event)'>" + item.QtyInternalPack + "</textarea><input type='hidden' id='InternalPackIdP' value='" + item.InternalPackId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='InternalPackNameP'>" + item.InternalPackName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectInternalPackID' >   <option value='" + item.InternalPackId + "' id='InternalPackNameP' >" + item.InternalPackName + "</option> </select>    </td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyContentUnitP'>" + item.QtyContentUnit + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtQtyContentUnit' onkeypress='validate(event)'>" + item.QtyContentUnit + "</textarea><input type='hidden' id='ContentUnitIdP' value='" + item.ContentUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='ContentUnitNameP'>" + item.ContentUnitName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectContentUnitIdID' >   <option value='" + item.ContentUnitId + "' id='ContentUnitNameP' >" + item.ContentUnitName + "</option> </select>    </td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr show-Presentation' id='QtyWeightUnitP'>" + item.QtyWeightUnit + "</span> <textarea class='form-control edit-Presentation' style='color: red;font-size: 12px; display:none' id='txtQtyWeightUnit' onkeypress='validate(event)'>" + item.QtyWeightUnit + "</textarea><input type='hidden' id='WeightUnitIdP' value='" + item.WeightUnitId + "' /></td>"
+                            + "<td style='vertical-align:middle' align='center'><span class='labelsgnr' id='WeightUnitNameP'>" + item.WeightUnitName + "</span>  <select style='color: red; display: none'  class='form-control edit-Presentation' id='selectWeightUnitIdID' >   <option value='" + item.WeightUnitId + "' id='WeightUnitNameP' >" + item.WeightUnitName + "</option> </select>    </td>"
+                            + "<td id='_vlxpresentation' style='vertical-align:middle' class='labelsgnr' align='center'>" + item.Presentation + "</td>"
+                        //+ "<td style='vertical-align:middle' align='center'>" + "<input id='_vlproductImageId' type='hidden' value='" + item.ProductImageId + "'>" + item.View + "</td>"
                             + "<td style='vertical-align:middle' align='center'>"
-                            + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading'>"
+                            + "<button onclick='_vlepresentation($(this))' data-toggle='modal' data-target='._vlmpresentation' class='btn btn-default  btn-sm loading show-Presentation'>"
                             + "<i class='glyphicon glyphicon-pencil'>"
                             + "</i>"
-                            + "</button>"
+                            + "</button><button class='btn btn-primary btn-sm edit-Presentation' onclick='savechangesPresentation($(this))' style='display:none'><span class='glyphicon glyphicon-ok'></span></button><button class='btn btn-danger btn-sm edit-Presentation' onclick='disablefields($(this))' style='display:none'><span class='glyphicon glyphicon-remove'></span></button>"
                             + "</td>"
                             + "<td style='vertical-align:middle' align='center'>" + "<input id='_vlpresentationId' type='hidden' value='" + item.PresentationId + "'>"
+
+
+
                             + "<button onclick='_vldpresentation($(this))' class='btn btn-danger btn-sm loading'>"
                             + "<i class='glyphicon glyphicon-remove'>"
                             + "</i>"
