@@ -1040,3 +1040,9 @@ function DeleteAddresses(item) {
     })
 
 }
+
+function AddProductShot(item) {
+
+    $('#txtFileName').val($(item).val())
+
+}

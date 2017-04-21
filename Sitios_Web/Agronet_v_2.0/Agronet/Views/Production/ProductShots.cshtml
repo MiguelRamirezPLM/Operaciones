@@ -1,0 +1,202 @@
+﻿@model IEnumerable<GetProductImages>
+@using Agronet.Models;
+@{
+    ViewBag.Title = "ProductShots";
+
+    WebGrid _datagrid = new WebGrid(Model, rowsPerPage:10);
+    
+    Agronet.Models.Sessions.sessionPROD ind = (Agronet.Models.Sessions.sessionPROD)Session["sessionPROD"];
+    DEAQ db = new DEAQ();
+    int DivisionId, EditionId, BookId, CountryId;
+
+    if (ind != null)
+    {
+        DivisionId = ind.DivisionId;
+        EditionId = ind.EditionId;
+        BookId = ind.BookId;
+        CountryId = ind.CountryId;
+    }
+    else
+    {
+        DivisionId = 0;
+        EditionId = 0;
+        BookId = 0;
+        CountryId = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Production/Index")" class="ldr">Producción</a></li>
+    <li><a href="@Url.Content("~/Production/Index")" class="ldr">Productos</a></li>
+    <li class="active">ProductShots</li>
+</ol>
+
+<div class="row">
+    <div class="col-lg-6">
+        <table class="widthtable table-hover">
+            <tr>
+                <td><label class="title-filter">País:</label></td>
+                <td>
+                    @{
+                    var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                    if (c.LongCount() > 0)
+                    {
+                        <span style="font-style: oblique; font-weight: bold">@c[0].CountryName</span>
+                    }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="title-filter">Obra:</label></td>
+                <td>
+                    @{
+                    var b = db.Books.Where(x => x.BookId == BookId).ToList();
+
+                    if (b.LongCount() > 0)
+                    {
+                        <span style="font-style: oblique; font-weight: bold">@b[0].BookName</span>
+                    }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="title-filter">Edición:</label></td>
+                <td>
+                    @{
+                    var ed = db.Editions.Where(x => x.EditionId == EditionId).ToList();
+
+                    if (ed.LongCount() > 0)
+                    {
+                        <span style="font-style: oblique; font-weight: bold">@ed[0].NumberEdition</span>
+                    }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td><label class="title-filter">Laboratorio:</label></td>
+                <td>
+                    @{
+                    var dv = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+
+                    if (dv.LongCount() > 0)
+                    {
+                        <span style="font-style:oblique; font-weight:bold">@dv[0].DivisionName</span>
+                    }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+
+<div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-3 text-right">
+        <label class="title-filter">Seleccione Tamaño:</label>
+    </div>
+    <div class="col-lg-4">
+        <select class="form-control">
+            <option>Seleccione...</option>
+            @{
+                List<ImageSizes> LIS = db.ImageSizes.Where(x => x.Active == true).OrderBy(x => x.Size).ToList();
+                
+                foreach(ImageSizes item in LIS)
+                {
+                    <option value="@item.ImageSizeId">@item.Size</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-lg-3">
+
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-3 text-right">
+        <label class="title-filter">Selecione Imagen:</label>
+    </div>
+    <div class="col-lg-4">
+        <div style="display:normal;border:none;" id="DivAddProductShot">
+            <form enctype="multipart/form-data" method="post" id="SendProductShot">
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary">
+                            Browse&hellip;
+                        </span>
+                        <input id="uploadBtn" type="file" accept="image/png" name="file" style="display:none" onchange="AddProductShot($(this))" />
+                    </label>
+                    <input type="text" class="form-control" readonly id="txtFileName">
+                </div>
+            </form>
+        </div>
+        <br />
+        <br />
+        <div>
+            <button style="float:right" class="btn btn-danger btn-sm" onclick="CanceladdHTMLFile($(this))">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>&nbsp; Cancelar</span>
+            </button>
+            <button style="float:right" class="btn btn-primary btn-sm" onclick="SendHTML($(this))">
+                <span class="glyphicon glyphicon-saved"></span>
+                <span>&nbsp; Guardar</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-lg-3">
+
+    </div>
+</div>
+<br />
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="widthtable table-responsive">
+            @_datagrid.GetHtml(
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "webgrid-table",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                        _datagrid.Column("", header: "Nombre de la Imagen", format: @<text>
+                        @{
+                            <span>@item.ProductShot</span>
+                            <input type="text" value="@item.ProductImageId" id="lblProductImageId" style="display:none" />
+                        }
+                        </text>, style:"column11"),
+
+                        _datagrid.Column("", header: "Tamaño de Imagen", format: @<text>
+                        @{
+                            <span>@item.Size</span>
+                            <input type="text" value="@item.ImageSizeId" id="lblImageSizeId" style="display:none" />
+                        }
+                        </text>, style:"column11"),
+
+
+                        _datagrid.Column("", header: "Imagen", format: @<text>
+                        @{
+                            @*<img src="@Url.Action("showimagesdetails", "Production")';return false;" />*@
+                            @*<img src="~/Images/user.png" style="width:75px; cursor:pointer" class="ldr" title="Agregar ProductShots" onclick="location.href='@Url.Action("ProductShots", "Production", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, DivisionId = DivisionId })';return false;" />*@
+                        }
+                        </text>, style:"text-center column7"),
+                                }
+                                                                                                                                                                                                                                                           )
+        </div>
+    }
+}
+<br />

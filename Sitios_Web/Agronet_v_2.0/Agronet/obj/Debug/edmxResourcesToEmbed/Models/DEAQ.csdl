@@ -111,6 +111,17 @@
       <End Role="Seeds" EntitySet="Seeds" />
       <End Role="ProductSeeds" EntitySet="ProductSeeds" />
     </AssociationSet>
+    <EntitySet Name="ImageSizes" EntityType="DEAQModel.ImageSizes" />
+    <EntitySet Name="ProductImageSizes" EntityType="DEAQModel.ProductImageSizes" />
+    <AssociationSet Name="R_134" Association="DEAQModel.R_134">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
+    <EntitySet Name="ProductImages" EntityType="DEAQModel.ProductImages" />
+    <AssociationSet Name="ProductImagesProductImageSizes" Association="DEAQModel.ProductImagesProductImageSizes">
+      <End Role="ProductImages" EntitySet="ProductImages" />
+      <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Divisions">
     <Key>
@@ -651,6 +662,63 @@
       </Principal>
       <Dependent Role="ProductSeeds">
         <PropertyRef Name="SeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ImageSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <Property Name="Size" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductImageSizes" Relationship="DEAQModel.R_134" FromRole="ImageSizes" ToRole="ProductImageSizes" />
+  </EntityType>
+  <EntityType Name="ProductImageSizes">
+    <Key>
+      <PropertyRef Name="ProductImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ProductImageId" Type="Int32" Nullable="false" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ImageSizes" Relationship="DEAQModel.R_134" FromRole="ProductImageSizes" ToRole="ImageSizes" />
+    <NavigationProperty Name="ProductImages" Relationship="DEAQModel.ProductImagesProductImageSizes" FromRole="ProductImageSizes" ToRole="ProductImages" />
+  </EntityType>
+  <Association Name="R_134">
+    <End Type="DEAQModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+    <End Type="DEAQModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductImages">
+    <Key>
+      <PropertyRef Name="ProductImageId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductShot" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductImageSizes" Relationship="DEAQModel.ProductImagesProductImageSizes" FromRole="ProductImages" ToRole="ProductImageSizes" />
+  </EntityType>
+  <Association Name="ProductImagesProductImageSizes">
+    <End Type="DEAQModel.ProductImages" Role="ProductImages" Multiplicity="1" />
+    <End Type="DEAQModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductImages">
+        <PropertyRef Name="ProductImageId" />
+      </Principal>
+      <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ProductImageId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
