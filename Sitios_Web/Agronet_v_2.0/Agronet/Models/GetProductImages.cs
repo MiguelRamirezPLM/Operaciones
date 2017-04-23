@@ -10,7 +10,7 @@ namespace Agronet.Models
         public int? ProductImageId { get; set; }
         public string ProductShot { get; set; }
 
-        public int? ImageSizeId { get; set; }
+        public byte? ImageSizeId { get; set; }
         public string Size { get; set; }
     }
 }
