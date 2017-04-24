@@ -1127,3 +1127,53 @@ function RemoveProductShots(item) {
         }
     })
 }
+
+
+function SaveDivisionImages() {
+
+    $("#bloqueo").show();
+
+    var SId = $("#SelectProductShotSize").val();
+    var Image = $('#txtFileName').val();
+    var PId = $("#ProductId").val();
+    var PFId = $("#PharmaFormId").val();
+    var CTId = $("#CategoryId").val();
+    var EId = $("#EditionId").val();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CountryId").val();
+
+    var d = "";
+    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+    if ((SId == 0) || (SId == "0") || (SId == undefined) || (SId == null)) {
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; Debe seleccionar tama&ntilde;o de imagen!!!</p>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else {
+        if (!Image.trim() == true) {
+
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; Debe seleccionar una Imagen!!!</p>"
+            apprise("" + d + "", { 'animate': true });
+
+            $("#bloqueo").hide();
+        }
+        else {
+            $("#SendProductShot").ajaxSubmit({
+                type: "POST",
+                url: "../Laboratories/SaveDivisionImages",
+                data: { Size: SId, Product: PId, PharmaForm: PFId, Category: CTId, Division: DId, Edition: EId, Country: CId },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout('document.location.reload()');
+                    }
+                }
+            })
+        }
+    }
+}

@@ -212,7 +212,7 @@
             </div>
             <div class="col-lg-7">
                 <div class="col-lg-4" style="text-align: center; border: none">
-                    <img src="@Url.Content("~/Images/user.png")" style="width:80px; cursor:pointer" title="Imagen de Cliente"/>
+                    <img src="@Url.Content("~/Images/user.png")" style="width:80px; cursor:pointer" title="Imagen de Cliente" data-toggle="modal" data-target="#AddDivisionImage" />
                 </div>
                 <div class="col-lg-4" style="text-align: center; border: none; ">
                     <button class="btn btn-warning show-dataD" onclick="ShowEditDivs()">
@@ -476,6 +476,85 @@
                     <span class="glyphicon glyphicon-remove"></span>
                     <span>&nbsp; Cancelar</span>
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="false" id="AddDivisionImage" role="dialog" style="font-style:normal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Imagen de División.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-lg-2">
+
+                    </div>
+                    <div class="col-lg-3 text-right">
+                        <label class="title-filter">Seleccione Tamaño:</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <select class="form-control" id="SelectProductShotSize">
+                            <option value="0" id="val_0">Seleccione...</option>
+                            @{
+                                List<ImageSizes> LIS = db.ImageSizes.Where(x => x.Active == true).OrderBy(x => x.Size).ToList();
+
+                                foreach (ImageSizes item in LIS)
+                                {
+                                    <option value="@item.ImageSizeId">@item.Size</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-2">
+
+                    </div>
+                    <div class="col-lg-3 text-right">
+                        <label class="title-filter">Selecione Imagen:</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <div style="display:normal;border:none;" id="DivAddProductShot">
+                            <form enctype="multipart/form-data" method="post" id="SendProductShot">
+                                <div class="input-group">
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-primary">
+                                            Browse&hellip;
+                                        </span>
+                                        <input id="uploadBtn" type="file" accept="image/png" name="file" style="display:none" onchange="AddProductShot($(this))" />
+                                    </label>
+                                    <input type="text" class="form-control" readonly id="txtFileName">
+                                </div>
+                            </form>
+                        </div>
+                        <br />
+                        <br />
+                        <div>
+                            <button class="btn btn-primary btn-sm" onclick="SaveProductShot($(this))">
+                                <span class="glyphicon glyphicon-saved"></span>
+                                <span>&nbsp; Guardar</span>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="CanceladdProductShot($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span>&nbsp; Cancelar</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="divbtncloseerror">
             </div>
         </div>
     </div>
