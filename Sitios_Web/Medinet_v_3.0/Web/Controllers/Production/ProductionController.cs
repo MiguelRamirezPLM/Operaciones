@@ -760,6 +760,79 @@ namespace Web.Controllers.Production
 
            
         }
+
+        public JsonResult EditPresentation(
+                                           int PresentationId,
+                                           int? QtyExternalPack,
+                                           int? ExternalPackId,
+                                           int? QtyInternalPack,
+                                           int? InternalPackId,
+                                           string QtyContentUnit,
+                                           int? ContentUnitId,
+                                           string QtyWeightUnit,
+                                           int? WeightUnitId,
+                                           int UserId,
+                                           string HashKey
+                                            )
+        {
+            int Active = 1;
+            string Contenido = "";
+            string primaryKeyAffected = "(PresentationId," + PresentationId + ")"; ;
+            string FieldsAffected = "";
+
+            if (QtyExternalPack != 0 && ExternalPackId != 0)
+            {
+                Contenido = Contenido + ",@QtyExternalPack=" + QtyExternalPack + ",@ExternalPackId=" + ExternalPackId;
+                FieldsAffected = FieldsAffected + ";(ExternalPackId," + ExternalPackId + ");(QtyExternalPack," + QtyExternalPack + ")";
+
+            }
+            if (QtyInternalPack != 0 && InternalPackId != 0)
+            {
+                Contenido = Contenido + ",@QtyInternalPack=" + QtyInternalPack + ",@InternalPackId=" + InternalPackId;
+                FieldsAffected = FieldsAffected + ";(InternalPackId," + InternalPackId + ");(QtyInternalPack," + QtyInternalPack + ")";
+            }
+
+            if (QtyContentUnit != "0" && ContentUnitId != 0)
+            {
+                Contenido = Contenido + ",@QtyContentUnit=" + QtyContentUnit + ",@ContentUnitId=" + ContentUnitId;
+                FieldsAffected = FieldsAffected + ";(ContentUnitId," + ContentUnitId + ");(QtyContentUnit," + QtyContentUnit + ")";
+            }
+
+            if (QtyWeightUnit != "0" && WeightUnitId != 0)
+            {
+                Contenido = Contenido + ",@QtyWeightUnit=" + QtyWeightUnit + ",@WeightUnitId=" + WeightUnitId;
+                FieldsAffected = FieldsAffected + ";(WeightUnitId," + WeightUnitId + ");(QtyWeightUnit," + QtyWeightUnit + ")";
+            }
+
+            List<CreateProduct_result> LI = new List<CreateProduct_result>();
+            List<ActivityLogInfo> _ActivityLogs = new List<ActivityLogInfo>();
+            List<plm_spCRUDProductByPresentationToEdition_Result> PPE = new List<plm_spCRUDProductByPresentationToEdition_Result>();
+
+            try
+            {
+                LI = db.Database.SqlQuery<CreateProduct_result>("plm_spCRUDProductByPresentationToEdition @DivisionId = 0,@CategoryId= 0,@ProductId=0,@PharmaFormId=0,@EditionId=0, @CRUDType=" + CRUD.Update
+                                                               + ",@PresentationId = " + PresentationId
+                                                               + ",@Active=" + Active
+                                                               + Contenido + "").ToList();
+
+                _ActivityLogs = plm.Database.SqlQuery<ActivityLogInfo>("dbo.plm_spCRUDActivityLogs @CRUDType =" + CRUD.Create + ",@userId=" + UserId + ",@tableId=" + Tables.Presentations + ",@operationId=" + Action.Actualizar + ",@hashKey='" + HashKey + "',@primaryKeyAffected='" + primaryKeyAffected + "',@fieldsAffected='" + FieldsAffected + "'" + "").ToList();
+
+                PPE = db.Database.SqlQuery<plm_spCRUDProductByPresentationToEdition_Result>("plm_spCRUDProductByPresentationToEdition @DivisionId = 0,@CategoryId= 0,@ProductId=0,@PharmaFormId=0,@EditionId=0, @CRUDType=" + CRUD.Read
+                                                               + ",@PresentationId = " + PresentationId
+                                                               + ",@Active=" + Active
+                                                               + "").ToList();
+
+                return Json(PPE, JsonRequestBehavior.AllowGet); 
+            }
+            catch (Exception e)
+            {
+                string message = e.Message;
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
         public ActionResult AddPresentation1()
         {
             string[] _editionId = Request.Form.GetValues("EditionId");
