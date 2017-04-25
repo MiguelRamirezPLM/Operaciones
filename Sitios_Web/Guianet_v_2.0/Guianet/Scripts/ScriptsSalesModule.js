@@ -4218,7 +4218,7 @@ function SaveTargets() {
     $.ajax({
         type: "POST",
         dataType: "Json",
-        url: "../Targets/gettargets/",
+        url: "../Targets/gettargets",
         traditional: true,
         data: {
             pname: product, propaganda: propag, attribute: attr, laboratory: lab, paragraph: prf, image: img, table: tbl, row: tr, column: td,
@@ -4236,10 +4236,14 @@ function SaveTargets() {
 
 function replace(_string) {
 
-    _string = _string.replace("<", "60");
-    _string = _string.replace(">", "62");
+    while ((_string.includes("<")) || (_string.includes(">")) || _string.includes("/")) {
 
-    _string = _string.replace("62<", "6260");
+        _string = _string.replace("<", "60");
+        _string = _string.replace("/", "47");
+        _string = _string.replace(">", "62");
+        _string = _string.replace("62<", "6260");
+        _string = _string.replace(">", "62");
+    }
 
     return _string;
 }
