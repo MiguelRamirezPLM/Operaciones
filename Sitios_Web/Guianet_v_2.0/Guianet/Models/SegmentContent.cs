@@ -994,7 +994,10 @@ namespace Guianet.Models
                     if (xtr.Name == "TargetDescriptionBullet2")
                     {
                         Bullets2 = xtr.ReadInnerXml();
-                        Bullets2 = Bullets2.Replace("</p>", "");
+                        //Bullets2 = Bullets2.Replace("</p>", "");
+
+                        int len = Bullets2.IndexOf("></");
+                        Bullets2 = Bullets2.Substring(0, len);
 
                         _string = _string.Replace(Bullets2, "");
 
@@ -1115,7 +1118,7 @@ namespace Guianet.Models
                 {
                     if (xtr.Name == "TargetDescription")
                     {
-                        if (_string.Contains("Negatoscopio"))
+                        if (_string.Contains("Anoscopio"))
                         {
 
                         }
