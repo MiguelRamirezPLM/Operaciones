@@ -4216,7 +4216,6 @@ namespace Guianet.Controllers.Production
         /************************               SPECIALPRODUCTS          ************************ */
 
 
-
         public ActionResult SpecialProducts(string CountryId, string EditionId, string BookId, string ClientTypeId, string CompanyName, string Type)
         {
             if (!Request.IsAuthenticated)
@@ -4495,11 +4494,11 @@ namespace Guianet.Controllers.Production
         }
 
 
-        /*********************/
+        /**********                             ***********/
 
         public ActionResult AddClientImage(HttpPostedFileBase file, string Country, string Client)
         {
-            //String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
+            String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
 
             int CountryId = int.Parse(Country);
             int ClientId = int.Parse(Client);
@@ -4509,23 +4508,26 @@ namespace Guianet.Controllers.Production
 
             FileName = FileName.Replace(Extention, "");
 
+            List<Clients> LC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+
+            if (LC.LongCount() > 0)
+            {
+                FileName = LC[0].CompanyName.Trim().ToLower();
+            }
+
             FileName = ClassReplace.replacepdffilename(FileName);
 
             FileName = FileName + Extention;
 
+            List<Countries> LCC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
 
+            String CountryName = ReplaceCountryName(LCC[0].CountryName);
 
-            //List<Countries> LCC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+            List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
 
-            //String CountryName = ReplaceCountryName(LCC[0].CountryName);
+            var root = Path.Combine(PathP, CountryName, "DivisionImages", ims[0].ImageSize);
 
-            //List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
-
-            //  var root = Path.Combine(PathP, CountryName, "productshots", ims[0].ImageSize);
-
-            string root = Server.MapPath("~/App_Data/DivisionImages");
-
-            List<Clients> LC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+            //string root = Server.MapPath("~/App_Data/DivisionImages");
 
             if (LC.LongCount() > 0)
             {
