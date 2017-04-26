@@ -1214,8 +1214,16 @@
             },
             success: function (data) {
 
-                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                $.each(data, function (index, item) {
+                    tr.find("#QtyExternalPackP").text(_QtyExternalPack);
+                    tr.find("#ExternalPackIdP").val(_ExternalPackID);
+                    tr.find("#ExternalPackNameP").text(item.ExternalPackName);
 
+                    
+                });
+
+                swal({ title: "¡Cambios guardados!", type: "success", text: "", timer: 1000, });
+                tr.find("#QtyExternalPackP").text();
 
                 $('.show-Presentation').show();
                 $('.edit-Presentation').hide();
