@@ -1344,7 +1344,7 @@ function SaveChangedAddress(item) {
                 }
             });
 
-            
+
         }
         else if (lgZC < 4) {
             d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
@@ -4218,7 +4218,7 @@ function SaveTargets() {
     $.ajax({
         type: "POST",
         dataType: "Json",
-        url: "../Targets/gettargets/",
+        url: "../Targets/gettargets",
         traditional: true,
         data: {
             pname: product, propaganda: propag, attribute: attr, laboratory: lab, paragraph: prf, image: img, table: tbl, row: tr, column: td,
@@ -4236,10 +4236,14 @@ function SaveTargets() {
 
 function replace(_string) {
 
-    _string = _string.replace("<", "60");
-    _string = _string.replace(">", "62");
+    while ((_string.includes("<")) || (_string.includes(">")) || _string.includes("/")) {
 
-    _string = _string.replace("62<", "6260");
+        _string = _string.replace("<", "60");
+        _string = _string.replace("/", "47");
+        _string = _string.replace(">", "62");
+        _string = _string.replace("62<", "6260");
+        _string = _string.replace(">", "62");
+    }
 
     return _string;
 }
@@ -6489,6 +6493,8 @@ function rps(item) {
 
 function SaveAddPDF(item) {
 
+    $("#bloqueo").show();
+
     var tr = $(item).parents("tr:first");
 
     var txt = $("#txtFileName").val();
@@ -6507,6 +6513,7 @@ function SaveAddPDF(item) {
         d += "<p></p>"
         d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
         apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
     }
     else {
 
@@ -6514,6 +6521,7 @@ function SaveAddPDF(item) {
             $('#SelectOrder').addClass('has-error');
             $('.errorO').show();
             $("#OrderOfAdvert").focus();
+            $("#bloqueo").hide();
         }
         else {
             $("#SendPDFFile").ajaxSubmit({
@@ -6523,6 +6531,10 @@ function SaveAddPDF(item) {
                 success: function (data) {
                     if (data == true) {
                         setTimeout('document.location.reload()');
+                    }
+                    else
+                    {
+                        $("#bloqueo").hide();
                     }
                 }
             })
@@ -6701,4 +6713,41 @@ function EditLeafCategoriesLI() {
             }
         })
     }
+}
+
+function AddClientImage() {
+
+    var CLId = $("#ClientId").val();
+    var CId = $("#CountryId").val();
+
+    $("#AddClientImageForm").ajaxSubmit({
+        type: "POST",
+        url: "../Production/AddClientImage",
+        data: { Country: CId, Client: CLId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout('document.location.reload()');
+            }
+        }
+    })
+}
+
+
+function DeleteProductAdverts(item) {
+
+    $("#bloqueo").show();
+
+    var Id = $(item).val();
+    var CId = $("#ClientId").val();
+    var EId = $("#EditionId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../SalesModule/DeleteProductAdverts",
+        data: { ProductAdvert: Id, Client: CId, Edition: EId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
 }

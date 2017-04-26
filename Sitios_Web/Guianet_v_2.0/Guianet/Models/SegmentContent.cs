@@ -826,6 +826,7 @@ namespace Guianet.Models
             _string = _string.Replace("=\"Altas\" lang=\"en-GB\">", "");
             _string = _string.Replace("=\"marca-registrada-t-tulo\" lang=\"en-GB\">", "");
             _string = _string.Replace("<p class=\"T-tulo-copia-4-\">", "");
+            _string = _string.Replace("=\"cr_rubro\">", "");
 
             return _string;
         }
@@ -996,7 +997,7 @@ namespace Guianet.Models
                         Bullets2 = xtr.ReadInnerXml();
                         //Bullets2 = Bullets2.Replace("</p>", "");
 
-                        int len = Bullets2.IndexOf("></");
+                        int len = Bullets2.IndexOf("</");
                         Bullets2 = Bullets2.Substring(0, len);
 
                         _string = _string.Replace(Bullets2, "");

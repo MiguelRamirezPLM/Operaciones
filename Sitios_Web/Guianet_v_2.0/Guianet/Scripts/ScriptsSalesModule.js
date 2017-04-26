@@ -6493,6 +6493,8 @@ function rps(item) {
 
 function SaveAddPDF(item) {
 
+    $("#bloqueo").show();
+
     var tr = $(item).parents("tr:first");
 
     var txt = $("#txtFileName").val();
@@ -6511,6 +6513,7 @@ function SaveAddPDF(item) {
         d += "<p></p>"
         d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic;font-size:14px'>&bull;" + message + "</p>"
         apprise("" + d + "", { 'animate': true });
+        $("#bloqueo").hide();
     }
     else {
 
@@ -6518,6 +6521,7 @@ function SaveAddPDF(item) {
             $('#SelectOrder').addClass('has-error');
             $('.errorO').show();
             $("#OrderOfAdvert").focus();
+            $("#bloqueo").hide();
         }
         else {
             $("#SendPDFFile").ajaxSubmit({
@@ -6527,6 +6531,10 @@ function SaveAddPDF(item) {
                 success: function (data) {
                     if (data == true) {
                         setTimeout('document.location.reload()');
+                    }
+                    else
+                    {
+                        $("#bloqueo").hide();
                     }
                 }
             })
