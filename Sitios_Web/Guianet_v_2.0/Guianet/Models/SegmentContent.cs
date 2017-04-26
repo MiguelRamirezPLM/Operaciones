@@ -828,6 +828,28 @@ namespace Guianet.Models
             _string = _string.Replace("<p class=\"T-tulo-copia-4-\">", "");
             _string = _string.Replace("=\"cr_rubro\">", "");
 
+            _string = _string.Replace("&#171;", "«");
+            _string = _string.Replace("&#187;", "»");
+            _string = _string.Replace("&#160;", " ");
+            _string = _string.Replace("&#8595;", "↓");
+            _string = _string.Replace("&#8593;", "↑");
+            _string = _string.Replace("&#8596;", "↔");
+            _string = _string.Replace("&#8224;", "†");
+            _string = _string.Replace("&#8592;", "←");
+            _string = _string.Replace("&#8594;", "→");
+
+            _string = _string.Replace("&#8805;", "≥");
+            _string = _string.Replace("&#8804;", "≤");
+            _string = _string.Replace("&#8734;", "∞");
+            _string = _string.Replace("&#8764;", "~");
+            _string = _string.Replace("&#954;", "κ");
+            _string = _string.Replace("&#949;", "ε");
+            _string = _string.Replace("&#955;", "λ");
+            _string = _string.Replace("&#916;", "Δ");
+            _string = _string.Replace("&#962;", "ς");
+            _string = _string.Replace("&#149;", "•");
+
+
             return _string;
         }
 

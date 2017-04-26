@@ -2957,7 +2957,7 @@ namespace Guianet.Controllers.Ventas
 
         public ActionResult GetClientImages(int? ClientId, int? CountryId)
         {
-            //String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
+            String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
             //String PathE = System.Configuration.ConfigurationManager.AppSettings["Path"].ToString();
 
             List<Clients> LCC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
@@ -2970,9 +2970,9 @@ namespace Guianet.Controllers.Ventas
 
                 List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
 
-                string root = Server.MapPath("~/App_Data/DivisionImages");
+                //string root = Server.MapPath("~/App_Data/DivisionImages");
 
-                //  var root = Path.Combine(PathP, CountryName, "productshots", ims[0].ImageSize);
+                var root = Path.Combine(PathP, CountryName, "DivisionImages", ims[0].ImageSize);
 
                 string FileName = LCC[0].Image;
 

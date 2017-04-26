@@ -538,6 +538,11 @@ namespace Guianet.Models
 
                     cad = sb.ToString().Substring(ini, (fin - ini));
 
+                    if (cad.EndsWith("@"))
+                    {
+                        cad = cad.Replace("@", "");
+                    }
+
                     sb.Replace(cad, "<a href= 'mailto:" + cad + "'>" + cad + "</a>");
 
                     fin = sb.ToString().IndexOf("</a>", fin);

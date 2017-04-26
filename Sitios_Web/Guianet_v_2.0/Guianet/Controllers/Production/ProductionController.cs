@@ -2772,6 +2772,8 @@ namespace Guianet.Controllers.Production
                     StreamReader SR = System.IO.File.OpenText(path);
                     String content = SR.ReadToEnd();
 
+                    content = ReplaceHTMLContent(content);
+
                     bool _response = SegmentContent.inserthtml(ClientId, EditionId, ProductId, content);
 
 
@@ -2819,6 +2821,68 @@ namespace Guianet.Controllers.Production
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public static string ReplaceHTMLContent(string file)
+        {
+            file = file.Replace("                          <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("                         <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("                         <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("                         <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("\n\n\n", "");
+            file = file.Replace("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t", "");
+            file = file.Replace("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t", "");
+            file = file.Replace("\r\n\r\n\r\n\r\n\r\n\t\t\t", "");
+
+            file = file.Replace("\r\n\r\n\r\n\r\n\t\t", "");
+
+            file = file.Replace("«", "&#171;");
+            file = file.Replace("»", "&#187;");
+            file = file.Replace("↓", "&#8595;");
+            file = file.Replace("↑", "&#8593;");
+            file = file.Replace("↔", "&#8596;");
+            file = file.Replace("†", "&#8224;");
+            file = file.Replace("←", "&#8592;");
+            file = file.Replace("→", "&#8594;");
+
+            file = file.Replace("&#9;", " ");
+
+            file = file.Replace("≥", "&#8805;");
+            file = file.Replace("≤", "&#8804;");
+            file = file.Replace("∞", "&#8734;");
+            file = file.Replace("~", "&#8764;");
+            file = file.Replace("κ", "&#954;");
+            file = file.Replace("ε", "&#949;");
+            file = file.Replace("λ", "&#955;");
+            file = file.Replace("Δ", "&#916;");
+            file = file.Replace("ς", "&#962;");
+            file = file.Replace("•", "&#149;");
+
+
+            if (file.Contains(" @ "))
+            {
+                file = file.Replace(" @ ", " &#64; ");
+            }
+
+            return file;
         }
 
         public string checkXML(string desc, string filename)
@@ -3454,6 +3518,8 @@ namespace Guianet.Controllers.Production
 
                 string allcontent = getHtmlContent(item.FullName);
 
+                allcontent = ReplaceHTMLContent(allcontent);
+
                 string template = "";
                 try
                 {
@@ -3572,7 +3638,11 @@ namespace Guianet.Controllers.Production
 
                             next = allcontent.IndexOf(pname, fin);
 
+                            //template = ReplaceHTMLContent(template);
+
                             System.Text.StringBuilder sb = new System.Text.StringBuilder(template);
+
+
 
                             if (next > 0)
                             {
@@ -4539,6 +4609,18 @@ namespace Guianet.Controllers.Production
 
                     db.SaveChanges();
                 }
+            }
+
+            if (System.IO.Directory.Exists(root))
+            {
+                root = Path.Combine(root, FileName);
+                file.SaveAs(root);
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(root);
+                root = Path.Combine(root, FileName);
+                file.SaveAs(root);
             }
 
             return View();
