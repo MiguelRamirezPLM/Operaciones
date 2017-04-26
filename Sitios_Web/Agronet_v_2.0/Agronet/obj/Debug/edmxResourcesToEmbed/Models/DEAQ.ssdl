@@ -55,6 +55,26 @@
     <Property Name="ScientificName" Type="varchar" MaxLength="100" />
     <Property Name="Status" Type="bit" />
   </EntityType>
+  <EntityType Name="DivisionImages">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ImageTypeId" Type="tinyint" />
+    <Property Name="DivisionId" Type="int" />
+    <Property Name="ImageName" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="BaseURL" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="DivisionImageSizes">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="int" Nullable="false" />
+    <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+  </EntityType>
   <EntityType Name="DivisionInformation">
     <Key>
       <PropertyRef Name="DivisionInformationId" />
@@ -320,6 +340,18 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
     <Property Name="NumberOfSeeds" Type="int" />
     <Property Name="NumberOfAgrochemicalUses" Type="int" />
   </EntityType>
+  <Association Name="DivisionImages_DivisionId_FK">
+    <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="R_12">
     <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
     <End Role="MentionatedProducts" Type="Self.MentionatedProducts" Multiplicity="*" />
@@ -364,6 +396,30 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
         <PropertyRef Name="ImageSizeId" />
       </Principal>
       <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_135">
+    <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="1" />
+    <End Role="DivisionImageSizes" Type="Self.DivisionImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DivisionImages">
+        <PropertyRef Name="DivisionImageId" />
+      </Principal>
+      <Dependent Role="DivisionImageSizes">
+        <PropertyRef Name="DivisionImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="R_136">
+    <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
+    <End Role="DivisionImageSizes" Type="Self.DivisionImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="DivisionImageSizes">
         <PropertyRef Name="ImageSizeId" />
       </Dependent>
     </ReferentialConstraint>
@@ -567,6 +623,8 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
     <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Crops" EntityType="Self.Crops" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DivisionImageSizes" EntityType="Self.DivisionImageSizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" Schema="dbo" store:Type="Tables" />
@@ -624,6 +682,10 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
     [plm_vwProductsByEdition].[NumberOfAgrochemicalUses] AS [NumberOfAgrochemicalUses]
     FROM [dbo].[plm_vwProductsByEdition] AS [plm_vwProductsByEdition]</DefiningQuery>
     </EntitySet>
+    <AssociationSet Name="DivisionImages_DivisionId_FK" Association="Self.DivisionImages_DivisionId_FK">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
     <AssociationSet Name="R_12" Association="Self.R_12">
       <End Role="Editions" EntitySet="Editions" />
       <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
@@ -639,6 +701,14 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
     <AssociationSet Name="R_134" Association="Self.R_134">
       <End Role="ImageSizes" EntitySet="ImageSizes" />
       <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="R_135" Association="Self.R_135">
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+      <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
+    </AssociationSet>
+    <AssociationSet Name="R_136" Association="Self.R_136">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
     </AssociationSet>
     <AssociationSet Name="R_16" Association="Self.R_16">
       <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />

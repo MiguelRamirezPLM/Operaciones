@@ -346,5 +346,21 @@ namespace Agronet.Controllers.Laboratories
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult DivisionImages(int? DivisionId)
+        {
+            return View();
+        }
+
+        public JsonResult SaveDivisionImages(HttpPostedFileBase file, string Size, string Division, string Country)
+        {
+            int SizeId = int.Parse(Size);
+            int DivisionId = int.Parse(Division);
+            int CountryId = int.Parse(Country);
+
+            //List<DivisionImages>
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }

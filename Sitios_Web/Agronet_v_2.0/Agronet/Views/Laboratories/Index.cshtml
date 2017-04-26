@@ -212,7 +212,7 @@
             </div>
             <div class="col-lg-7">
                 <div class="col-lg-4" style="text-align: center; border: none">
-                    <img src="@Url.Content("~/Images/user.png")" style="width:80px; cursor:pointer" title="Imagen de Cliente" data-toggle="modal" data-target="#AddDivisionImage" />
+                    <img src="@Url.Content("~/Images/user.png")" style="width:80px; cursor:pointer" class="ldr" title="Imagen de Cliente" onclick="location.href='@Url.Action("DivisionImages", "Laboratories", new { DivisionId = DivisionId })';return false;" />
                 </div>
                 <div class="col-lg-4" style="text-align: center; border: none; ">
                     <button class="btn btn-warning show-dataD" onclick="ShowEditDivs()">
@@ -491,13 +491,10 @@
                 <br />
                 <br />
                 <div class="row">
-                    <div class="col-lg-2">
-
-                    </div>
                     <div class="col-lg-3 text-right">
                         <label class="title-filter">Seleccione Tamaño:</label>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-9">
                         <select class="form-control" id="SelectProductShotSize">
                             <option value="0" id="val_0">Seleccione...</option>
                             @{
@@ -510,19 +507,13 @@
                             }
                         </select>
                     </div>
-                    <div class="col-lg-3">
-
-                    </div>
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-lg-2">
-
-                    </div>
                     <div class="col-lg-3 text-right">
                         <label class="title-filter">Selecione Imagen:</label>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-9">
                         <div style="display:normal;border:none;" id="DivAddProductShot">
                             <form enctype="multipart/form-data" method="post" id="SendProductShot">
                                 <div class="input-group">
@@ -538,7 +529,7 @@
                         </div>
                         <br />
                         <br />
-                        <div>
+                        <div class="text-right">
                             <button class="btn btn-primary btn-sm" onclick="SaveProductShot($(this))">
                                 <span class="glyphicon glyphicon-saved"></span>
                                 <span>&nbsp; Guardar</span>
@@ -548,9 +539,6 @@
                                 <span>&nbsp; Cancelar</span>
                             </button>
                         </div>
-                    </div>
-                    <div class="col-lg-3">
-
                     </div>
                 </div>
             </div>

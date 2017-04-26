@@ -17,6 +17,7 @@ namespace Agronet.Models
         public Divisions()
         {
             this.DivisionInformation = new HashSet<DivisionInformation>();
+            this.DivisionImages = new HashSet<DivisionImages>();
         }
     
         public int DivisionId { get; set; }
@@ -29,5 +30,6 @@ namespace Agronet.Models
     
         public virtual Countries Countries { get; set; }
         public virtual ICollection<DivisionInformation> DivisionInformation { get; set; }
+        public virtual ICollection<DivisionImages> DivisionImages { get; set; }
     }
 }

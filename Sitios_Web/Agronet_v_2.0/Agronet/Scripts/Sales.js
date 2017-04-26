@@ -1133,12 +1133,8 @@ function SaveDivisionImages() {
 
     $("#bloqueo").show();
 
-    var SId = $("#SelectProductShotSize").val();
+    var SId = $("#SelectDivisionImageSize").val();
     var Image = $('#txtFileName').val();
-    var PId = $("#ProductId").val();
-    var PFId = $("#PharmaFormId").val();
-    var CTId = $("#CategoryId").val();
-    var EId = $("#EditionId").val();
     var DId = $("#DivisionId").val();
     var CId = $("#CountryId").val();
 
@@ -1167,7 +1163,7 @@ function SaveDivisionImages() {
             $("#SendProductShot").ajaxSubmit({
                 type: "POST",
                 url: "../Laboratories/SaveDivisionImages",
-                data: { Size: SId, Product: PId, PharmaForm: PFId, Category: CTId, Division: DId, Edition: EId, Country: CId },
+                data: { Size: SId, Division: DId, Country: CId },
                 success: function (data) {
                     if (data == true) {
                         setTimeout('document.location.reload()');

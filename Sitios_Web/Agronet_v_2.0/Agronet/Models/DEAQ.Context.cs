@@ -49,5 +49,7 @@ namespace Agronet.Models
         public virtual DbSet<ImageSizes> ImageSizes { get; set; }
         public virtual DbSet<ProductImageSizes> ProductImageSizes { get; set; }
         public virtual DbSet<ProductImages> ProductImages { get; set; }
+        public virtual DbSet<DivisionImageSizes> DivisionImageSizes { get; set; }
+        public virtual DbSet<DivisionImages> DivisionImages { get; set; }
     }
 }

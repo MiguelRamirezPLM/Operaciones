@@ -12,19 +12,22 @@ namespace Agronet.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ImageSizes
+    public partial class DivisionImages
     {
-        public ImageSizes()
+        public DivisionImages()
         {
-            this.ProductImageSizes = new HashSet<ProductImageSizes>();
             this.DivisionImageSizes = new HashSet<DivisionImageSizes>();
         }
     
-        public byte ImageSizeId { get; set; }
-        public string Size { get; set; }
+        public int DivisionImageId { get; set; }
+        public Nullable<byte> ImageTypeId { get; set; }
+        public Nullable<int> DivisionId { get; set; }
+        public string ImageName { get; set; }
+        public string BaseURL { get; set; }
         public bool Active { get; set; }
+        public Nullable<byte> ImageSizeId { get; set; }
     
-        public virtual ICollection<ProductImageSizes> ProductImageSizes { get; set; }
+        public virtual Divisions Divisions { get; set; }
         public virtual ICollection<DivisionImageSizes> DivisionImageSizes { get; set; }
     }
 }
