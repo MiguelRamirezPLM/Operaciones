@@ -358,9 +358,65 @@ namespace Agronet.Controllers.Laboratories
             int DivisionId = int.Parse(Division);
             int CountryId = int.Parse(Country);
 
-            //List<DivisionImages>
+            List<Divisions> LD = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+
+            string FileName = file.FileName;
+            string Extention = System.IO.Path.GetExtension(FileName);
+
+            string ImageName = LD[0].DivisionName.Trim().ToLower();
+
+            ImageName = ReplaceProductShot(ImageName.Trim());
+
+            ImageName = ImageName.Trim() + Extention.Trim();
+
+            List<DivisionImages> LDI = db.DivisionImages.Where(x => x.DivisionId == DivisionId).ToList();
+
+            int DivisionImageId = 0;
+
+            if (LDI.LongCount() > 0)
+            {
+                foreach(DivisionImages item in LDI)
+                {
+                    item.ImageName = ImageName.Trim();
+
+                    db.SaveChanges();
+
+                    DivisionImageId = item.DivisionImageId;
+                }
+            }
+
+
 
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public static string ReplaceProductShot(string img)
+        {
+            img = img.Replace(" ", "_");
+            img = img.Replace(",", "_");
+            img = img.Replace(", ", "_");
+            img = img.Replace(",_", "_");
+            img = img.Replace(".", "_");
+            img = img.Replace("__", "_");
+            img = img.Replace(". ", "_");
+            img = img.Replace("/", "_");
+            img = img.Replace("Á", "A");
+            img = img.Replace("á", "a");
+            img = img.Replace("É", "E");
+            img = img.Replace("é", "e");
+            img = img.Replace("Í", "I");
+            img = img.Replace("í", "i");
+            img = img.Replace("Ó", "O");
+            img = img.Replace("ó", "o");
+            img = img.Replace("ú", "u");
+            img = img.Replace("ü", "u");
+            img = img.Replace("Ü", "U");
+            img = img.Replace("Ú", "U");
+            img = img.Replace("- ", "-");
+            img = img.Replace(" - ", "-");
+
+
+            return img;
         }
     }
 }
