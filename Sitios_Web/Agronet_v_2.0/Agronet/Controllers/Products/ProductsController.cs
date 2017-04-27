@@ -11,6 +11,7 @@ namespace Agronet.Controllers.Products
     public class ProductsController : Controller
     {
         DEAQ db = new DEAQ();
+        ActivityLog ActivityLog = new ActivityLog();
 
         public ActionResult Index(string CountryId, string BookId, string EditionId, string DivisionId, string ProductName)
         {
@@ -149,6 +150,23 @@ namespace Agronet.Controllers.Products
                                                                     ", @EditionId=" + EditionId + "" +
                                                                     ", @Participant=" + Participant + "" +
                                                                     ", @Mentionated=" + Mentionated + "");
+
+                    ActivityLog.Products(Convert.ToInt32(ProductId), Product, Description, Register, CountryId, LaboratoryId, 1);
+                }
+
+                ActivityLog.ProductPharmaForms(Convert.ToInt32(ProductId), PharmaFormId, 1);
+                ActivityLog.DivisionCategories(DivisionId, CategoryId, 1);
+                ActivityLog.ProductCategories(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, 1);
+                ActivityLog.NewProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
+                ActivityLog.EditionDivisionProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
+
+                if (Participant == true)
+                {
+                    ActivityLog.ParticipantProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
+                }
+                if (Mentionated == true)
+                {
+                    ActivityLog.MentionatedProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
                 }
             }
             catch (Exception e)
@@ -236,6 +254,13 @@ namespace Agronet.Controllers.Products
                                                                                     ", @DivisionId=" + DivisionId + "" +
                                                                                     ", @EditionId=" + EditionId + "" +
                                                                                     ", @ProductId=" + ProductId + "");
+
+                ActivityLog.ProductPharmaForms(ProductId, PharmaFormId, 1);
+                ActivityLog.DivisionCategories(DivisionId, CategoryId, 1);
+                ActivityLog.ProductCategories(ProductId, PharmaFormId, DivisionId, CategoryId, 1);
+                ActivityLog.NewProducts(ProductId, PharmaFormId, DivisionId, CategoryId, EditionId, 1);
+                ActivityLog.EditionDivisionProducts(ProductId, PharmaFormId, DivisionId, CategoryId, EditionId, 1);
+
             }
             catch (Exception e)
             {
@@ -262,10 +287,14 @@ namespace Agronet.Controllers.Products
                     if (Operation == "Insert")
                     {
                         item.Active = true;
+
+                        ActivityLog.SIDEF(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 2, 1);
                     }
                     else
                     {
                         item.Active = null;
+
+                        ActivityLog.SIDEF(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 2, 0);
                     }
 
                     db.SaveChanges();
@@ -295,6 +324,8 @@ namespace Agronet.Controllers.Products
                 var delete = db.MentionatedProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                 db.MentionatedProducts.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.MentionatedProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
             }
 
             List<ParticipantProducts> LPP = db.ParticipantProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
@@ -314,6 +345,7 @@ namespace Agronet.Controllers.Products
                     db.ParticipantProducts.Add(ParticipantProducts);
                     db.SaveChanges();
 
+                    ActivityLog.ParticipantProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
 
                     List<EditionDivisionProducts> LEDP = db.EditionDivisionProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
 
@@ -329,6 +361,8 @@ namespace Agronet.Controllers.Products
 
                         db.EditionDivisionProducts.Add(EditionDivisionProducts);
                         db.SaveChanges();
+
+                        ActivityLog.EditionDivisionProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
                     }
                 }
                 else
@@ -336,6 +370,8 @@ namespace Agronet.Controllers.Products
                     var delete = db.ParticipantProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                     db.ParticipantProducts.Remove(delete);
                     db.SaveChanges();
+
+                    ActivityLog.ParticipantProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
                 }
 
                 return Json(true, JsonRequestBehavior.AllowGet);
@@ -348,12 +384,16 @@ namespace Agronet.Controllers.Products
                     var deleteedp = db.EditionDivisionProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                     db.EditionDivisionProducts.Remove(deleteedp);
                     db.SaveChanges();
+
+                    ActivityLog.EditionDivisionProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
                 }
 
 
                 var delete = db.ParticipantProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                 db.ParticipantProducts.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.ParticipantProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
 
                 List<NewProducts> LNP = db.NewProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
 
@@ -362,6 +402,8 @@ namespace Agronet.Controllers.Products
                     var Delete = db.NewProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                     db.NewProducts.Remove(Delete);
                     db.SaveChanges();
+
+                    ActivityLog.NewProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
                 }
 
                 return Json(true, JsonRequestBehavior.AllowGet);
@@ -383,6 +425,8 @@ namespace Agronet.Controllers.Products
                 var delete = db.ParticipantProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                 db.ParticipantProducts.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.ParticipantProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
             }
 
             List<MentionatedProducts> LMP = db.MentionatedProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
@@ -400,6 +444,7 @@ namespace Agronet.Controllers.Products
                 db.MentionatedProducts.Add(MentionatedProducts);
                 db.SaveChanges();
 
+                ActivityLog.MentionatedProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
 
                 List<EditionDivisionProducts> LEDP = db.EditionDivisionProducts.Where(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId).ToList();
 
@@ -415,6 +460,8 @@ namespace Agronet.Controllers.Products
 
                     db.EditionDivisionProducts.Add(EditionDivisionProducts);
                     db.SaveChanges();
+
+                    ActivityLog.EditionDivisionProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 1);
                 }
 
             }
@@ -426,11 +473,15 @@ namespace Agronet.Controllers.Products
                     var deleteedp = db.EditionDivisionProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                     db.EditionDivisionProducts.Remove(deleteedp);
                     db.SaveChanges();
+
+                    ActivityLog.EditionDivisionProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
                 }
 
                 var delete = db.MentionatedProducts.SingleOrDefault(x => x.CategoryId == CategoryId && x.DivisionId == DivisionId && x.EditionId == EditionId && x.PharmaFormId == PharmaFormId && x.ProductId == ProductId);
                 db.MentionatedProducts.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.MentionatedProducts(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -463,10 +514,14 @@ namespace Agronet.Controllers.Products
                         byte ContentTypeId = Convert.ToByte(System.Configuration.ConfigurationManager.AppSettings["Cambios"]);
 
                         PP.ContentTypeId = ContentTypeId;
+
+                        ActivityLog.ProductChanges(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 2, ContentTypeId);
                     }
                     else
                     {
                         PP.ContentTypeId = null;
+
+                        ActivityLog.ProductChanges(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 2, 0);
                     }
                     db.SaveChanges();
                 }
@@ -522,6 +577,44 @@ namespace Agronet.Controllers.Products
                     }
 
                     _p.Register = Register.Trim();
+
+                    ActivityLog.Products(Convert.ToInt32(ProductId), _p.ProductName, _p.Description, _p.Register, CountryId, Convert.ToInt32(_p.LaboratoryId), 2);
+
+                    db.SaveChanges();
+                }
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SavePage(string Product, string PharmaForm, string Category, string Division, string Edition, string Page)
+        {
+            int ProductId = int.Parse(Product);
+            int PharmaFormId = int.Parse(PharmaForm);
+            int CategoryId = int.Parse(Category);
+            int DivisionId = int.Parse(Division);
+            int EditionId = int.Parse(Edition);
+
+            List<ParticipantProducts> LPP = db.ParticipantProducts.Where(x => x.CategoryId == CategoryId &&
+                                                                              x.DivisionId == DivisionId &&
+                                                                              x.EditionId == EditionId &&
+                                                                              x.PharmaFormId == PharmaFormId &&
+                                                                              x.ProductId == ProductId).ToList();
+
+            if (LPP.LongCount() > 0)
+            {
+                foreach (ParticipantProducts item in LPP)
+                {
+                    if (string.IsNullOrEmpty(Page))
+                    {
+                        item.Page = null;
+                    }
+                    else
+                    {
+                        item.Page = Page.Trim();
+                    }
+
+                    ActivityLog.ProductPage(Convert.ToInt32(ProductId), PharmaFormId, DivisionId, CategoryId, EditionId, 2, item.Page);
 
                     db.SaveChanges();
                 }

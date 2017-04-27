@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductsByDivision>
+﻿@model IEnumerable<GetParticipantProducts>
 @using Agronet.Models;
 @{
     ViewBag.Title = "Index";
@@ -451,8 +451,8 @@
 
                                 _datagrid.Column("", header: "Descripción", format: @<text>
                 @{
-                    <span class="show-data" id="lblDescription">@item.Description</span>
-                    <textarea class="form-control edit-data" style="font-size: 12px; color: red; display: none;" id="trtxtDescription">@item.Description</textarea>
+                    <span class="show-data" id="lblDescription">@item.ProductDescription</span>
+                    <textarea class="form-control edit-data" style="font-size: 12px; color: red; display: none;" id="trtxtDescription">@item.ProductDescription</textarea>
                 }
                                 </text>, style:"column11"),
 
@@ -488,12 +488,14 @@
                     {
                         <input type="checkbox" disabled="disabled" />
                     }
-                    @*<img src="@Url.Action("ShowImages", "Production", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, DivisionId = DivisionId, Country = CountryId })" />*@
-                    @*<img src="@Url.Action("ShowProductShots", "Production", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, DivisionId = DivisionId, Country = CountryId })" style="width:80px; cursor:pointer" />*@
                     <img src="@Url.Action("ShowProductShots", "Production", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, DivisionId = DivisionId, Country = CountryId })" style=" width:75px; cursor:pointer" class="ldr" title="Agregar ProductShots" onclick="location.href='@Url.Action("ProductShots", "Production", new { ProductId = item.ProductId, PharmaFormId = item.PharmaFormId, CategoryId = item.CategoryId, DivisionId = DivisionId })';return false;" />
                 }
                 </text>, style:"text-center column7"),
-
+                _datagrid.Column("", header: "Página", format: @<text>
+                @{
+                    <input type="text" value="@item.Page" id="lblCategoryId" class="form-control" style="text-align:right; color:red" onblur="UpdatePage($(this))" />
+                }
+                </text>, style:"column11 text-center"),
                                     _datagrid.Column("", header: "Editar", format: @<text>
                 @{
                     <button class="btn btn-warning btn-sm show-data" onclick="ShowEditForms($(this))">

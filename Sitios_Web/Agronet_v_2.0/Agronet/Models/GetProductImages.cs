@@ -13,4 +13,13 @@ namespace Agronet.Models
         public byte? ImageSizeId { get; set; }
         public string Size { get; set; }
     }
+
+    public class GetDivisionImages
+    {
+        public int? DivisionImageId { get; set; }
+        public string ImageName { get; set; }
+
+        public byte? ImageSizeId { get; set; }
+        public string Size { get; set; }
+    }
 }

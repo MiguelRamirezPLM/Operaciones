@@ -32,7 +32,8 @@ namespace Agronet.Controllers.Production
                 sessionPROD sessionPROD = new sessionPROD(Country, Book, Edition, Division);
                 Session["sessionPROD"] = sessionPROD;
 
-                List<ProductsByDivision> LS = db.Database.SqlQuery<ProductsByDivision>("plm_spGetProductsByDivision @CountryId=" + Country + ", @DivisionId=" + Division + ", @EditionId=" + Edition + ", @ProductName='" + ProductName + "'").ToList();
+                //List<ProductsByDivision> LS = db.Database.SqlQuery<ProductsByDivision>("plm_spGetProductsByDivision @CountryId=" + Country + ", @DivisionId=" + Division + ", @EditionId=" + Edition + " , @TypeInEdition=P, @ProductName='" + ProductName + "'").ToList();
+                List<GetParticipantProducts> LS = db.Database.SqlQuery<GetParticipantProducts>("plm_spGetParticipantProductsByEdition @DivisionId=" + Division + ", @EditionId=" + Edition + ", @CountryId=" + Country + ", @TypeInEdition=P, @ProductName='" + ProductName + "'").ToList();
 
                 if (!string.IsNullOrEmpty(ProductName))
                 {
@@ -58,7 +59,8 @@ namespace Agronet.Controllers.Production
                 sessionPROD sessionPROD = new sessionPROD(Country, Book, Edition, Division);
                 Session["sessionPROD"] = sessionPROD;
 
-                List<ProductsByDivision> LS = db.Database.SqlQuery<ProductsByDivision>("plm_spGetProductsByDivision @CountryId=" + Country + ", @DivisionId=" + Division + ", @EditionId=" + Edition + ", @ProductName='" + ProductName + "'").ToList();
+                //List<ProductsByDivision> LS = db.Database.SqlQuery<ProductsByDivision>("plm_spGetProductsByDivision @CountryId=" + Country + ", @DivisionId=" + Division + ", @EditionId=" + Edition + ", @TypeInEdition=P, @ProductName='" + ProductName + "'").ToList();
+                List<GetParticipantProducts> LS = db.Database.SqlQuery<GetParticipantProducts>("plm_spGetParticipantProductsByEdition @DivisionId=" + Division + ", @EditionId=" + Edition + ", @CountryId=" + Country + ", @TypeInEdition=P, @ProductName='" + ProductName + "'").ToList();
 
                 if (!string.IsNullOrEmpty(ProductName))
                 {
@@ -78,7 +80,7 @@ namespace Agronet.Controllers.Production
                 int Edition = 0;
                 int Division = 0;
 
-                List<ProductsByDivision> LS = db.Database.SqlQuery<ProductsByDivision>("plm_spGetProductsByDivision @CountryId=" + Country + ", @DivisionId=" + Division + ", @EditionId=" + Edition + "").ToList();
+                List<GetParticipantProducts> LS = db.Database.SqlQuery<GetParticipantProducts>("plm_spGetParticipantProductsByEdition @DivisionId=" + Division + ", @EditionId=" + Edition + ", @CountryId=" + Country + ", @TypeInEdition=P").ToList();
 
                 return View(LS);
             }

@@ -1173,3 +1173,54 @@ function SaveDivisionImages() {
         }
     }
 }
+
+function RemoveDivisionImages(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var Id = tr.find("#lblDivisionImageId").val();
+    var SId = tr.find("#lblImageSizeId").val();
+
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Laboratories/RemoveDivisionImages",
+        data: { DivisionImage: Id, Size: SId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+
+}
+
+function CanceladdDivisionImage() {
+    $('#txtFileName').val('');
+    var elm = document.getElementById("val_0");
+
+    $("#SelectDivisionImageSize").val($(elm).val());
+}
+
+function UpdatePage(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var Pge = $(item).val();
+    var PId = tr.find("#lblProductId").val();
+    var PFId = tr.find("#lblPharmaFormId").val();
+    var CId = tr.find("#lblCategoryId").val();
+    var DId = $("#DivisionId").val();
+    var EId = $("#EditionId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Products/SavePage",
+        data: { Product: PId, PharmaForm: PFId, Category: CId, Division: DId, Edition: EId, Page: Pge },
+        success: function (data) {
+
+        }
+    })
+}

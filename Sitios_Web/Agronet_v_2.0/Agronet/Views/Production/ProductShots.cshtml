@@ -44,7 +44,7 @@
     <div class="col-lg-6">
         <table class="widthtable table-hover">
             <tr>
-                <td><label class="title-filter">Producto:</label></td>
+                <td style="width:40%"><label class="title-filter">Producto:</label></td>
                 <td>
                     @{
                         var p = db.Products.Where(x => x.ProductId == ProductId).ToList();
@@ -233,7 +233,7 @@
 
                         _datagrid.Column("", header: "Imagen", format: @<text>
                 @{
-                    <img src="@Url.Action("ShowImagesDetails", "Production", new { ProductImageId = item.ProductImageId, Country = 11, SizeId = item.ImageSizeId })" style="width:80px; cursor:pointer" title="@item.Size" />
+                    <img src="@Url.Action("ShowImagesDetails", "Production", new { ProductImageId = item.ProductImageId, Country = CountryId, SizeId = item.ImageSizeId })" style="width:80px; cursor:pointer" title="@item.Size" />
                 }
                         </text>, style:"text-center column7"),
 

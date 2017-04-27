@@ -5,12 +5,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Agronet.Models;
+using System.IO;
 
 namespace Agronet.Controllers.Laboratories
 {
     public class LaboratoriesController : Controller
     {
         DEAQ db = new DEAQ();
+        ActivityLog ActivityLog = new ActivityLog();
 
         public ActionResult Index(string CountryId, string DivisionId)
         {
@@ -69,6 +71,8 @@ namespace Agronet.Controllers.Laboratories
                     _d.ShortName = ShortName.Trim();
 
                     db.SaveChanges();
+
+                    ActivityLog.Divisions(DivisionId, DivisionName, ShortName, 2);
                 }
             }
 
@@ -195,6 +199,8 @@ namespace Agronet.Controllers.Laboratories
                     {
                         _di.Email = null;
                     }
+
+                    ActivityLog.DivisionInformation(DivisionInformationId, Convert.ToInt32(_di.DivisionId), _di.Address, _di.City, _di.Email, _di.Fax, _di.Lada, _di.Location, _di.State, _di.Suburb, _di.Telephone, _di.Web, _di.ZipCode, 2);
                 }
 
                 db.SaveChanges();
@@ -323,6 +329,10 @@ namespace Agronet.Controllers.Laboratories
                 DI.Email = null;
             }
 
+
+
+            //ActivityLog.DivisionInformation(DivisionInformationId, Convert.ToInt32(DI.DivisionId), DI.Address, DI.City, DI.Email, DI.Fax, DI.Lada, DI.Location, DI.State, DI.Suburb, DI.Telephone, DI.Web, DI.ZipCode, 2);
+
             db.DivisionInformation.Add(DI);
             db.SaveChanges();
 
@@ -342,19 +352,31 @@ namespace Agronet.Controllers.Laboratories
                 var Delete = db.DivisionInformation.SingleOrDefault(x => x.DivisionInformationId == AddressId && x.DivisionId == DivisionId);
                 db.DivisionInformation.Remove(Delete);
                 db.SaveChanges();
+
+                ActivityLog.DivisionInformation(AddressId, Convert.ToInt32(LS[0].DivisionId), LS[0].Address, LS[0].City, LS[0].Email, LS[0].Fax, LS[0].Lada, LS[0].Location, LS[0].State, LS[0].Suburb, LS[0].Telephone, LS[0].Web, LS[0].ZipCode, 2);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult DivisionImages(int? DivisionId)
+        public ActionResult DivisionImages(int? DivisionId, int? CountryId)
         {
-            return View();
+            if ((!Request.IsAuthenticated) || (DivisionId == null) || (CountryId == null))
+            {
+                return RedirectToAction("Logout", "Login");
+            }
+
+            sessionCountryId sessionCountryId = new sessionCountryId(Convert.ToInt32(CountryId), Convert.ToInt32(DivisionId));
+            Session["sessionCountryId"] = sessionCountryId;
+
+            List<GetDivisionImages> LS = db.Database.SqlQuery<GetDivisionImages>("plm_spGetDivisionImagesByDivision @DivisionId=" + DivisionId + "").ToList();
+
+            return View(LS);
         }
 
         public JsonResult SaveDivisionImages(HttpPostedFileBase file, string Size, string Division, string Country)
         {
-            int SizeId = int.Parse(Size);
+            byte SizeId = Convert.ToByte(Size);
             int DivisionId = int.Parse(Division);
             int CountryId = int.Parse(Country);
 
@@ -375,17 +397,71 @@ namespace Agronet.Controllers.Laboratories
 
             if (LDI.LongCount() > 0)
             {
-                foreach(DivisionImages item in LDI)
+                foreach (DivisionImages item in LDI)
                 {
                     item.ImageName = ImageName.Trim();
 
                     db.SaveChanges();
 
                     DivisionImageId = item.DivisionImageId;
+
+                    ActivityLog.DivisionImages(DivisionImageId, DivisionId, item.ImageName, 2);
                 }
             }
+            else
+            {
+                DivisionImages DivisionImages = new DivisionImages();
 
+                DivisionImages.Active = true;
+                DivisionImages.BaseURL = "";
+                DivisionImages.DivisionId = DivisionId;
+                DivisionImages.ImageName = ImageName;
+                DivisionImages.ImageSizeId = null;
+                DivisionImages.ImageTypeId = 1;
 
+                db.DivisionImages.Add(DivisionImages);
+                db.SaveChanges();
+
+                LDI = db.DivisionImages.Where(x => x.DivisionId == DivisionId).ToList();
+
+                DivisionImageId = LDI[0].DivisionImageId;
+
+                ActivityLog.DivisionImages(DivisionImageId, DivisionId, ImageName, 1);
+            }
+
+            List<DivisionImageSizes> LDIS = db.DivisionImageSizes.Where(x => x.ImageSizeId == SizeId && x.DivisionImageId == DivisionImageId).ToList();
+
+            if (LDIS.LongCount() == 0)
+            {
+                DivisionImageSizes DivisionImageSizes = new DivisionImageSizes();
+
+                DivisionImageSizes.DivisionImageId = DivisionImageId;
+                DivisionImageSizes.ImageSizeId = SizeId;
+
+                db.DivisionImageSizes.Add(DivisionImageSizes);
+                db.SaveChanges();
+
+                ActivityLog.DivisionImageSizes(DivisionImageId, SizeId, 1);
+            }
+
+            List<ImageSizes> LIS = db.ImageSizes.Where(x => x.ImageSizeId == SizeId).ToList();
+
+            string root = System.IO.Path.Combine("C:\\Users\\miguel.ramirez\\Desktop\\DivisionImages", LIS[0].Size);
+
+            if (System.IO.Directory.Exists(root))
+            {
+                root = System.IO.Path.Combine(root, ImageName);
+
+                file.SaveAs(root);
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(root);
+
+                root = System.IO.Path.Combine(root, ImageName);
+
+                file.SaveAs(root);
+            }
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -417,6 +493,128 @@ namespace Agronet.Controllers.Laboratories
 
 
             return img;
+        }
+
+        public JsonResult RemoveDivisionImages(string DivisionImage, string Size)
+        {
+            int DivisionImageId = int.Parse(DivisionImage);
+            int SizeId = int.Parse(Size);
+
+            List<DivisionImageSizes> LDIS = db.DivisionImageSizes.Where(x => x.DivisionImageId == DivisionImageId && x.ImageSizeId == SizeId).ToList();
+
+            if (LDIS.LongCount() > 0)
+            {
+                var Delete = db.DivisionImageSizes.SingleOrDefault(x => x.DivisionImageId == DivisionImageId && x.ImageSizeId == SizeId);
+                db.DivisionImageSizes.Remove(Delete);
+                db.SaveChanges();
+
+                ActivityLog.DivisionImageSizes(DivisionImageId, SizeId, 4);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetDivisionImagesBySize(int? DivisionImageId, int? SizeId)
+        {
+            List<DivisionImages> LDI = db.DivisionImages.Where(x => x.DivisionImageId == DivisionImageId).ToList();
+
+            if (LDI.LongCount() > 0)
+            {
+                string ImageName = LDI[0].ImageName;
+
+                List<DivisionImageSizes> LPIS = db.DivisionImageSizes.Where(x => x.DivisionImageId == DivisionImageId && x.ImageSizeId == SizeId).ToList();
+
+                if (LPIS.LongCount() > 0)
+                {
+                    foreach (DivisionImageSizes item in LPIS)
+                    {
+                        List<ImageSizes> LIS = db.ImageSizes.Where(x => x.ImageSizeId == SizeId).ToList();
+
+                        foreach (ImageSizes item1 in LIS)
+                        {
+                            var root = Path.Combine("C:\\Users\\miguel.ramirez\\Desktop\\DivisionImages", item1.Size);
+                            var path = Path.Combine(root, ImageName);
+                            if (System.IO.File.Exists(path))
+                            {
+                                return File(path, "image/png");
+                            }
+                            else
+                            {
+                                ImageName = "not_available.png";
+                                var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                                return File(rootnot, "image/png");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ImageName = "not_available.png";
+                    var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                    return File(rootnot, "image/png");
+                }
+            }
+            else
+            {
+                string ImageName = "not_available.png";
+                var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                return File(rootnot, "image/png");
+            }
+
+            return View();
+        }
+
+        public ActionResult GetDivisionImagesByDivision(int? DivisionId)
+        {
+            List<DivisionImages> LDI = db.DivisionImages.Where(x => x.DivisionId == DivisionId).ToList();
+
+            if (LDI.LongCount() > 0)
+            {
+                int DivisionImageId = LDI[0].DivisionImageId;
+                string ImageName = LDI[0].ImageName;
+
+                List<DivisionImageSizes> LDIS = db.DivisionImageSizes.Where(x => x.DivisionImageId == DivisionImageId).ToList();
+
+                if (LDI.LongCount() > 0)
+                {
+                    foreach (DivisionImageSizes item in LDIS)
+                    {
+                        List<ImageSizes> LIS = db.ImageSizes.Where(x => x.ImageSizeId == item.ImageSizeId).ToList();
+
+                        if (LIS.LongCount() > 0)
+                        {
+                            foreach (ImageSizes item1 in LIS)
+                            {
+                                var root = Path.Combine("C:\\Users\\miguel.ramirez\\Desktop\\DivisionImages", item1.Size);
+                                var path = Path.Combine(root, ImageName);
+                                if (System.IO.File.Exists(path))
+                                {
+                                    return File(path, "image/png");
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ImageName = "not_available.png";
+                    var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                    return File(rootnot, "image/png");
+                }
+
+            }
+            else
+            {
+                string ImageName = "not_available.png";
+                var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                return File(rootnot, "image/png");
+            }
+
+            string ImageName1 = "not_available.png";
+            var rootnot1 = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName1);
+            return File(rootnot1, "image/png");
+
+            //return View();
         }
     }
 }
