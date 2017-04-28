@@ -13,6 +13,7 @@ namespace Agronet.Controllers.Production
     {
 
         DEAQ db = new DEAQ();
+        ActivityLog ActivityLog = new ActivityLog();
 
         public ActionResult Index(string CountryId, string BookId, string EditionId, string DivisionId, string ProductName)
         {
@@ -162,13 +163,13 @@ namespace Agronet.Controllers.Production
 
             ProductShot = ProductShot.Trim() + Extention.Trim();
 
-            string Path = "C:\\Users\\miguel.ramirez\\Documents\\Visual Studio 2013\\Projects\\Agronet\\Agronet\\App_Data";
+            string Path = System.Configuration.ConfigurationManager.AppSettings["Path"];
 
             List<ImageSizes> LIS = db.ImageSizes.Where(x => x.ImageSizeId == SizeId).ToList();
 
             List<Countries> LC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
 
-            Path = System.IO.Path.Combine(Path, LC[0].ID, LIS[0].Size);
+            Path = System.IO.Path.Combine(Path, LC[0].ID, "ProductShots", LIS[0].Size);
 
             List<ProductImages> LPI = db.ProductImages.Where(x => x.CategoryId == CategoryId &&
                                                                   x.DivisionId == DivisionId &&
@@ -186,14 +187,8 @@ namespace Agronet.Controllers.Production
                 ProductImages.ProductShot = ProductShot;
 
                 db.ProductImages.Add(ProductImages);
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (Exception e)
-                {
+                db.SaveChanges();
 
-                }
 
 
                 List<ProductImages> LPI1 = db.ProductImages.Where(x => x.CategoryId == CategoryId &&
@@ -204,6 +199,8 @@ namespace Agronet.Controllers.Production
                 {
                     ProductImageId = item.ProductImageId;
                 }
+
+                ActivityLog.ProductImages(ProductId, PharmaFormId, DivisionId, CategoryId, ProductImageId, ProductShot, 1);
             }
             else
             {
@@ -214,6 +211,8 @@ namespace Agronet.Controllers.Production
                     db.SaveChanges();
 
                     ProductImageId = item.ProductImageId;
+
+                    ActivityLog.ProductImages(ProductId, PharmaFormId, DivisionId, CategoryId, ProductImageId, ProductShot, 2);
                 }
             }
 
@@ -229,6 +228,8 @@ namespace Agronet.Controllers.Production
 
                 db.ProductImageSizes.Add(ProductImageSizes);
                 db.SaveChanges();
+
+                ActivityLog.ProductImageSizes(ProductImageId, SizeId, 1);
             }
 
 
@@ -278,9 +279,7 @@ namespace Agronet.Controllers.Production
 
         public ActionResult ShowImagesDetails(int? ProductImageId, int? Country, int? SizeId)
         {
-            string Path = "C:\\Users\\miguel.ramirez\\Documents\\Visual Studio 2013\\Projects\\Agronet\\Agronet\\App_Data";
-
-            string Path1 = Path;
+            string Path = System.Configuration.ConfigurationManager.AppSettings["Path"];
 
             List<Countries> LC = db.Countries.Where(x => x.CountryId == Country).ToList();
 
@@ -288,7 +287,7 @@ namespace Agronet.Controllers.Production
 
             List<ImageSizes> LII = db.ImageSizes.Where(x => x.ImageSizeId == SizeId).ToList();
 
-            Path = System.IO.Path.Combine(Path, LC[0].ID, LII[0].Size, LPI[0].ProductShot);
+            Path = System.IO.Path.Combine(Path, LC[0].ID, "ProductShots", LII[0].Size, LPI[0].ProductShot);
 
             if (System.IO.File.Exists(Path))
             {
@@ -296,7 +295,9 @@ namespace Agronet.Controllers.Production
             }
             else
             {
-                Path1 = System.IO.Path.Combine(Path1, "Uploads", "not_available.png");
+                string Path1 = Server.MapPath("~/App_Data/Uploads/Templates");
+
+                Path1 = System.IO.Path.Combine(Path1, "not_available.png");
 
                 return File(Path1, "Image/png");
             }
@@ -314,6 +315,8 @@ namespace Agronet.Controllers.Production
                 var Delete = db.ProductImageSizes.SingleOrDefault(x => x.ProductImageId == ProductImageId && x.ImageSizeId == SizeId);
                 db.ProductImageSizes.Remove(Delete);
                 db.SaveChanges();
+
+                ActivityLog.ProductImageSizes(ProductImageId, SizeId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -321,7 +324,7 @@ namespace Agronet.Controllers.Production
 
         public ActionResult ShowProductShots(int? ProductId, int? PharmaFormId, int? CategoryId, int? DivisionId, int? Country)
         {
-            string Path = "C:\\Users\\miguel.ramirez\\Documents\\Visual Studio 2013\\Projects\\Agronet\\Agronet\\App_Data";
+            string Path = System.Configuration.ConfigurationManager.AppSettings["Path"];
 
             List<Countries> LC = db.Countries.Where(x => x.CountryId == Country).ToList();
 
@@ -334,7 +337,6 @@ namespace Agronet.Controllers.Production
 
             if (LPI.LongCount() > 0)
             {
-                string Path1 = Path;
 
                 ProductImageId = LPI[0].ProductImageId;
 
@@ -346,7 +348,7 @@ namespace Agronet.Controllers.Production
                     {
                         List<ImageSizes> LII = db.ImageSizes.Where(x => x.ImageSizeId == item.ImageSizeId).ToList();
 
-                        string root = System.IO.Path.Combine(Path1, LC[0].ID, LII[0].Size, LPI[0].ProductShot);
+                        string root = System.IO.Path.Combine(Path, LC[0].ID, "ProductShots", LII[0].Size, LPI[0].ProductShot);
 
                         if (System.IO.File.Exists(root))
                         {
@@ -356,15 +358,19 @@ namespace Agronet.Controllers.Production
                 }
                 else
                 {
-                    Path = System.IO.Path.Combine(Path, "Uploads", "not_available.png");
+                    string Path1 = Server.MapPath("~/App_Data/Uploads/Templates");
 
-                    return File(Path, "Image/png");
+                    Path1 = System.IO.Path.Combine(Path1, "not_available.png");
+
+                    return File(Path1, "Image/png");
                 }
             }
 
-            Path = System.IO.Path.Combine(Path, "Uploads", "not_available.png");
+            string Path2 = Server.MapPath("~/App_Data/Uploads/Templates");
 
-            return File(Path, "Image/png");
+            Path2 = System.IO.Path.Combine(Path2, "not_available.png");
+
+            return File(Path2, "Image/png");
         }
     }
 }

@@ -446,7 +446,11 @@ namespace Agronet.Controllers.Laboratories
 
             List<ImageSizes> LIS = db.ImageSizes.Where(x => x.ImageSizeId == SizeId).ToList();
 
-            string root = System.IO.Path.Combine("C:\\Users\\miguel.ramirez\\Desktop\\DivisionImages", LIS[0].Size);
+            List<Countries> LC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+            string Path = System.Configuration.ConfigurationManager.AppSettings["Path"];
+
+            string root = System.IO.Path.Combine(Path, LC[0].ID, "DivisionImages", LIS[0].Size);
 
             if (System.IO.Directory.Exists(root))
             {
@@ -514,8 +518,12 @@ namespace Agronet.Controllers.Laboratories
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetDivisionImagesBySize(int? DivisionImageId, int? SizeId)
+        public ActionResult GetDivisionImagesBySize(int? DivisionImageId, int? SizeId, int? CountryId)
         {
+            string Path1 = Server.MapPath("~/App_Data/Uploads/Templates");
+
+            string Path = System.Configuration.ConfigurationManager.AppSettings["Path"];
+
             List<DivisionImages> LDI = db.DivisionImages.Where(x => x.DivisionImageId == DivisionImageId).ToList();
 
             if (LDI.LongCount() > 0)
@@ -532,8 +540,10 @@ namespace Agronet.Controllers.Laboratories
 
                         foreach (ImageSizes item1 in LIS)
                         {
-                            var root = Path.Combine("C:\\Users\\miguel.ramirez\\Desktop\\DivisionImages", item1.Size);
-                            var path = Path.Combine(root, ImageName);
+                            List<Countries> LC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                            var root = System.IO.Path.Combine(Path, LC[0].ID, "DivisionImages", item1.Size);
+                            var path = System.IO.Path.Combine(root, ImageName);
                             if (System.IO.File.Exists(path))
                             {
                                 return File(path, "image/png");
@@ -541,7 +551,7 @@ namespace Agronet.Controllers.Laboratories
                             else
                             {
                                 ImageName = "not_available.png";
-                                var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                                var rootnot = System.IO.Path.Combine(Path1, ImageName);
                                 return File(rootnot, "image/png");
                             }
                         }
@@ -550,22 +560,26 @@ namespace Agronet.Controllers.Laboratories
                 else
                 {
                     ImageName = "not_available.png";
-                    var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                    var rootnot = System.IO.Path.Combine(Path1, ImageName);
                     return File(rootnot, "image/png");
                 }
             }
             else
             {
                 string ImageName = "not_available.png";
-                var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                var rootnot = System.IO.Path.Combine(Path1, ImageName);
                 return File(rootnot, "image/png");
             }
 
             return View();
         }
 
-        public ActionResult GetDivisionImagesByDivision(int? DivisionId)
+        public ActionResult GetDivisionImagesByDivision(int? DivisionId, int? CountryId)
         {
+            string Path = System.Configuration.ConfigurationManager.AppSettings["Path"];
+
+            string Path1 = Server.MapPath("~/App_Data/Uploads/Templates");
+
             List<DivisionImages> LDI = db.DivisionImages.Where(x => x.DivisionId == DivisionId).ToList();
 
             if (LDI.LongCount() > 0)
@@ -585,8 +599,10 @@ namespace Agronet.Controllers.Laboratories
                         {
                             foreach (ImageSizes item1 in LIS)
                             {
-                                var root = Path.Combine("C:\\Users\\miguel.ramirez\\Desktop\\DivisionImages", item1.Size);
-                                var path = Path.Combine(root, ImageName);
+                                List<Countries> LC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                                var root = System.IO.Path.Combine(Path, LC[0].ID, "DivisionImages", item1.Size);
+                                var path = System.IO.Path.Combine(root, ImageName);
                                 if (System.IO.File.Exists(path))
                                 {
                                     return File(path, "image/png");
@@ -598,7 +614,7 @@ namespace Agronet.Controllers.Laboratories
                 else
                 {
                     ImageName = "not_available.png";
-                    var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                    var rootnot = System.IO.Path.Combine(Path1, ImageName);
                     return File(rootnot, "image/png");
                 }
 
@@ -606,12 +622,11 @@ namespace Agronet.Controllers.Laboratories
             else
             {
                 string ImageName = "not_available.png";
-                var rootnot = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName);
+                var rootnot = System.IO.Path.Combine(Path1, ImageName);
                 return File(rootnot, "image/png");
             }
-
             string ImageName1 = "not_available.png";
-            var rootnot1 = Path.Combine(Server.MapPath("~/App_Data/uploads/Templates"), ImageName1);
+            var rootnot1 = System.IO.Path.Combine(Path1, ImageName1);
             return File(rootnot1, "image/png");
 
             //return View();

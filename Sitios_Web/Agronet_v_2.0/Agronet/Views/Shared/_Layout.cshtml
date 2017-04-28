@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Agronet.Models;
+@{
+    PLMUsers db = new PLMUsers();
+
+    string HashKey = System.Configuration.ConfigurationManager.AppSettings["HashKey"];
+
+    var apps = db.Applications.Where(x => x.HashKey == HashKey).ToList();
+
+    int ApplicationId = apps[0].ApplicationId;
+
+    Agronet.Models.CountriesUsers p = (Agronet.Models.CountriesUsers)Session["CountriesUsers"];
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -15,7 +27,7 @@
     <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script> 
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/apprise.min.css")" rel="stylesheet">
@@ -66,19 +78,15 @@
                                     <li class="user-header">
                                         <img src="@Url.Content("~/Images/user.png")" class="img-circle" alt="User Image">
                                         <p>
-                                            @*@User.Identity.Name.ToUpper()*@
                                             @{
-                                                Agronet.Models.CountriesUsers p = (Agronet.Models.CountriesUsers)Session["CountriesUsers"];
+            string UserName = "";
 
-                                                string UserName = "";
+            if (p != null)
+            {
+                List<Agronet.Models.Users> LU = db.Users.Where(x => x.UserId == p.userId).ToList();
 
-                                                if (p != null)
-                                                {
-                                                    Agronet.Models.PLMUsers db = new Agronet.Models.PLMUsers();
-                                                    List<Agronet.Models.Users> LU = db.Users.Where(x => x.UserId == p.userId).ToList();
-
-                                                    UserName = LU[0].Name + " " + LU[0].LastName + " " + LU[0].SecondLastName;
-                                                }
+                UserName = LU[0].Name + " " + LU[0].LastName + " " + LU[0].SecondLastName;
+            }
                                             }
                                             Bienvenido: <br />
                                             @UserName
@@ -107,37 +115,96 @@
                 <section class="sidebar">
                     <ul class="sidebar-menu">
                         <li class="header">MENÚ</li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-pie-chart"></i>
-                                <span>Ventas</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu M">
-                                <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
-                                <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-laptop"></i>
-                                <span>Agroquímico</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-edit"></i> <span>Producción</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="@Url.Content("~/Production/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
-                                <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
-                            </ul>
-                        </li>
+                        @{
+                            var user = p.userId;
+                            var app = p.ApplicationId;
+                            var LI = (from UR in db.ApplicationUsers
+                                      where UR.UserId == user
+                                      && UR.ApplicationId == app
+                                      join rol in db.Roles
+                                      on UR.RoleId equals rol.RoleId
+                                      select rol).ToList();
+
+                            foreach (Agronet.Models.Roles item in LI)
+                            {
+                                if (item.Description == "Administrador")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-pie-chart"></i>
+                                            <span>Ventas</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu M">
+                                            <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                            <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                        </ul>
+                                    </li>
+                                            <li class="treeview">
+                                                <a href="#">
+                                                    <i class="fa fa-laptop"></i>
+                                                    <span>Agroquímico</span>
+                                                    <i class="fa fa-angle-left pull-right"></i>
+                                                </a>
+                                                <ul class="treeview-menu">
+                                                    <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="treeview">
+                                                <a href="#">
+                                                    <i class="fa fa-edit"></i> <span>Producción</span>
+                                                    <i class="fa fa-angle-left pull-right"></i>
+                                                </a>
+                                                <ul class="treeview-menu">
+                                                    <li><a href="@Url.Content("~/Production/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                                    <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                                </ul>
+                                            </li>
+                                }
+                                if (item.Description == "Vendedor")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-pie-chart"></i>
+                                            <span>Ventas</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu M">
+                                            <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                            <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                        </ul>
+                                    </li>
+                                }
+
+                                if (item.Description == "Agroquimico")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-laptop"></i>
+                                            <span>Agroquímico</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                if (item.Description == "Diagramador")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-edit"></i> <span>Producción</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="@Url.Content("~/Production/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                            <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        }
+
                     </ul>
                 </section>
             </aside>

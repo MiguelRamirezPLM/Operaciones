@@ -360,5 +360,139 @@ namespace Agronet.Models
                 dbusers.SaveChanges();
             }
         }
+
+
+        /*          Clasification           */
+
+        public void ProductSubstances(int ProductId, int ActiveSubstanceId, int Operation)
+        {
+            List<Tables> LT = dbusers.Tables.Where(x => x.Description == "ProductSubstances" && x.ApplicationId == c.ApplicationId).ToList();
+
+            foreach (Tables tbl in LT)
+            {
+                int TableId = tbl.TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = Operation;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(ProductId," + ProductId + "),(ActiveSubstanceId," + ActiveSubstanceId + ")");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
+
+        public void ProductCrops(int ProductId, int CropId, int Operation)
+        {
+            List<Tables> LT = dbusers.Tables.Where(x => x.Description == "ProductCrops" && x.ApplicationId == c.ApplicationId).ToList();
+
+            foreach (Tables tbl in LT)
+            {
+                int TableId = tbl.TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = Operation;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(ProductId," + ProductId + "),(CropId," + CropId + ")");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
+
+        public void ProductAgrochemicalUses(int ProductId, int AgrochemicalUseId, int Operation)
+        {
+            List<Tables> LT = dbusers.Tables.Where(x => x.Description == "ProductAgrochemicalUses" && x.ApplicationId == c.ApplicationId).ToList();
+
+            foreach (Tables tbl in LT)
+            {
+                int TableId = tbl.TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = Operation;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(AgrochemicalUseId," + AgrochemicalUseId + "),(ProductId," + ProductId + ")");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
+
+        public void ProductSeeds(int ProductId, int SeedId, int Operation)
+        {
+            List<Tables> LT = dbusers.Tables.Where(x => x.Description == "ProductSeeds" && x.ApplicationId == c.ApplicationId).ToList();
+
+            foreach (Tables tbl in LT)
+            {
+                int TableId = tbl.TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = Operation;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(SeedId," + SeedId + "),(ProductId," + ProductId + ")");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
+
+
+
+        /*          ProductImages           */
+
+        public void ProductImages(int ProductId, int PharmaFormId, int DivisionId, int CategoryId, int ProductImageId, string ProductShot, int Operation)
+        {
+            List<Tables> LT = dbusers.Tables.Where(x => x.Description == "ProductImages" && x.ApplicationId == c.ApplicationId).ToList();
+
+            foreach (Tables tbl in LT)
+            {
+                int TableId = tbl.TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = Operation;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(ProductId," + ProductId + "),(PharmaFormId," + PharmaFormId + "),(DivisionId," + DivisionId + "),(CategoryId," + CategoryId + "),(ProductImageId," + ProductImageId + ")");
+                ActivityLogs.FieldsAffected = ("(ProductShot," + ProductShot + "),(BaseURL,NULL)");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
+
+        public void ProductImageSizes(int ProductImageId, int ImageSizeId, int Operation)
+        {
+            List<Tables> LT = dbusers.Tables.Where(x => x.Description == "ProductImageSizes" && x.ApplicationId == c.ApplicationId).ToList();
+
+            foreach (Tables tbl in LT)
+            {
+                int TableId = tbl.TableId;
+
+                ActivityLogs = new Models.ActivityLogs();
+
+                ActivityLogs.UserId = c.userId;
+                ActivityLogs.TableId = TableId;
+                ActivityLogs.OperationId = Operation;
+                ActivityLogs.Date = DateTime.Now;
+                ActivityLogs.PrimaryKeyAffected = ("(ProductImageId," + ProductImageId + "),(ImageSizeId," + ImageSizeId + ")");
+
+                dbusers.ActivityLogs.Add(ActivityLogs);
+                dbusers.SaveChanges();
+            }
+        }
     }
 }
