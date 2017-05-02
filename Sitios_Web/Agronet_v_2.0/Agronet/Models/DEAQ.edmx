@@ -60,6 +60,26 @@
           <Property Name="ScientificName" Type="varchar" MaxLength="100" />
           <Property Name="Status" Type="bit" />
         </EntityType>
+        <EntityType Name="DivisionImages">
+          <Key>
+            <PropertyRef Name="DivisionImageId" />
+          </Key>
+          <Property Name="DivisionImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImageTypeId" Type="tinyint" />
+          <Property Name="DivisionId" Type="int" />
+          <Property Name="ImageName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BaseURL" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ImageSizeId" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="DivisionImageSizes">
+          <Key>
+            <PropertyRef Name="DivisionImageId" />
+            <PropertyRef Name="ImageSizeId" />
+          </Key>
+          <Property Name="DivisionImageId" Type="int" Nullable="false" />
+          <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+        </EntityType>
         <EntityType Name="DivisionInformation">
           <Key>
             <PropertyRef Name="DivisionInformationId" />
@@ -117,6 +137,14 @@
           <Property Name="NumberEdition" Type="int" Nullable="false" />
           <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="BarCode" Type="varchar" MaxLength="80" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ImageSizes">
+          <Key>
+            <PropertyRef Name="ImageSizeId" />
+          </Key>
+          <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
+          <Property Name="Size" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MentionatedProducts">
@@ -190,6 +218,27 @@
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="CropId" Type="int" Nullable="false" />
           <Property Name="Substance" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ProductImages">
+          <Key>
+            <PropertyRef Name="ProductImageId" />
+          </Key>
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="PharmaFormId" Type="int" Nullable="false" />
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductShot" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BaseURL" Type="varchar" MaxLength="255" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductImageSizes">
+          <Key>
+            <PropertyRef Name="ProductImageId" />
+            <PropertyRef Name="ImageSizeId" />
+          </Key>
+          <Property Name="ProductImageId" Type="int" Nullable="false" />
+          <Property Name="ImageSizeId" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -296,6 +345,18 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
           <Property Name="NumberOfSeeds" Type="int" />
           <Property Name="NumberOfAgrochemicalUses" Type="int" />
         </EntityType>
+        <Association Name="DivisionImages_DivisionId_FK">
+          <End Role="Divisions" Type="Self.Divisions" Multiplicity="0..1" />
+          <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Divisions">
+              <PropertyRef Name="DivisionId" />
+            </Principal>
+            <Dependent Role="DivisionImages">
+              <PropertyRef Name="DivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_12">
           <End Role="Editions" Type="Self.Editions" Multiplicity="1" />
           <End Role="MentionatedProducts" Type="Self.MentionatedProducts" Multiplicity="*" />
@@ -317,6 +378,54 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
             </Principal>
             <Dependent Role="ParticipantProducts">
               <PropertyRef Name="EditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_133">
+          <End Role="ProductImages" Type="Self.ProductImages" Multiplicity="1" />
+          <End Role="ProductImageSizes" Type="Self.ProductImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductImages">
+              <PropertyRef Name="ProductImageId" />
+            </Principal>
+            <Dependent Role="ProductImageSizes">
+              <PropertyRef Name="ProductImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_134">
+          <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
+          <End Role="ProductImageSizes" Type="Self.ProductImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Principal>
+            <Dependent Role="ProductImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_135">
+          <End Role="DivisionImages" Type="Self.DivisionImages" Multiplicity="1" />
+          <End Role="DivisionImageSizes" Type="Self.DivisionImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DivisionImages">
+              <PropertyRef Name="DivisionImageId" />
+            </Principal>
+            <Dependent Role="DivisionImageSizes">
+              <PropertyRef Name="DivisionImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_136">
+          <End Role="ImageSizes" Type="Self.ImageSizes" Multiplicity="1" />
+          <End Role="DivisionImageSizes" Type="Self.DivisionImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Principal>
+            <Dependent Role="DivisionImageSizes">
+              <PropertyRef Name="ImageSizeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -519,16 +628,21 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Crops" EntityType="Self.Crops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DivisionImages" EntityType="Self.DivisionImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DivisionImageSizes" EntityType="Self.DivisionImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DivisionInformation" EntityType="Self.DivisionInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Divisions" EntityType="Self.Divisions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EditionDivisionProducts" EntityType="Self.EditionDivisionProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Editions" EntityType="Self.Editions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImageSizes" EntityType="Self.ImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MentionatedProducts" EntityType="Self.MentionatedProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NewProducts" EntityType="Self.NewProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParticipantProducts" EntityType="Self.ParticipantProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PharmaForms" EntityType="Self.PharmaForms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductAgrochemicalUses" EntityType="Self.ProductAgrochemicalUses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCrops" EntityType="Self.ProductCrops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductImageSizes" EntityType="Self.ProductImageSizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductSeeds" EntityType="Self.ProductSeeds" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductSubstances" EntityType="Self.ProductSubstances" Schema="dbo" store:Type="Tables" />
@@ -573,6 +687,10 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
     [plm_vwProductsByEdition].[NumberOfAgrochemicalUses] AS [NumberOfAgrochemicalUses]
     FROM [dbo].[plm_vwProductsByEdition] AS [plm_vwProductsByEdition]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="DivisionImages_DivisionId_FK" Association="Self.DivisionImages_DivisionId_FK">
+            <End Role="Divisions" EntitySet="Divisions" />
+            <End Role="DivisionImages" EntitySet="DivisionImages" />
+          </AssociationSet>
           <AssociationSet Name="R_12" Association="Self.R_12">
             <End Role="Editions" EntitySet="Editions" />
             <End Role="MentionatedProducts" EntitySet="MentionatedProducts" />
@@ -580,6 +698,22 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
           <AssociationSet Name="R_13" Association="Self.R_13">
             <End Role="Editions" EntitySet="Editions" />
             <End Role="ParticipantProducts" EntitySet="ParticipantProducts" />
+          </AssociationSet>
+          <AssociationSet Name="R_133" Association="Self.R_133">
+            <End Role="ProductImages" EntitySet="ProductImages" />
+            <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+          </AssociationSet>
+          <AssociationSet Name="R_134" Association="Self.R_134">
+            <End Role="ImageSizes" EntitySet="ImageSizes" />
+            <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+          </AssociationSet>
+          <AssociationSet Name="R_135" Association="Self.R_135">
+            <End Role="DivisionImages" EntitySet="DivisionImages" />
+            <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
+          </AssociationSet>
+          <AssociationSet Name="R_136" Association="Self.R_136">
+            <End Role="ImageSizes" EntitySet="ImageSizes" />
+            <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
           </AssociationSet>
           <AssociationSet Name="R_16" Association="Self.R_16">
             <End Role="AgrochemicalUses" EntitySet="AgrochemicalUses" />
@@ -761,6 +895,31 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
             <End Role="Seeds" EntitySet="Seeds" />
             <End Role="ProductSeeds" EntitySet="ProductSeeds" />
           </AssociationSet>
+          <EntitySet Name="ImageSizes" EntityType="DEAQModel.ImageSizes" />
+          <EntitySet Name="ProductImageSizes" EntityType="DEAQModel.ProductImageSizes" />
+          <AssociationSet Name="R_134" Association="DEAQModel.R_134">
+            <End Role="ImageSizes" EntitySet="ImageSizes" />
+            <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+          </AssociationSet>
+          <EntitySet Name="ProductImages" EntityType="DEAQModel.ProductImages" />
+          <AssociationSet Name="ProductImagesProductImageSizes" Association="DEAQModel.ProductImagesProductImageSizes">
+            <End Role="ProductImages" EntitySet="ProductImages" />
+            <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+          </AssociationSet>
+          <EntitySet Name="DivisionImageSizes" EntityType="DEAQModel.DivisionImageSizes" />
+          <AssociationSet Name="R_136" Association="DEAQModel.R_136">
+            <End Role="ImageSizes" EntitySet="ImageSizes" />
+            <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
+          </AssociationSet>
+          <EntitySet Name="DivisionImages" EntityType="DEAQModel.DivisionImages" />
+          <AssociationSet Name="DivisionImages_DivisionId_FK" Association="DEAQModel.DivisionImages_DivisionId_FK">
+            <End Role="Divisions" EntitySet="Divisions" />
+            <End Role="DivisionImages" EntitySet="DivisionImages" />
+          </AssociationSet>
+          <AssociationSet Name="DivisionImagesDivisionImageSizes" Association="DEAQModel.DivisionImagesDivisionImageSizes">
+            <End Role="DivisionImages" EntitySet="DivisionImages" />
+            <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Divisions">
           <Key>
@@ -775,6 +934,7 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Countries" Relationship="DEAQModel.R_24" FromRole="Divisions" ToRole="Countries" />
           <NavigationProperty Name="DivisionInformation" Relationship="DEAQModel.R_25" FromRole="Divisions" ToRole="DivisionInformation" />
+          <NavigationProperty Name="DivisionImages" Relationship="DEAQModel.DivisionImages_DivisionId_FK" FromRole="Divisions" ToRole="DivisionImages" />
         </EntityType>
         <EntityType Name="Books">
           <Key>
@@ -1304,6 +1464,124 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ImageSizes">
+          <Key>
+            <PropertyRef Name="ImageSizeId" />
+          </Key>
+          <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+          <Property Name="Size" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductImageSizes" Relationship="DEAQModel.R_134" FromRole="ImageSizes" ToRole="ProductImageSizes" />
+          <NavigationProperty Name="DivisionImageSizes" Relationship="DEAQModel.R_136" FromRole="ImageSizes" ToRole="DivisionImageSizes" />
+        </EntityType>
+        <EntityType Name="ProductImageSizes">
+          <Key>
+            <PropertyRef Name="ProductImageId" />
+            <PropertyRef Name="ImageSizeId" />
+          </Key>
+          <Property Name="ProductImageId" Type="Int32" Nullable="false" />
+          <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="ImageSizes" Relationship="DEAQModel.R_134" FromRole="ProductImageSizes" ToRole="ImageSizes" />
+          <NavigationProperty Name="ProductImages" Relationship="DEAQModel.ProductImagesProductImageSizes" FromRole="ProductImageSizes" ToRole="ProductImages" />
+        </EntityType>
+        <Association Name="R_134">
+          <End Type="DEAQModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+          <End Type="DEAQModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Principal>
+            <Dependent Role="ProductImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductImages">
+          <Key>
+            <PropertyRef Name="ProductImageId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+          <Property Name="DivisionId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductShot" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BaseURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductImageSizes" Relationship="DEAQModel.ProductImagesProductImageSizes" FromRole="ProductImages" ToRole="ProductImageSizes" />
+        </EntityType>
+        <Association Name="ProductImagesProductImageSizes">
+          <End Type="DEAQModel.ProductImages" Role="ProductImages" Multiplicity="1" />
+          <End Type="DEAQModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductImages">
+              <PropertyRef Name="ProductImageId" />
+            </Principal>
+            <Dependent Role="ProductImageSizes">
+              <PropertyRef Name="ProductImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DivisionImageSizes">
+          <Key>
+            <PropertyRef Name="DivisionImageId" />
+            <PropertyRef Name="ImageSizeId" />
+          </Key>
+          <Property Name="DivisionImageId" Type="Int32" Nullable="false" />
+          <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="ImageSizes" Relationship="DEAQModel.R_136" FromRole="DivisionImageSizes" ToRole="ImageSizes" />
+          <NavigationProperty Name="DivisionImages" Relationship="DEAQModel.DivisionImagesDivisionImageSizes" FromRole="DivisionImageSizes" ToRole="DivisionImages" />
+        </EntityType>
+        <Association Name="R_136">
+          <End Type="DEAQModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+          <End Type="DEAQModel.DivisionImageSizes" Role="DivisionImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Principal>
+            <Dependent Role="DivisionImageSizes">
+              <PropertyRef Name="ImageSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DivisionImages">
+          <Key>
+            <PropertyRef Name="DivisionImageId" />
+          </Key>
+          <Property Name="DivisionImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImageTypeId" Type="Byte" />
+          <Property Name="DivisionId" Type="Int32" />
+          <Property Name="ImageName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BaseURL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ImageSizeId" Type="Byte" />
+          <NavigationProperty Name="Divisions" Relationship="DEAQModel.DivisionImages_DivisionId_FK" FromRole="DivisionImages" ToRole="Divisions" />
+          <NavigationProperty Name="DivisionImageSizes" Relationship="DEAQModel.DivisionImagesDivisionImageSizes" FromRole="DivisionImages" ToRole="DivisionImageSizes" />
+        </EntityType>
+        <Association Name="DivisionImages_DivisionId_FK">
+          <End Type="DEAQModel.Divisions" Role="Divisions" Multiplicity="0..1" />
+          <End Type="DEAQModel.DivisionImages" Role="DivisionImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Divisions">
+              <PropertyRef Name="DivisionId" />
+            </Principal>
+            <Dependent Role="DivisionImages">
+              <PropertyRef Name="DivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DivisionImagesDivisionImageSizes">
+          <End Type="DEAQModel.DivisionImages" Role="DivisionImages" Multiplicity="1" />
+          <End Type="DEAQModel.DivisionImageSizes" Role="DivisionImageSizes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DivisionImages">
+              <PropertyRef Name="DivisionImageId" />
+            </Principal>
+            <Dependent Role="DivisionImageSizes">
+              <PropertyRef Name="DivisionImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1573,6 +1851,58 @@ advertencia 6002: La tabla o vista 'DEAQ 20161201.dbo.plm_vwProductsByEdition' n
               <MappingFragment StoreEntitySet="ProductSeeds">
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="SeedId" ColumnName="SeedId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImageSizes">
+            <EntityTypeMapping TypeName="DEAQModel.ImageSizes">
+              <MappingFragment StoreEntitySet="ImageSizes">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ImageSizeId" ColumnName="ImageSizeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductImageSizes">
+            <EntityTypeMapping TypeName="DEAQModel.ProductImageSizes">
+              <MappingFragment StoreEntitySet="ProductImageSizes">
+                <ScalarProperty Name="ImageSizeId" ColumnName="ImageSizeId" />
+                <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductImages">
+            <EntityTypeMapping TypeName="DEAQModel.ProductImages">
+              <MappingFragment StoreEntitySet="ProductImages">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="BaseURL" ColumnName="BaseURL" />
+                <ScalarProperty Name="ProductShot" ColumnName="ProductShot" />
+                <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="PharmaFormId" ColumnName="PharmaFormId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DivisionImageSizes">
+            <EntityTypeMapping TypeName="DEAQModel.DivisionImageSizes">
+              <MappingFragment StoreEntitySet="DivisionImageSizes">
+                <ScalarProperty Name="ImageSizeId" ColumnName="ImageSizeId" />
+                <ScalarProperty Name="DivisionImageId" ColumnName="DivisionImageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DivisionImages">
+            <EntityTypeMapping TypeName="DEAQModel.DivisionImages">
+              <MappingFragment StoreEntitySet="DivisionImages">
+                <ScalarProperty Name="ImageSizeId" ColumnName="ImageSizeId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="BaseURL" ColumnName="BaseURL" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+                <ScalarProperty Name="ImageTypeId" ColumnName="ImageTypeId" />
+                <ScalarProperty Name="DivisionImageId" ColumnName="DivisionImageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

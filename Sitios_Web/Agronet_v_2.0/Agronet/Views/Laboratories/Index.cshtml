@@ -22,7 +22,6 @@
 <br />
 <br />
 <ol class="breadcrumb">
-    <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr">Ventas</a></li>
     <li class="active">Laboratorios</li>
 </ol>
 <div class="row">
@@ -32,24 +31,24 @@
                 <td colspan="3">
                     @using (Html.BeginForm())
                     {
-                    <div style="text-align:right;display:none">
-                        <p>
-                            @{
-                                if (ind != null)
-                                {
-                                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CountryId" style="width:30px">
-                                        <label>division</label><input id="DivisionId" name="DivisionId" type="text" value="@ind.DivisionId" style="width:30px">
-                                        <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                        <div style="text-align:right;display:none">
+                            <p>
+                                @{
+                        if (ind != null)
+                        {
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="@ind.CountryId" style="width:30px">
+                                    <label>division</label><input id="DivisionId" name="DivisionId" type="text" value="@ind.DivisionId" style="width:30px">
+                                    <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                        }
+                        else
+                        {
+                            <label>country</label><input id="CountryId" name="CountryId" type="text" value="" style="width:30px">
+                                    <label>division</label><input id="DivisionId" name="DivisionId" type="text" value="" style="width:30px">
+                                    <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
+                        }
                                 }
-                                else
-                                {
-                                        <label>country</label><input id="CountryId" name="CountryId" type="text" value="" style="width:30px">
-                                        <label>division</label><input id="DivisionId" name="DivisionId" type="text" value="" style="width:30px">
-                                        <button type="submit" id="InsertParam" value="GridView" class="btn" style="color: #333;"></button>
-                                }
-                            }
-                        </p>
-                    </div>
+                            </p>
+                        </div>
                     }
                 </td>
             </tr>
@@ -64,9 +63,9 @@
                     @{
                         if (ind != null)
                         {
-                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getDivisionsD($(this).val())" id="Countries">
-                        <option>Seleccione...</option>
-                        @{
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getDivisionsD($(this).val())" id="Countries">
+                                <option>Seleccione...</option>
+                                @{
                             CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
                             if (Session["CountriesUsers"] == null)
                             {
@@ -86,23 +85,23 @@
                                     {
                                         if (w.CountryId == CountryId)
                                         {
-                                <option id="Country" value="@w.CountryId" selected="selected">@w.CountryName </option>
+                                            <option id="Country" value="@w.CountryId" selected="selected">@w.CountryName </option>
                                         }
                                         else
                                         {
-                                <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                            <option id="Country" value="@w.CountryId">@w.CountryName </option>
                                         }
                                     }
                                 }
                             }
-                        }
-                    </select>
+                                }
+                            </select>
                         }
                         else
                         {
-                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getDivisionsD($(this).val())" id="Countries">
-                        <option>Seleccione...</option>
-                        @{
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" onchange="getDivisionsD($(this).val())" id="Countries">
+                                <option>Seleccione...</option>
+                                @{
                             CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
                             if (Session["CountriesUsers"] == null)
                             {
@@ -120,12 +119,12 @@
                                                      select country);
                                     foreach (Countries w in countries)
                                     {
-                                <option id="Country" value="@w.CountryId">@w.CountryName </option>
+                                        <option id="Country" value="@w.CountryId">@w.CountryName </option>
                                     }
                                 }
                             }
-                        }
-                    </select>
+                                }
+                            </select>
                         }
                     }
                 </td>
@@ -141,20 +140,20 @@
                     @{
                         if (ind != null)
                         {
-                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="GetResultCountry($(this).val())">
-                        <option>Seleccione...</option>
-                        @{
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="GetResultCountry($(this).val())">
+                                <option>Seleccione...</option>
+                                @{
                             List<Divisions> LD = db.Database.SqlQuery<Divisions>("plm_spGetDivisionsByCountry @countryId=" + CountryId + "").ToList();
                             foreach (Divisions _d in LD)
                             {
                                 <option value="@_d.DivisionId">@_d.DivisionName</option>
                             }
-                        }
-                    </select>
+                                }
+                            </select>
                         }
                         else
                         {
-                    <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="GetResultCountry($(this).val())"></select>
+                            <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Divisions" onchange="GetResultCountry($(this).val())"></select>
                         }
                     }
 
@@ -181,24 +180,24 @@
                         </td>
                         <td>
                             @{
-                                var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+        var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
 
-                                <span style="font-style:italic; font-weight:bold">@c[0].CountryName</span>
+        <span style="font-style:italic; font-weight:bold">@c[0].CountryName</span>
                             }
                         </td>
                     </tr>
                     @{
-                        var divs = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
-                        <tr>
-                            <td>
-                                <label class="title-filter">Razón Social:</label>
-                            </td>
-                            <td>
-                                <span style="font-style:italic; font-weight:bold" id="lblDivisionName" class="show-dataD">@divs[0].DivisionName</span>
-                                <textarea class="form-control edit-dataD" style="font-size:12px; color:red; display:none" id="txtDivisionName">@divs[0].DivisionName</textarea>
-                                <input type="text" id="lblDivisionId" value="@divs[0].DivisionId" style="display:none"/>
-                            </td>
-                        </tr>
+        var divs = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+        <tr>
+            <td>
+                <label class="title-filter">Razón Social:</label>
+            </td>
+            <td>
+                <span style="font-style:italic; font-weight:bold" id="lblDivisionName" class="show-dataD">@divs[0].DivisionName</span>
+                <textarea class="form-control edit-dataD" style="font-size:12px; color:red; display:none" id="txtDivisionName">@divs[0].DivisionName</textarea>
+                <input type="text" id="lblDivisionId" value="@divs[0].DivisionId" style="display:none" />
+            </td>
+        </tr>
                         <tr>
                             <td>
                                 <label class="title-filter">Nombre Corto:</label>
@@ -213,7 +212,7 @@
             </div>
             <div class="col-lg-7">
                 <div class="col-lg-4" style="text-align: center; border: none">
-                    <img src="@Url.Content("~/Images/user.png")" style="width:80px"/>
+                    <img src="@Url.Action("GetDivisionImagesByDivision", "Laboratories", new { DivisionId = DivisionId, CountryId = CountryId })" style="width:80px; cursor:pointer" class="ldr" title="Imagen de Cliente" onclick="location.href='@Url.Action("DivisionImages", "Laboratories", new { DivisionId = DivisionId, CountryId = CountryId })';return false;" />
                 </div>
                 <div class="col-lg-4" style="text-align: center; border: none; ">
                     <button class="btn btn-warning show-dataD" onclick="ShowEditDivs()">
@@ -256,98 +255,105 @@
                          columns: new[] {
 
                                 _datagrid.Column("", header: "Dirección", format: @<text>
-                @{
-    <span class="show-dataA" id="lblAddress">@item.Address</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none; " id="trtxtAddress">@item.Address</textarea>
-    <input type="text" value="@item.DivisionInformationId" id="lblDivisionInformationId" style="display:none" />
-}
+                                @{
+                                    <span class="show-dataA" id="lblAddress">@item.Address</span>
+                                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none; " id="trtxtAddress">@item.Address</textarea>
+                                    <input type="text" value="@item.DivisionInformationId" id="lblDivisionInformationId" style="display:none" />
+                                }
                                 </text>, style:"column86"),
 
                                 _datagrid.Column("", header: "Colonia", format: @<text>
                 @{
-    <span class="show-dataA" id="lblSuburb">@item.Suburb</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtSuburb">@item.Suburb</textarea>
-}
+                    <span class="show-dataA" id="lblSuburb">@item.Suburb</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtSuburb">@item.Suburb</textarea>
+                }
                                 </text>, style:"column86"),
 
     _datagrid.Column("", header: "Locación", format: @<text>
                 @{
-    <span class="show-dataA" id="lblLocation">@item.Location</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtLocation">@item.Location</textarea>
-}
+                    <span class="show-dataA" id="lblLocation">@item.Location</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtLocation">@item.Location</textarea>
+                }
     </text>, style:"column86 text-center"),
 
                                 _datagrid.Column("", header: "C.P", format: @<text>
                 @{
-    <span class="show-dataA" id="lblZipCode">@item.ZipCode</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtZipCode">@item.ZipCode</textarea>
-}
+                    <span class="show-dataA" id="lblZipCode">@item.ZipCode</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtZipCode">@item.ZipCode</textarea>
+                }
                                 </text>, style:"text-center column7"),
 
                 _datagrid.Column("", header: "Teléfono", format: @<text>
                 @{
-    <span class="show-dataA" id="lblTelephone">@item.Telephone</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtTelephone">@item.Telephone</textarea>
-}
+                    <span class="show-dataA" id="lblTelephone">@item.Telephone</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtTelephone">@item.Telephone</textarea>
+                }
                 </text>, style:"text-center column86"),
 
 
                 _datagrid.Column("", header: "Lada", format: @<text>
                 @{
-    <span class="show-dataA" id="lblLada">@item.Lada</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtLada">@item.Lada</textarea>
-}
+                    <span class="show-dataA" id="lblLada">@item.Lada</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtLada">@item.Lada</textarea>
+                }
                 </text>, style:"text-center column86"),
 
             _datagrid.Column("", header: "Fax", format: @<text>
                 @{
-    <span class="show-dataA" id="lblFax">@item.Fax</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtFax">@item.Fax</textarea>
-}
+                    <span class="show-dataA" id="lblFax">@item.Fax</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtFax">@item.Fax</textarea>
+                }
             </text>, style:"text-center column86"),
             _datagrid.Column("", header: "Web", format: @<text>
                 @{
-    <span class="show-dataA" id="lblWeb">@item.Web</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtWeb">@item.Web</textarea>
-}
+                    <span class="show-dataA" id="lblWeb">@item.Web</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtWeb">@item.Web</textarea>
+                }
             </text>, style:"text-center column86"),
 
             _datagrid.Column("", header: "Ciudad", format: @<text>
                 @{
-    <span class="show-dataA" id="lblCity">@item.City</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtCity">@item.City</textarea>
-}
+                    <span class="show-dataA" id="lblCity">@item.City</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtCity">@item.City</textarea>
+                }
             </text>, style:"text-center column86"),
 
 
             _datagrid.Column("", header: "Estado", format: @<text>
                 @{
-    <span class="show-dataA" id="lblState">@item.State</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtState">@item.State</textarea>
-}
+                    <span class="show-dataA" id="lblState">@item.State</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtState">@item.State</textarea>
+                }
             </text>, style:"text-center column86"),
 
             _datagrid.Column("", header: "Email", format: @<text>
                 @{
-    <span class="show-dataA" id="lblEmail">@item.Email</span>
-    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtEmail">@item.Email</textarea>
-}
+                    <span class="show-dataA" id="lblEmail">@item.Email</span>
+                    <textarea class="form-control edit-dataA" style="font-size: 12px; color: red; display: none;" id="trtxtEmail">@item.Email</textarea>
+                }
             </text>, style:"text-center column86"),
             _datagrid.Column("", header: "Editar", format: @<text>
                 @{
-    <button class="btn btn-warning btn-sm show-dataA" onclick="ShowEditAddress($(this))">
-        <span class="glyphicon glyphicon-edit"></span>
-    </button>
-    <button class="btn btn-primary btn-sm edit-dataA" style="display:none" onclick="SaveEditAddress($(this))">
-        <span class="glyphicon glyphicon-ok"></span>
-    </button>
-    <button class="btn btn-danger btn-sm edit-dataA" style="display:none" onclick="CancelEditAddress($(this))">
-        <span class="glyphicon glyphicon-remove"></span>
-    </button>
-}
-            </text>, style:"text-center column7")
+                    <button class="btn btn-warning btn-sm show-dataA" onclick="ShowEditAddress($(this))">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    <button class="btn btn-primary btn-sm edit-dataA" style="display:none" onclick="SaveEditAddress($(this))">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button class="btn btn-danger btn-sm edit-dataA" style="display:none" onclick="CancelEditAddress($(this))">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                }
+            </text>, style:"text-center column7"),
+                        _datagrid.Column("", header: "Eliminar", format: @<text>
+                @{
+                    <button class="btn btn-danger btn-sm" value="@item.DivisionInformationId" onclick="DeleteAddresses($(this))">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                }
+                        </text>, style:"text-center column7")
                                 }
-                                                                                                                                                                                                                                                             )
+                                                                                                                                                                                                                                                              )
         </div>
     }
 }
@@ -366,7 +372,7 @@
                     <tr>
                         <td style="width:30%"><label class="title-filter">Dirección: </label></td>
                         <td>
-                            <input type="text" id="txtAddress" class="form-control" placeholder="Dirección..."/>
+                            <input type="text" id="txtAddress" class="form-control" placeholder="Dirección..." />
                         </td>
                     </tr>
                     <tr>
@@ -375,7 +381,7 @@
                     <tr>
                         <td style="width:30%"><label class="title-filter">Colonia: </label></td>
                         <td>
-                            <input type="text" id="txtSuburb" class="form-control" placeholder="Colonia..."/>
+                            <input type="text" id="txtSuburb" class="form-control" placeholder="Colonia..." />
                         </td>
                     </tr>
                     <tr>
@@ -470,6 +476,73 @@
                     <span class="glyphicon glyphicon-remove"></span>
                     <span>&nbsp; Cancelar</span>
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="false" id="AddDivisionImage" role="dialog" style="font-style:normal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header label-primary">
+                <h3 class="modal-title" style="color:white" id="messageerror"><i>Agregar Imagen de División.</i></h3>
+            </div>
+            <div class="modal-body" id="contenteditions">
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-lg-3 text-right">
+                        <label class="title-filter">Seleccione Tamaño:</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <select class="form-control" id="SelectProductShotSize">
+                            <option value="0" id="val_0">Seleccione...</option>
+                            @{
+                                List<ImageSizes> LIS = db.ImageSizes.Where(x => x.Active == true).OrderBy(x => x.Size).ToList();
+
+                                foreach (ImageSizes item in LIS)
+                                {
+                                    <option value="@item.ImageSizeId">@item.Size</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-3 text-right">
+                        <label class="title-filter">Selecione Imagen:</label>
+                    </div>
+                    <div class="col-lg-9">
+                        <div style="display:normal;border:none;" id="DivAddProductShot">
+                            <form enctype="multipart/form-data" method="post" id="SendProductShot">
+                                <div class="input-group">
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-primary">
+                                            Browse&hellip;
+                                        </span>
+                                        <input id="uploadBtn" type="file" accept="image/png" name="file" style="display:none" onchange="AddProductShot($(this))" />
+                                    </label>
+                                    <input type="text" class="form-control" readonly id="txtFileName">
+                                </div>
+                            </form>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="text-right">
+                            <button class="btn btn-primary btn-sm" onclick="SaveProductShot($(this))">
+                                <span class="glyphicon glyphicon-saved"></span>
+                                <span>&nbsp; Guardar</span>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="CanceladdProductShot($(this))">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span>&nbsp; Cancelar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="divbtncloseerror">
             </div>
         </div>
     </div>

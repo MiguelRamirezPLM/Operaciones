@@ -111,6 +111,31 @@
       <End Role="Seeds" EntitySet="Seeds" />
       <End Role="ProductSeeds" EntitySet="ProductSeeds" />
     </AssociationSet>
+    <EntitySet Name="ImageSizes" EntityType="DEAQModel.ImageSizes" />
+    <EntitySet Name="ProductImageSizes" EntityType="DEAQModel.ProductImageSizes" />
+    <AssociationSet Name="R_134" Association="DEAQModel.R_134">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
+    <EntitySet Name="ProductImages" EntityType="DEAQModel.ProductImages" />
+    <AssociationSet Name="ProductImagesProductImageSizes" Association="DEAQModel.ProductImagesProductImageSizes">
+      <End Role="ProductImages" EntitySet="ProductImages" />
+      <End Role="ProductImageSizes" EntitySet="ProductImageSizes" />
+    </AssociationSet>
+    <EntitySet Name="DivisionImageSizes" EntityType="DEAQModel.DivisionImageSizes" />
+    <AssociationSet Name="R_136" Association="DEAQModel.R_136">
+      <End Role="ImageSizes" EntitySet="ImageSizes" />
+      <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
+    </AssociationSet>
+    <EntitySet Name="DivisionImages" EntityType="DEAQModel.DivisionImages" />
+    <AssociationSet Name="DivisionImages_DivisionId_FK" Association="DEAQModel.DivisionImages_DivisionId_FK">
+      <End Role="Divisions" EntitySet="Divisions" />
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionImagesDivisionImageSizes" Association="DEAQModel.DivisionImagesDivisionImageSizes">
+      <End Role="DivisionImages" EntitySet="DivisionImages" />
+      <End Role="DivisionImageSizes" EntitySet="DivisionImageSizes" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Divisions">
     <Key>
@@ -125,6 +150,7 @@
     <Property Name="Active" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Countries" Relationship="DEAQModel.R_24" FromRole="Divisions" ToRole="Countries" />
     <NavigationProperty Name="DivisionInformation" Relationship="DEAQModel.R_25" FromRole="Divisions" ToRole="DivisionInformation" />
+    <NavigationProperty Name="DivisionImages" Relationship="DEAQModel.DivisionImages_DivisionId_FK" FromRole="Divisions" ToRole="DivisionImages" />
   </EntityType>
   <EntityType Name="Books">
     <Key>
@@ -651,6 +677,124 @@
       </Principal>
       <Dependent Role="ProductSeeds">
         <PropertyRef Name="SeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ImageSizes">
+    <Key>
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <Property Name="Size" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductImageSizes" Relationship="DEAQModel.R_134" FromRole="ImageSizes" ToRole="ProductImageSizes" />
+    <NavigationProperty Name="DivisionImageSizes" Relationship="DEAQModel.R_136" FromRole="ImageSizes" ToRole="DivisionImageSizes" />
+  </EntityType>
+  <EntityType Name="ProductImageSizes">
+    <Key>
+      <PropertyRef Name="ProductImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="ProductImageId" Type="Int32" Nullable="false" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ImageSizes" Relationship="DEAQModel.R_134" FromRole="ProductImageSizes" ToRole="ImageSizes" />
+    <NavigationProperty Name="ProductImages" Relationship="DEAQModel.ProductImagesProductImageSizes" FromRole="ProductImageSizes" ToRole="ProductImages" />
+  </EntityType>
+  <Association Name="R_134">
+    <End Type="DEAQModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+    <End Type="DEAQModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProductImages">
+    <Key>
+      <PropertyRef Name="ProductImageId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PharmaFormId" Type="Int32" Nullable="false" />
+    <Property Name="DivisionId" Type="Int32" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductShot" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BaseURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProductImageSizes" Relationship="DEAQModel.ProductImagesProductImageSizes" FromRole="ProductImages" ToRole="ProductImageSizes" />
+  </EntityType>
+  <Association Name="ProductImagesProductImageSizes">
+    <End Type="DEAQModel.ProductImages" Role="ProductImages" Multiplicity="1" />
+    <End Type="DEAQModel.ProductImageSizes" Role="ProductImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductImages">
+        <PropertyRef Name="ProductImageId" />
+      </Principal>
+      <Dependent Role="ProductImageSizes">
+        <PropertyRef Name="ProductImageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DivisionImageSizes">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+      <PropertyRef Name="ImageSizeId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="Int32" Nullable="false" />
+    <Property Name="ImageSizeId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="ImageSizes" Relationship="DEAQModel.R_136" FromRole="DivisionImageSizes" ToRole="ImageSizes" />
+    <NavigationProperty Name="DivisionImages" Relationship="DEAQModel.DivisionImagesDivisionImageSizes" FromRole="DivisionImageSizes" ToRole="DivisionImages" />
+  </EntityType>
+  <Association Name="R_136">
+    <End Type="DEAQModel.ImageSizes" Role="ImageSizes" Multiplicity="1" />
+    <End Type="DEAQModel.DivisionImageSizes" Role="DivisionImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Principal>
+      <Dependent Role="DivisionImageSizes">
+        <PropertyRef Name="ImageSizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DivisionImages">
+    <Key>
+      <PropertyRef Name="DivisionImageId" />
+    </Key>
+    <Property Name="DivisionImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageTypeId" Type="Byte" />
+    <Property Name="DivisionId" Type="Int32" />
+    <Property Name="ImageName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="BaseURL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="ImageSizeId" Type="Byte" />
+    <NavigationProperty Name="Divisions" Relationship="DEAQModel.DivisionImages_DivisionId_FK" FromRole="DivisionImages" ToRole="Divisions" />
+    <NavigationProperty Name="DivisionImageSizes" Relationship="DEAQModel.DivisionImagesDivisionImageSizes" FromRole="DivisionImages" ToRole="DivisionImageSizes" />
+  </EntityType>
+  <Association Name="DivisionImages_DivisionId_FK">
+    <End Type="DEAQModel.Divisions" Role="Divisions" Multiplicity="0..1" />
+    <End Type="DEAQModel.DivisionImages" Role="DivisionImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Divisions">
+        <PropertyRef Name="DivisionId" />
+      </Principal>
+      <Dependent Role="DivisionImages">
+        <PropertyRef Name="DivisionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionImagesDivisionImageSizes">
+    <End Type="DEAQModel.DivisionImages" Role="DivisionImages" Multiplicity="1" />
+    <End Type="DEAQModel.DivisionImageSizes" Role="DivisionImageSizes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DivisionImages">
+        <PropertyRef Name="DivisionImageId" />
+      </Principal>
+      <Dependent Role="DivisionImageSizes">
+        <PropertyRef Name="DivisionImageId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

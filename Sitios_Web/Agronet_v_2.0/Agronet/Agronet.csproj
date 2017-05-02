@@ -42,7 +42,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Guianet\Guianet\bin\Microsoft.ReportViewer.WebForms.dll</HintPath>
+      <HintPath>.\Microsoft.ReportViewer.WebForms.dll</HintPath>
     </Reference>
     <Reference Include="PLMCryptographyComponent">
       <HintPath>..\PLMCryptography\PLMCryptographyComponent.dll</HintPath>
@@ -173,6 +173,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Laboratories\LaboratoriesController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
+    <Compile Include="Controllers\Production\ProductionController.cs" />
     <Compile Include="Controllers\Products\ProductsController.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -182,6 +183,7 @@
     <Compile Include="Models\ActiveSubstances.cs">
       <DependentUpon>DEAQ.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivityLog.cs" />
     <Compile Include="Models\ActivityLogs.cs">
       <DependentUpon>Users.tt</DependentUpon>
     </Compile>
@@ -229,6 +231,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DEAQ.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DivisionImages.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DivisionImageSizes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DivisionInformation.cs">
       <DependentUpon>DEAQ.tt</DependentUpon>
     </Compile>
@@ -242,7 +250,12 @@
       <DependentUpon>DEAQ.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Functions.cs" />
+    <Compile Include="Models\GetParticipantProducts.cs" />
+    <Compile Include="Models\GetProductImages.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageSizes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\JoinLogin.cs" />
     <Compile Include="Models\MentionatedProducts.cs">
       <DependentUpon>DEAQ.tt</DependentUpon>
@@ -265,6 +278,12 @@
     <Compile Include="Models\ProductCrops.cs">
       <DependentUpon>DEAQ.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductImages.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductImageSizes.cs">
+      <DependentUpon>DEAQ.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Products.cs">
       <DependentUpon>DEAQ.tt</DependentUpon>
     </Compile>
@@ -284,8 +303,10 @@
     </Compile>
     <Compile Include="Models\Sessions\ClasificationProds.cs" />
     <Compile Include="Models\Sessions\SearchProductNameSM.cs" />
+    <Compile Include="Models\Sessions\sessionPS.cs" />
     <Compile Include="Models\Sessions\sessionRPP.cs" />
     <Compile Include="Models\Sessions\sessionCountryId.cs" />
+    <Compile Include="Models\Sessions\sessionPROD.cs" />
     <Compile Include="Models\Sessions\sessionVM.cs" />
     <Compile Include="Models\Sessions\sessionSM.cs" />
     <Compile Include="Models\Tables.cs">
@@ -482,6 +503,9 @@
     <Content Include="Views\Clasification\Crops.cshtml" />
     <Content Include="Views\Clasification\AgrochemicalUses.cshtml" />
     <Content Include="Views\Clasification\Seeds.cshtml" />
+    <Content Include="Views\Production\Index.cshtml" />
+    <Content Include="Views\Production\ProductShots.cshtml" />
+    <Content Include="Views\Laboratories\DivisionImages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

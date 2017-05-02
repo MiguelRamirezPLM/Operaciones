@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'C:\Users\miguel.ramirez\Documents\Visual Studio 2013\Projects\Agronet\Agronet\Models\DEAQ.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'C:\Entrega Operaciones\Operaciones\Sitios_Web\Agronet_v_2.0\Agronet\Models\DEAQ.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.

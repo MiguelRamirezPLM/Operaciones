@@ -181,6 +181,7 @@
                         if (ind != null)
                         {
                             <select class="form-control" style="text-align: left; font-size: 12px; height: 30px;" id="Books" onchange="getEditions($(this).val())">
+                                <option>Seleccione...</option>
                                 @{
                             var bk = db.Books.Where(x => x.Active == true).OrderBy(x => x.BookName);
                             foreach (Books _bk in bk)
@@ -363,10 +364,15 @@
     {
         <div class="row">
             <div class="col-lg-3" style="text-align: center; border: none">
-                <button class="btn btn-warning btn-sm" onclick="OpenFormAddProduct()" style="font-style:normal">Agregar Producto</button>
+                <button class="btn btn-warning btn-sm" onclick="OpenFormAddProduct()" style="font-style:normal">
+                    <span class="glyphicon glyphicon-open"></span>
+                    <span>&nbsp; Agregar Producto</span>
+                </button>
             </div>
             <div class="col-lg-3" style="text-align: center; border: none; ">
-                <button class="btn btn-warning btn-sm" onclick="OpenFormAddPharmaForm()" style="font-style:normal">Agregar Forma Farmacéutica</button>
+                <button class="btn btn-warning btn-sm" onclick="OpenFormAddPharmaForm()" style="font-style:normal">
+                    <span class="glyphicon glyphicon-open"></span>
+                    <span>&nbsp; Agregar Forma Farmacéutica</span></button>
             </div>
             <div class="col-lg-3" style="text-align: center; border: none; ">
                 <table class="widthtable" border="0">
@@ -375,46 +381,46 @@
                             <label class="title-filter">Registros por Página:</label>
                         </td>
                         <td>
-                            <select class="form-control" onchange="rowsperpage($(this))" style="font-style:normal">
+                            <select class="form-control" onchange="rowsperpage($(this))" style="font-style:normal;color:red">
                                 @{
-        if (sessionRPP != null)
-        {
-            if (sessionRPP.Quantity == 0)
-            {
-                s0 = true;
-            }
-            if (sessionRPP.Quantity == 10)
-            {
-                s10 = true;
-            }
-            if (sessionRPP.Quantity == 50)
-            {
-                s50 = true;
+                                    if (sessionRPP != null)
+                                    {
+                                        if (sessionRPP.Quantity == 0)
+                                        {
+                                            s0 = true;
+                                        }
+                                        if (sessionRPP.Quantity == 10)
+                                        {
+                                            s10 = true;
+                                        }
+                                        if (sessionRPP.Quantity == 50)
+                                        {
+                                            s50 = true;
 
-            }
-            if (sessionRPP.Quantity == 100)
-            {
-                s100 = true;
-            }
-            if (sessionRPP.Quantity == 1)
-            {
-                s1 = true;
-            }
+                                        }
+                                        if (sessionRPP.Quantity == 100)
+                                        {
+                                            s100 = true;
+                                        }
+                                        if (sessionRPP.Quantity == 1)
+                                        {
+                                            s1 = true;
+                                        }
 
-            <option value="0" id="S0" selected="@s0">Seleccione...</option>
-                                    <option value="10" id="S10" selected="@s10">10</option>
-                                    <option value="50" id="S50" selected="@s50">50</option>
-                                    <option value="100" id="S100" selected="@s100">100</option>
-                                    <option value="1" selected="@s1">Ilimitado</option>
-        }
-        else
-        {
-            <option value="0" id="S0">Seleccione...</option>
-                                    <option value="10" id="S10">10</option>
-                                    <option value="50" id="S50">50</option>
-                                    <option value="100" id="S100">100</option>
-                                    <option value="1">Ilimitado</option>
-        }
+                                        <option value="0" id="S0" selected="@s0">Seleccione...</option>
+                                                                <option value="10" id="S10" selected="@s10">10</option>
+                                                                <option value="50" id="S50" selected="@s50">50</option>
+                                                                <option value="100" id="S100" selected="@s100">100</option>
+                                                                <option value="1" selected="@s1">Ilimitado</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="0" id="S0">Seleccione...</option>
+                                                                <option value="10" id="S10">10</option>
+                                                                <option value="50" id="S50">50</option>
+                                                                <option value="100" id="S100">100</option>
+                                                                <option value="1">Ilimitado</option>
+                                    }
                                 }
 
                             </select>
@@ -427,15 +433,15 @@
                 {
                     <div class="input-group stylish-input-group" style="text-align: center; border: none;float:right; font-style:normal">
                         @{
-                    Agronet.Models.Sessions.SearchProductNameSM SearchProductNameSM = (Agronet.Models.Sessions.SearchProductNameSM)Session["SearchProductNameSM"];
-                    if (SearchProductNameSM != null)
-                    {
-                        @Html.TextBox("ProductName", SearchProductNameSM.ProductName, new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
-                    }
-                    else
-                    {
-                        @Html.TextBox("ProductName", "", new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
-                    }
+                            Agronet.Models.Sessions.SearchProductNameSM SearchProductNameSM = (Agronet.Models.Sessions.SearchProductNameSM)Session["SearchProductNameSM"];
+                            if (SearchProductNameSM != null)
+                            {
+                                @Html.TextBox("ProductName", SearchProductNameSM.ProductName, new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
+                            }
+                            else
+                            {
+                                @Html.TextBox("ProductName", "", new { @class = "form-control", Id = "SearchProduct", placeholder = "Texto a Buscar..." })
+                            }
                         }
                         <span class="input-group-addon ldr" style="width:0" id="btnSearchProducts">
                             <button type="submit">
@@ -554,13 +560,13 @@
                 @{
                     if (item.NP != 0)
                     {
-                        <input type="checkbox" checked="checked" disabled="disabled" />
+                        <input type="checkbox" checked="checked" disabled="disabled" id="NewProducts" />
                     }
                     else
                     {
-                        <input type="checkbox" disabled="disabled" />
+                        <input type="checkbox" disabled="disabled" id="NewProducts" />
                     }
-                }
+}
                                     </text>, style:"text-center column7"),
                                     _datagrid.Column("", header: "Editar", format: @<text>
                 @{
@@ -584,7 +590,7 @@
 <br />
 
 <button id="btnAddProduct" data-toggle="modal" data-target="#AddProduct" style="display:none"></button>
-<div class="modal fade" id="AddProduct" role="dialog" style="font-style:normal">
+<div class="modal fade" data-backdrop="false" id="AddProduct" role="dialog" style="font-style:normal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header label-primary">
@@ -600,7 +606,7 @@
                                 <input type="text" placeholder="Nombre de Producto" class="form-control" id="txtProductName" onkeypress="$('#divProductName').removeClass('has-error'), $('.errorP').hide()" onkeyup="AutocompleteProducts($(this))" />
                                 <span class="glyphicon glyphicon-remove form-control-feedback errorP" style="display:none"></span>
                             </div>
-                            <input type="text" id="txtProductIdAC" style="display:none"/>
+                            <input type="text" id="txtProductIdAC" style="display:none" />
                         </td>
                     </tr>
                     <tr>
@@ -689,7 +695,7 @@
 
 
 <button id="btnAddPharmaForm" data-toggle="modal" data-target="#AddPharmaForm" style="display:none"></button>
-<div class="modal fade" id="AddPharmaForm" role="dialog" style="font-style:normal">
+<div class="modal fade" data-backdrop="false" id="AddPharmaForm" role="dialog" style="font-style:normal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header label-primary">

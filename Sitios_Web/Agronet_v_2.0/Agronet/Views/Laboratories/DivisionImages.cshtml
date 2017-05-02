@@ -1,0 +1,184 @@
+﻿@model IEnumerable<GetDivisionImages>
+@using Agronet.Models;
+@{
+    ViewBag.Title = "DivisionImages";
+    WebGrid _datagrid = new WebGrid(Model);
+    Agronet.Models.Sessions.sessionCountryId ind = (Agronet.Models.Sessions.sessionCountryId)Session["sessionCountryId"];
+    DEAQ db = new DEAQ();
+    int CountryId, DivisionId;
+    if (ind != null)
+    {
+        CountryId = ind.CountryId;
+        DivisionId = ind.DivisionId;
+    }
+    else
+    {
+        CountryId = 0;
+        DivisionId = 0;
+    }
+}
+
+<br />
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr">Laboratorios</a></li>
+    <li class="active">Imagenes de Laboratorio</li>
+</ol>
+<br />
+<div class="row">
+    <div class="col-lg-5">
+        <table class="widthtable" border="0">
+            <tr>
+                <td style="width:20%">
+                    <label class="title-filter">País:</label>
+                </td>
+                <td>
+                    @{
+                        var c = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                        <span style="font-style:italic; font-weight:bold">@c[0].CountryName</span>
+                        <input type="text" id="CountryId" value="@c[0].CountryId" style="display:none" />
+
+                    }
+                </td>
+            </tr>
+            @{
+                var divs = db.Divisions.Where(x => x.DivisionId == DivisionId).ToList();
+                <tr>
+                    <td>
+                        <label class="title-filter">Razón Social:</label>
+                    </td>
+                    <td>
+                        <span style="font-style:italic; font-weight:bold" id="lblDivisionName" class="show-dataD">@divs[0].DivisionName</span>
+                        <textarea class="form-control edit-dataD" style="font-size:12px; color:red; display:none" id="txtDivisionName">@divs[0].DivisionName</textarea>
+                        <input type="text" id="DivisionId" value="@divs[0].DivisionId" style="display:none" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="title-filter">Nombre Corto:</label>
+                    </td>
+                    <td>
+                        <span style="font-style:italic; font-weight:bold" id="lblShortName" class="show-dataD">@divs[0].ShortName</span>
+                        <textarea class="form-control edit-dataD" style="font-size:12px; color:red;display:none" id="txtShortName">@divs[0].ShortName</textarea>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-lg-5 text-center">
+        <a href="@Url.Content("~/Laboratories/Index")" class="ldr btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-home"></span>
+            <span>&nbsp; Regresar</span>
+        </a>
+    </div>
+
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-3 text-right">
+        <label class="title-filter">Seleccione Tamaño:</label>
+    </div>
+    <div class="col-lg-4">
+        <select class="form-control" id="SelectDivisionImageSize">
+            <option value="0" id="val_0">Seleccione...</option>
+            @{
+                List<ImageSizes> LIS = db.ImageSizes.Where(x => x.Active == true).OrderBy(x => x.Size).ToList();
+
+                foreach (ImageSizes item in LIS)
+                {
+                    <option value="@item.ImageSizeId">@item.Size</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-lg-3">
+
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-3 text-right">
+        <label class="title-filter">Selecione Imagen:</label>
+    </div>
+    <div class="col-lg-4">
+        <div style="display:normal;border:none;" id="DivAddProductShot">
+            <form enctype="multipart/form-data" method="post" id="SendProductShot">
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary">
+                            Browse&hellip;
+                        </span>
+                        <input id="uploadBtn" type="file" accept="image/png" name="file" style="display:none" onchange="AddProductShot($(this))" />
+                    </label>
+                    <input type="text" class="form-control" readonly id="txtFileName">
+                </div>
+            </form>
+        </div>
+        <br />
+        <br />
+        <div>
+            <button class="btn btn-primary btn-sm" onclick="SaveDivisionImages($(this))">
+                <span class="glyphicon glyphicon-saved"></span>
+                <span>&nbsp; Guardar</span>
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="CanceladdDivisionImage($(this))">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>&nbsp; Cancelar</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+<br />
+<br />
+@{
+    if (ind != null)
+    {
+        <div class="widthtable table-responsive">
+            @_datagrid.GetHtml(
+                         headerStyle: "webgrid-header",
+                         footerStyle: "webgrid-footer",
+                         alternatingRowStyle: "webgrid-alternating-row",
+                         selectedRowStyle: "webgrid-selected-row",
+                         rowStyle: "webgrid-row-style",
+                         tableStyle: "webgrid-table",
+                         mode: WebGridPagerModes.All,
+                         columns: new[] {
+
+                        _datagrid.Column("", header: "Nombre de la Imagen", format: @<text>
+                                @{
+                                    <span>@item.ImageName</span>
+                                    <input type="text" value="@item.DivisionImageId" id="lblDivisionImageId" style="display:none" />
+                                }
+                        </text>, style:"column11"),
+
+                        _datagrid.Column("", header: "Tamaño de Imagen", format: @<text>
+                @{
+                    <span>@item.Size</span>
+                    <input type="text" value="@item.ImageSizeId" id="lblImageSizeId" style="display:none" />
+                }
+                        </text>, style:"column11"),
+
+                        _datagrid.Column("", header: "Imagen", format: @<text>
+                @{
+                        <img src="@Url.Action("GetDivisionImagesBySize", "Laboratories", new { DivisionImageId = item.DivisionImageId, SizeId = item.ImageSizeId, CountryId = CountryId })" style="width:80px; cursor:pointer" title="@item.Size" />
+                }
+                        </text>, style:"text-center column7"),
+
+            _datagrid.Column("", header: "Eliminar", format: @<text>
+                @{
+                    <button class="btn btn-sm btn-danger" onclick="RemoveDivisionImages($(this))">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                }
+            </text>, style:"text-center column5"),
+                                })
+        </div>
+    }
+}
+<br />

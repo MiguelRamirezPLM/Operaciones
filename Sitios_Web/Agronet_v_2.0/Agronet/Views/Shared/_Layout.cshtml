@@ -1,17 +1,33 @@
-﻿<!DOCTYPE html>
+﻿@using Agronet.Models;
+@{
+    PLMUsers db = new PLMUsers();
+
+    string HashKey = System.Configuration.ConfigurationManager.AppSettings["HashKey"];
+
+    var apps = db.Applications.Where(x => x.HashKey == HashKey).ToList();
+
+    int ApplicationId = apps[0].ApplicationId;
+
+    Agronet.Models.CountriesUsers p = (Agronet.Models.CountriesUsers)Session["CountriesUsers"];
+}
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Agronet</title>
+    <title>Agronet | @ViewBag.Title</title>
     @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+        @Scripts.Render("~/bundles/modernizr")*@
 
-    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"/>
+
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet" />
     <script src="@Url.Content("~/Scripts/jQuery-2.1.4.min.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui.min.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
 
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/apprise.min.css")" rel="stylesheet">
@@ -62,29 +78,25 @@
                                     <li class="user-header">
                                         <img src="@Url.Content("~/Images/user.png")" class="img-circle" alt="User Image">
                                         <p>
-                                            @User.Identity.Name.ToUpper()
-                                            <small>@DateTime.Now.Date.Day/@DateTime.Now.Date.Month/@DateTime.Now.Date.Year</small>
+                                            @{
+            string UserName = "";
+
+            if (p != null)
+            {
+                List<Agronet.Models.Users> LU = db.Users.Where(x => x.UserId == p.userId).ToList();
+
+                UserName = LU[0].Name + " " + LU[0].LastName + " " + LU[0].SecondLastName;
+            }
+                                            }
+                                            Bienvenido: <br />
+                                            @UserName
+                                            @*<span>@DateTime.Now.Date.Day/@DateTime.Now.Date.Month/@DateTime.Now.Date.Year</span>*@
                                         </p>
-                                    </li>
-                                    <!-- Menu Body -->
-                                    <li class="user-body">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                        </div>
                                         <div class="pull-right">
-                                            <a href="@Url.Content("~/Login/Logout")" class="btn btn-default btn-flat">Sign out</a>
+                                            <a href="@Url.Content("~/Login/Logout")" class="btn btn-default btn-flat ldr">Log out</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -103,47 +115,96 @@
                 <section class="sidebar">
                     <ul class="sidebar-menu">
                         <li class="header">MENÚ</li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-pie-chart"></i>
-                                <span>Ventas</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu M">
-                                <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
-                                <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
-                                @*<li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Especialidades</a></li>
-                                    <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Marcas</a></li>
-                                    <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Productos</a></li>
-                                    <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Productos<br /> Hospitalarios</a></li>*@
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-laptop"></i>
-                                <span>Agroquímico</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
-                                    @*<li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-    <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
-    <li><a href="pages/UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
-    <li><a href="pages/UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
-    <li><a href="pages/UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>*@
-                            </ul>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-edit"></i> <span>Producción</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                @*<li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
-                                    <li><a href="pages/forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-                                    <li><a href="pages/forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>*@
-                            </ul>
-                        </li>
+                        @{
+                            var user = p.userId;
+                            var app = p.ApplicationId;
+                            var LI = (from UR in db.ApplicationUsers
+                                      where UR.UserId == user
+                                      && UR.ApplicationId == app
+                                      join rol in db.Roles
+                                      on UR.RoleId equals rol.RoleId
+                                      select rol).ToList();
+
+                            foreach (Agronet.Models.Roles item in LI)
+                            {
+                                if (item.Description == "Administrador")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-pie-chart"></i>
+                                            <span>Ventas</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu M">
+                                            <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                            <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                        </ul>
+                                    </li>
+                                            <li class="treeview">
+                                                <a href="#">
+                                                    <i class="fa fa-laptop"></i>
+                                                    <span>Agroquímico</span>
+                                                    <i class="fa fa-angle-left pull-right"></i>
+                                                </a>
+                                                <ul class="treeview-menu">
+                                                    <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="treeview">
+                                                <a href="#">
+                                                    <i class="fa fa-edit"></i> <span>Producción</span>
+                                                    <i class="fa fa-angle-left pull-right"></i>
+                                                </a>
+                                                <ul class="treeview-menu">
+                                                    <li><a href="@Url.Content("~/Production/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                                    <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                                </ul>
+                                            </li>
+                                }
+                                if (item.Description == "Vendedor")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-pie-chart"></i>
+                                            <span>Ventas</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu M">
+                                            <li><a href="@Url.Content("~/Products/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                            <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                        </ul>
+                                    </li>
+                                }
+
+                                if (item.Description == "Agroquimico")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-laptop"></i>
+                                            <span>Agroquímico</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="@Url.Content("~/Clasification/Index")" class="ldr"><i class="fa fa-circle-o"></i> Clasificación</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                if (item.Description == "Diagramador")
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-edit"></i> <span>Producción</span>
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="@Url.Content("~/Production/Index")" class="ldr"><i class="fa fa-circle-o"></i> Productos</a></li>
+                                            <li><a href="@Url.Content("~/Laboratories/Index")" class="ldr"><i class="fa fa-circle-o"></i> Laboratorios</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        }
+
                     </ul>
                 </section>
             </aside>
@@ -209,3 +270,4 @@
     </script>
 </body>
 </html>
+

@@ -11,6 +11,7 @@ namespace Agronet.Controllers.Clasification
     public class ClasificationController : Controller
     {
         DEAQ db = new DEAQ();
+        ActivityLog ActivityLog = new ActivityLog();
 
         public ActionResult Index(string CountryId, string BookId, string EditionId, string DivisionId, string ProductName)
         {
@@ -105,7 +106,6 @@ namespace Agronet.Controllers.Clasification
 
         public JsonResult AddProductSubstances(string Product, string ActiveSubstance)
         {
-
             int ProductId = int.Parse(Product);
             int ActiveSubstanceId = int.Parse(ActiveSubstance);
 
@@ -120,6 +120,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductSubstances.Add(ProductSubstances);
                 db.SaveChanges();
+
+                ActivityLog.ProductSubstances(ProductId, ActiveSubstanceId, 1);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -127,7 +129,6 @@ namespace Agronet.Controllers.Clasification
 
         public JsonResult DeleteProductSubstances(string Product, string ActiveSubstance)
         {
-
             int ProductId = int.Parse(Product);
             int ActiveSubstanceId = int.Parse(ActiveSubstance);
 
@@ -139,6 +140,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductSubstances.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.ProductSubstances(ProductId, ActiveSubstanceId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -201,6 +204,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductCrops.Add(ProductCrops);
                 db.SaveChanges();
+
+                ActivityLog.ProductCrops(ProductId, CropId, 1);
             }
 
 
@@ -220,6 +225,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductCrops.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.ProductCrops(ProductId, CropId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -252,7 +259,6 @@ namespace Agronet.Controllers.Clasification
             ClasificationProds ind = (ClasificationProds)Session["ClasificationProds"];
 
             int ProductId = Convert.ToInt32(ind.PId);
-            //int AgrochemicalUseId = int.Parse(Id);
 
             List<ProductAgrochemicalUses> LPAU = db.ProductAgrochemicalUses.Where(x => x.ProductId == ProductId && x.AgrochemicalUseId == Id).ToList();
 
@@ -265,6 +271,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductAgrochemicalUses.Add(ProductAgrochemicalUses);
                 db.SaveChanges();
+
+                ActivityLog.ProductAgrochemicalUses(ProductId, Id, 1);
             }
 
             return RedirectToAction("AgrochemicalUses", new { ProductId = ind.PId, PharmaFormId = ind.PFId, CategoryId = ind.CatId });
@@ -283,6 +291,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductAgrochemicalUses.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.ProductAgrochemicalUses(ProductId, AgrochemicalUseId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -345,6 +355,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductSeeds.Add(ProductSeeds);
                 db.SaveChanges();
+
+                ActivityLog.ProductSeeds(ProductId, SeedId, 1);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -363,6 +375,8 @@ namespace Agronet.Controllers.Clasification
 
                 db.ProductSeeds.Remove(delete);
                 db.SaveChanges();
+
+                ActivityLog.ProductSeeds(ProductId, SeedId, 4);
             }
 
             return Json(true, JsonRequestBehavior.AllowGet);

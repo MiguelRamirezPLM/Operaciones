@@ -45,6 +45,8 @@ function OpenFormAddProduct() {
 
 function SaveProduct() {
 
+    $("#bloqueo").show();
+
     var pn = $("#txtProductName").val();
     var pf = $("#PharmaForms").val();
     var ct = $("#Categories").val();
@@ -103,16 +105,19 @@ function SaveProduct() {
         if (!pn.trim() == true) {
             $('#divProductName').addClass('has-error');
             $('.errorP').show();
+            $("#bloqueo").hide();
         }
 
         if ((pf == 0) || (pf == null) || (pf == "0") || (pf == undefined)) {
             $('#divPharmaForm').addClass('has-error');
             $('.errorPF').show();
+            $("#bloqueo").hide();
         }
 
         if ((ct == 0) || (ct == null) || (ct == "0") || (ct == undefined)) {
             $('#divCategories').addClass('has-error');
             $('.errorC').show();
+            $("#bloqueo").hide();
         }
     }
 }
@@ -343,6 +348,7 @@ function Participant(item) {
                     tr.find("#Mentionated").prop("checked", false);
                     tr.find("#SIDEF").prop("checked", false);
                     tr.find("#ProductChanges").prop("checked", false);
+                    tr.find("#NewProducts").prop("checked", false);
                 }
             }
         })
@@ -1009,4 +1015,212 @@ function DeleteProductSeeds(item) {
         }
     })
 
+}
+
+function DeleteAddresses(item) {
+
+    $("#bloqueo").show();
+
+    var Id = $(item).val();
+    var DId = $("#DivisionId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Laboratories/DeleteAddresses",
+        data: { Address: Id, Division: DId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else {
+                $("#bloqueo").hide();
+            }
+        }
+    })
+
+}
+
+function AddProductShot(item) {
+
+    $('#txtFileName').val($(item).val())
+
+}
+
+function SaveProductShot() {
+
+    $("#bloqueo").show();
+
+    var SId = $("#SelectProductShotSize").val();
+    var Image = $('#txtFileName').val();
+    var PId = $("#ProductId").val();
+    var PFId = $("#PharmaFormId").val();
+    var CTId = $("#CategoryId").val();
+    var EId = $("#EditionId").val();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CountryId").val();
+
+    var d = "";
+    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+    if ((SId == 0) || (SId == "0") || (SId == undefined) || (SId == null)) {
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; Debe seleccionar tama&ntilde;o de imagen!!!</p>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else {
+        if (!Image.trim() == true) {
+
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; Debe seleccionar una Imagen!!!</p>"
+            apprise("" + d + "", { 'animate': true });
+
+            $("#bloqueo").hide();
+        }
+        else {
+            $("#SendProductShot").ajaxSubmit({
+                type: "POST",
+                url: "../Production/SaveProductShot",
+                data: { Size: SId, Product: PId, PharmaForm: PFId, Category: CTId, Division: DId, Edition: EId, Country: CId },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout('document.location.reload()');
+                    }
+                }
+            })
+        }
+    }
+}
+
+function CanceladdProductShot() {
+    $('#txtFileName').val('');
+    var elm = document.getElementById("val_0");
+
+    $("#SelectProductShotSize").val($(elm).val());
+}
+
+function RemoveProductShots(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var PIId = tr.find("#lblProductImageId").val();
+    var IMId = tr.find("#lblImageSizeId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Production/RemoveProductShots",
+        data: { ProductImage: PIId, Size: IMId },
+        success: function (data) {
+            if (data == true) {
+                setTimeout("document.location.reload()");
+            }
+            else {
+                $("#bloqueo").hide();
+            }
+        }
+    })
+}
+
+
+function SaveDivisionImages() {
+
+    $("#bloqueo").show();
+
+    var SId = $("#SelectDivisionImageSize").val();
+    var Image = $('#txtFileName').val();
+    var DId = $("#DivisionId").val();
+    var CId = $("#CountryId").val();
+
+    var d = "";
+    d += "<div align='center'><img src='../Images/alerta.png' /> </div>";
+
+    if ((SId == 0) || (SId == "0") || (SId == undefined) || (SId == null)) {
+        d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+        d += "<p></p>"
+        d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; Debe seleccionar tama&ntilde;o de imagen!!!</p>"
+        apprise("" + d + "", { 'animate': true });
+
+        $("#bloqueo").hide();
+    }
+    else {
+        if (!Image.trim() == true) {
+
+            d += "<label style='width:300px;text-align:center;color:#05606d;font-style:italic;font-size:20px'>Error!!!</label>"
+            d += "<p></p>"
+            d += "<p style='width:300px;text-align:justify;color:#05606d;font-style:italic'>&bull; Debe seleccionar una Imagen!!!</p>"
+            apprise("" + d + "", { 'animate': true });
+
+            $("#bloqueo").hide();
+        }
+        else {
+            $("#SendProductShot").ajaxSubmit({
+                type: "POST",
+                url: "../Laboratories/SaveDivisionImages",
+                data: { Size: SId, Division: DId, Country: CId },
+                success: function (data) {
+                    if (data == true) {
+                        setTimeout('document.location.reload()');
+                    }
+                }
+            })
+        }
+    }
+}
+
+function RemoveDivisionImages(item) {
+
+    $("#bloqueo").show();
+
+    var tr = $(item).parents("tr:first");
+
+    var Id = tr.find("#lblDivisionImageId").val();
+    var SId = tr.find("#lblImageSizeId").val();
+
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Laboratories/RemoveDivisionImages",
+        data: { DivisionImage: Id, Size: SId },
+        success: function (data) {
+            setTimeout("document.location.reload()");
+        }
+    })
+
+}
+
+function CanceladdDivisionImage() {
+    $('#txtFileName').val('');
+    var elm = document.getElementById("val_0");
+
+    $("#SelectDivisionImageSize").val($(elm).val());
+}
+
+function UpdatePage(item) {
+
+    var tr = $(item).parents("tr:first");
+
+    var Pge = $(item).val();
+    var PId = tr.find("#lblProductId").val();
+    var PFId = tr.find("#lblPharmaFormId").val();
+    var CId = tr.find("#lblCategoryId").val();
+    var DId = $("#DivisionId").val();
+    var EId = $("#EditionId").val();
+
+    $.ajax({
+        Type: "POST",
+        dataType: "Json",
+        url: "../Products/SavePage",
+        data: { Product: PId, PharmaForm: PFId, Category: CId, Division: DId, Edition: EId, Page: Pge },
+        success: function (data) {
+
+        }
+    })
 }

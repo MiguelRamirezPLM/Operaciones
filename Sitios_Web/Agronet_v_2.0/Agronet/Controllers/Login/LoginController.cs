@@ -55,14 +55,14 @@ namespace Agronet.Controllers.Login
                                 {
                                     Functions.ActivitySesions(ApplicationUsers);
 
-                                    return RedirectToAction("Index", "SalesModule");
+                                    return RedirectToAction("Index", "Products");
                                 }
 
-                                else if (RolesUser.Description.Equals("Laboratorio de Información"))
+                                else if (RolesUser.Description.Equals("Agroquimico"))
                                 {
                                     Functions.ActivitySesions(ApplicationUsers);
 
-                                    return RedirectToAction("Index", "LI");
+                                    return RedirectToAction("Index", "Clasification");
                                 }
 
                                 else if (RolesUser.Description.Equals("Diagramador"))
