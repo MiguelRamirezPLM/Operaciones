@@ -16,6 +16,11 @@ namespace Guianet.Controllers.Production
 
         public ActionResult Index()
         {
+            if(!Request.IsAuthenticated)
+            {
+                return RedirectToAction("Logout", "Login");
+            }
+
             CountriesUsers p = (CountriesUsers)Session["CountriesUsers"];
 
             if (p != null)
@@ -82,8 +87,8 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescription")
                         {
                             pname = xtr.ReadInnerXml();
-                            pname = pname.Replace("> </p>", "");
-                            pname = pname.Replace("</p>", "");
+                            //pname = pname.Replace("> </p>", "");
+                            //pname = pname.Replace("</p>", "");
 
                             ViewData["pnametargets"] = pname;
                         }
@@ -91,7 +96,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionPropag")
                         {
                             prop = xtr.ReadInnerXml();
-                            prop = prop.Replace("</p>", "");
+                            //prop = prop.Replace("</p>", "");
 
                             ViewData["Bproptargets"] = prop;
                         }
@@ -99,8 +104,8 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionAttribute")
                         {
                             attribute = xtr.ReadInnerXml();
-                            attribute = attribute.Replace("</p>", "");
-                            attribute = attribute.Replace("</span>", "");
+                            //attribute = attribute.Replace("</p>", "");
+                            //attribute = attribute.Replace("</span>", "");
 
                             ViewData["attrtargets"] = attribute;
                         }
@@ -108,7 +113,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionLaboratory")
                         {
                             labname = xtr.ReadInnerXml();
-                            labname = labname.Replace("</p>", "");
+                            //labname = labname.Replace("</p>", "");
 
                             ViewData["labnametargets"] = labname;
                         }
@@ -116,8 +121,8 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionParagraph")
                         {
                             paragraph = xtr.ReadInnerXml();
-                            paragraph = paragraph.Replace("</span>", "");
-                            paragraph = paragraph.Replace("</p>", "");
+                            //paragraph = paragraph.Replace("</span>", "");
+                            //paragraph = paragraph.Replace("</p>", "");
 
                             ViewData["paragrapgtargets"] = paragraph;
                         }
@@ -125,7 +130,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionImage")
                         {
                             Image = xtr.ReadInnerXml();
-                            Image = Image.Replace("</p>", "");
+                            //Image = Image.Replace("</p>", "");
 
                             ViewData["Imagetargets"] = Image;
                         }
@@ -133,7 +138,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionTable")
                         {
                             Table = xtr.ReadInnerXml();
-                            Table = Table.Replace("</table>", "");
+                            //Table = Table.Replace("</table>", "");
 
                             ViewData["Tabletargets"] = Table;
                         }
@@ -142,7 +147,7 @@ namespace Guianet.Controllers.Production
                         {
                             Row = xtr.ReadInnerXml();
 
-                            Row = Row.Replace("</tr>", "");
+                            //Row = Row.Replace("</tr>", "");
 
                             ViewData["Rowtargets"] = Row;
                         }
@@ -151,7 +156,7 @@ namespace Guianet.Controllers.Production
                         {
                             Column = xtr.ReadInnerXml();
 
-                            Column = Column.Replace("</td>", "");
+                            //Column = Column.Replace("</td>", "");
 
                             ViewData["Columntargets"] = Column;
                         }
@@ -160,7 +165,7 @@ namespace Guianet.Controllers.Production
                         {
                             Register = xtr.ReadInnerXml();
 
-                            Register = Register.Replace("</p>", "");
+                            //Register = Register.Replace("</p>", "");
 
                             ViewData["Registertargets"] = Register;
                         }
@@ -168,7 +173,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionBullet")
                         {
                             Bullets = xtr.ReadInnerXml();
-                            Bullets = Bullets.Replace("</p>", "");
+                            //Bullets = Bullets.Replace("</p>", "");
 
                             ViewData["Bulletstargets"] = Bullets;
                         }
@@ -176,7 +181,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionBullet1")
                         {
                             Bullets1 = xtr.ReadInnerXml();
-                            Bullets1 = Bullets1.Replace("</p>", "");
+                            //Bullets1 = Bullets1.Replace("</p>", "");
 
                             ViewData["Bullets1targets"] = Bullets1;
                         }
@@ -184,7 +189,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionBullet2")
                         {
                             Bullets2 = xtr.ReadInnerXml();
-                            Bullets2 = Bullets2.Replace("</p>", "");
+                            //Bullets2 = Bullets2.Replace("</p>", "");
 
                             ViewData["Bullets2targets"] = Bullets2;
                         }
@@ -192,7 +197,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionBullet3")
                         {
                             Bullets3 = xtr.ReadInnerXml();
-                            Bullets3 = Bullets3.Replace("</p>", "");
+                            //Bullets3 = Bullets3.Replace("</p>", "");
 
                             ViewData["Bullets3targets"] = Bullets3;
                         }
@@ -200,7 +205,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionLog")
                         {
                             Logo = xtr.ReadInnerXml();
-                            Logo = Logo.Replace("</span>", "");
+                            //Logo = Logo.Replace("</span>", "");
 
                             ViewData["Logotargets"] = Logo;
                         }
@@ -208,8 +213,8 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionBold")
                         {
                             Bold = xtr.ReadInnerXml();
-                            Bold = Bold.Replace("</span></p>", "");
-                            Bold = Bold.Replace("</p>", "");
+                            //Bold = Bold.Replace("</span></p>", "");
+                            //Bold = Bold.Replace("</p>", "");
 
                             ViewData["Boldtargets"] = Bold;
                         }
@@ -217,7 +222,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionReference")
                         {
                             Reference = xtr.ReadInnerXml();
-                            Reference = Reference.Replace("</p>", "");
+                            //Reference = Reference.Replace("</p>", "");
 
                             ViewData["Referencetargets"] = Reference;
 
@@ -227,7 +232,7 @@ namespace Guianet.Controllers.Production
                         {
                             SupInd = xtr.ReadInnerXml();
 
-                            SupInd = SupInd.Replace("</span>", "");
+                            //SupInd = SupInd.Replace("</span>", "");
 
                             ViewData["SupIndtargets"] = SupInd;
                         }
@@ -235,7 +240,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionData")
                         {
                             Data = xtr.ReadInnerXml();
-                            Data = Data.Replace("</p>", "");
+                            //Data = Data.Replace("</p>", "");
 
                             ViewData["Datatargets"] = Data;
                         }
@@ -243,7 +248,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionContainer")
                         {
                             Container = xtr.ReadInnerXml();
-                            Container = Container.Replace("</div>", "");
+                            //Container = Container.Replace("</div>", "");
 
                             ViewData["Containertargets"] = Container;
                         }
@@ -251,7 +256,7 @@ namespace Guianet.Controllers.Production
                         if (xtr.Name == "TargetDescriptionBody")
                         {
                             Body = xtr.ReadInnerXml();
-                            Body = Body.Replace("</body>", "");
+                            //Body = Body.Replace("</body>", "");
 
                             ViewData["Bodytargets"] = Body;
                         }
@@ -343,7 +348,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetName>");
 
                         SW.Write("<TargetDescription>");
-                        SW.Write(pname + "</p>");
+                        SW.Write(pname);
                         SW.Write("</TargetDescription>");
                     }
 
@@ -354,7 +359,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetPropag>");
 
                         SW.Write("<TargetDescriptionPropag>");
-                        SW.Write(propaganda + "</p>");
+                        SW.Write(propaganda);
                         SW.Write("</TargetDescriptionPropag>");
                     }
 
@@ -365,7 +370,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetAttr>");
 
                         SW.Write("<TargetDescriptionAttribute>");
-                        SW.Write(attribute + "</span></p>");
+                        SW.Write(attribute);
                         SW.Write("</TargetDescriptionAttribute>");
                     }
 
@@ -376,7 +381,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetLab>");
 
                         SW.Write("<TargetDescriptionLaboratory>");
-                        SW.Write(laboratory + "</p>");
+                        SW.Write(laboratory);
                         SW.Write("</TargetDescriptionLaboratory>");
                     }
 
@@ -387,7 +392,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetParagraph>");
 
                         SW.Write("<TargetDescriptionParagraph>");
-                        SW.Write(paragraph + "</p>");
+                        SW.Write(paragraph);
                         SW.Write("</TargetDescriptionParagraph>");
                     }
 
@@ -398,7 +403,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetImage>");
 
                         SW.Write("<TargetDescriptionImage>");
-                        SW.Write(image + "</p>");
+                        SW.Write(image);
                         SW.Write("</TargetDescriptionImage>");
                     }
 
@@ -409,7 +414,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetTable>");
 
                         SW.Write("<TargetDescriptionTable>");
-                        SW.Write(table + "</table>");
+                        SW.Write(table);
                         SW.Write("</TargetDescriptionTable>");
                     }
 
@@ -420,7 +425,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetRow>");
 
                         SW.Write("<TargetDescriptionRow>");
-                        SW.Write(row + "</tr>");
+                        SW.Write(row);
                         SW.Write("</TargetDescriptionRow>");
                     }
 
@@ -431,7 +436,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetColumn>");
 
                         SW.Write("<TargetDescriptionColumn>");
-                        SW.Write(column + "</td>");
+                        SW.Write(column);
                         SW.Write("</TargetDescriptionColumn>");
                     }
 
@@ -442,7 +447,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetRegister>");
 
                         SW.Write("<TargetDescriptionRegister>");
-                        SW.Write(register + "</p>");
+                        SW.Write(register);
                         SW.Write("</TargetDescriptionRegister>");
                     }
 
@@ -453,7 +458,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetBullet>");
 
                         SW.Write("<TargetDescriptionBullet>");
-                        SW.Write(bullet + "</p>");
+                        SW.Write(bullet);
                         SW.Write("</TargetDescriptionBullet>");
                     }
 
@@ -464,7 +469,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetBullet1>");
 
                         SW.Write("<TargetDescriptionBullet1>");
-                        SW.Write(bullet1 + "</p>");
+                        SW.Write(bullet1);
                         SW.Write("</TargetDescriptionBullet1>");
                     }
 
@@ -475,7 +480,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetBullet2>");
 
                         SW.Write("<TargetDescriptionBullet2>");
-                        SW.Write(bullet2 + "</p>");
+                        SW.Write(bullet2);
                         SW.Write("</TargetDescriptionBullet2>");
                     }
 
@@ -486,7 +491,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetBullet3>");
 
                         SW.Write("<TargetDescriptionBullet3>");
-                        SW.Write(bullet3 + "</p>");
+                        SW.Write(bullet3);
                         SW.Write("</TargetDescriptionBullet3>");
                     }
 
@@ -497,7 +502,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetLog>");
 
                         SW.Write("<TargetDescriptionLog>");
-                        SW.Write(log + "</span>");
+                        SW.Write(log);
                         SW.Write("</TargetDescriptionLog>");
                     }
 
@@ -508,7 +513,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetBold>");
 
                         SW.Write("<TargetDescriptionBold>");
-                        SW.Write(bold + "</span></p>");
+                        SW.Write(bold);
                         SW.Write("</TargetDescriptionBold>");
                     }
 
@@ -519,7 +524,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetReference>");
 
                         SW.Write("<TargetDescriptionReference>");
-                        SW.Write(reference + "</p>");
+                        SW.Write(reference);
                         SW.Write("</TargetDescriptionReference>");
                     }
 
@@ -530,7 +535,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetSuperindice>");
 
                         SW.Write("<TargetDescriptionSuperindice>");
-                        SW.Write(superindice + "</span>");
+                        SW.Write(superindice);
                         SW.Write("</TargetDescriptionSuperindice>");
                     }
 
@@ -541,7 +546,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetData>");
 
                         SW.Write("<TargetDescriptionData>");
-                        SW.Write(_data + "</p>");
+                        SW.Write(_data);
                         SW.Write("</TargetDescriptionData>");
                     }
 
@@ -552,7 +557,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetContainer>");
 
                         SW.Write("<TargetDescriptionContainer>");
-                        SW.Write(container + "</div>");
+                        SW.Write(container);
                         SW.Write("</TargetDescriptionContainer>");
                     }
 
@@ -563,7 +568,7 @@ namespace Guianet.Controllers.Production
                         SW.Write("</TargetBody>");
 
                         SW.Write("<TargetDescriptionBody>");
-                        SW.Write(body + "</body>");
+                        SW.Write(body);
                         SW.Write("</TargetDescriptionBody>");
                     }
 
@@ -587,6 +592,7 @@ namespace Guianet.Controllers.Production
         {
             _string = _string.Replace("60", "<");
             _string = _string.Replace("62", ">");
+            _string = _string.Replace("47", "/");
 
             return _string;
         }

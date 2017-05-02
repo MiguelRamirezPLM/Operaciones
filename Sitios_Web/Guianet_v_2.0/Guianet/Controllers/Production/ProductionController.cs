@@ -2691,8 +2691,6 @@ namespace Guianet.Controllers.Production
 
             }
 
-
-
             if (System.IO.File.Exists(path))
             {
                 FileInfo FI = new FileInfo(path);
@@ -2703,8 +2701,6 @@ namespace Guianet.Controllers.Production
 
                 filename = filename.Replace(".html", "");
                 filename = filename.Replace(".htm", "");
-
-
 
                 String _return = SegmentContent.getxml(concatfiledir, filename, desc, pname, prop, attribute, labname);
 
@@ -2732,8 +2728,6 @@ namespace Guianet.Controllers.Production
                     return Json("Error_File", JsonRequestBehavior.AllowGet);
 
                 }
-
-
 
                 String check = checkXML(desc, filename);
                 if (check == "_error")
@@ -2777,6 +2771,8 @@ namespace Guianet.Controllers.Production
 
                     StreamReader SR = System.IO.File.OpenText(path);
                     String content = SR.ReadToEnd();
+
+                    content = ReplaceHTMLContent(content);
 
                     bool _response = SegmentContent.inserthtml(ClientId, EditionId, ProductId, content);
 
@@ -2825,6 +2821,68 @@ namespace Guianet.Controllers.Production
                 }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public static string ReplaceHTMLContent(string file)
+        {
+            file = file.Replace("                          <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("                         <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("                         <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("                         <colgroup>", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                                <col />", "");
+            file = file.Replace("                         </colgroup>", "");
+
+            file = file.Replace("\n\n\n", "");
+            file = file.Replace("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t", "");
+            file = file.Replace("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t", "");
+            file = file.Replace("\r\n\r\n\r\n\r\n\r\n\t\t\t", "");
+
+            file = file.Replace("\r\n\r\n\r\n\r\n\t\t", "");
+
+            file = file.Replace("«", "&#171;");
+            file = file.Replace("»", "&#187;");
+            file = file.Replace("↓", "&#8595;");
+            file = file.Replace("↑", "&#8593;");
+            file = file.Replace("↔", "&#8596;");
+            file = file.Replace("†", "&#8224;");
+            file = file.Replace("←", "&#8592;");
+            file = file.Replace("→", "&#8594;");
+
+            file = file.Replace("&#9;", " ");
+
+            file = file.Replace("≥", "&#8805;");
+            file = file.Replace("≤", "&#8804;");
+            file = file.Replace("∞", "&#8734;");
+            file = file.Replace("~", "&#8764;");
+            file = file.Replace("κ", "&#954;");
+            file = file.Replace("ε", "&#949;");
+            file = file.Replace("λ", "&#955;");
+            file = file.Replace("Δ", "&#916;");
+            file = file.Replace("ς", "&#962;");
+            file = file.Replace("•", "&#149;");
+
+
+            if (file.Contains(" @ "))
+            {
+                file = file.Replace(" @ ", " &#64; ");
+            }
+
+            return file;
         }
 
         public string checkXML(string desc, string filename)
@@ -3460,6 +3518,8 @@ namespace Guianet.Controllers.Production
 
                 string allcontent = getHtmlContent(item.FullName);
 
+                allcontent = ReplaceHTMLContent(allcontent);
+
                 string template = "";
                 try
                 {
@@ -3578,7 +3638,11 @@ namespace Guianet.Controllers.Production
 
                             next = allcontent.IndexOf(pname, fin);
 
+                            //template = ReplaceHTMLContent(template);
+
                             System.Text.StringBuilder sb = new System.Text.StringBuilder(template);
+
+
 
                             if (next > 0)
                             {
@@ -4222,7 +4286,6 @@ namespace Guianet.Controllers.Production
         /************************               SPECIALPRODUCTS          ************************ */
 
 
-
         public ActionResult SpecialProducts(string CountryId, string EditionId, string BookId, string ClientTypeId, string CompanyName, string Type)
         {
             if (!Request.IsAuthenticated)
@@ -4498,6 +4561,69 @@ namespace Guianet.Controllers.Production
 
 
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /**********                             ***********/
+
+        public ActionResult AddClientImage(HttpPostedFileBase file, string Country, string Client)
+        {
+            String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
+
+            int CountryId = int.Parse(Country);
+            int ClientId = int.Parse(Client);
+
+            string FileName = file.FileName;
+            string Extention = Path.GetExtension(file.FileName);
+
+            FileName = FileName.Replace(Extention, "");
+
+            List<Clients> LC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+
+            if (LC.LongCount() > 0)
+            {
+                FileName = LC[0].CompanyName.Trim().ToLower();
+            }
+
+            FileName = ClassReplace.replacepdffilename(FileName);
+
+            FileName = FileName + Extention;
+
+            List<Countries> LCC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+            String CountryName = ReplaceCountryName(LCC[0].CountryName);
+
+            List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
+
+            var root = Path.Combine(PathP, CountryName, "DivisionImages", ims[0].ImageSize);
+
+            //string root = Server.MapPath("~/App_Data/DivisionImages");
+
+            if (LC.LongCount() > 0)
+            {
+                foreach (Clients item in LC)
+                {
+                    item.Image = FileName;
+
+                    ActivityLog.AddClientImage(ClientId, FileName, 2);
+
+                    db.SaveChanges();
+                }
+            }
+
+            if (System.IO.Directory.Exists(root))
+            {
+                root = Path.Combine(root, FileName);
+                file.SaveAs(root);
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(root);
+                root = Path.Combine(root, FileName);
+                file.SaveAs(root);
+            }
+
+            return View();
         }
 
     }

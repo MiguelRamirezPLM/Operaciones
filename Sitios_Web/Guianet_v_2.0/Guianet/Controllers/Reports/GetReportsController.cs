@@ -4084,5 +4084,81 @@ namespace Guianet.Controllers.Reports
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+
+        /*                                  PRODUCTOS DESCRITOS                                                             */
+
+        public ActionResult GetDescribedProductsByClient(string id, int? ClientId, int? EditionId)
+        {
+            //  int EditionId = index.EId;
+            //  int ClientId = index.ClId;
+
+            var plm = db.Database.SqlQuery<GetProductsByClientReport>("plm_spGetProductsByClientToReport @clientId=" + ClientId + ", @EditionId=" + EditionId + "").ToList();
+
+            plm = plm.Where(x => x.MP == "SI").ToList();
+
+            LocalReport lr = new LocalReport();
+            string path = Path.Combine(Server.MapPath("~/GetReport"), "getproductsbyclient.rdlc");
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+            else
+            {
+                return View("error");
+            }
+
+            if (plm.LongCount() > 0)
+            {
+                plm[0].Count = Convert.ToInt32(plm.LongCount());
+
+                var u = dbusers.Users.Where(x => x.UserId == c.userId).ToList();
+
+                plm[0].Adviser = u[0].Name + " " + u[0].LastName + " " + u[0].SecondLastName;
+            }
+
+
+
+            List<GetProductsByClientReport> cm = new List<GetProductsByClientReport>();
+
+            cm = plm.ToList();
+
+            ReportDataSource rd = new ReportDataSource("ProductsByClient", cm);
+            lr.DataSources.Add(rd);
+            string reportType = id;
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+
+
+
+            string deviceInfo =
+
+            "<DeviceInfo>" +
+            "  <OutputFormat>" + id + "</OutputFormat>" +
+            "  <PageWidth>8.5in</PageWidth>" +
+            "  <PageHeight>11in</PageHeight>" +
+            "  <MarginTop>0.5in</MarginTop>" +
+            "  <MarginLeft>0.1in</MarginLeft>" +
+            "  <MarginRight>0.1in</MarginRight>" +
+            "  <MarginBottom>0.5in</MarginBottom>" +
+            "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderedBytes;
+
+            renderedBytes = lr.Render(
+                reportType,
+                deviceInfo,
+                out mimeType,
+                out encoding,
+                out fileNameExtension,
+                out streams,
+                out warnings);
+
+
+            return File(renderedBytes, mimeType);
+        }
     }
 }

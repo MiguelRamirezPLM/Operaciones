@@ -2671,7 +2671,7 @@ namespace Guianet.Controllers.Ventas
 
             var ec = (from edc in db.EditionClients
                       where edc.ClientId == ClientId
-                      && edc.EditionId == EditionId
+                        && edc.EditionId == EditionId
                       select edc).ToList();
 
             if (ec.LongCount() == 0)
@@ -2736,6 +2736,8 @@ namespace Guianet.Controllers.Ventas
 
                 ActivityLog.EditionClientProductAdverts(ClientId, ProductAdvertId, EditionId, 1);
             }
+
+
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -2951,6 +2953,101 @@ namespace Guianet.Controllers.Ventas
             CountryName = CountryName.Replace("ü", "u");
 
             return CountryName;
+        }
+
+        public ActionResult GetClientImages(int? ClientId, int? CountryId)
+        {
+            String PathP = System.Configuration.ConfigurationManager.AppSettings["PathPS"].ToString();
+            //String PathE = System.Configuration.ConfigurationManager.AppSettings["Path"].ToString();
+
+            List<Clients> LCC = db.Clients.Where(x => x.ClientId == ClientId).ToList();
+
+            if (LCC.LongCount() > 0)
+            {
+                List<Countries> LC = db.Countries.Where(x => x.CountryId == CountryId).ToList();
+
+                String CountryName = ReplaceCountryName(LC[0].CountryName);
+
+                List<ImageSizes> ims = db.ImageSizes.Where(x => x.ImageSizeId == 1).ToList();
+
+                //string root = Server.MapPath("~/App_Data/DivisionImages");
+
+                var root = Path.Combine(PathP, CountryName, "DivisionImages", ims[0].ImageSize);
+
+                string FileName = LCC[0].Image;
+
+                root = Path.Combine(root, FileName);
+
+                if (System.IO.File.Exists(root))
+                {
+                    return File(root, "image/png");
+                }
+                else
+                {
+                    root = Server.MapPath("~/App_Data/Uploads");
+
+                    FileName = "not_available.png";
+
+                    root = Path.Combine(root, FileName);
+
+                    return File(root, "image/png");
+                }
+
+
+            }
+            else
+            {
+                string root = Server.MapPath("~/App_Data/Uploads");
+
+                string FileName = "not_available.png";
+
+                root = Path.Combine(root, FileName);
+
+                return File(root, "image/png");
+            }
+        }
+
+        public JsonResult DeleteProductAdverts(string ProductAdvert, string Client, string Edition)
+        {
+            int ProductAdvertId = int.Parse(ProductAdvert);
+            int ClientId = int.Parse(Client);
+            int EditionId = int.Parse(Edition);
+
+            List<EditionClientProductAdverts> LECP = db.EditionClientProductAdverts.Where(x => x.ClientId == ClientId && x.EditionId == EditionId && x.ProductAdvertId == ProductAdvertId).ToList();
+
+            if (LECP.LongCount() > 0)
+            {
+                var Delete = db.EditionClientProductAdverts.SingleOrDefault(x => x.ClientId == ClientId && x.EditionId == EditionId && x.ProductAdvertId == ProductAdvertId);
+                db.EditionClientProductAdverts.Remove(Delete);
+                db.SaveChanges();
+
+                ActivityLog.EditionClientProductAdverts(ClientId, ProductAdvertId, EditionId, 4);
+            }
+
+            List<ClientProductAdverts> LCPA = db.ClientProductAdverts.Where(x => x.ClientId == ClientId && x.ProductAdvertId == ProductAdvertId).ToList();
+
+            if (LCPA.LongCount() > 0)
+            {
+                var Delete = db.ClientProductAdverts.SingleOrDefault(x => x.ClientId == ClientId && x.ProductAdvertId == ProductAdvertId);
+
+                db.ClientProductAdverts.Remove(Delete);
+                db.SaveChanges();
+
+                ActivityLog.ClientProductAdverts(ClientId, ProductAdvertId, 4);
+            }
+
+            List<ProductAdverts> LPA = db.ProductAdverts.Where(x => x.ProductAdvertId == ProductAdvertId).ToList();
+
+            if (LPA.LongCount() > 0)
+            {
+                var Delete = db.ProductAdverts.SingleOrDefault(x => x.ProductAdvertId == ProductAdvertId);
+                db.ProductAdverts.Remove(Delete);
+                db.SaveChanges();
+
+                ActivityLog.ProductAdverts(ProductAdvertId, LPA[0].ProductAdvertName, LPA[0].Description, LPA[0].Order, 4);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }
